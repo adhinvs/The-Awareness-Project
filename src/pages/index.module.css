@@ -128,6 +128,7 @@
     margin-bottom: 4rem;
   }
   .heroTitle {
-    font-size: 3rem;
+    font-size: 2.2rem;
+    hyphens: auto;
   }
 }

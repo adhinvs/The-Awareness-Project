@@ -307,15 +307,19 @@ h6 {
 }
 
 /* Base styles using the variables above */
+.social-icons-group {
+  display: flex;
+  align-items: center;
+  gap: var(--social-icon-gap);
+  height: 100%;
+}
+
 .header-social-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 var(--social-icon-gap);
-  margin: 0;
   color: var(--social-icon-color) !important;
   transition: transform 0.2s ease, filter 0.2s ease;
-  height: 100%;
 }
 
 .header-social-icon:hover {
@@ -346,18 +350,19 @@ h6 {
   .navbar-sidebar__items .menu::before {
     content: "The Awareness Project";
     display: block;
-    font-size: 1.4rem;
+    font-size: 1.25rem;
     font-weight: 800;
     color: var(--ifm-color-primary);
     padding: 0.5rem 1rem 1rem 1rem;
     letter-spacing: -0.02em;
     border-bottom: 1px solid var(--ifm-color-emphasis-200);
     margin-bottom: 0.5rem;
+    text-align: center;
   }
 
   /* Fix custom pill button spacing in mobile sidebar so it stays contained */
   .menu__list-item .nav-btn-pill {
-    margin: 1rem;
+    margin: 1rem auto;
     height: auto;
     padding: 0.75rem 1rem !important;
     display: block;
@@ -367,17 +372,11 @@ h6 {
     white-space: normal;
   }
 
-  /* Keep social icons inline in the mobile menu and contained */
-  .menu__list-item:has(.header-social-icon) {
-    display: inline-block;
-    padding: 1rem 0.25rem 1rem 1rem;
-    max-width: 100%;
-    overflow: hidden;
-  }
-  
-  /* Safe fallback for styling the icons directly in the sidebar */
-  .menu__list-item .header-social-icon {
-    display: inline-flex;
-    padding: 0.5rem;
+  /* Grouped social icons centered properly in mobile menu */
+  .social-icons-group {
+    justify-content: center;
+    padding: 1.5rem 0;
+    gap: 1.5rem;
+    width: 100%;
   }
 }
