@@ -55,6 +55,51 @@ h6 {
   letter-spacing: -0.02em;
 }
 
+/* ========================================================
+   RESPONSIVE TYPOGRAPHY & SIZING CONFIGURATION
+   Edit these variables to easily change sizes for mobile & desktop!
+======================================================== */
+:root {
+  /* --- MOBILE / DEFAULT SIZES --- */
+  
+  /* Reading Experience (Content) */
+  --content-font-size: 1rem;       /* Base reading font size */
+  --content-h1-size: 2.2rem;       /* Main title size */
+  --content-h2-size: 1.6rem;       /* Section title size */
+  --content-h3-size: 1.3rem;       /* Sub-section title size */
+  
+  /* Navbar */
+  --nav-logo-size: 2.2rem;         /* Logo height */
+  --nav-title-size: 1.1rem;        /* Site title size */
+  --nav-item-size: 1rem;           /* Menu items size */
+  
+  /* Social Icons */
+  --social-icon-size: 22px;        /* Icon size */
+  --social-icon-gap: 0.1rem;       /* Gap between icons */
+  --social-icon-color: var(--ifm-color-primary);
+  --social-icon-color-dark: var(--ifm-color-primary-light);
+}
+
+/* --- DESKTOP SIZES (Screens wider than 996px) --- */
+@media (min-width: 996px) {
+  :root {
+    /* Reading Experience (Content) */
+    --content-font-size: 1.15rem;    /* ~18.5px base */
+    --content-h1-size: 3rem;
+    --content-h2-size: 2rem;
+    --content-h3-size: 1.5rem;
+    
+    /* Navbar */
+    --nav-logo-size: 3.20rem;
+    --nav-title-size: 1.3rem;
+    --nav-item-size: 1.1rem;
+    
+    /* Social Icons */
+    --social-icon-size: 26.5px;
+    --social-icon-gap: 0.05rem;
+  }
+}
+
 /* ---------------------------------------------------
    MEDIUM-STYLE READING EXPERIENCE FOR MODULES (DOCS)
 --------------------------------------------------- */
@@ -68,10 +113,8 @@ h6 {
 /* Large, highly readable body copy */
 .markdown p,
 .markdown li {
-  font-size: 1.15rem;
-  /* ~18.5px base */
+  font-size: var(--content-font-size);
   font-weight: 400;
-  /* semi-bold reading experience */
   line-height: 1.8;
   color: var(--ifm-color-emphasis-900);
   margin-bottom: 1.5em;
@@ -81,12 +124,11 @@ h6 {
 [data-theme='dark'] .markdown p,
 [data-theme='dark'] .markdown li {
   color: rgba(255, 255, 255, 0.85);
-  /* Slightly softer white in dark mode */
 }
 
 /* Elegant, distinct heading hierarchy */
 .markdown h1 {
-  font-size: 3rem;
+  font-size: var(--content-h1-size);
   font-weight: 700;
   line-height: 1.2;
   margin-top: 2.5rem;
@@ -95,7 +137,7 @@ h6 {
 }
 
 .markdown h2 {
-  font-size: 2rem;
+  font-size: var(--content-h2-size);
   font-weight: 600;
   line-height: 1.3;
   margin-top: 3rem;
@@ -104,7 +146,7 @@ h6 {
 }
 
 .markdown h3 {
-  font-size: 1.5rem;
+  font-size: var(--content-h3-size);
   font-weight: 600;
   margin-top: 2rem;
   margin-bottom: 1rem;
@@ -220,10 +262,11 @@ h6 {
   background: var(--ifm-color-primary) !important;
   color: white !important;
   border-radius: 2rem;
-  padding: 0 1.0rem !important;
-  height: 2.0rem;
+  padding: 0 1.25rem !important;
+  height: 2.5rem;
   margin: auto 0 auto 1rem;
   font-weight: 600;
+  font-size: var(--nav-item-size);
   transition: all 0.2s ease;
   box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
 }
@@ -248,40 +291,19 @@ h6 {
 
 /* Site Title and Logo Customization */
 .navbar__logo {
-  height: 3.20rem;
-  /* Larger logo */
+  height: var(--nav-logo-size);
 }
 
 .navbar__title {
-  font-size: 1.3rem !important;
-  /* Larger text */
+  font-size: var(--nav-title-size) !important;
   font-weight: 700 !important;
-  /*color: var(--ifm-color-primary) !important;*/
   letter-spacing: -0.02em;
 }
 
 /* Adjust navbar menu items */
 .navbar__item {
-  font-size: 1.1rem;
+  font-size: var(--nav-item-size);
   font-weight: 500;
-}
-
-/* Make nav pill slightly larger to match new height */
-.navbar__item.nav-btn-pill {
-  height: 3rem;
-  padding: 0 1.75rem !important;
-  font-size: 1.0rem;
-}
-
-:root {
-  --social-icon-size: 26.5px;
-  /* Change this to reduce/increase icon size */
-  --social-icon-gap: 0.05rem;
-  /* Change this to adjust the gap between icons */
-  --social-icon-color: var(--ifm-color-primary);
-  /* Change this for light mode color */
-  --social-icon-color-dark: var(--ifm-color-primary-light);
-  /* Change this for dark mode color */
 }
 
 /* Base styles using the variables above */
@@ -299,15 +321,63 @@ h6 {
 .header-social-icon:hover {
   transform: translateY(-2px);
   filter: brightness(1.2);
-  /* Pop effect */
 }
 
 [data-theme='dark'] .header-social-icon {
   color: var(--social-icon-color-dark) !important;
 }
 
-/* Size application - NOTE IT */
+/* Size application */
 .header-social-icon svg {
   width: var(--social-icon-size);
   height: var(--social-icon-size);
+}
+
+/* ========================================================
+   MOBILE NAVBAR / HAMBURGER MENU FIXES
+======================================================== */
+@media (max-width: 996px) {
+  /* Hide title from the top navbar on mobile */
+  .navbar__title {
+    display: none !important;
+  }
+
+  /* Inject the title into the top of the mobile hamburger menu */
+  .navbar-sidebar__items .menu::before {
+    content: "The Awareness Project";
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--ifm-color-primary);
+    padding: 0.5rem 1rem 1rem 1rem;
+    letter-spacing: -0.02em;
+    border-bottom: 1px solid var(--ifm-color-emphasis-200);
+    margin-bottom: 0.5rem;
+  }
+
+  /* Fix custom pill button spacing in mobile sidebar so it stays contained */
+  .menu__list-item .nav-btn-pill {
+    margin: 1rem;
+    height: auto;
+    padding: 0.75rem 1rem !important;
+    display: block;
+    text-align: center;
+    width: calc(100% - 2rem);
+    box-sizing: border-box;
+    white-space: normal;
+  }
+
+  /* Keep social icons inline in the mobile menu and contained */
+  .menu__list-item:has(.header-social-icon) {
+    display: inline-block;
+    padding: 1rem 0.25rem 1rem 1rem;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  
+  /* Safe fallback for styling the icons directly in the sidebar */
+  .menu__list-item .header-social-icon {
+    display: inline-flex;
+    padding: 0.5rem;
+  }
 }
