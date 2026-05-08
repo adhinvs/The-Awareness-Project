@@ -274,10 +274,14 @@ h6 {
 }
 
 :root {
-  --social-icon-size: 26.5px;         /* Change this to reduce/increase icon size */
-  --social-icon-gap: 0.05rem;       /* Change this to adjust the gap between icons */
-  --social-icon-color: var(--ifm-color-primary); /* Change this for light mode color */
-  --social-icon-color-dark: var(--ifm-color-primary-light); /* Change this for dark mode color */
+  --social-icon-size: 26.5px;
+  /* Change this to reduce/increase icon size */
+  --social-icon-gap: 0.05rem;
+  /* Change this to adjust the gap between icons */
+  --social-icon-color: var(--ifm-color-primary);
+  /* Change this for light mode color */
+  --social-icon-color-dark: var(--ifm-color-primary-light);
+  /* Change this for dark mode color */
 }
 
 /* Base styles using the variables above */
@@ -302,7 +306,7 @@ h6 {
   color: var(--social-icon-color-dark) !important;
 }
 
-/* Size application */
+/* Size application - NOTE IT */
 .header-social-icon svg {
   width: var(--social-icon-size);
   height: var(--social-icon-size);
