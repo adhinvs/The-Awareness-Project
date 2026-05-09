@@ -75,7 +75,7 @@ h6 {
   
   /* Social Icons */
   --social-icon-size: 22px;        /* Icon size */
-  --social-icon-gap: 0.1rem;       /* Gap between icons */
+  --social-icon-gap: 1rem;         /* Gap between icons */
   --social-icon-color: var(--ifm-color-primary);
   --social-icon-color-dark: var(--ifm-color-primary-light);
 }
@@ -96,7 +96,7 @@ h6 {
     
     /* Social Icons */
     --social-icon-size: 26.5px;
-    --social-icon-gap: 0.05rem;
+    --social-icon-gap: 1.25rem;
   }
 }
 

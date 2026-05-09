@@ -15,19 +15,22 @@ function HomepageHeader() {
         <div className="row align-items-center">
           <div className="col col--7 text--left animate-fade-up">
             <span className={styles.heroBadge}>
-              <span className={styles.shieldIcon}>🛡️</span> 100% Free. Always.
+              <span className={styles.shieldIcon}>🛡️</span> Free. Forever. No login required.
             </span>
-            <Heading as="h1" className={styles.heroTitle}>
+            <Heading as="h1" className={clsx(styles.heroTitle, styles.heroTitleBlack)}>
               Helping people see through <span className={styles.highlightText}>Digital Risk</span> and Manipulation.
             </Heading>
             <p className={styles.heroSubtitle}>
-              Master the human side of cybersecurity. Dive into interactive modules backed by research to understand risks, recognize digital psychology, and get actionable steps to protect yourself.
+              The Awareness Project is a free learning platform covering digital risk, manipulation tactics, AI deception, and the psychology behind why it works. Built on research. Designed for everyone.
+            </p>
+            <p className={styles.heroAttribution}>
+              <strong>Powered by The Blue Signal — a digital initiative helping people make better digital decisions.</strong>
             </p>
             <div className={styles.buttons}>
               <Link
                 className={clsx('button button--primary button--lg', styles.primaryButton)}
                 to="/docs/intro">
-                Explore Free Modules
+                Explore Free Module
               </Link>
             </div>
           </div>

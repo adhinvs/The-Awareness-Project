@@ -25,10 +25,8 @@
   display: flex;
   flex-direction: column;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
@@ -57,6 +55,8 @@
   border-radius: 2rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  width: fit-content;
+  align-self: flex-start;
 }
 
 .tag-primary {
@@ -91,6 +91,12 @@
 
 .card-bordered {
   background-color: var(--ifm-background-color);
+  border: 1px solid var(--ifm-color-primary);
+}
+[data-theme='dark'] .card-bordered {
+  background-color: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 .card-bordered .cardIcon {
   color: var(--ifm-color-primary);
@@ -127,76 +133,71 @@
   color: var(--ifm-color-primary);
 }
 
-.curriculumList {
+.curriculumTabs {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 0.75rem;
+  margin-bottom: 2rem;
 }
 
-.curriculumListItem {
-  padding: 1.25rem 1.5rem;
-  border-radius: 1rem;
-  background: transparent;
-  border: 1px solid transparent;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  transition: all 0.2s ease;
-  gap: 0.5rem;
-}
-
-.curriculumListItem:hover {
-  background: var(--ifm-color-emphasis-200);
-}
-
-.curriculumListItemActive {
-  background: var(--ifm-background-surface-color);
-  border-color: var(--ifm-color-emphasis-200);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-[data-theme='dark'] .curriculumListItemActive {
-  background: #1f2937;
-  border-color: #374151;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-}
-
-.itemHeader {
+.curriculumTab {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 100%;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 2rem;
+  background: var(--ifm-color-emphasis-100);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  color: var(--ifm-color-emphasis-800);
 }
 
-.activeLine {
-  flex-grow: 1;
-  height: 2px;
-  background-color: var(--ifm-color-primary);
-  margin: 0 1rem;
-  opacity: 0.6;
+.curriculumTab:hover {
+  background: var(--ifm-color-emphasis-200);
+  border-color: var(--ifm-color-emphasis-300);
+  transform: translateY(-2px);
 }
 
-.themeId {
+.curriculumTabActive,
+.curriculumTabActive:hover {
+  background: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  color: white;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+}
+
+[data-theme='dark'] .curriculumTabActive,
+[data-theme='dark'] .curriculumTabActive:hover {
+  background: var(--ifm-color-primary-dark);
+  border-color: var(--ifm-color-primary-dark);
+  color: white;
+}
+
+.curriculumTabActive .tabId {
+  color: rgba(255, 255, 255, 0.8);
+}
+.curriculumTabActive .tabTitle {
+  color: white;
+}
+
+.tabId {
   font-weight: 800;
   color: var(--ifm-color-primary);
-  font-size: 0.875rem;
+  font-size: 0.85rem;
 }
 
-.themeTitle {
-  font-weight: 800;
-  font-size: 1.125rem;
-  color: var(--ifm-color-emphasis-900);
-}
-
-.themeArrow {
-  color: var(--ifm-color-emphasis-400);
+.tabTitle {
   font-weight: 700;
 }
 
 .curriculumCard {
-  background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-primary);
   border-radius: 1.5rem;
   padding: 3.5rem;
   position: relative;
@@ -204,7 +205,13 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 20px 40px -10px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 30px -10px rgba(37, 99, 235, 0.15);
+}
+
+[data-theme='dark'] .curriculumCard {
+  background: var(--ifm-background-surface-color);
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.6);
 }
 
 .curriculumCardBgNumber {

@@ -6,29 +6,29 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    tag: 'LEARN',
+    tag: 'UNDERSTAND',
     tagStyle: 'primary',
-    title: 'Understand Risk.',
+    title: 'Know What You\'re Up Against.',
     description: (
       <>
-        Decode the tactics used against you online, from everyday cyber threats to complex social engineering.
+        From phishing links to AI-generated voices — learn the tactics being used against you, explained without jargon.
       </>
     ),
     icon: (
       <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" className={styles.cardIcon}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477-4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
       </svg>
     ),
     cardStyle: 'bordered',
     delay: ''
   },
   {
-    tag: 'FACT-CHECK',
+    tag: 'RESEARCH-BACKED',
     tagStyle: 'white',
-    title: 'Backed by Research.',
+    title: 'Built on Evidence, Not Opinion.',
     description: (
       <>
-        No guesswork. Our insights are built on hard data, behavioral science, and verified threat intelligence.
+        Every module is grounded in behavioral science, verified threat data, and real-world case studies.
       </>
     ),
     icon: (
@@ -40,12 +40,12 @@ const FeatureList = [
     delay: 'delay-100'
   },
   {
-    tag: 'INTERACT',
+    tag: 'EXPERIENCE',
     tagStyle: 'primary',
-    title: 'Interactive Modules.',
+    title: 'Learn by Doing.',
     description: (
       <>
-        Don't just read—experience. Test your reflexes against simulated manipulation tactics in real-time.
+        Simulated scenarios, decision points, and real manipulation tactics — because reading about it isn't enough.
       </>
     ),
     icon: (
@@ -57,12 +57,12 @@ const FeatureList = [
     delay: 'delay-200'
   },
   {
-    tag: 'ACT',
+    tag: 'APPLY',
     tagStyle: 'primary',
-    title: 'Actionable Takeaways.',
+    title: 'Walk Away Knowing What to Do.',
     description: (
       <>
-        Walk away from every module with clear, specific action items to harden your digital defenses immediately.
+        Every module ends with specific, actionable steps you can apply to your digital life immediately.
       </>
     ),
     icon: (
@@ -86,27 +86,33 @@ const CurriculumData = [
   },
   {
     id: '02',
-    title: 'Spotting Dark Patterns in UX',
-    description: 'Understand how interfaces are designed to trick you into making choices you wouldn\'t otherwise make. Learn to navigate the web on your own terms.',
-    topics: ['Forced Continuity', 'Hidden Costs', 'Confirmshaming', 'Bait and Switch']
+    title: 'Digital Psychology & Manipulation',
+    description: 'Explore the cognitive biases that scammers and algorithms exploit to influence your decisions and behavior online.',
+    topics: ['Cognitive Biases', 'Dark Patterns', 'Persuasion Tactics', 'Emotional Exploitation']
   },
   {
     id: '03',
-    title: 'Digital Psychology & Manipulation',
-    description: 'Explore the cognitive biases that scammers and algorithms exploit to influence your decisions and behavior online.',
-    topics: ['Social Engineering', 'Cognitive Biases', 'Emotional Triggers', 'FOMO']
+    title: 'Scams & Social Engineering',
+    description: 'Understand how attackers bypass technical defenses by targeting you directly. Learn to spot the red flags in everyday communications.',
+    topics: ['Vishing', 'Romance Scams', 'Impersonation', 'QR Fraud', 'Fake Websites']
   },
   {
     id: '04',
     title: 'AI Deception & Deepfakes',
     description: 'Learn to identify synthetic media, voice clones, and AI-generated text designed to deceive, manipulate, and defraud.',
-    topics: ['Deepfakes', 'Voice Cloning', 'Synthetic Text', 'Verification']
+    topics: ['Synthetic Media', 'Voice Cloning', 'AI Scams', 'Detection Methods']
   },
   {
     id: '05',
-    title: 'Comprehensive Digital Awareness',
+    title: 'Privacy & Data Awareness',
+    description: 'Take back control over what you share. Learn how your data is tracked, collected, and monetised—and what you can do about it.',
+    topics: ['Data Tracking', 'Digital Footprint', 'App Permissions', 'Data Economy']
+  },
+  {
+    id: '06',
+    title: 'Building Digital Resilience',
     description: 'A holistic approach to digital life, combining security, psychology, and critical thinking for complete and proactive resilience.',
-    topics: ['Threat Modeling', 'Critical Thinking', 'Digital Footprint', 'Resilience']
+    topics: ['Behavioral Change', 'Decision-Making Under Pressure', 'Habit Building', 'Awareness Frameworks']
   }
 ];
 
@@ -134,34 +140,28 @@ function CurriculumSection() {
         <div className="text--center margin-bottom--xl animate-fade-up">
           <Heading as="h2" style={{ fontSize: '3rem', fontWeight: 900, fontFamily: 'var(--ifm-heading-font-family)' }}>What you will master.</Heading>
           <p style={{ fontSize: '1.25rem', color: 'var(--ifm-color-emphasis-700)', maxWidth: '600px', margin: '0 auto' }}>
-            An ever-growing library of modules — summarised under these umbrella themes.
+            An ever-growing library — new modules added regularly.
           </p>
         </div>
         
-        <div className="row">
-          <div className="col col--5 margin-bottom--lg animate-fade-up delay-100">
-            <div className={styles.curriculumList}>
-              {CurriculumData.map((theme) => (
-                <div 
-                  key={theme.id}
-                  className={clsx(styles.curriculumListItem, { [styles.curriculumListItemActive]: activeTheme.id === theme.id })}
-                  onClick={() => setActiveTheme(theme)}
-                >
-                  <div className={styles.itemHeader}>
-                    <span className={styles.themeId}>{theme.id}</span>
-                    {activeTheme.id === theme.id && <div className={styles.activeLine} />}
-                    <span className={styles.themeArrow}>→</span>
-                  </div>
-                  <span className={styles.themeTitle}>{theme.title}</span>
-                </div>
-              ))}
-            </div>
+        <div className="animate-fade-up delay-100">
+          <div className={styles.curriculumTabs}>
+            {CurriculumData.map((theme) => (
+              <button 
+                key={theme.id}
+                className={clsx(styles.curriculumTab, { [styles.curriculumTabActive]: activeTheme.id === theme.id })}
+                onClick={() => setActiveTheme(theme)}
+              >
+                <span className={styles.tabId}>{theme.id}</span>
+                <span className={styles.tabTitle}>{theme.title}</span>
+              </button>
+            ))}
           </div>
 
-          <div className="col col--7 animate-fade-up delay-200">
+          <div className="animate-fade-up delay-200">
             <div className={styles.curriculumCard}>
               <div className={styles.curriculumCardBgNumber}>{activeTheme.id}</div>
-              <div key={activeTheme.id} className="animate-fade-in" style={{ position: 'relative', zIndex: 1, height: '100%', display: 'flex', flexDirection: 'column' }}>
+              <div key={activeTheme.id} className="animate-fade-in" style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column' }}>
                 <div className={styles.curriculumHeader}>
                   <div className={styles.shieldIconLarge}>
                     <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" width="24" height="24">
@@ -170,14 +170,14 @@ function CurriculumSection() {
                   </div>
                   <span className={styles.moduleNumber}>THEME {activeTheme.id}</span>
                 </div>
-                <Heading as="h3" style={{ fontFamily: 'var(--ifm-heading-font-family)', fontSize: '2.5rem', fontWeight: 800, marginBottom: '1.5rem', marginTop: '1rem' }}>
+                <Heading as="h3" style={{ fontFamily: 'var(--ifm-heading-font-family)', fontSize: '2.5rem', fontWeight: 800, marginBottom: '1rem', marginTop: '1rem' }}>
                   {activeTheme.title}
                 </Heading>
-                <p className={styles.curriculumDescription}>
+                <p className={styles.curriculumDescription} style={{ maxWidth: '800px' }}>
                   {activeTheme.description}
                 </p>
                 
-                <div className="margin-top--xl" style={{ marginTop: 'auto', paddingTop: '2rem' }}>
+                <div className="margin-top--lg" style={{ marginTop: 'auto', paddingTop: '1.5rem' }}>
                   <strong style={{ fontSize: '0.875rem', letterSpacing: '0.05em', display: 'block', marginBottom: '1rem', fontWeight: 900 }}>TOPICS INSIDE</strong>
                   <div className={styles.pillContainer}>
                     {activeTheme.topics.map((topic, i) => (
@@ -199,9 +199,17 @@ export default function HomepageFeatures() {
     <>
       <section className={styles.sectionPadding}>
         <div className="container">
-          <Heading as="h2" className="text--center margin-bottom--xl animate-fade-up" style={{ fontFamily: 'var(--ifm-heading-font-family)', fontSize: '3rem', fontWeight: 900 }}>
-            A new approach to digital survival.
+          <Heading as="h2" className="text--center margin-bottom--md animate-fade-up" style={{ fontFamily: 'var(--ifm-heading-font-family)', fontSize: '3rem', fontWeight: 900 }}>
+            What is The Awareness Project?
           </Heading>
+          <div className="text--center margin-bottom--xl animate-fade-up delay-100" style={{ maxWidth: '900px', margin: '0 auto 3rem' }}>
+            <p style={{ fontSize: '1.25rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: 1.6, marginBottom: '2rem' }}>
+              We live in a world where attention is manipulated and deception is engineered at scale. The Awareness Project is a free, research-backed education platform built to close the gap between knowing threats exist and recognizing them in real-time.
+            </p>
+            <div style={{ fontWeight: 700, color: 'var(--ifm-color-emphasis-900)' }}>
+              Growing Module Library · Research-Backed · Built by Security Experts
+            </div>
+          </div>
           <div className="row">
             {FeatureList.map((props, idx) => (
               <Feature key={idx} {...props} />
@@ -215,23 +223,32 @@ export default function HomepageFeatures() {
       <section className={clsx(styles.sectionPadding, styles.bgDark)}>
         <div className="container">
           <div className="row align-items-center">
-            <div className="col col--6 animate-fade-up">
-              <Heading as="h2" style={{ fontFamily: 'var(--ifm-heading-font-family)', color: 'white', fontSize: '3rem', fontWeight: 900 }}>
-                Built by The Blue Signal.
+            <div className="col col--5 animate-fade-up">
+              <img 
+                src="/img/tbslogo.svg" 
+                alt="The Blue Signal Logo" 
+                style={{ height: '12rem', opacity: 0.95, display: 'block', marginBottom: '2rem', filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.3))' }} 
+              />
+              <Heading as="h2" style={{ fontFamily: 'var(--ifm-heading-font-family)', color: 'white', fontSize: '3rem', fontWeight: 900, lineHeight: 1.1, marginBottom: '0.75rem', letterSpacing: '-0.02em' }}>
+                Built by<br/>The Blue Signal.
               </Heading>
-              <div className={styles.pillContainer} style={{ marginTop: '1.5rem' }}>
-                <span className={clsx(styles.pill, styles.pillDark)}>OPEN Initiative</span>
-                <span className={clsx(styles.pill, styles.pillDark)}>FREE Forever</span>
-                <span className={clsx(styles.pill, styles.pillDark)}>EXPERT Driven</span>
-              </div>
+              <p style={{ fontSize: '1.25rem', color: 'rgba(255,255,255,0.7)', fontWeight: 500, marginBottom: '2.5rem', maxWidth: '90%' }}>
+                Helping people make better digital decisions.
+              </p>
+              
             </div>
-            <div className="col col--6 animate-fade-up delay-100">
-              <div className={styles.transparencyCard}>
-                <span className={clsx(styles.tag, styles['tag-primary'], 'margin-bottom--md')} style={{ display: 'inline-block' }}>RADICAL TRANSPARENCY</span>
-                <Heading as="h3" style={{ fontFamily: 'var(--ifm-heading-font-family)', color: 'white', fontSize: '1.75rem', fontWeight: 800 }}>Free for you, funded by what's below.</Heading>
-                <p style={{ color: '#9CA3AF', marginBottom: 0, fontSize: '1.1rem', lineHeight: 1.6 }}>
-                  The Awareness Project is a 100% free educational initiative. It's built and maintained by The Blue Signal... We believe digital literacy shouldn't have a price tag. Our professional services fund our public education work.
+            <div className="col col--6 col--offset-1 animate-fade-up delay-100">
+              <div className={styles.transparencyCard} style={{ textAlign: 'left' }}>
+                <span className={clsx(styles.tag, styles['tag-primary'], 'margin-bottom--md')} style={{ display: 'inline-block' }}>WHO WE ARE</span>
+                <p style={{ color: '#E5E7EB', marginBottom: '1.5rem', fontSize: '1.1rem', lineHeight: 1.6, fontWeight: 500 }}>
+                  The Blue Signal is a digital initiative researching how people think, decide, and get deceived online.
                 </p>
+                <p style={{ color: '#9CA3AF', marginBottom: '2rem', fontSize: '1.1rem', lineHeight: 1.6 }}>
+                  We built The Awareness Project as our open contribution to the public—because access to knowledge shouldn't be a privilege, and digital literacy shouldn't have a price tag.
+                </p>
+                <Link className="button button--primary" style={{ borderRadius: '2rem' }} to="https://thebluesignal.com">
+                  Explore The Blue Signal →
+                </Link>
               </div>
             </div>
           </div>
@@ -240,29 +257,42 @@ export default function HomepageFeatures() {
 
       <section className={styles.sectionPadding}>
         <div className="container">
+          <div className="text--center margin-bottom--xl animate-fade-up">
+            <Heading as="h2" style={{ fontFamily: 'var(--ifm-heading-font-family)', fontSize: '3rem', fontWeight: 900 }}>
+              How We Keep This Free.
+            </Heading>
+            <p style={{ fontSize: '1.25rem', color: 'var(--ifm-color-emphasis-700)', maxWidth: '700px', margin: '1rem auto 0' }}>
+              The Awareness Project costs you nothing. It's funded by our professional work. Want us to share these insights with your team? Reach out anytime.
+            </p>
+          </div>
           <div className="row">
             <div className="col col--6 margin-bottom--lg animate-fade-up">
               <div className={clsx(styles.featureCard, styles['card-bordered'])} style={{ height: '100%' }}>
-                <Heading as="h3" className={styles.cardTitle}>Book a Live Workshop</Heading>
-                <p className={styles.cardDescription} style={{ marginBottom: '2.5rem' }}>
-                  Bring The Awareness Project to your team... We run hands-on live workshops — online or in person — with customised scenarios, real attack simulations...
+                <span className={clsx(styles.tag, styles['tag-primary'], 'margin-bottom--md')} style={{ display: 'inline-block' }}>LIVE WORKSHOP</span>
+                <Heading as="h3" className={styles.cardTitle}>Bring It to Your Team or Community.</Heading>
+                <p className={styles.cardDescription} style={{ marginBottom: '2.5rem', flexGrow: 1 }}>
+                  Hands-on sessions designed for corporates, public events, and community programs. Real scenarios and conversations, customised for your audience.
                 </p>
-                <div>
+                <div style={{ marginTop: 'auto' }}>
                   <Link className="button button--secondary button--outline button--lg" style={{ borderRadius: '2rem' }} to="https://adhinvs.com">
-                    Book Workshop
+                    Book or Invite Us
                   </Link>
                 </div>
               </div>
             </div>
             <div className="col col--6 margin-bottom--lg animate-fade-up delay-100">
-              <div className={clsx(styles.featureCard, styles['card-primary'])} style={{ height: '100%' }}>
-                <Heading as="h3" className={styles.cardTitle}>Our Flagship: 'Mind Under Influence'</Heading>
-                <p className={styles.cardDescription} style={{ marginBottom: '2.5rem' }}>
-                  For those who want to master the behavioral psychology of the digital world, we offer an immersive 15-day online program...
+              <div className={clsx(styles.featureCard, styles['card-primary'])} style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <div style={{display: 'flex', gap: '0.5rem', marginBottom: '1rem'}}>
+                  <span className={clsx(styles.tag, styles['tag-white'])} style={{ display: 'inline-block', marginBottom: 0 }}>FLAGSHIP PROGRAM</span>
+                  <span className={clsx(styles.tag, styles['tag-dark'])} style={{ display: 'inline-block', marginBottom: 0 }}>PREMIUM</span>
+                </div>
+                <Heading as="h3" className={styles.cardTitle}>Mind Under Influence</Heading>
+                <p className={styles.cardDescription} style={{ marginBottom: '2.5rem', flexGrow: 1 }}>
+                  A deep-dive into the behavioral psychology of the digital world. Master how technology and scams are engineered to influence human behavior.
                 </p>
-                <div>
+                <div style={{ marginTop: 'auto' }}>
                   <Link className="button button--secondary button--lg" style={{ borderRadius: '2rem', color: 'var(--ifm-color-primary)', fontWeight: 700 }} to="https://adhinvs.com/courses/mind-under-influence">
-                    Explore Program
+                    Explore the Program →
                   </Link>
                 </div>
               </div>
@@ -275,13 +305,14 @@ export default function HomepageFeatures() {
         <div className="container text--center">
           <div className={clsx(styles.finalCta, 'animate-fade-up')}>
             <Heading as="h2" style={{ fontFamily: 'var(--ifm-heading-font-family)', color: 'white', fontSize: '3rem', fontWeight: 900, marginBottom: '1rem' }}>
-              Ready to take control of your digital environment?
+              Awareness is the first defense.
             </Heading>
             <p style={{ color: '#9CA3AF', fontSize: '1.25rem', marginBottom: '2.5rem', maxWidth: '700px', margin: '0 auto 2.5rem', lineHeight: 1.6 }}>
-              Join the initiative to build a secure culture. No paywalls, no subscriptions. Just pure, actionable knowledge.
+              No paywalls. No subscriptions. No login required. <br />
+              Just some modules built to make you harder to manipulate.
             </p>
             <Link className="button button--primary button--lg" to="/docs/intro" style={{ borderRadius: '2rem', padding: '1rem 3rem', fontSize: '1.2rem', fontWeight: 700, background: 'linear-gradient(135deg, var(--ifm-color-primary) 0%, #1d4ed8 100%)', border: 'none', color: 'white' }}>
-              Access Modules Now
+              Start Learning Free →
             </Link>
           </div>
         </div>
