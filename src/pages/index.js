@@ -23,9 +23,13 @@ function HomepageHeader() {
             <p className={styles.heroSubtitle}>
               The Awareness Project is a free learning platform covering digital risk, manipulation tactics, AI deception, and the psychology behind why it works. Built on research. Designed for everyone.
             </p>
-            <p className={styles.heroAttribution}>
-              <strong>Powered by The Blue Signal — a digital initiative helping people make better digital decisions.</strong>
-            </p>
+            <div className={styles.heroAttribution}>
+              <span style={{ color: 'var(--ifm-color-emphasis-600)' }}>Powered by</span>
+              <img src="/img/tbslogo.svg" alt="TBS Logo" style={{ height: '1.5rem', opacity: 0.85 }} />
+              <strong style={{ color: 'var(--ifm-color-emphasis-800)', fontSize: '1.1rem', letterSpacing: '-0.01em' }}>
+                The Blue Signal
+              </strong>
+            </div>
             <div className={styles.buttons}>
               <Link
                 className={clsx('button button--primary button--lg', styles.primaryButton)}

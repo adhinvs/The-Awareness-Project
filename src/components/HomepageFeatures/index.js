@@ -138,8 +138,8 @@ function CurriculumSection() {
     <section className={clsx(styles.sectionPadding, styles.bgGrey)}>
       <div className="container">
         <div className="text--center margin-bottom--xl animate-fade-up">
-          <Heading as="h2" style={{ fontSize: '3rem', fontWeight: 900, fontFamily: 'var(--ifm-heading-font-family)' }}>What you will master.</Heading>
-          <p style={{ fontSize: '1.25rem', color: 'var(--ifm-color-emphasis-700)', maxWidth: '600px', margin: '0 auto' }}>
+          <Heading as="h2" className={styles.sectionTitle}>What you will master.</Heading>
+          <p className={styles.sectionDescription} style={{ color: 'var(--ifm-color-emphasis-700)', maxWidth: '600px', margin: '0 auto' }}>
             An ever-growing library — new modules added regularly.
           </p>
         </div>
@@ -170,7 +170,7 @@ function CurriculumSection() {
                   </div>
                   <span className={styles.moduleNumber}>THEME {activeTheme.id}</span>
                 </div>
-                <Heading as="h3" style={{ fontFamily: 'var(--ifm-heading-font-family)', fontSize: '2.5rem', fontWeight: 800, marginBottom: '1rem', marginTop: '1rem' }}>
+                <Heading as="h3" className={styles.curriculumThemeTitle}>
                   {activeTheme.title}
                 </Heading>
                 <p className={styles.curriculumDescription} style={{ maxWidth: '800px' }}>
@@ -199,11 +199,11 @@ export default function HomepageFeatures() {
     <>
       <section className={styles.sectionPadding}>
         <div className="container">
-          <Heading as="h2" className="text--center margin-bottom--md animate-fade-up" style={{ fontFamily: 'var(--ifm-heading-font-family)', fontSize: '3rem', fontWeight: 900 }}>
+          <Heading as="h2" className={clsx("text--center margin-bottom--md animate-fade-up", styles.sectionTitle)}>
             What is The Awareness Project?
           </Heading>
           <div className="text--center margin-bottom--xl animate-fade-up delay-100" style={{ maxWidth: '900px', margin: '0 auto 3rem' }}>
-            <p style={{ fontSize: '1.25rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: 1.6, marginBottom: '2rem' }}>
+            <p className={styles.sectionDescription} style={{ color: 'var(--ifm-color-emphasis-700)', marginBottom: '2rem' }}>
               We live in a world where attention is manipulated and deception is engineered at scale. The Awareness Project is a free, research-backed education platform built to close the gap between knowing threats exist and recognizing them in real-time.
             </p>
             <div style={{ fontWeight: 700, color: 'var(--ifm-color-emphasis-900)' }}>
@@ -223,16 +223,17 @@ export default function HomepageFeatures() {
       <section className={clsx(styles.sectionPadding, styles.bgDark)}>
         <div className="container">
           <div className="row align-items-center">
-            <div className="col col--5 animate-fade-up">
+            <div className={clsx("col col--5 animate-fade-up", styles.mobileCenter)}>
               <img 
                 src="/img/tbslogo.svg" 
                 alt="The Blue Signal Logo" 
-                style={{ height: '12rem', opacity: 0.95, display: 'block', marginBottom: '2rem', filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.3))' }} 
+                className={styles.tbsLogo}
+                style={{ opacity: 0.95, display: 'block', marginBottom: '2rem', filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.3))' }} 
               />
-              <Heading as="h2" style={{ fontFamily: 'var(--ifm-heading-font-family)', color: 'white', fontSize: '3rem', fontWeight: 900, lineHeight: 1.1, marginBottom: '0.75rem', letterSpacing: '-0.02em' }}>
-                Built by<br/>The Blue Signal.
+              <Heading as="h2" className={clsx(styles.sectionTitle, styles.sectionTitleWhite)} style={{ marginBottom: '0.75rem', letterSpacing: '-0.02em' }}>
+                Powered by<br/>The Blue Signal.
               </Heading>
-              <p style={{ fontSize: '1.25rem', color: 'rgba(255,255,255,0.7)', fontWeight: 500, marginBottom: '2.5rem', maxWidth: '90%' }}>
+              <p className={styles.sectionDescription} style={{ color: 'rgba(255,255,255,0.7)', fontWeight: 500, marginBottom: '2.5rem', maxWidth: '90%' }}>
                 Helping people make better digital decisions.
               </p>
               
@@ -240,10 +241,10 @@ export default function HomepageFeatures() {
             <div className="col col--6 col--offset-1 animate-fade-up delay-100">
               <div className={styles.transparencyCard} style={{ textAlign: 'left' }}>
                 <span className={clsx(styles.tag, styles['tag-primary'], 'margin-bottom--md')} style={{ display: 'inline-block' }}>WHO WE ARE</span>
-                <p style={{ color: '#E5E7EB', marginBottom: '1.5rem', fontSize: '1.1rem', lineHeight: 1.6, fontWeight: 500 }}>
+                <p style={{ color: '#E5E7EB', marginBottom: '1.5rem', fontSize: '1.35rem', lineHeight: 1.6, fontWeight: 500 }}>
                   The Blue Signal is a digital initiative researching how people think, decide, and get deceived online.
                 </p>
-                <p style={{ color: '#9CA3AF', marginBottom: '2rem', fontSize: '1.1rem', lineHeight: 1.6 }}>
+                <p style={{ color: '#9CA3AF', marginBottom: '2.5rem', fontSize: '1.15rem', lineHeight: 1.6 }}>
                   We built The Awareness Project as our open contribution to the public—because access to knowledge shouldn't be a privilege, and digital literacy shouldn't have a price tag.
                 </p>
                 <Link className="button button--primary" style={{ borderRadius: '2rem' }} to="https://thebluesignal.com">
@@ -258,10 +259,10 @@ export default function HomepageFeatures() {
       <section className={styles.sectionPadding}>
         <div className="container">
           <div className="text--center margin-bottom--xl animate-fade-up">
-            <Heading as="h2" style={{ fontFamily: 'var(--ifm-heading-font-family)', fontSize: '3rem', fontWeight: 900 }}>
+            <Heading as="h2" className={styles.sectionTitle} style={{ marginBottom: '1rem' }}>
               How We Keep This Free.
             </Heading>
-            <p style={{ fontSize: '1.25rem', color: 'var(--ifm-color-emphasis-700)', maxWidth: '700px', margin: '1rem auto 0' }}>
+            <p className={styles.sectionDescription} style={{ color: 'var(--ifm-color-emphasis-700)', maxWidth: '700px', margin: '0 auto' }}>
               The Awareness Project costs you nothing. It's funded by our professional work. Want us to share these insights with your team? Reach out anytime.
             </p>
           </div>
@@ -269,13 +270,13 @@ export default function HomepageFeatures() {
             <div className="col col--6 margin-bottom--lg animate-fade-up">
               <div className={clsx(styles.featureCard, styles['card-bordered'])} style={{ height: '100%' }}>
                 <span className={clsx(styles.tag, styles['tag-primary'], 'margin-bottom--md')} style={{ display: 'inline-block' }}>LIVE WORKSHOP</span>
-                <Heading as="h3" className={styles.cardTitle}>Bring It to Your Team or Community.</Heading>
+                <Heading as="h3" className={styles.cardTitle}>Book a Live Workshop Session</Heading>
                 <p className={styles.cardDescription} style={{ marginBottom: '2.5rem', flexGrow: 1 }}>
                   Hands-on sessions designed for corporates, public events, and community programs. Real scenarios and conversations, customised for your audience.
                 </p>
                 <div style={{ marginTop: 'auto' }}>
-                  <Link className="button button--secondary button--outline button--lg" style={{ borderRadius: '2rem' }} to="https://adhinvs.com">
-                    Book or Invite Us
+                  <Link className="button button--primary button--outline button--lg" style={{ borderRadius: '2rem', borderWidth: '2px', fontWeight: 600 }} to="https://adhinvs.com">
+                    Book or Invite Us →
                   </Link>
                 </div>
               </div>
@@ -304,10 +305,10 @@ export default function HomepageFeatures() {
       <section className={styles.sectionPadding}>
         <div className="container text--center">
           <div className={clsx(styles.finalCta, 'animate-fade-up')}>
-            <Heading as="h2" style={{ fontFamily: 'var(--ifm-heading-font-family)', color: 'white', fontSize: '3rem', fontWeight: 900, marginBottom: '1rem' }}>
+            <Heading as="h2" className={clsx(styles.sectionTitle, styles.sectionTitleWhite)} style={{ marginBottom: '1rem' }}>
               Awareness is the first defense.
             </Heading>
-            <p style={{ color: '#9CA3AF', fontSize: '1.25rem', marginBottom: '2.5rem', maxWidth: '700px', margin: '0 auto 2.5rem', lineHeight: 1.6 }}>
+            <p className={styles.sectionDescription} style={{ color: '#9CA3AF', marginBottom: '2.5rem', maxWidth: '700px', margin: '0 auto 2.5rem' }}>
               No paywalls. No subscriptions. No login required. <br />
               Just some modules built to make you harder to manipulate.
             </p>

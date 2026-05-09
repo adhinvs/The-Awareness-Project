@@ -246,6 +246,15 @@
   margin-bottom: 1rem;
 }
 
+.curriculumThemeTitle {
+  font-family: var(--ifm-heading-font-family);
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  line-height: 1.2;
+}
+
 .moduleNumber {
   font-size: 0.875rem;
   font-weight: 800;
@@ -323,9 +332,53 @@
 /* ========================================================
    RESPONSIVE SCALING FOR HOMEPAGE FEATURES
 ======================================================== */
+.sectionTitle {
+  font-family: var(--ifm-heading-font-family);
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.sectionTitleWhite {
+  color: white;
+}
+
+.sectionDescription {
+  font-size: 1.25rem;
+  line-height: 1.6;
+}
+
+.tbsLogo {
+  height: 12rem;
+}
+
 @media screen and (max-width: 996px) {
   .sectionPadding {
     padding: 4rem 0;
+  }
+  
+  .sectionTitle {
+    font-size: 2.25rem !important;
+  }
+  
+  .sectionDescription {
+    font-size: 1.1rem !important;
+  }
+  
+  .tbsLogo {
+    height: 7rem !important;
+    margin-bottom: 1.5rem !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .mobileCenter {
+    text-align: center;
+  }
+  
+  .mobileCenter p {
+    margin-left: auto;
+    margin-right: auto;
   }
   
   .featureCard {
@@ -348,6 +401,12 @@
     font-size: 12rem;
     top: -1.5rem;
     right: -1rem;
+  }
+  
+  .curriculumThemeTitle {
+    font-size: 1.8rem !important;
+    word-break: break-word;
+    hyphens: auto;
   }
   
   .transparencyCard {
