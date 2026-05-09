@@ -26,7 +26,7 @@ function HomepageHeader() {
             <div className={styles.heroAttribution}>
               <span style={{ color: 'var(--ifm-color-emphasis-600)' }}>Powered by</span>
               <img src="/img/tbslogo.svg" alt="TBS Logo" style={{ height: '1.5rem', opacity: 0.85 }} />
-              <strong style={{ color: 'var(--ifm-color-emphasis-800)', fontSize: '1.1rem', letterSpacing: '-0.01em' }}>
+              <strong className={styles.heroAttributionStrong}>
                 The Blue Signal
               </strong>
             </div>

@@ -178,7 +178,7 @@ function CurriculumSection() {
                 </p>
                 
                 <div className="margin-top--lg" style={{ marginTop: 'auto', paddingTop: '1.5rem' }}>
-                  <strong style={{ fontSize: '0.875rem', letterSpacing: '0.05em', display: 'block', marginBottom: '1rem', fontWeight: 900 }}>TOPICS INSIDE</strong>
+                  <strong className={styles.topicsInsideTitle}>TOPICS INSIDE</strong>
                   <div className={styles.pillContainer}>
                     {activeTheme.topics.map((topic, i) => (
                       <span key={i} className={styles.pill}>{topic}</span>
@@ -241,10 +241,10 @@ export default function HomepageFeatures() {
             <div className="col col--6 col--offset-1 animate-fade-up delay-100">
               <div className={styles.transparencyCard} style={{ textAlign: 'left' }}>
                 <span className={clsx(styles.tag, styles['tag-primary'], 'margin-bottom--md')} style={{ display: 'inline-block' }}>WHO WE ARE</span>
-                <p style={{ color: '#E5E7EB', marginBottom: '1.5rem', fontSize: '1.35rem', lineHeight: 1.6, fontWeight: 500 }}>
+                <p className={styles.transparencyTextLead}>
                   The Blue Signal is a digital initiative researching how people think, decide, and get deceived online.
                 </p>
-                <p style={{ color: '#9CA3AF', marginBottom: '2.5rem', fontSize: '1.15rem', lineHeight: 1.6 }}>
+                <p className={styles.transparencyTextSub}>
                   We built The Awareness Project as our open contribution to the public—because access to knowledge shouldn't be a privilege, and digital literacy shouldn't have a price tag.
                 </p>
                 <Link className="button button--primary" style={{ borderRadius: '2rem' }} to="https://thebluesignal.com">
@@ -302,7 +302,7 @@ export default function HomepageFeatures() {
         </div>
       </section>
 
-      <section className={styles.sectionPadding}>
+      <section className={clsx(styles.sectionPadding, styles.finalCtaSection)}>
         <div className="container text--center">
           <div className={clsx(styles.finalCta, 'animate-fade-up')}>
             <Heading as="h2" className={clsx(styles.sectionTitle, styles.sectionTitleWhite)} style={{ marginBottom: '1rem' }}>
@@ -312,12 +312,13 @@ export default function HomepageFeatures() {
               No paywalls. No subscriptions. No login required. <br />
               Just some modules built to make you harder to manipulate.
             </p>
-            <Link className="button button--primary button--lg" to="/docs/intro" style={{ borderRadius: '2rem', padding: '1rem 3rem', fontSize: '1.2rem', fontWeight: 700, background: 'linear-gradient(135deg, var(--ifm-color-primary) 0%, #1d4ed8 100%)', border: 'none', color: 'white' }}>
+            <Link className={clsx("button button--primary button--lg", styles.finalCtaButton)} to="/docs/intro">
               Start Learning Free →
             </Link>
           </div>
         </div>
       </section>
+
     </>
   );
 }
