@@ -1,0 +1,9 @@
+{
+  "label": "Country-specific threats, scams & resources",
+  "position": 13,
+  "className": "icon-country-specific-threats-scams-resources",
+  "link": {
+    "type": "generated-index",
+    "description": "Explore the modules in this section."
+  }
+}

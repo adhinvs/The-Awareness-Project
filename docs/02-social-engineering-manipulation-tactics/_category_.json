@@ -1,0 +1,9 @@
+{
+  "label": "Social engineering & manipulation tactics",
+  "position": 2,
+  "className": "icon-social-engineering-manipulation-tactics",
+  "link": {
+    "type": "generated-index",
+    "description": "Explore the modules in this section."
+  }
+}

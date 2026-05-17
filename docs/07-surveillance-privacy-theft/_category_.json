@@ -1,0 +1,9 @@
+{
+  "label": "Surveillance & privacy theft",
+  "position": 7,
+  "className": "icon-surveillance-privacy-theft",
+  "link": {
+    "type": "generated-index",
+    "description": "Explore the modules in this section."
+  }
+}

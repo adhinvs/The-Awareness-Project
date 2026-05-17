@@ -1,0 +1,9 @@
+{
+  "label": "Who you are & what you have",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Enter description here. It will be shown on the sidebar when this category is expanded."
+  },
+  "className": "icon-who-you-are-what-you-have"
+}

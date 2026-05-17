@@ -1,0 +1,9 @@
+{
+  "label": "Scams & fraudulent schemes",
+  "position": 3,
+  "className": "icon-scams-fraudulent-schemes",
+  "link": {
+    "type": "generated-index",
+    "description": "Explore the modules in this section."
+  }
+}

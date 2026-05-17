@@ -1,0 +1,9 @@
+{
+  "label": "Psychological & behavioral manipulation",
+  "position": 10,
+  "className": "icon-psychological-behavioral-manipulation",
+  "link": {
+    "type": "generated-index",
+    "description": "Explore the modules in this section."
+  }
+}
