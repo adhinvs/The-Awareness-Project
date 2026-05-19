@@ -342,6 +342,15 @@ h6 {
    MOBILE NAVBAR / HAMBURGER MENU FIXES
 ======================================================== */
 @media (max-width: 996px) {
+  :root {
+    --ifm-navbar-sidebar-width: 90vw;
+  }
+
+  .navbar-sidebar {
+    width: 90vw !important;
+    max-width: 90vw !important;
+  }
+
   /* Hide title from the top navbar on mobile */
   .navbar__title {
     display: none !important;
@@ -371,6 +380,11 @@ h6 {
     width: calc(100% - 2rem);
     box-sizing: border-box;
     white-space: normal;
+  }
+
+  /* Slightly smaller font for mobile sidebar menu items */
+  .navbar-sidebar .menu__link {
+    font-size: 0.875rem;
   }
 
   /* Grouped social icons centered properly in mobile menu */
@@ -502,66 +516,77 @@ h6 {
 }
 
 /* ========================================================
+   SPACING BETWEEN PREV/NEXT NAV AND FOOTER
+======================================================== */
+.pagination-nav {
+  margin-bottom: 4rem;
+}
+
+/* ========================================================
    INTRO PAGE DOCCARDLIST ENHANCEMENTS
 ======================================================== */
 .theme-doc-card-container {
-  border: 1px solid var(--ifm-color-emphasis-200) !important;
+  border: none !important;
   border-radius: 1rem !important;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15) !important;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-  background: var(--ifm-background-surface-color) !important;
+  background: var(--ifm-color-primary) !important;
   position: relative;
   overflow: hidden;
   z-index: 1;
+  padding: 1rem 1.25rem !important;
+  min-height: 5rem !important;
+  display: flex !important;
+  align-items: center !important;
 }
 
 .theme-doc-card-container::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: var(--ifm-color-primary);
-  transition: width 0.3s ease;
-  z-index: -1;
-  opacity: 0;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 60%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .theme-doc-card-container:hover {
   transform: translateY(-5px) !important;
-  box-shadow: 0 15px 30px rgba(37, 99, 235, 0.1) !important;
-  border-color: var(--ifm-color-primary-light) !important;
-}
-
-.theme-doc-card-container:hover::before {
-  opacity: 1;
+  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.3) !important;
+  background: var(--ifm-color-primary-dark) !important;
 }
 
 .theme-doc-card-container h2 {
-  color: var(--ifm-color-primary-dark) !important;
-  font-size: 1.25rem !important;
+  color: #ffffff !important;
+  font-size: 1.1rem !important;
   font-weight: 700 !important;
-  margin-bottom: 0.5rem !important;
-}
-
-[data-theme='dark'] .theme-doc-card-container h2 {
-  color: var(--ifm-color-primary-light) !important;
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+  position: relative;
+  z-index: 1;
+  width: 100%;
 }
 
 .theme-doc-card-container p {
-  color: var(--ifm-color-emphasis-700) !important;
+  color: rgba(255, 255, 255, 0.85) !important;
   font-size: 0.95rem;
   line-height: 1.6;
 }
 
+/* Icon color override inside cards */
+.theme-doc-card-container svg,
+.theme-doc-card-container .card__icon {
+  color: rgba(255, 255, 255, 0.9) !important;
+  filter: brightness(10);
+}
+
 [data-theme='dark'] .theme-doc-card-container {
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
-  border-color: var(--ifm-color-emphasis-300) !important;
+  background: var(--ifm-color-primary-darker) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
 }
 
 [data-theme='dark'] .theme-doc-card-container:hover {
-  box-shadow: 0 15px 30px rgba(59, 130, 246, 0.15) !important;
+  background: var(--ifm-color-primary-dark) !important;
+  box-shadow: 0 20px 40px rgba(59, 130, 246, 0.25) !important;
 }
 
 /* --- FOLDER SPECIFIC ICONS --- */

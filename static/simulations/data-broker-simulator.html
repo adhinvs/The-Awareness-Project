@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --font: 'Poppins', system-ui, -apple-system, sans-serif;
+      --blue: #2563EB;
+      --blue-dark: #1D4ED8;
+      --blue-dim: #DBEAFE;
+      --blue-faint: #EFF6FF;
+      --text-1: #111827;
+      --text-2: #374151;
+      --text-3: #374151;
+      --text-4: #6B7280;
+      --bg: #FFFFFF;
+      --bg-2: #F9FAFB;
+      --bg-3: #F3F4F6;
+      --border: #E5E7EB;
+      --border-2: #D1D5DB;
+      --green: #16A34A;
+      --green-dark: #15803D;
+      --green-bg: #F0FDF4;
+      --green-dim: #DCFCE7;
+      --red: #DC2626;
+      --red-dark: #991B1B;
+      --red-bg: #FEF2F2;
+      --red-dim: #FECACA;
+      --amber: #D97706;
+      --amber-bg: #FFFBEB;
+      --r-sm: 4px;
+      --r-md: 8px;
+      --r-lg: 12px;
+      --r-xl: 16px;
+    }
+
+
+    body {
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--text-1);
+      background: var(--bg);
+      padding: 28px 32px 48px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+    }
+
+    /* ── STATS ───────────────────────────────────────────── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .stat {
+      padding: 20px 18px;
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      text-align: center;
+    }
+
+    .stat-val {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text-1);
+      line-height: 1.1;
+    }
+
+    .stat-lbl {
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--text-4);
+      margin-top: 6px;
+    }
+
+
+    /* ── TICKER ──────────────────────────────────────────── */
+    .ticker {
+      padding: 14px 18px;
+      background: var(--blue-faint);
+      border-left: 3px solid var(--blue);
+      border-radius: 0 var(--r-md) var(--r-md) 0;
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.6;
+      margin-bottom: 22px;
+      min-height: 44px;
+    }
+
+    /* ── INVENTORY LAYOUT ────────────────────────────────── */
+    .inv-layout {
+      display: grid;
+      grid-template-columns: 1fr 272px;
+      gap: 16px;
+      align-items: start;
+    }
+
+    @media(max-width:620px) {
+      .inv-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── BUCKET ──────────────────────────────────────────── */
+    .bucket {
+      margin-bottom: 22px;
+    }
+
+    .bucket-hd {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 9px;
+      border-bottom: 1.5px solid var(--border);
+      margin-bottom: 8px;
+    }
+
+    .bucket-icon {
+      font-size: 15px;
+    }
+
+    .bucket-name {
+      flex: 1;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text-1);
+    }
+
+    .bucket-ct {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: var(--bg-3);
+      color: var(--text-4);
+    }
+
+    .bucket-ct.active {
+      background: var(--blue-dim);
+      color: var(--blue);
+    }
+
+    /* ── DATA POINT ROW ──────────────────────────────────── */
+    .dp-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .dp-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: var(--r-md);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background .1s, border-color .1s;
+      user-select: none;
+    }
+
+    .dp-row:hover {
+      background: var(--bg-2);
+    }
+
+    .dp-row.selected {
+      background: var(--blue-faint);
+      border-color: var(--blue-dim);
+    }
+
+    .dp-row.highlight {
+      background: var(--green-bg);
+      border-color: var(--green-dim);
+    }
+
+    /* toggle switch */
+    .sw {
+      position: relative;
+      width: 34px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .sw-track {
+      width: 34px;
+      height: 20px;
+      border-radius: 10px;
+      background: var(--bg-3);
+      border: 1px solid var(--border-2);
+      transition: background .15s, border-color .15s;
+    }
+
+    .dp-row.selected .sw-track {
+      background: var(--blue);
+      border-color: var(--blue-dark);
+    }
+
+    .dp-row.highlight .sw-track {
+      background: var(--green);
+      border-color: var(--green-dark);
+    }
+
+    .sw-thumb {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+      transition: left .15s;
+    }
+
+    .dp-row.selected .sw-thumb,
+    .dp-row.highlight .sw-thumb {
+      left: 18px;
+    }
+
+    .dp-name {
+      flex: 1;
+      font-size: 15px;
+      color: var(--text-3);
+      line-height: 1.4;
+    }
+
+    .dp-row.selected .dp-name {
+      color: var(--text-1);
+      font-weight: 500;
+    }
+
+    .dp-row.highlight .dp-name {
+      color: var(--green-dark);
+      font-weight: 500;
+    }
+
+    .dp-tag {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--green);
+      background: var(--green-bg);
+      padding: 1px 6px;
+      border-radius: var(--r-sm);
+      white-space: nowrap;
+    }
+
+    .dp-price {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-4);
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .dp-row.selected .dp-price {
+      color: var(--green);
+    }
+
+    /* ── CART ────────────────────────────────────────────── */
+    .cart {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      padding: 20px;
+      position: sticky;
+      top: 16px;
+    }
+
+    .cart-hd {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .cart-title {
+      flex: 1;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text-1);
+    }
+
+    .cart-badge {
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      background: var(--blue);
+      padding: 2px 8px;
+      border-radius: 20px;
+      min-width: 22px;
+      text-align: center;
+    }
+
+    .cart-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-height: 44px;
+      max-height: 140px;
+      overflow-y: auto;
+      margin-bottom: 12px;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+    }
+
+    .ci-name {
+      flex: 1;
+      font-size: 10px;
+      color: var(--text-2);
+    }
+
+    .ci-price {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--green);
+    }
+
+    .ci-rm {
+      font-size: 15px;
+      color: var(--text-4);
+      background: none;
+      border: none;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0 1px;
+      font-family: inherit;
+    }
+
+    .ci-rm:hover {
+      color: var(--red);
+    }
+
+    .cart-empty {
+      font-size: 13px;
+      color: var(--text-4);
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    .rule {
+      height: 1px;
+      background: var(--border);
+      margin: 10px 0;
+    }
+
+    .p-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 13px;
+      color: var(--text-3);
+      margin-bottom: 5px;
+    }
+
+    .p-val {
+      font-weight: 600;
+      color: var(--text-1);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .p-val.bonus {
+      color: var(--green);
+    }
+
+    .p-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-top: 2px;
+    }
+
+    .p-total-lbl {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-1);
+    }
+
+    .p-total-val {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text-1);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .sell-btn {
+      width: 100%;
+      margin-top: 12px;
+      padding: 13px 16px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: var(--r-md);
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: .01em;
+      transition: background .12s, opacity .12s;
+    }
+
+    .sell-btn:hover:not(:disabled) {
+      background: var(--blue-dark);
+    }
+
+    .sell-btn:disabled {
+      opacity: .35;
+      cursor: not-allowed;
+    }
+
+    /* combo tracker */
+    .ct-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--text-4);
+      margin: 20px 0 10px;
+    }
+
+    .cm {
+      padding: 8px 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      margin-bottom: 6px;
+      cursor: pointer;
+      transition: border-color .1s;
+    }
+
+    .cm:hover {
+      border-color: var(--border-2);
+    }
+
+    .cm.unlocked {
+      background: var(--green-bg);
+      border-color: var(--green-dim);
+    }
+
+    .cm.hi {
+      border-color: var(--blue);
+      border-width: 2px;
+    }
+
+    .cm-top {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 5px;
+    }
+
+    .cm-icon {
+      font-size: 13px;
+    }
+
+    .cm-name {
+      flex: 1;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-1);
+    }
+
+    .cm.unlocked .cm-name {
+      color: var(--green-dark);
+    }
+
+    .cm-val {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-4);
+    }
+
+    .cm.unlocked .cm-val {
+      color: var(--green);
+    }
+
+    .cm-bar {
+      height: 3px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .cm-fill {
+      height: 100%;
+      background: var(--blue);
+      border-radius: 2px;
+      transition: width .2s;
+    }
+
+    .cm.unlocked .cm-fill {
+      background: var(--green);
+    }
+
+    .cm-prog {
+      font-size: 12px;
+      color: var(--text-4);
+      margin-top: 4px;
+    }
+
+    .cm.unlocked .cm-prog {
+      color: var(--green);
+    }
+
+    /* ── COMBO CARDS ─────────────────────────────────────── */
+    .combo-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      padding: 22px;
+      margin-bottom: 14px;
+      cursor: pointer;
+      transition: border-color .1s, box-shadow .1s;
+    }
+
+    .combo-card:hover {
+      border-color: var(--border-2);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .06);
+    }
+
+    .combo-card.unlocked {
+      background: var(--green-bg);
+      border-color: var(--green-dim);
+    }
+
+    .cc-top {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .cc-icon {
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .cc-meta {
+      flex: 1;
+    }
+
+    .cc-tier {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 7px;
+      letter-spacing: .02em;
+    }
+
+    .t1 {
+      background: #EFF6FF;
+      color: #1E40AF;
+    }
+
+    .t2 {
+      background: #F5F3FF;
+      color: #5B21B6;
+    }
+
+    .t3 {
+      background: #FFF7ED;
+      color: #C2410C;
+    }
+
+    .t4 {
+      background: #FEF2F2;
+      color: #991B1B;
+    }
+
+    .cc-name {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-1);
+      line-height: 1.25;
+      margin-bottom: 5px;
+    }
+
+    .combo-card.unlocked .cc-name {
+      color: var(--green-dark);
+    }
+
+    .cc-buyer {
+      font-size: 13px;
+      color: var(--text-3);
+    }
+
+    .cc-payout {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .cc-amount {
+      display: block;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--green);
+      line-height: 1.1;
+    }
+
+    .cc-mult {
+      font-size: 13px;
+      color: var(--text-4);
+    }
+
+    .recipe {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+
+    .rtag {
+      font-size: 13px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      color: var(--text-3);
+      background: var(--bg-2);
+    }
+
+    .rtag.have {
+      background: var(--green-bg);
+      border-color: var(--green-dim);
+      color: var(--green-dark);
+    }
+
+    .rtag.need {
+      background: var(--red-bg);
+      border-color: var(--red-dim);
+      color: var(--red-dark);
+    }
+
+    .impact-block {
+      background: var(--red-bg);
+      border-left: 3px solid var(--red);
+      border-radius: 0 var(--r-sm) var(--r-sm) 0;
+      padding: 12px 16px;
+      font-size: 14px;
+      color: var(--red-dark);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .insight-block {
+      font-size: 14px;
+      font-style: italic;
+      color: var(--text-2);
+      border-left: 3px solid var(--blue-dim);
+      padding: 6px 14px;
+      line-height: 1.7;
+      margin-bottom: 12px;
+      background: var(--blue-faint);
+      border-radius: 0 var(--r-sm) var(--r-sm) 0;
+    }
+
+    .cc-prog {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-3);
+    }
+
+    .cc-prog-bar {
+      flex: 1;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .cc-prog-fill {
+      height: 100%;
+      background: var(--blue);
+      border-radius: 2px;
+      transition: width .2s;
+    }
+
+    .combo-card.unlocked .cc-prog-fill {
+      background: var(--green);
+    }
+
+    .cc-hint {
+      font-size: 13px;
+      color: var(--blue);
+      font-weight: 500;
+      margin-top: 8px;
+    }
+
+    .cc-done {
+      font-size: 13px;
+      color: var(--green);
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    /* ── INSIGHTS ────────────────────────────────────────── */
+    .ins-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      padding: 20px;
+      margin-bottom: 10px;
+    }
+
+    .ins-num {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--blue);
+      margin-bottom: 7px;
+    }
+
+    .ins-title {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-1);
+      line-height: 1.35;
+      margin-bottom: 10px;
+    }
+
+    .ins-body {
+      font-size: 12px;
+      color: var(--text-2);
+      line-height: 1.75;
+      margin-bottom: 10px;
+    }
+
+    .ins-trigger {
+      font-size: 11px;
+      color: var(--text-3);
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 7px 10px;
+    }
+
+    .ins-trigger strong {
+      color: var(--text-2);
+      font-weight: 500;
+    }
+
+    /* ── MARKET ──────────────────────────────────────────── */
+    .market-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+    }
+
+    .buyer-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      padding: 14px;
+    }
+
+    .bt-badge {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+
+    .bt1 {
+      background: var(--green-bg);
+      color: var(--green);
+    }
+
+    .bt2 {
+      background: var(--amber-bg);
+      color: var(--amber);
+    }
+
+    .bt3 {
+      background: #FFF7ED;
+      color: #C2410C;
+    }
+
+    .bt4 {
+      background: var(--red-bg);
+      color: var(--red);
+    }
+
+    .buyer-name {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--text-1);
+      margin-bottom: 5px;
+    }
+
+    .buyer-buys {
+      font-size: 11px;
+      color: var(--text-3);
+      margin-bottom: 6px;
+      line-height: 1.45;
+    }
+
+    .buyer-payout {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .buyer-scenario {
+      font-size: 10px;
+      color: var(--text-3);
+      line-height: 1.5;
+      background: var(--bg-2);
+      border-radius: var(--r-sm);
+      padding: 6px 9px;
+    }
+
+    .buyer-mechanic {
+      font-size: 10px;
+      color: var(--text-4);
+      font-style: italic;
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    /* ── MODALS ──────────────────────────────────────────── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s;
+    }
+
+    .overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      padding: 28px 24px 24px;
+      max-width: 380px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .15);
+      transform: translateY(10px);
+      transition: transform .2s;
+    }
+
+    .overlay.show .modal {
+      transform: translateY(0);
+    }
+
+    .m-icon {
+      font-size: 38px;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .m-title {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-1);
+      text-align: center;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .m-earn {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--green);
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .m-impact {
+      background: var(--red-bg);
+      border-left: 3px solid var(--red);
+      border-radius: 0 var(--r-sm) var(--r-sm) 0;
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--red-dark);
+      line-height: 1.55;
+      margin-bottom: 12px;
+    }
+
+    .m-body {
+      font-size: 12px;
+      color: var(--text-2);
+      line-height: 1.7;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .m-insight {
+      font-size: 11px;
+      font-style: italic;
+      color: var(--text-3);
+      text-align: center;
+      line-height: 1.6;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-bottom: 16px;
+    }
+
+    .m-btn {
+      width: 100%;
+      padding: 11px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: var(--r-md);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .12s;
+    }
+
+    .m-btn:hover {
+      background: var(--blue-dark);
+    }
+
+    /* combo detail modal */
+    .cd {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      padding: 22px;
+      max-width: 430px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .15);
+      transform: translateY(10px);
+      transition: transform .2s;
+    }
+
+    .overlay.show .cd {
+      transform: translateY(0);
+    }
+
+    .cd-hd {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .cd-hd-left {
+      flex: 1;
+    }
+
+    .cd-icon {
+      font-size: 28px;
+      margin-bottom: 4px;
+    }
+
+    .cd-name {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-1);
+      margin-bottom: 4px;
+    }
+
+    .cd-pay {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--green);
+    }
+
+    .cd-x {
+      background: var(--bg-3);
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-size: 18px;
+      cursor: pointer;
+      color: var(--text-3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+      flex-shrink: 0;
+      line-height: 1;
+      transition: background .1s;
+    }
+
+    .cd-x:hover {
+      background: var(--border);
+      color: var(--text-1);
+    }
+
+    .sec-lbl {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--text-4);
+      margin: 14px 0 6px;
+    }
+
+    .cd-recipe {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .cd-ri {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: var(--r-md);
+      background: var(--bg-2);
+      font-size: 12px;
+    }
+
+    .cd-ri.have {
+      background: var(--green-bg);
+    }
+
+    .cd-ri.need {
+      background: var(--red-bg);
+    }
+
+    .cd-ri-name {
+      flex: 1;
+      color: var(--text-1);
+    }
+
+    .cd-ri-price {
+      font-size: 10px;
+      color: var(--text-4);
+    }
+
+    .cd-ri-st {
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .cd-ri.have .cd-ri-st {
+      color: var(--green);
+    }
+
+    .cd-ri.need .cd-ri-st {
+      color: var(--red);
+    }
+
+    .cd-enable {
+      width: 100%;
+      padding: 10px;
+      margin-top: 14px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: var(--r-md);
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .12s;
+    }
+
+    .cd-enable:hover {
+      background: var(--blue-dark);
+    }
+
+    .cd-done-badge {
+      display: block;
+      text-align: center;
+      margin-top: 14px;
+      padding: 10px;
+      background: var(--green-bg);
+      color: var(--green-dark);
+      border: 1px solid var(--green-dim);
+      border-radius: var(--r-md);
+      font-size: 12px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2 class="sr-only">Data Broker Simulator — inventory, combos, insights, market</h2>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-val" id="total-earned">₹0</div>
+      <div class="stat-lbl">Total Earned</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val" id="total-sales">0</div>
+      <div class="stat-lbl">Sales Made</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val" id="total-exposed">0</div>
+      <div class="stat-lbl">Profiles Exposed</div>
+    </div>
+  </div>
+
+  <!-- HINT -->
+  <div class="ticker">Toggle data points to build a profile. Click any item in the <strong>Combo Tracker</strong> to highlight the data points needed to unlock it — and earn the bonus.</div>
+
+  <!-- INVENTORY -->
+  <div>
+    <div class="inv-layout">
+      <div id="dp-inventory"></div>
+      <div>
+        <div class="cart">
+          <div class="cart-hd">
+            <span class="cart-title">🛒 Your Cart</span>
+            <span class="cart-badge" id="cart-count">0</span>
+          </div>
+          <div class="cart-list" id="cart-list">
+            <div class="cart-empty">No data selected yet</div>
+          </div>
+          <div class="rule"></div>
+          <div class="p-row"><span>Solo value</span><span class="p-val" id="solo-val">₹0</span></div>
+          <div class="p-row"><span>Combo bonus</span><span class="p-val bonus" id="combo-bonus">+₹0</span></div>
+          <div class="rule"></div>
+          <div class="p-total">
+            <span class="p-total-lbl">Total payout</span>
+            <span class="p-total-val" id="total-payout">₹0</span>
+          </div>
+          <button class="sell-btn" id="sell-btn" disabled onclick="triggerSell()">Sell to buyer →</button>
+          <div class="ct-label">Combo Tracker</div>
+          <div id="combo-mini-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  </div>
+
+  <!-- SELL MODAL -->
+  <div class="overlay" id="sell-modal">
+    <div class="modal">
+      <div class="m-icon" id="m-icon">💸</div>
+      <div class="m-title" id="m-title"></div>
+      <div class="m-earn" id="m-earn"></div>
+      <div class="m-impact" id="m-impact"></div>
+      <div class="m-body" id="m-body"></div>
+      <div class="m-insight" id="m-insight"></div>
+      <button class="m-btn" onclick="closeSellModal()">Continue brokering →</button>
+    </div>
+  </div>
+
+  <!-- COMBO DETAIL MODAL -->
+  <div class="overlay" id="cd-modal">
+    <div class="cd">
+      <div class="cd-hd">
+        <div class="cd-hd-left">
+          <div class="cd-icon" id="cd-icon"></div>
+          <div class="cd-name" id="cd-title"></div>
+          <div class="cd-pay" id="cd-payout"></div>
+        </div>
+        <button class="cd-x" onclick="closeCDModal()">×</button>
+      </div>
+      <div class="sec-lbl">Real-world impact</div>
+      <div class="impact-block" id="cd-impact"></div>
+      <div class="sec-lbl">Behavioural insight</div>
+      <div class="insight-block" id="cd-insight"></div>
+      <div class="sec-lbl">Recipe — data points needed</div>
+      <div class="cd-recipe" id="cd-recipe"></div>
+      <div id="cd-action"></div>
+    </div>
+  </div>
+
+  <script>
+    const BUCKETS = [
+      {
+        id: 'id', label: 'ID Card', icon: '🪪', points: [
+          { id: 'fullname', name: 'Full name & nickname', price: 10, insight: 'Names personalize phishing — your nickname signals how friends address you.' },
+          { id: 'dob', name: 'Date of birth', price: 12, insight: 'DOB unlocks most bank KYC and account recovery flows.' },
+          { id: 'phone', name: 'Phone number', price: 20, insight: 'SIM swap fraud starts with a phone number.' },
+          { id: 'email', name: 'Email address', price: 15, insight: 'Email is the skeleton key to every account via password reset.' },
+          { id: 'address', name: 'Home address', price: 18, insight: 'Past addresses validate identity for loan fraud.' },
+          { id: 'govtid', name: 'Government ID (Aadhaar/PAN)', price: 80, insight: 'Alone this passes KYC at most Indian banks.' },
+          { id: 'maidenname', name: "Mother's maiden name", price: 8, insight: 'Security question answer for almost every Indian bank.' },
+          { id: 'oldpass', name: 'Old passwords & security Qs', price: 55, insight: 'People reuse passwords for decades. Gold for credential stuffing.' },
+        ]
+      },
+      {
+        id: 'money', label: 'Wallet', icon: '💰', points: [
+          { id: 'cardnum', name: 'Card numbers', price: 90, insight: 'Card number alone is weak. With CVV and expiry — a live weapon.' },
+          { id: 'bankdetails', name: 'Bank account details', price: 120, insight: 'Account + IFSC enables direct UPI/NEFT fraud transfers.' },
+          { id: 'shopping', name: 'Shopping history', price: 22, insight: 'What you buy reveals income, life stage, and vulnerabilities.' },
+          { id: 'subs', name: 'Monthly subscriptions', price: 14, insight: 'Reveals lifestyle and potential account takeover targets.' },
+          { id: 'creditscore', name: 'Credit score & loan info', price: 45, insight: 'Used to target people in financial stress — the most scam-vulnerable.' },
+        ]
+      },
+      {
+        id: 'digital', label: 'Diary', icon: '📱', points: [
+          { id: 'hobbies', name: 'Hobbies & interests', price: 12, insight: 'Interests craft ultra-specific lures — a biker gets a fake recall notice.' },
+          { id: 'searchhist', name: 'Search history', price: 35, insight: 'Reveals fears, medical questions, and desires shared with no one else.' },
+          { id: 'watchhist', name: 'Watch & scroll history', price: 18, insight: 'Predicts political leaning, emotional state, and trigger content.' },
+          { id: 'routine', name: 'Daily routine', price: 28, insight: 'Knowing when your home is empty is as valuable as your address.' },
+          { id: 'triggers', name: 'Emotional triggers', price: 40, insight: 'Sold to political and commercial campaigns to bypass rational thinking.' },
+          { id: 'political', name: 'Political views & beliefs', price: 50, insight: 'Fetches premium prices in influence markets.' },
+          { id: 'healthsearch', name: 'Health & symptom searches', price: 45, insight: 'Sold to insurers before you even see a doctor.' },
+          { id: 'sleep', name: 'Sleep & screen-on patterns', price: 22, insight: 'Predicts your most impulsive decision-making windows.' },
+        ]
+      },
+      {
+        id: 'circle', label: 'Address Book', icon: '👥', points: [
+          { id: 'family', name: "Family members' names", price: 15, insight: 'Enables "your son is in the hospital" emergency scam calls.' },
+          { id: 'contacts', name: 'Contact list & close friends', price: 25, insight: 'Scammers impersonate your top 3 most-messaged contacts.' },
+          { id: 'relationship', name: 'Relationship status', price: 10, insight: 'Breakup data is actively sought by romance scammers.' },
+          { id: 'workplace', name: 'Workplace & job title', price: 30, insight: 'Enables CEO fraud — urgent wire requests from a spoofed boss email.' },
+          { id: 'groups', name: 'Private group memberships', price: 20, insight: 'Reveals political, religious, and social vulnerabilities.' },
+          { id: 'dmmeta', name: 'Social DM metadata', price: 18, insight: 'Message frequency reveals your closest relationships.' },
+        ]
+      },
+      {
+        id: 'footprint', label: 'Tracker', icon: '📍', points: [
+          { id: 'livelocn', name: 'Live GPS location', price: 60, insight: 'Real-time location + identity creates a personal safety threat.' },
+          { id: 'hangouts', name: 'Frequent hangout places', price: 35, insight: 'Home and work inferred from clusters — no address needed.' },
+          { id: 'deviceinfo', name: 'Device & app inventory', price: 20, insight: 'App list reveals banking apps, VPN use, and health vulnerabilities.' },
+          { id: 'photos', name: 'Photos & videos (geo-tagged)', price: 30, insight: 'EXIF data tells brokers your GPS coordinate from any photo.' },
+          { id: 'biometrics', name: 'Face ID & voice recordings', price: 100, insight: 'Biometrics cannot be changed. Valid and exploitable forever.' },
+          { id: 'ip', name: 'IP & browser fingerprint', price: 15, insight: 'Browser fingerprints are more unique than a physical fingerprint.' },
+          { id: 'wifi', name: 'Saved WiFi networks', price: 18, insight: 'WiFi list maps every place you have lived, worked, or visited.' },
+        ]
+      },
+    ];
+
+    const COMBOS = [
+      { id: 'identity_clone', icon: '🧬', name: 'Identity Clone', tier: 2, needs: ['fullname', 'dob', 'phone', 'govtid'], bonus: 2200, multiplier: '12×', impact: 'Opens bank accounts and loans in your name without your knowledge.', insight: 'None of these feel dangerous alone. Combined, they pass KYC at most Indian banks. This is how ₹47,000 crore was lost to identity fraud in India last year.', buyer: 'Identity brokers' },
+      { id: 'perfect_phish', icon: '🎣', name: 'Perfect Phish', tier: 2, needs: ['email', 'workplace', 'hobbies', 'contacts'], bonus: 1400, multiplier: '9×', impact: 'Hyper-personalized spear phishing email referencing your boss, hobby, and a friend by name.', insight: 'A generic phishing email fails 97% of the time. One that mentions your colleague by name and your cricket team succeeds in 1 in 3 attempts.', buyer: 'Corporate espionage groups' },
+      { id: 'empty_home', icon: '🏠', name: 'Empty Home Window', tier: 2, needs: ['routine', 'livelocn', 'address', 'hangouts'], bonus: 2800, multiplier: '14×', impact: 'Exact schedule of when your home is unoccupied — sold to physical crime networks.', insight: 'This combo surprises players most. Digital data enabling physical crime. Your phone has been mapping your home\'s empty windows for years.', buyer: 'Physical threat actors' },
+      { id: 'ad_puppet', icon: '🎯', name: 'Ad Puppet', tier: 1, needs: ['hobbies', 'shopping', 'watchhist', 'subs'], bonus: 800, multiplier: '6×', impact: 'Precision targeted ad profile sold to agencies — every ad you see from now is calculated, not coincidental.', insight: 'This is the most common and normalized form of data exploitation. It feels harmless. That normalization is what makes the rest of this market possible.', buyer: 'Ad agencies & data brokers' },
+      { id: 'insurance_ghost', icon: '🏥', name: 'Insurance Ghost', tier: 2, needs: ['healthsearch', 'sleep', 'creditscore', 'routine'], bonus: 2600, multiplier: '13×', impact: 'Health and behavior profile sold to insurers — your premiums rise before you file a single claim.', insight: 'Your search for "chest pain at 35" was logged, profiled, and sold. Insurers buy this to quietly adjust your rates.', buyer: 'Insurance data firms' },
+      { id: 'financial_trap', icon: '🪤', name: 'Financial Trap', tier: 3, needs: ['creditscore', 'bankdetails', 'shopping', 'triggers'], bonus: 5500, multiplier: '18×', impact: 'Targeted loan scam timed to financial stress with a personalized emotional hook.', insight: 'Scammers do not attack randomly. They wait for data showing you are desperate — late payments, declined transactions, stress-driven searches.', buyer: 'Fraud syndicates' },
+      { id: 'shadow_profile', icon: '🕶️', name: 'Shadow Profile', tier: 3, needs: ['searchhist', 'watchhist', 'political', 'triggers', 'sleep'], bonus: 8000, multiplier: '22×', impact: 'Complete psychological map sold to influence operations — targeted at your most vulnerable hours.', insight: 'This profile knows you better than your family does. It was built entirely from your scrolling behavior across apps you thought were unrelated.', buyer: 'Political influence buyers' },
+      { id: 'grandparent_trap', icon: '📞', name: 'Grandparent Trap', tier: 2, needs: ['family', 'contacts', 'relationship', 'workplace'], bonus: 2000, multiplier: '10×', impact: '"Your son is in the hospital — send money immediately." India\'s fastest-growing phone fraud.', insight: 'Every detail needed for this call — names, relationships, workplace — is publicly available on Facebook and Google Contacts.', buyer: 'Social engineering crews' },
+      { id: 'romance_trap', icon: '💔', name: 'Romance Scam Kit', tier: 2, needs: ['relationship', 'dmmeta', 'photos', 'triggers', 'subs'], bonus: 2400, multiplier: '11×', impact: 'Precisely timed romance approach targeting loneliness signals and emotional vulnerabilities.', insight: 'Romance scammers do not pick victims randomly. They buy profiles where the data shows recent relationship loss and high emotional engagement with comfort content.', buyer: 'Romance scam operations' },
+      { id: 'ceo_fraud', icon: '👔', name: 'CEO Fraud Kit', tier: 3, needs: ['workplace', 'email', 'contacts', 'bankdetails', 'oldpass'], bonus: 13000, multiplier: '28×', impact: 'Executive impersonation — urgent payment request from a spoofed C-suite email with insider context.', insight: '₹7,000 crore is lost to CEO fraud globally each year. Every data point needed lives on LinkedIn, company websites, and leaked credential databases.', buyer: 'Business fraud networks' },
+      { id: 'real_world_threat', icon: '🚨', name: 'Real-World Threat', tier: 4, needs: ['livelocn', 'routine', 'address', 'family', 'deviceinfo'], bonus: 16000, multiplier: '35×', impact: 'Complete physical threat package — where you live, when alone, who else is there, and what devices to exploit.', insight: 'This is the most disturbing combo by design. Digital surveillance enabling physical danger. Your phone has been passively building this file.', buyer: 'Stalkers & threat actors' },
+      { id: 'deepfake_kit', icon: '🎭', name: 'Deepfake Starter', tier: 3, needs: ['biometrics', 'photos', 'dmmeta', 'phone'], bonus: 11000, multiplier: '24×', impact: 'Enough face and voice data to generate synthetic media for fraud or reputation attacks.', insight: 'Every selfie you post trains a potential model of your face. Biometrics are not a security feature — they are a target that cannot be reset.', buyer: 'Synthetic media criminals' },
+      { id: 'influence_auction', icon: '🏛️', name: 'Influence Auction', tier: 4, needs: ['political', 'triggers', 'watchhist', 'sleep', 'groups'], bonus: 20000, multiplier: '40×', impact: 'Full behavioral manipulation package sold to influence markets — used to shift decisions at scale.', insight: 'You thought the app was free. You were the product. This sale is the invoice — and the buyer remains anonymous by design.', buyer: 'State-level actors' },
+      { id: 'child_profile', icon: '🎒', name: 'Next-Gen Profile', tier: 3, needs: ['family', 'photos', 'dmmeta', 'groups', 'hobbies'], bonus: 9000, multiplier: '20×', impact: 'A child\'s behavioral and location profile assembled from a parent\'s data — marketed to predatory platforms.', insight: 'Parents share children\'s photos, school details, and routine data without realising they are building profiles on someone who cannot consent.', buyer: 'Predatory data aggregators' },
+      { id: 'voter_manipulation', icon: '🗳️', name: 'Voter Manipulation Kit', tier: 3, needs: ['political', 'triggers', 'contacts', 'groups', 'watchhist'], bonus: 7500, multiplier: '19×', impact: 'Micro-targeted political messaging timed to emotional states — bypasses rational decision-making at scale.', insight: 'Your political view is worth more the more certain you are of it. Certainty makes you a relay — you share manipulated content believing it is your own idea.', buyer: 'Political campaign data buyers' },
+    ];
+
+    const INSIGHTS = [
+      { num: '01', title: 'Your name is worth ₹10. Your name + DOB + Aadhaar is worth ₹2,200.', body: 'This is the fundamental lesson of data brokering. No single piece of information is the weapon. The combination is. A name is a label. A name plus a date of birth plus a government ID is an identity that can be used to open a bank account, apply for a loan, and disappear.', trigger: 'Fires after player sells their first 5 individual data points without combining them.' },
+      { num: '02', title: 'The app you use for free is running a store you never see.', body: 'Every scroll is logged. Every pause is measured. Every rewatch is a data point added to a profile being refreshed daily and sold to buyers you have never heard of. The product is not the app. The product is the behavioral fingerprint the app builds of you.', trigger: 'Fires after player first sells a full "Diary" bucket selection.' },
+      { num: '03', title: 'Your routine is more dangerous than your password.', body: 'Passwords can be changed. Your daily pattern — when you leave, when your home is empty, when you are most distracted — is a stable, observable, unsettleable fact. It cannot be reset. And it has a very active market among people you would not want knowing it.', trigger: 'Fires after player unlocks the "Empty Home Window" combo.' },
+      { num: '04', title: 'You cannot un-give your face.', body: 'If your card is stolen, you cancel it. If your password leaks, you change it. If your biometric data is sold, there is no undo. Your face geometry and voice pattern are valid forever. Every selfie is a training sample. Every voice note is a recording session.', trigger: 'Fires after player first selects the biometrics data point.' },
+      { num: '05', title: 'Targeted advertising is the gateway drug of data exploitation.', body: 'Selling your behavioral profile to an ad agency feels harmless — even flattering. Relevant ads. "They just know what I like." But the same profile, the same data architecture, the same broker infrastructure powers financial fraud and political manipulation. The ad market built the road. Everyone else drives on it.', trigger: 'Fires after player unlocks the "Ad Puppet" combo.' },
+      { num: '06', title: 'Attackers do not guess. They calculate.', body: 'The era of random phishing is over. Modern attacks use data to decide who to target, when to target them, what to say, and which channel to use. The message arrives from a name you recognize, at a time you are distracted, referencing something that confirms it is real. That confirmation is your own data.', trigger: 'Fires after player unlocks the "Perfect Phish" combo.' },
+      { num: '07', title: "Your children's data is in your data.", body: "Every photo you post of your child, every school mention, every routine detail — you are building a profile of someone who cannot consent, cannot opt out, and will carry that digital footprint into adulthood. The Next-Gen Profile combo exists because this data has a buyer.", trigger: 'Fires after player unlocks the "Next-Gen Profile" combo.' },
+      { num: '08', title: 'The most dangerous buyer in this game stays anonymous.', body: 'State-level surveillance, influence operations, and behavioral manipulation at scale do not announce themselves. The Influence Auction buyer in this game is permanently hidden. That is not a game design choice — it is an accurate representation of how these markets actually operate.', trigger: 'Fires after player sells the "Influence Auction" combo.' },
+      { num: '09', title: "You weren't hacked. You were aggregated.", body: "Most people imagine data theft as a dramatic breach — a hacker in a dark room. The reality is quieter. Your data was collected legally, aggregated legally, sold legally, and re-sold again. No one stole anything. You gave it away one permission screen at a time.", trigger: 'Fires when player total earnings cross ₹50,000.' },
+      { num: '10', title: 'Loneliness has a price tag — and a buyer.', body: 'The Romance Scam Kit exists because emotional vulnerability is a data signal with an active market. Scammers buy behavioral profiles that indicate loneliness — recent breakups, high engagement with comfort content, late-night scrolling patterns. The approach that follows is not random. It is calculated.', trigger: 'Fires after player unlocks the "Romance Scam Kit" combo.' },
+    ];
+
+    const BUYERS = [
+      { name: 'Spam marketers', tier: 1, badge: 'bt1', tierlabel: 'Tier 1 — Passive', payout: '₹8–25 per point', buys: 'Email, phone, name', scenario: 'A notification pops up mid-game: "Quick offer — ₹15 for this email list." Accept or ignore. Low guilt, high frequency.', mechanic: 'Simulates the invisible daily sale of contact data to marketing lists.' },
+      { name: 'Ad agencies', tier: 1, badge: 'bt1', tierlabel: 'Tier 1 — Passive', payout: '₹800–1,200 bundles', buys: 'Hobbies, watch history, shopping, subscriptions', scenario: '"Targeted ad bundle request" arrives in your inbox. One click to sell. Feels like a normal, harmless transaction.', mechanic: 'The Ad Puppet combo unlocks here. Players realize "relevant ads" have a cost they never agreed to.' },
+      { name: 'People-search sites', tier: 1, badge: 'bt1', tierlabel: 'Tier 1 — Passive', payout: '₹30–80 per profile', buys: 'Full name, address, DOB, family members', scenario: 'Auto-buy offers arrive constantly. Players realize this happens in real life — with zero consent and no opt-out.', mechanic: 'Shows a live counter of how many real people-search sites hold your data right now.' },
+      { name: 'Insurance data firms', tier: 2, badge: 'bt2', tierlabel: 'Tier 2 — Seek out', payout: '₹2,600 combo', buys: 'Health searches, sleep patterns, credit score', scenario: 'Listed as "market research firm." True buyer identity revealed only after the sale is complete.', mechanic: 'Teaches third-party data sharing. The company you gave data to is never the only company that has it.' },
+      { name: 'Data aggregators', tier: 2, badge: 'bt2', tierlabel: 'Tier 2 — Seek out', payout: '₹1,500–4,000', buys: 'Any combo of 3+ basic points', scenario: 'Player must visit The Warehouse. Buyer haggles — fresher data commands higher price.', mechanic: 'First encounter with the exponential pricing curve. Individual points are cheap. Combos are not.' },
+      { name: 'Identity brokers', tier: 2, badge: 'bt2', tierlabel: 'Tier 2 — Seek out', payout: '₹2,200 combo', buys: 'ID + financial combos', scenario: 'Requires unlocking The Dark Listing. A simulated fraud case file appears after each sale.', mechanic: 'Player sees a real name, a real-looking loss amount, and a status field that reads "unresolved."' },
+      { name: 'Social engineering crews', tier: 2, badge: 'bt2', tierlabel: 'Tier 2 — Seek out', payout: '₹2,000–2,400', buys: 'Family combos, romance kits, grandparent traps', scenario: 'After purchase, a dramatized scam call plays using the collected names and relationships.', mechanic: 'Turns abstract data into a human voice saying a family member\'s name. The most emotionally effective moment in the game.' },
+      { name: 'Corporate espionage groups', tier: 3, badge: 'bt3', tierlabel: 'Tier 3 — Gated', payout: '₹1,400–13,000', buys: 'Spear phishing combos, CEO fraud kit', scenario: '24-hour timed offer. After sale, a simulated spoofed email appears in a mock inbox — addressed to a named employee.', mechanic: 'Shows players exactly what their data enables when assembled into a professional attack.' },
+      { name: 'Political campaign buyers', tier: 3, badge: 'bt3', tierlabel: 'Tier 3 — Gated', payout: '₹7,500–8,000', buys: 'Shadow Profile, Voter Manipulation Kit', scenario: 'Gated behind a referral. A visible harm meter fills. A simulated targeted post appears in a mock feed.', mechanic: 'Player sees their own emotional trigger keywords used to craft the targeting message.' },
+      { name: 'Fraud syndicates', tier: 3, badge: 'bt3', tierlabel: 'Tier 3 — Gated', payout: '₹5,500–11,000', buys: 'Financial Trap, Deepfake Starter', scenario: 'A victim notification appears after purchase — a name, a loss amount, a case status. First time players see a human cost.', mechanic: 'The victim\'s loss amount is calculated from the data points the player selected.' },
+      { name: 'Physical threat actors', tier: 4, badge: 'bt4', tierlabel: 'Tier 4 — Black market', payout: '₹16,000 combo', buys: 'Real-World Threat combo', scenario: 'Player must accept an explicit warning screen. A real-world news case brief appears after sale.', mechanic: 'The only buyer in the game that shows a direct physical consequence. Designed to be the emotional peak.' },
+      { name: 'State-level actors', tier: 4, badge: 'bt4', tierlabel: 'Tier 4 — Black market', payout: '₹20,000 combo', buys: 'Influence Auction combo, full shadow profiles', scenario: 'Buyer identity is permanently hidden. Player never learns what was done with the data.', mechanic: 'Ambiguity is intentional — mirrors how surveillance economies actually operate. The most unsettling moment in the game.' },
+    ];
+
+    let selected = new Set(), totalEarned = 0, salesCount = 0, profilesExposed = 0, highlightedCombo = null;
+
+    const allPts = () => BUCKETS.flatMap(b => b.points);
+    const getUnlocked = () => COMBOS.filter(c => c.needs.every(n => selected.has(n)));
+    const getPartial = () => COMBOS.map(c => ({ ...c, have: c.needs.filter(n => selected.has(n)).length, total: c.needs.length, unlocked: c.needs.every(n => selected.has(n)) })).sort((a, b) => b.have / b.total - a.have / a.total);
+
+    function toggleDP(id) { selected.has(id) ? selected.delete(id) : selected.add(id); updateAll(); }
+
+    function updateAll() { renderInventory(); updateCart(); }
+
+    function renderInventory() {
+      document.getElementById('dp-inventory').innerHTML = BUCKETS.map(b => {
+        const sel = b.points.filter(p => selected.has(p.id)).length;
+        return `<div class="bucket">
+      <div class="bucket-hd">
+        <span class="bucket-icon">${b.icon}</span>
+        <span class="bucket-name">${b.label}</span>
+        <span class="bucket-ct${sel > 0 ? ' active' : ''}">${sel}/${b.points.length}</span>
+      </div>
+      <div class="dp-list">
+        ${b.points.map(p => {
+          const isHL = highlightedCombo && highlightedCombo.needs.includes(p.id) && !selected.has(p.id);
+          const isSel = selected.has(p.id);
+          return `<div class="dp-row${isSel ? ' selected' : ''}${isHL ? ' highlight' : ''}" onclick="toggleDP('${p.id}')">
+            <div class="sw"><div class="sw-track"></div><div class="sw-thumb"></div></div>
+            <span class="dp-name">${p.name}</span>
+            ${isHL ? '<span class="dp-tag">needed</span>' : ''}
+            <span class="dp-price">₹${p.price}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+      }).join('');
+    }
+
+    function updateCart() {
+      const pts = allPts().filter(p => selected.has(p.id));
+      const solo = pts.reduce((s, p) => s + p.price, 0);
+      const unlocked = getUnlocked();
+      const bonus = unlocked.reduce((s, c) => s + c.bonus, 0);
+      const total = solo + bonus;
+      document.getElementById('cart-count').textContent = pts.length;
+      document.getElementById('solo-val').textContent = '₹' + solo.toLocaleString();
+      document.getElementById('combo-bonus').textContent = '+₹' + bonus.toLocaleString();
+      document.getElementById('total-payout').textContent = '₹' + total.toLocaleString();
+      document.getElementById('sell-btn').disabled = pts.length === 0;
+      document.getElementById('cart-list').innerHTML = pts.length === 0
+        ? '<div class="cart-empty">No data selected yet</div>'
+        : pts.map(p => `<div class="cart-item"><span class="ci-name">${p.name}</span><span class="ci-price">₹${p.price}</span><button class="ci-rm" onclick="toggleDP('${p.id}')">×</button></div>`).join('');
+      renderComboMini();
+    }
+
+    function renderComboMini() {
+      document.getElementById('combo-mini-list').innerHTML = getPartial().map(c => `
+    <div class="cm${c.unlocked ? ' unlocked' : ''}${highlightedCombo && highlightedCombo.id === c.id ? ' hi' : ''}" onclick="openCDModal('${c.id}')">
+      <div class="cm-top">
+        <span class="cm-icon">${c.icon}</span>
+        <span class="cm-name">${c.name}</span>
+        <span class="cm-val">${c.unlocked ? '✓ ' : ''}₹${c.bonus.toLocaleString()}</span>
+      </div>
+      <div class="cm-bar"><div class="cm-fill" style="width:${Math.round(c.have / c.total * 100)}%"></div></div>
+      <div class="cm-prog">${c.unlocked ? 'Unlocked — in cart' : `${c.have}/${c.total} collected`}</div>
+    </div>`).join('');
+    }
+
+
+
+    function renderCombos() {
+      document.getElementById('combos-list').innerHTML = COMBOS.map(c => {
+        const have = c.needs.filter(n => selected.has(n)).length;
+        const unlocked = c.needs.every(n => selected.has(n));
+        const pct = Math.round(have / c.needs.length * 100);
+        return `<div class="combo-card${unlocked ? ' unlocked' : ''}" onclick="openCDModal('${c.id}')">
+      <div class="cc-top">
+        <span class="cc-icon">${c.icon}</span>
+        <div class="cc-meta">
+          <span class="cc-tier t${c.tier}">Tier ${c.tier} · ${c.buyer}</span>
+          <div class="cc-name">${c.name}</div>
+          <div class="cc-buyer">${unlocked ? '✓ Unlocked' : have + '/' + c.needs.length + ' data points collected'}</div>
+        </div>
+        <div class="cc-payout">
+          <span class="cc-amount">₹${c.bonus.toLocaleString()}</span>
+          <span class="cc-mult">~${c.multiplier} vs solo</span>
+        </div>
+      </div>
+      <div class="recipe">${c.needs.map(n => { const pt = allPts().find(p => p.id === n); return `<span class="rtag${selected.has(n) ? ' have' : ' need'}">${pt ? pt.name : n}</span>`; }).join('')}</div>
+      <div class="impact-block">⚠ ${c.impact}</div>
+      <div class="insight-block">${c.insight}</div>
+      <div class="cc-prog">
+        <div class="cc-prog-bar"><div class="cc-prog-fill" style="width:${pct}%"></div></div>
+        <span>${pct}%</span>
+      </div>
+      ${!unlocked ? `<div class="cc-hint">Click to see what to enable →</div>` : `<div class="cc-done">✓ Combo unlocked and added to cart</div>`}
+    </div>`;
+      }).join('');
+    }
+
+
+
+    function openCDModal(id) {
+      const c = COMBOS.find(x => x.id === id); if (!c) return;
+      highlightedCombo = c; renderInventory(); renderComboMini();
+      const unlocked = c.needs.every(n => selected.has(n));
+      document.getElementById('cd-icon').textContent = c.icon;
+      document.getElementById('cd-title').textContent = c.name;
+      document.getElementById('cd-payout').textContent = '₹' + c.bonus.toLocaleString() + ' bonus · ~' + c.multiplier + ' multiplier';
+      document.getElementById('cd-impact').textContent = c.impact;
+      document.getElementById('cd-insight').textContent = c.insight;
+      document.getElementById('cd-recipe').innerHTML = c.needs.map(n => {
+        const pt = allPts().find(p => p.id === n), have = selected.has(n);
+        return `<div class="cd-ri ${have ? 'have' : 'need'}">
+      <span>${have ? '✅' : '⬜'}</span>
+      <span class="cd-ri-name">${pt ? pt.name : n}</span>
+      <span class="cd-ri-price">₹${pt ? pt.price : 0}</span>
+      <span class="cd-ri-st">${have ? 'In inventory' : 'Missing'}</span>
+    </div>`;
+      }).join('');
+      const missing = c.needs.filter(n => !selected.has(n));
+      document.getElementById('cd-action').innerHTML = unlocked
+        ? '<div class="cd-done-badge">✓ Combo unlocked — added to cart</div>'
+        : `<button class="cd-enable" onclick="enableMissing('${c.id}')">Enable ${missing.length} missing toggle${missing.length > 1 ? 's' : ''} to unlock →</button>`;
+      document.getElementById('cd-modal').classList.add('show');
+    }
+
+    function enableMissing(id) {
+      const c = COMBOS.find(x => x.id === id); if (!c) return;
+      c.needs.forEach(n => selected.add(n));
+      closeCDModal(); updateAll();
+    }
+
+    function closeCDModal() {
+      document.getElementById('cd-modal').classList.remove('show');
+      highlightedCombo = null; renderInventory(); renderComboMini();
+    }
+
+    function triggerSell() {
+      const pts = allPts().filter(p => selected.has(p.id));
+      const solo = pts.reduce((s, p) => s + p.price, 0);
+      const unlocked = getUnlocked();
+      const bonus = unlocked.reduce((s, c) => s + c.bonus, 0);
+      const total = solo + bonus;
+      totalEarned += total; salesCount++;
+      profilesExposed += Math.ceil(pts.length * 1.8 + unlocked.length * 12);
+      document.getElementById('total-earned').textContent = '₹' + totalEarned.toLocaleString();
+      document.getElementById('total-sales').textContent = salesCount;
+      document.getElementById('total-exposed').textContent = profilesExposed;
+      let icon = '💸', title, impact, body, insight;
+      if (unlocked.length > 0) {
+        const top = unlocked.reduce((a, b) => b.tier > a.tier ? b : a);
+        icon = top.tier >= 4 ? '🚨' : top.icon;
+        title = (top.tier >= 4 ? '⚠ High-damage sale — ' : '') + top.name + ' sold';
+        impact = top.impact;
+        body = `You sold ${pts.length} data point${pts.length > 1 ? 's' : ''} including the "${top.name}" combo to ${top.buyer}. The combination multiplied your payout ${top.multiplier}.`;
+        insight = top.insight;
+      } else {
+        icon = '💸'; title = `${pts.length} data point${pts.length > 1 ? 's' : ''} sold`;
+        impact = 'Raw data sold to low-tier buyers — spammers, ad agencies, and data aggregators.';
+        body = 'Individual data points fetch small payouts. Combine them to unlock profiles worth 6–40× more.';
+        insight = 'Every data point you just sold exists in real databases right now — collected without most people realising it.';
+      }
+      document.getElementById('m-icon').textContent = icon;
+      document.getElementById('m-title').textContent = title;
+      document.getElementById('m-earn').textContent = '₹' + total.toLocaleString() + ' earned';
+      document.getElementById('m-impact').textContent = 'Real-world impact: ' + impact;
+      document.getElementById('m-body').textContent = body;
+      document.getElementById('m-insight').textContent = '"' + insight + '"';
+      document.getElementById('sell-modal').classList.add('show');
+    }
+
+    function closeSellModal() {
+      document.getElementById('sell-modal').classList.remove('show');
+      selected.clear(); updateAll();
+
+    }
+
+
+
+    renderInventory(); renderComboMini();
+  </script>
+</body>
+
+</html>
