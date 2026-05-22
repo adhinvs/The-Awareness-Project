@@ -129,5 +129,5 @@ Content is open for learning and non-commercial use. If you use this material in
 The Blue Signal is a digital initiative helping people make better decisions online. The Awareness Project is our open contribution to the public — because access to knowledge should not be a privilege, and digital literacy should not have a price tag.
 
 - Website: [thebluesignal.com](https://thebluesignal.com)
-- Live workshops and corporate sessions: [adhinvs.com](https://adhinvs.com)
+- Live workshops and corporate sessions: [adhinvs.com](https://adhinvs.com/hire-me)
 - Flagship program — Mind Under Influence: [adhinvs.com/courses/mind-under-influence](https://adhinvs.com/courses/mind-under-influence)
