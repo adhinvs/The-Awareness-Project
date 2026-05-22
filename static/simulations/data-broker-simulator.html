@@ -74,7 +74,35 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 14px;
-      margin-bottom: 28px;
+      margin-bottom: 8px;
+    }
+
+    @media(max-width:480px) {
+      .stats {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .stat {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        text-align: left;
+      }
+      .stat-val {
+        font-size: 22px;
+      }
+      .stat-lbl {
+        margin-top: 0;
+      }
+    }
+
+    .stats-note {
+      font-size: 11px;
+      color: var(--text-4);
+      line-height: 1.55;
+      margin-bottom: 20px;
+      padding: 0 2px;
     }
 
     .stat {
@@ -958,7 +986,16 @@
       line-height: 1.6;
       border-top: 1px solid var(--border);
       padding-top: 12px;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
+    }
+
+    .m-replay {
+      font-size: 11px;
+      color: var(--text-4);
+      text-align: center;
+      line-height: 1.55;
+      margin-bottom: 14px;
+      font-style: italic;
     }
 
     .m-btn {
@@ -1161,6 +1198,7 @@
       <div class="stat-lbl">Profiles Exposed</div>
     </div>
   </div>
+  <div class="stats-note">Profiles Exposed counts one profile per data point sold, plus 12 linked profiles for each combo unlocked — reflecting how combo sales chain across broker databases to people connected to the subject (family, contacts, colleagues).</div>
 
   <!-- HINT -->
   <div class="ticker">Toggle data points to build a profile. Click any item in the <strong>Combo Tracker</strong> to highlight the data points needed to unlock it — and earn the bonus.</div>
@@ -1206,7 +1244,8 @@
       <div class="m-impact" id="m-impact"></div>
       <div class="m-body" id="m-body"></div>
       <div class="m-insight" id="m-insight"></div>
-      <button class="m-btn" onclick="closeSellModal()">Continue brokering →</button>
+      <div class="m-replay">Try selecting different data points — Tier 3 and 4 combos unlock combinations most people don't expect.</div>
+      <button class="m-btn" onclick="closeSellModal()">Try another combination →</button>
     </div>
   </div>
 
@@ -1403,7 +1442,9 @@
 
 
     function renderCombos() {
-      document.getElementById('combos-list').innerHTML = COMBOS.map(c => {
+      const el = document.getElementById('combos-list');
+      if (!el) return;
+      el.innerHTML = COMBOS.map(c => {
         const have = c.needs.filter(n => selected.has(n)).length;
         const unlocked = c.needs.every(n => selected.has(n));
         const pct = Math.round(have / c.needs.length * 100);
@@ -1477,7 +1518,7 @@
       const bonus = unlocked.reduce((s, c) => s + c.bonus, 0);
       const total = solo + bonus;
       totalEarned += total; salesCount++;
-      profilesExposed += Math.ceil(pts.length * 1.8 + unlocked.length * 12);
+      profilesExposed += pts.length + unlocked.length * 12;
       document.getElementById('total-earned').textContent = '₹' + totalEarned.toLocaleString();
       document.getElementById('total-sales').textContent = salesCount;
       document.getElementById('total-exposed').textContent = profilesExposed;
@@ -1513,6 +1554,15 @@
 
 
     renderInventory(); renderComboMini();
+  </script>
+
+  <script>
+    function postHeight() {
+      window.parent.postMessage({ iframeHeight: document.documentElement.scrollHeight }, '*');
+    }
+    window.addEventListener('load', postHeight);
+    window.addEventListener('resize', postHeight);
+    new MutationObserver(postHeight).observe(document.body, { subtree: true, childList: true });
   </script>
 </body>
 

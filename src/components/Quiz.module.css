@@ -4,7 +4,6 @@
   border: 1px solid var(--ifm-color-emphasis-200);
   background: var(--ifm-background-surface-color);
   overflow: hidden;
-  font-family: var(--ifm-font-family-base);
 }
 
 /* Top accent line */
