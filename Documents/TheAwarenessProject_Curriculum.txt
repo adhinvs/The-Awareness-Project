@@ -1,0 +1,594 @@
+The Awareness Project
+Risk & Manipulation-Focused Curriculum
+13 Sections  •  89 Modules
+SECTION 1: WHO YOU ARE & WHAT YOU HAVE
+What attackers want from you
+Module 1: Your Identity & Personal Information
+What makes you identifiable (name, phone, SSN, email, address)
+Why your information is valuable
+Identity theft and impersonation
+Synthetic identity fraud (fake you)
+Recovering when your identity is stolen
+Protecting your digital identity going forward
+Module 2: Your Passwords & Account Access
+Weak passwords and how they're cracked
+Password reuse across accounts (the domino effect)
+Account takeover and what happens next
+Recovery options and their vulnerabilities
+Two-factor authentication — real protection or false security?
+Future attacks on biometric authentication
+Module 3: Your Money & Financial Assets
+What's in your accounts and cards
+Bank accounts, credit cards, digital wallets
+Cryptocurrency and blockchain risks
+Access points and who can drain them
+Recovery and chargeback limitations
+When you cannot get your money back
+Module 4: Your Location & Physical Safety
+Location data and what it reveals
+Real-time tracking by partners, stalkers, companies
+SIM swaps and phone number hijacking
+Emergency services and address exposure
+Protecting your physical location online
+When digital threats become physical
+SECTION 2: SOCIAL ENGINEERING & MANIPULATION TACTICS
+Exploiting human psychology to steal from you
+Module 5: Authority & Obedience
+Authority bias and why people comply without questioning
+Impersonating CEOs, IT, HR, government, and law enforcement
+Authority signaling — titles, uniforms, logos, and spoofed IDs
+The Milgram effect in digital and workplace contexts
+Authority stacking — combining multiple power signals
+How to verify authority claims before taking action
+Module 6: Urgency, Fear & Threat Framing
+How manufactured urgency collapses the verification window
+Fear-based manipulation — account suspension, arrest, legal threats
+FOMO — fear of missing out as a manipulation trigger
+Amygdala hijack — why fear makes people act before thinking
+Tech support scams and fake device warning tactics
+The pause-and-verify rule — breaking the urgency trap
+Module 7: Guilt, Shame & Embarrassment
+How guilt and shame are weaponized to force compliance
+Sextortion — using embarrassment as leverage
+Digital arrest scams and public humiliation threats
+Shame-based silence — why victims don't report
+Cultural exploitation of guilt in targeted scams
+Breaking the shame cycle — why reporting protects others
+Module 8: Trust, Familiarity & Social Proof
+How trust is manufactured through repeated exposure
+Warm-up attacks — building rapport before the ask
+Social proof — fake reviews, testimonials, and endorsements
+Fake profiles and impersonated colleagues on professional networks
+Peer pressure framing — "everyone else has already done this"
+Separating familiarity from verified trust
+Module 9: Reciprocity, Duty & Obligation
+Why unsolicited favors create a sense of obligation
+Give first, ask later — the attacker's reciprocity playbook
+Concession tactics — ask big, then ask small
+Empathy and helping instinct as an attack surface
+Duty and role-based obligation in workplace manipulation
+Recognizing when generosity is a setup
+Module 10: Greed, Reward & Scarcity
+How reward-seeking overrides rational risk assessment
+Too-good-to-be-true — why people want to believe
+Artificial scarcity — limited time, limited access, limited stock
+Lottery, prize, and investment reward manipulation
+Greed as the engine of pig butchering and crypto scams
+The reward red flag checklist
+Module 11: Curiosity & the Information Gap
+The information gap — why we feel compelled to close what we don't know
+Clickbait engineering — how subject lines and headlines are weaponized
+USB drop attacks and malicious QR codes
+Forbidden knowledge appeals — "do not open this"
+Free tools and reports as malware delivery vehicles
+Pausing before clicking — the curiosity discipline
+Module 12: Helplessness & Overwhelm
+Learned helplessness and how it is exploited
+Technology overwhelm — complexity as a manipulation tool
+Elderly and non-technical user targeting
+Post-breach paralysis and recovery scams
+Creating dependence — the attacker as the only solution
+Building digital confidence to resist helplessness-based attacks
+Module 13: Commitment, Consistency & Sunk Cost
+Foot-in-the-door — small yes leads to bigger yes
+The sunk cost trap — past investment drives future compliance
+Public commitment as a self-locking mechanism
+Escalation patterns in investment and romance scams
+Identity-based consistency — "someone like you would agree"
+The fresh eyes test — evaluating each request from zero
+Module 14: Romance & Emotional Manipulation
+Catfishing, fake personas, and AI-generated identities
+Love bombing — overwhelming affection as a control tactic
+Pig butchering — long-term trust before financial extraction
+Isolation from friends, family, and skeptics
+Loneliness and sympathy exploitation
+Recognizing when a relationship is a manipulation construct
+SECTION 3: SCAMS & FRAUDULENT SCHEMES
+Specific scam patterns — from intimate cons to industrial-scale operations
+Module 15: Government Impersonation & Digital Arrest Scams
+Fake police and law enforcement calls
+Digital arrest scams — India-specific and global variants
+Fake income tax authority calls
+Fake arrest warrants and criminal threats
+Using official logos, spoofed numbers, and escalation tactics
+Isolation and panic creation to bypass critical thinking
+How to verify legitimate government contact
+Recovery if you've paid money
+Module 16: Family Emergency & Impersonation Scams
+Fake grandchild emergency calls
+Fake family member abductions and fake accidents
+Creating emotional urgency to prevent verification
+Isolation from other family members during the call
+Demanding wire transfers and untraceable payments
+Verification steps before sending money
+Module 17: Tech Support & Warning Scams
+Pop-up warnings on devices — "virus found"
+Fake Apple, Microsoft, and Amazon support calls
+Remote access to your computer under the guise of help
+Installing malware while appearing to fix the problem
+Charging for unnecessary repairs and fake services
+How to safely respond to device warnings
+Module 18: Job, Work & Employment Scams
+Fake job offers with unusually high pay
+Work-from-home scams and advance payment fraud
+Interview and credential verification fraud
+Using your identity for employment and financial fraud
+Check cashing and money laundering via job seekers
+Legitimate vs. fake job listing verification
+Module 19: Investment, Lottery & Prize Scams
+Fake investment opportunities and guaranteed return promises
+Lottery wins you didn't enter
+Forex and crypto investment scams
+Multi-level marketing (MLM) exploitation
+Advance-fee fraud for claiming prizes
+How to verify legitimate investments and offers
+Module 20: Romance, Dating & Relationship Scams
+Building trust over weeks or months before the ask
+Romantic stories and personas that never add up
+Pig butchering — long-term con before requesting money
+Requests for photos or "verification" as leverage
+Isolation from friends and skeptics
+Recognizing the scam and emotional recovery
+Module 21: Rental, Travel & Booking Scams
+Fake rental listings and cloned booking platforms
+Advance deposits for non-existent properties
+Travel agency fraud and airline verification scams
+Verification steps before paying any deposit
+Recovering lost deposits through legitimate channels
+Module 22: Banking, Payment & Account Takeover Scams
+Fake bank calls about unauthorized transactions
+Account verification and password reset manipulation
+Payment confirmation scams and credit card cloning
+Account takeover through social engineering
+Verifying caller legitimacy before sharing anything
+Immediate reporting and account freezing steps
+Module 23: Health, Medical & Pharmaceutical Scams
+Fake prescription and medication scams
+Medical device fraud and unlicensed practitioners
+Health insurance, billing, and telemedicine fraud
+Fake health apps and diagnostic platforms
+Reporting medical fraud and protecting yourself
+Module 24: Charity, Donation & Humanitarian Scams
+Fake charities exploiting disasters and crises
+Emotional manipulation in charity appeals
+Tax deduction fraud and fake receipts
+Legitimate charity verification before donating
+Reporting charity fraud
+Module 25: Student & Academic Scams
+Fake scholarship offers and advance payment for placement
+Fake university degrees and credential fraud
+EdTech data harvesting and privacy violations
+Academic credential impersonation
+Reporting academic fraud
+Module 26: Life-Event Targeting & Vulnerability Exploitation
+How scammers scrape obituaries, birth announcements, and property records
+Targeting bereaved families, new parents, and homebuyers
+Targeting divorce, separation, and job transition announcements
+Opting out of public record targeting
+Understanding what data is publicly available about you
+Module 27: Secondary Exploitation & Recovery Scams
+The immediate secondary threat after losing money
+Fake ethical hackers and fake lawyers offering recovery
+Recovery companies demanding upfront fees
+Legitimate recovery options — chargebacks, fraud agencies
+Protecting yourself while grieving financial loss
+Module 28: The Cybercrime Economy — Understanding Industrial-Scale Fraud
+Cybercrime-as-a-Service (CaaS) and dark web markets
+Scam compounds and fraud factories
+Division of labor in criminal organizations
+Credential markets and purchased identities
+The economics of why you were targeted
+Removing shame — this is industrial, not personal failure
+SECTION 4: DECEPTIVE COMMUNICATION
+How messages and content lie to you
+Module 29: Phishing, Smishing & Vishing
+Email phishing and spoofed sender addresses
+Text message phishing (smishing)
+Voice calls pretending to be banks, support, or family (vishing)
+Fake links and credential harvesting pages
+QR code phishing
+How to verify sender legitimacy before responding
+Module 30: Fake Websites, Lookalike Stores & Domain Tricks
+Domain names that mimic real companies
+Fake checkout pages and cloned e-commerce stores
+Lookalike apps on official app stores
+SSL certificates on fake sites — the lock icon is not safety
+Typosquatting and visually similar URLs
+Verifying URL legitimacy before entering any data
+Module 31: Quishing & Physical-Digital Attack Convergence
+QR codes as attack vectors
+Fake QR codes on parking meters, restaurant tables, and EV chargers
+QR codes on public transportation and stickers
+When physical spaces become digital attack surfaces
+How to safely scan QR codes
+Module 32: Fake Content, Deepfakes & AI Deception
+Deepfake videos used in fraud, blackmail, and impersonation
+AI-generated audio cloning in vishing and wire fraud
+Synthetic faces and fake identities in communications
+Forged documents and fake PDFs
+Using deepfakes against you personally
+Spotting AI-generated content in messages and calls
+Module 33: Misinformation, Disinformation & Propaganda
+False news vs. misleading news vs. opinion
+Emotional content spreads faster than truth
+Coordinated disinformation campaigns and troll farms
+Astroturfing — fake grassroots movements
+Before sharing — what makes you want to share?
+Module 34: False Claims, Fake Credentials & Impersonation Online
+Fake job titles, certifications, and professional credentials
+Impersonating doctors, lawyers, and financial advisors
+Spoofed caller ID and verification badge bypasses
+When apparent professionals are actually con artists
+SECTION 5: AI BIAS & ALGORITHMIC INFLUENCE
+How AI systems manipulate and mislead you
+Module 35: AI-Generated Content & Synthetic Media
+AI-generated text, hollow writing, and chatbot deception
+Language model hallucinations — confidently wrong information
+Synthetic images, deepfakes, and AI personas at scale
+AI relationships that are not real
+Detecting AI-generated content as a systemic skill
+Module 36: Algorithmic Bias & Invisible Discrimination
+Bias in AI hiring, lending, and insurance decisions
+Training data bias creating unfair outcomes
+Opacity — you don't know why you were rejected
+Who gets shown what content and why
+Fighting algorithmic discrimination
+Module 37: Confirmation Bias & Filter Bubbles (AI-Amplified)
+Algorithms showing you what agrees with you
+Filter bubbles isolating you in belief communities
+Political and social polarization by algorithmic design
+Missing contrary information entirely
+Breaking out of algorithmic bubbles
+Module 38: Persuasion, Manipulation & AI at Scale
+AI optimizing persuasion messages specifically for you
+Predicting vulnerability and targeting it
+Emotional triggers identified and activated by algorithms
+Personalized persuasion vs. mass propaganda
+When AI knows you better than you know yourself
+Module 39: AI Hallucinations & False Confidence
+AI making up facts with high confidence
+Using AI for research and receiving false answers
+Medical, legal, and financial advice from AI
+AI's tendency to agree with whatever you say
+When AI confidently lies
+SECTION 6: DARK PATTERNS & MANIPULATIVE DESIGN
+How apps and websites trick you into giving away data and money
+Module 40: Consent Manipulation & Privacy Tricks
+Trick questions and confusing opt-in language
+Confirm shaming — saying No is made to feel wrong
+Cookie dark patterns and consent walls
+Unsubscribe traps and buried cancellation flows
+Pre-checked boxes for unwanted permissions
+Module 41: Subscription Traps & Hidden Charges
+Free trial with automatic billing on expiry
+Roach motel — easy to sign up, nearly impossible to cancel
+Unexpected charges from third-party partnerships
+Billing language designed to obscure the real cost
+Module 42: Manufactured Urgency & Artificial Scarcity
+Countdown timers and fake inventory warnings in design
+Flash sales and artificial deadlines
+Limited edition and exclusivity claims
+Price anchoring and fake discount presentation
+Module 43: Gamification, Streaks & Compulsion Loops
+Daily streaks designed to create loss aversion
+Variable rewards — the slot machine mechanic in apps
+Badges, points, and fake achievements
+Leaderboards and social comparison by design
+Designed addiction mechanics in everyday apps
+Module 44: Infinite Scroll, Autoplay & Stopping Points
+Infinite scroll — no natural ending point by design
+Autoplay preventing intentional pausing
+Recommendation algorithms that never stop
+Removal of time indicators — losing track of time
+Psychological addiction by deliberate design
+Module 45: Distraction, Misdirection & Obfuscation
+Cluttered interfaces hiding important options
+Hidden privacy settings buried in multi-level menus
+Confusing button placement and misleading labels
+Intentional complexity to prevent informed decisions
+Module 46: Nudging, Defaults & Assumption Abuse
+Opt-out instead of opt-in — assuming yes by default
+Pre-selected options you don't notice
+Default settings that expose your data
+Defaulting to sharing data with third parties
+Powerful defaults hidden in plain sight
+Module 47: Social Proof, Fake Reviews & Manufactured Credibility
+Fake reviews, ratings, and user testimonials in design
+Bot comments and bot engagement inflating credibility
+Paid reviews disguised as organic
+Fake verification badges and trust signals in UI
+Module 48: Emotional & Psychological Manipulation in Design
+Shame and embarrassment used in interface design
+Loss aversion triggers in product UI
+Dopamine hits from notification design
+Color psychology and visual manipulation
+Sound design and haptic feedback engineered for addiction
+Module 49: Financial Gamification & BNPL Shadow Debt
+Buy Now Pay Later (BNPL) and invisible debt accumulation
+How BNPL exploits behavioral finance
+High-risk trading app gamification
+Stock trading as gamified gambling
+Interest rates and fees hidden in BNPL terms
+SECTION 7: SURVEILLANCE & PRIVACY THEFT
+How your data is harvested without real consent
+Module 50: Tracking Technologies & Data Collection
+Cookies, pixels, and behavioral tracking
+Cross-device tracking and fingerprinting
+Location tracking and geofencing
+Always-on microphones and listening devices
+Metadata revealing more than content
+Module 51: Behavioral Profiling & Advertising Manipulation
+Data brokers building profiles of you
+Psychographic targeting — beliefs, not just interests
+Emotional targeting based on mood analysis
+Ad networks following you across the internet
+Targeted ads after speaking aloud
+Module 52: Social Media Data & Algorithmic Manipulation
+What social media platforms collect and how
+Algorithmic feeds showing content that triggers you
+Amplification of divisive content by design
+Targeting based on private messages
+Shadowbanning and algorithmic suppression
+Module 53: Government & Corporate Surveillance
+Government surveillance and data access
+Facial recognition in public spaces
+Police access to social media and personal data
+Your data used in predictive policing
+Digital rights violations and surveillance chilling effect
+Module 54: Intimate Surveillance & Stalking Technology
+Spyware and stalkerware on personal devices
+Location sharing and covert tracking by partners
+Monitoring communications, contacts, and activities
+Abuse and coercive control through digital surveillance
+Getting help when being digitally monitored
+Module 55: Defensive OSINT — Auditing Your Own Digital Footprint
+What information is publicly available about you
+Using HaveIBeenPwned to check breach exposure
+Checking property records and public databases
+Tools and methods for personal OSINT
+Taking down leaked information and knowing what's exposed
+SECTION 8: FINANCIAL & ECONOMIC EXPLOITATION
+How money is taken or how you're exploited for profit
+Module 56: Payment Fraud & Unauthorized Charges
+Credit card fraud and cloned cards
+Payment app fraud and unauthorized transfers
+Wire transfer fraud — cannot be reversed
+Chargeback fraud from the victim's perspective
+Account verification before large transfers
+Module 57: SIM Swap, Account Takeover & Identity Exploitation
+SIM swap attacks — taking over your phone number
+Two-factor authentication bypass via SIM swap
+Taking over email to reset all linked passwords
+Draining bank and crypto accounts after takeover
+Recovery when accounts are fully compromised
+Module 58: How Companies Monetize Your Addiction
+Attention economy — your focus is the product
+Time on platform as the core revenue model
+Dark patterns designed specifically for engagement
+A/B testing manipulation tactics on millions of users
+Knowing you're the product, not the customer
+SECTION 9: HARASSMENT, ABUSE & HARM
+Attacks targeting your safety, reputation, and wellbeing
+Module 59: Cyberbullying, Harassment & Coordinated Attacks
+Targeted harassment and pile-on attacks
+Swatting — fake emergency calls to your address
+Doxxing — publishing your personal information publicly
+Coordinated campaigns across multiple platforms
+Reporting, legal recourse, and platform escalation
+Module 60: Stalking & Surveillance by Known People
+Digital stalking and obsessive monitoring
+Location tracking and device surveillance
+Escalation from digital to physical threat
+Intimate partner violence and digital coercive control
+Evidence for protective orders and law enforcement
+Module 61: Sexual Abuse, Sextortion & Image-Based Abuse
+Revenge porn and non-consensual intimate image sharing
+Sextortion — threatening to share unless you pay
+Non-consensual deepfake pornography
+LGBTQ+ specific targeting and outing
+Legal recourse and support organizations
+Module 62: Child Exploitation & Grooming
+Adult predators building relationships with children
+Normalized behavior escalating to abuse
+Isolation from protective adults
+Manipulation and grooming tactics
+Reporting to law enforcement and support for victims
+Module 63: Reputational Damage & Social Destruction
+False accusations and coordinated reputation attacks
+Leaked private conversations and old posts resurfaced
+Career sabotage through social media
+Permanent digital record and its consequences
+Recovering reputation and moving forward
+SECTION 10: PSYCHOLOGICAL & BEHAVIORAL MANIPULATION
+How systems exploit how humans think and behave
+Module 64: Cognitive Biases & Decision-Making Exploitation
+Confirmation bias — seeing what you want to see
+Availability bias — recent events feel more important
+Optimism bias — bad things won't happen to me
+Anchoring bias — the first number sticks
+Being exploited through your own thinking patterns
+Module 65: FOMO, Status Anxiety & Social Comparison
+Manufactured FOMO on social media
+Comparing yourself to curated, artificial versions of others
+Status anxiety and the cost of keeping up
+Artificial metrics of success by design
+Mental health impact of constant comparison
+Module 66: Stress, Decision Fatigue & Vulnerability
+Decision fatigue making you less careful
+Stress increasing susceptibility to scams
+Cognitive overload preventing threat detection
+When you are most at risk and why
+Building awareness during high-vulnerability periods
+Module 67: Addiction & Compulsive Behavior
+Dopamine and reward cycle exploitation
+Variable rewards — the slot machine effect
+Loss of control and compulsive use
+Impact on sleep, relationships, and work
+When to recognize digital addiction and seek help
+Module 68: Normalized Behavior & Gradual Boundary Erosion
+Slowly normalizing worse behavior over time
+Boiling frog scenario — gradual, invisible change
+Habituation to surveillance and manipulation
+Normalizing data sharing and privacy loss
+Recognizing incremental erosion of safety
+SECTION 11: SPECIALIZED THREATS & VULNERABLE GROUPS
+High-risk situations and specific vulnerabilities
+Module 69: Vulnerable Groups & Targeted Exploitation
+Seniors targeted for specific high-trust scams
+Children with less skepticism and more online exposure
+Immigrants facing language and legal status vulnerabilities
+People in mental health crisis making high-risk decisions
+Disabled people exploited for care and dependency
+Marginalized groups facing compounded harassment
+Module 70: Gaming & Online Community Exploitation
+Account hijacking and in-game item theft
+In-game predators and grooming
+Fake trades and item scams
+Streaming risks and doxxing of content creators
+Gaming as a targeting ground for criminal recruitment
+Module 71: Dating Apps & Romantic Spaces
+Catfishing and fake verification bypasses
+Data collection in intimate moments
+Predators on dating platforms
+Safety when meeting people from apps
+Consent and sexual coercion in digital-physical interactions
+Module 72: Health Tech, Medical Data & Wearables
+Fitness tracker data misuse and insurance discrimination
+Mental health app data harvesting
+Genetic testing data leaks and family exposure
+Telemedicine platform vulnerabilities
+Medical identity theft and reporting health data breaches
+Module 73: Connected Vehicles, EVs & Transportation Hacking
+EV charging data and location tracking
+Dashcam and telemetry data exposure
+Location history from connected and autonomous vehicles
+Ride-sharing app vulnerabilities
+Physical danger from vehicle compromise
+Module 74: Smart Home, IoT & Domestic Surveillance
+Smart speakers and always-on listening
+Smart locks, cameras, and doorbells as surveillance
+Baby monitors and domestic vulnerability
+Domestic violence and smart home abuse
+Securing your home devices
+Module 75: Workplace & Gig Economy Threats
+Business Email Compromise (BEC) and CEO fraud
+Vendor payment scams and invoice fraud
+Gig worker account takeover (Uber, Lyft, DoorDash)
+Content creator impersonation and account hijacking
+Remote worker and home office vulnerabilities
+Module 76: High-Risk & Activist Contexts
+Surveillance targeting journalists and activists
+Spyware and state-sponsored hacking
+Border security and device search
+De-platforming and digital erasure
+Protective measures for high-risk users
+Module 77: Cryptocurrency & Web3 Exploitation
+Fake exchanges, wallets, and coins
+Private key theft and seed phrase compromise
+Rug pulls — projects that disappear with your money
+Smart contract exploits and flash loan attacks
+DeFi yield farming risks and hidden vulnerabilities
+NFT fraud, theft, and inflated valuations
+Pump-and-dump schemes and market manipulation
+Phishing specifically targeting crypto holders
+Pressure tactics — buy before you understand
+Irreversible transactions — why recovery is nearly impossible
+SECTION 12: WHEN IT HAPPENS TO YOU
+Recovery and harm mitigation
+Module 78: Account Compromised or Hacked
+Immediate actions to stop ongoing access
+Assessing what the attacker can see and has accessed
+Securing other accounts using the same password
+Notifying services and reversing unauthorized changes
+Rebuilding authentication and recovery options
+Module 79: Money Stolen or Lost to Scam
+First 24 hours — banks, payment companies, police
+Legitimate recovery options — chargebacks and reversals
+When recovery is not possible
+Credit monitoring and fraud alerts
+Emotional response and moving forward
+Module 80: Intimate Images Shared or Deepfake Created
+Immediate reporting and takedown requests
+Law enforcement and legal options
+Managing ongoing harassment
+Long-term recovery and reframing
+When visibility and silence are both hard
+Module 81: Harassed, Stalked or Threatened
+Documenting everything thoroughly
+Platform reporting and escalation
+Police reports and protective orders
+Digital and physical safety planning
+Mental health support and healing
+Module 82: Identity Stolen or Impersonated
+Credit freeze and fraud monitoring
+Reclaiming accounts and reputation
+Long-term identity restoration
+Removing the fake online presence
+Preventing future identity theft
+Module 83: Child Groomed, Exploited or Victimized
+Immediate safety and support for the child
+Reporting to platform and law enforcement
+Evidence preservation
+Professional counseling and family support
+Rebuilding trust and safety with the child
+Module 84: Living With Digital Aftermath
+Understanding trauma from digital violence
+Recovery from financial exploitation
+Rebuilding trust in people and platforms
+When professional help is needed
+Turning survival into resilience
+Module 85: Digital Estate & Post-Mortem Exploitation
+How scammers scrape obituaries and target bereaved families
+Protecting a deceased person's identity
+Legacy contacts and account memorialization
+Freezing credit and preventing identity theft after death
+Creating a digital will and legacy plan
+SECTION 13: COUNTRY-SPECIFIC THREATS, SCAMS & RESOURCES
+Localized risks and help based on where you live
+Module 86: India — Specific Scams & Legal Context
+Digital arrest scams — expanded India-specific coverage
+Aadhaar, PAN, and income tax impersonation
+UPI fraud, fake payment requests, and mobile banking targeting
+Matrimonial site fraud and marriage-related scams
+Predatory loan app practices
+SIM swap targeting Aadhaar-linked numbers
+Indian cybercrime laws — IPC Section 66, IT Act 2000
+Cyber Crime Cell reporting and state-specific wings
+Cybercrime helplines and support organizations
+Module 87: United States & North America — Specific Scams & Legal Context
+IRS, tax fraud, and Social Security impersonation
+Medicare, Medicaid, and health insurance scams
+ACH fraud, wire transfer scams, and credit reporting fraud
+FBI IC3 reporting, FTC, and state attorney generals
+State-specific cybercrime laws
+Module 88: Europe — Specific Scams & Legal Context
+GDPR, data protection violations, and cross-border enforcement
+SEPA fraud and regional payment app scams
+Holiday, travel, and energy crisis utility scams
+Europol reporting and national cybercrime centers by country
+Module 89: Southeast Asia — Specific Scams & Legal Context
+Mobile-first fraud — high SMS and WhatsApp usage
+SIM swap attacks and fake mobile money transfers
+Cross-border romance and mail-order scams
+Country-specific police cybercrime units
+Regional reporting mechanisms and fraud prevention resources
