@@ -4,7 +4,7 @@
 
 The Awareness Project is a free, open-source education platform covering digital risk, manipulation tactics, AI deception, scams, and the psychology behind why they work. Built on research. Designed for everyone. No login. No paywall. No subscription.
 
-> Powered by [The Blue Signal](https://thebluesignal.com) — a digital initiative researching how people think, decide, and get deceived online.
+> Powered by [The Blue Signal](https://thebluesignal.com) — Helping People Make Better Digital Decisions.
 
 ---
 
