@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Social Engineering Simulator</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --font: 'Poppins', system-ui, -apple-system, sans-serif;
+      --bg: #ffffff;
+      --bg-sidebar: #f9fafb;
+      --bg-card: #ffffff;
+      --border: #e5e7eb;
+      --border-hover: #d1d5db;
+      --text-main: #111827;
+      --text-sub: #4b5563;
+      --text-muted: #6b7280;
+      
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --blue-dim: #dbeafe;
+      --blue-faint: #eff6ff;
+      
+      --green: #16a34a;
+      --green-faint: #f0fdf4;
+      --green-border: #bbf7d0;
+      --green-text: #15803d;
+      
+      --red: #dc2626;
+      --red-faint: #fef2f2;
+      --red-border: #fecaca;
+      --red-text: #991b1b;
+      
+      --r-md: 8px;
+      --r-lg: 12px;
+      --r-xl: 16px;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 20px 24px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    .sim-header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+
+    .sh-title {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+    }
+
+    .sh-desc {
+      font-size: 14px;
+      color: var(--text-sub);
+      margin-top: 4px;
+    }
+
+    /* ── LAYOUT ── */
+    .sim-layout {
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    /* ── SIDEBAR ── */
+    .sim-sidebar {
+      background: var(--bg-sidebar);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      padding: 16px;
+      max-height: 700px;
+      overflow-y: auto;
+    }
+
+    .sb-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* 2-Column Matrix */
+    .tactic-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .tactic-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 8px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      color: var(--text-sub);
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      height: 48px;
+      line-height: 1.2;
+    }
+
+    .tactic-btn:hover {
+      background: #f3f4f6;
+      border-color: var(--border-hover);
+      color: var(--text-main);
+    }
+
+    /* Active Tactic Button Highlight */
+    .tactic-btn.active {
+      background: var(--blue) !important;
+      border-color: var(--blue-dark) !important;
+      color: #ffffff !important;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+
+    .tactic-emoji {
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    /* ── DETAIL CARD ── */
+    .detail-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      padding: 28px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+      border-left: 5px solid var(--blue);
+      animation: fadeIn 0.15s ease-out;
+    }
+
+    .dc-header {
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .dc-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .dc-category {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--blue);
+    }
+
+    .dc-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .dc-section {
+      margin-bottom: 20px;
+    }
+
+    .dc-sec-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .dc-sec-text {
+      font-size: 14.5px;
+      color: var(--text-sub);
+      line-height: 1.5;
+    }
+
+    /* Scammer Statement Script - Highly Aesthetic Slate Speech Bubble */
+    .statement-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--blue);
+      border-radius: var(--r-md);
+      padding: 16px 20px;
+      font-size: 14.5px;
+      color: var(--text-main);
+      line-height: 1.5;
+      position: relative;
+      box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+    }
+
+    .statement-box::before {
+      content: 'ATTACKER PLAYBOOK SCRIPT';
+      position: absolute;
+      top: 4px;
+      right: 12px;
+      font-size: 8px;
+      font-weight: 800;
+      color: var(--blue);
+      letter-spacing: 0.05em;
+    }
+
+    .statement-dialog {
+      margin-top: 4px;
+      font-style: italic;
+      font-weight: 500;
+    }
+
+    .statement-dialog b {
+      color: var(--blue-dark);
+      font-weight: 700;
+    }
+
+    /* Actionable Defense Box */
+    .defense-box {
+      background: var(--green-faint);
+      border-left: 4px solid var(--green);
+      border-radius: 0 var(--r-md) var(--r-md) 0;
+      padding: 12px 16px;
+      font-size: 14px;
+      color: var(--green-text);
+      border: 1px solid var(--green-border);
+    }
+
+    .defense-box strong {
+      color: var(--green-text);
+    }
+
+    .defense-list {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .defense-list li {
+      position: relative;
+      padding-left: 18px;
+    }
+
+    .defense-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--green);
+      font-weight: bold;
+    }
+
+    /* ── RESPONSIVE DESIGN ── */
+    @media (max-width: 996px) {
+      .sim-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .tactic-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(3px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ── HEADER ── -->
+  <header class="sim-header">
+    <h1 class="sh-title">Psychological Tactic Simulator</h1>
+    <p class="sh-desc">Select any real-world manipulation tactic below to see what it is, exactly what it sounds like, and how to defend against it.</p>
+  </header>
+
+  <!-- ── LAYOUT ── -->
+  <main class="sim-layout">
+    <!-- Left Sidebar Matrix -->
+    <aside class="sim-sidebar">
+      <div class="sb-title">Tactics & Checklist Matrix</div>
+      <nav class="tactic-list" id="tactic-list"></nav>
+    </aside>
+
+    <!-- Right Detail Panel -->
+    <section class="sim-content">
+      <div class="detail-card" id="detail-card">
+        <div class="dc-header">
+          <div class="dc-meta">
+            <span class="dc-category" id="dc-category">Authority</span>
+          </div>
+          <h2 class="dc-title" id="dc-title">Tactic Title</h2>
+        </div>
+
+        <div class="dc-section">
+          <div class="dc-sec-title">🔍 The Tactic</div>
+          <p class="dc-sec-text" id="dc-exploit">Description of how this works to manipulate you.</p>
+        </div>
+
+        <div class="dc-section">
+          <div class="dc-sec-title">💬 What It Sounds Like</div>
+          <div class="statement-box">
+            <div class="statement-dialog" id="dc-statement">Tactic dialogue...</div>
+          </div>
+        </div>
+
+        <div class="dc-section">
+          <div class="dc-sec-title">🛡️ Defense Checklist</div>
+          <div class="defense-box" id="dc-defense">
+            How to verify and block this vector.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ── DATA: EXACTLY 20 VECTORS SIMPLIFIED, FULLY CONSISTENT, NO EM DASHES ──
+    const TACTICS_DATA = [
+      {
+        id: "ceo_impersonation",
+        name: "The CEO Calls You",
+        emoji: "👔",
+        category: "Authority & Obedience",
+        exploit: "Attackers pretend to be <b>your company's CEO or boss</b> to bypass rules and demand <b>immediate, secret transactions</b>.",
+        statement: "\"Hi Rohan, I am entering a <b>confidential meeting</b> and cannot take calls. I need you to purchase <b>5 Amazon vouchers worth ₹10,000 each</b> for a client gift immediately. Send the codes to me here. Keep this <b>strictly quiet</b>.\"",
+        defense: "<ul class='defense-list'><li><b>Never buy items or transfer funds</b> based entirely on chat or email orders.</li><li><b>Verify in a separate channel</b> by calling the manager directly to confirm.</li></ul>"
+      },
+      {
+        id: "fake_it_support",
+        name: "IT Support OTP Request",
+        emoji: "💻",
+        category: "Authority & Obedience",
+        exploit: "Scammers pretend to be <b>internal IT security staff</b> to command compliance and trick you into surrendering <b>secure 2-factor OTP codes</b>.",
+        statement: "\"Security Alert. We have detected a <b>suspicious login attempt</b> on your account. To prevent automatic lockout and spam labeling, read back the <b>2FA verification code</b> sent to your mobile right now.\"",
+        defense: "<ul class='defense-list'><li><b>IT support will never ask</b> for passwords or 2-factor codes.</li><li><b>Hang up immediately</b> and contact your helpline on a verified official number.</li></ul>"
+      },
+      {
+        id: "official_titles",
+        name: "Compliance Audits",
+        emoji: "📋",
+        category: "Authority & Obedience",
+        exploit: "Attackers copy <b>corporate logos, audit layouts, and legal terms</b> to build an official identity that forces <b>quick, unverified actions</b>.",
+        statement: "\"Official Compliance Audit. Your profile has violated Section 4.5. Log into our corporate <b>Staging Portal</b> and complete the mandatory <b>Security Review</b> within 24 hours to prevent profile deletion.\"",
+        defense: "<ul class='defense-list'><li><b>Check the email sender domain</b> very closely.</li><li><b>Do not let professional layouts</b> or logos override your skepticism.</li></ul>"
+      },
+      {
+        id: "account_suspension",
+        name: "Locked Accounts",
+        emoji: "🚨",
+        category: "Urgency & Fear",
+        exploit: "Scammers send <b>urgent, fake suspension warnings</b> to lock your brain in panic and make you click <b>compromised links</b>.",
+        statement: "\"Bank Alert: Your netbanking will block in 30 minutes due to <b>missing KYC</b>. Click here immediately to update details and prevent permanent blocking: <b>bank-verify-kyc.com</b>\"",
+        defense: "<ul class='defense-list'><li><b>Never click links</b> in urgent text alerts.</li><li><b>Type the official bank URL</b> manually into a fresh browser tab to check status.</li></ul>"
+      },
+      {
+        id: "digital_arrest",
+        name: "Fake Police Video Call",
+        emoji: "👮",
+        category: "Urgency & Fear",
+        exploit: "Attackers pretend to be <b>police, tax, or customs officers</b> and threaten immediate jail time over video calls, demanding <b>funds to 'verify' cleanliness</b>.",
+        statement: "\"This is Customs Inspector Sharma from customs. An illegal narcotics parcel was seized in your name. You are under <b>'digital arrest.'</b> You must stay on this video call and <b>transfer funds</b> to verify they are clean.\"",
+        defense: "<ul class='defense-list'><li><b>Digital arrest is 100% fake:</b> Police and government officials will never arrest you over Skype or WhatsApp.</li><li><b>Hang up immediately</b> and call the local police station to report.</li></ul>"
+      },
+      {
+        id: "emergency_requests",
+        name: "Stranded Friend UPI",
+        emoji: "📱",
+        category: "Urgency & Fear",
+        exploit: "Scammers hack a <b>friend's profile</b> or copy a colleague's details to manufacture a <b>critical medical or travel emergency</b>, demanding fast UPI money.",
+        statement: "\"I am stranded at airport customs because my card is blocked and I have an immediate fee. UPI me <b>₹15,000 right now!</b> I'll pay you back when I board, they're going to make me <b>miss my flight!</b>\"",
+        defense: "<ul class='defense-list'><li><b>Call the actual person:</b> Make a direct voice call to their known cell number to verify the emergency.</li><li><b>Never send emergency cash</b> purely based on text messages.</li></ul>"
+      },
+      {
+        id: "webcam_blackmail",
+        name: "Webcam Camera Threat",
+        emoji: "🤫",
+        category: "Guilt & Shame",
+        exploit: "Attackers falsely claim they <b>recorded you on camera</b> viewing adult sites, demanding a <b>blackmail fee</b> to prevent blasting it to your family.",
+        statement: "\"I have hacked your webcam and recorded you watching adult sites. If you do not transfer <b>₹40,000 to my Bitcoin wallet</b> in 24 hours, I will blast this video to your family and colleagues.\"",
+        defense: "<ul class='defense-list'><li><b>Never pay a blackmailer:</b> Paying once only prompts them to demand more.</li><li><b>Screenshot, block the sender</b>, and report to cyber police.</li></ul>"
+      },
+      {
+        id: "public_smear",
+        name: "Smear Review Threat",
+        emoji: "📢",
+        category: "Guilt & Shame",
+        exploit: "Scammers pretend to be <b>angry clients or copyright agencies</b> and threaten to post <b>plagiarism reviews on LinkedIn</b> to ruin your professional status.",
+        statement: "\"Your portfolio design has violated corporate trademarks. If you do not pay us a <b>resolution fee of ₹20,000 today</b>, we will write a public post tagging your company and clients to expose you.\"",
+        defense: "<ul class='defense-list'><li><b>Involve legal or management:</b> Bring the threat into the light. Sharing it transparently strips the scammer of all leverage.</li></ul>"
+      },
+      {
+        id: "shame_silence",
+        name: "The Negligence Trap",
+        emoji: "🔒",
+        category: "Guilt & Shame",
+        exploit: "Once a breach occurs, scammers convince the victim that <b>reporting will get them fired</b>, weaponizing <b>embarrassment to keep the exploit hidden</b>.",
+        statement: "\"If you tell your boss you gave away the OTP, they will <b>fire you for negligence</b>. Pay us <b>₹5,000</b> and we will restore your profile safely with no one knowing.\"",
+        defense: "<ul class='defense-list'><li><b>Break the silence immediately:</b> IT teams must be alerted instantly to rotate access tokens and protect colleagues.</li></ul>"
+      },
+      {
+        id: "fake_recruiters",
+        name: "The Perfect Job Offer",
+        emoji: "👩‍💼",
+        category: "Trust & Social Proof",
+        exploit: "Scammers create <b>flawless recruiter profiles</b> with polished corporate headshots to offer <b>fake high-paying jobs</b> to extract passwords.",
+        statement: "\"Hi Rohan, we are stealth-building a neobank and your <b>micro-interaction design portfolio</b> is a perfect fit. Let's schedule an <b>immediate interview</b> next week!\"",
+        defense: "<ul class='defense-list'><li><b>Check official listings:</b> Confirm the recruiter exists on the company's verified official website directory.</li></ul>"
+      },
+      {
+        id: "mutual_connections",
+        name: "Mutual Friends Hook",
+        emoji: "👥",
+        category: "Trust & Social Proof",
+        exploit: "Attackers systematically connect with <b>your colleagues first</b> to display <b>shared mutual connections</b>, lowering your suspicion.",
+        statement: "\"Hi Rohan, I see we both connect with your colleagues <b>Amit and Ritu</b>. I am reaching out to discuss a stellar design director opportunity at Apex Ventures...\"",
+        defense: "<ul class='defense-list'><li><b>Never trust connections blindly:</b> Verify with your peers directly to ask if they actually know the sender.</li></ul>"
+      },
+      {
+        id: "free_premium_gifts",
+        name: "The Free Premium Gift",
+        emoji: "🎁",
+        category: "Obligation & Favors",
+        exploit: "Scammers send <b>unsolicited premium resources</b> to build a <b>psychological debt</b>, making it hard for you to say 'no' to their next request.",
+        statement: "\"Hi Rohan, here is a free PDF of our <b>premium $500 banking trend report</b> to help with your portfolio design research! Let me know when you can review our prototype portal.\"",
+        defense: "<ul class='defense-list'><li><b>Beware unsolicited favors:</b> Stranger gifts do not obligate you to comply with subsequent demands.</li></ul>"
+      },
+      {
+        id: "active_listener",
+        name: "The Friendly Listener",
+        emoji: "🗣️",
+        category: "Obligation & Favors",
+        exploit: "Scammers spend days <b>mirroring your grievances</b> and chatting daily to build <b>false personal rapport</b> before making an exploit request.",
+        statement: "\"I completely get it, Rohan. My last design lead was <b>extremely toxic too!</b> By the way, the <b>staging prototype review link</b> is ready, let's look at it...\"",
+        defense: "<ul class='defense-list'><li><b>Keep professional boundaries:</b> Do not share emotional grievances or internal systems with unverified online profiles.</li></ul>"
+      },
+      {
+        id: "get_rich_quick",
+        name: "Guaranteed Easy Money",
+        emoji: "📈",
+        category: "Greed & Scarcity",
+        exploit: "Scammers showcase <b>too-good-to-be-true investment pools</b> to trigger excitement and <b>temporarily disable your risk filters</b>.",
+        statement: "\"Rohan, I am making <b>₹1,50,000 every week</b> using this automated neobank liquidity pool. You should invest before it closes: <b>secure-yield-auth.com</b>.\"",
+        defense: "<ul class='defense-list'><li><b>Easy money does not exist:</b> High returns with zero risk are always a trap. Never link wallets to external links.</li></ul>"
+      },
+      {
+        id: "artificial_time",
+        name: "The 45-Minute Deadline",
+        emoji: "⏳",
+        category: "Greed & Scarcity",
+        exploit: "Scammers set <b>extreme time limits</b> on lucrative offers to force <b>impulsive action</b> before you can verify them.",
+        statement: "\"Rohan, our board is closing candidate submissions in <b>45 minutes</b>. If you don't register on our staging portal and submit details by 12 PM, we will move forward. <b>Click here!</b>\"",
+        defense: "<ul class='defense-list'><li><b>Never let deadlines rush you:</b> Legitimate recruiters will always accommodate standard validation checks.</li></ul>"
+      },
+      {
+        id: "clickbait_attachments",
+        name: "The Leaked Salary PDF",
+        emoji: "📎",
+        category: "Curiosity & Links",
+        exploit: "Attackers send files with <b>confidential-looking titles</b> (like \"Corporate Restructuring.pdf\") to exploit your <b>natural urge to know secrets</b>.",
+        statement: "\"Private & Confidential: <b>Q3 Salary adjustment list</b> for senior design slab. Please check your name and slab inside. Do not discuss with peers.\"",
+        defense: "<ul class='defense-list'><li><b>Verify before clicking:</b> Contact the sender on a separate, verified thread to ask if they actually sent the file.</li></ul>"
+      },
+      {
+        id: "usb_drops",
+        name: "The Elevator USB Stick",
+        emoji: "💾",
+        category: "Curiosity & Links",
+        exploit: "Attackers leave <b>mystery physical drives</b> in shared spaces labeled with confidential tags, waiting for you to <b>plug them in and execute malware</b>.",
+        statement: "\"<b>CONFIDENTIAL: Q4 Corporate Layoff Plans</b> - HR Data Storage [Internal Use Only]\"",
+        defense: "<ul class='defense-list'><li><b>Never plug in unknown USBs:</b> Physical drives can install malware instantly. Hand any found devices to corporate IT.</li></ul>"
+      },
+      {
+        id: "technical_overwhelm",
+        name: "The Panic Computer Popup",
+        emoji: "⚙️",
+        category: "Helplessness & Savior",
+        exploit: "Scammers flood your screen with <b>complex technical errors</b> and scary alerts, immediately framing themselves as the <b>expert savior</b> who can fix it.",
+        statement: "\"<b>WARNING: Trojan-Spyware detected in system core!</b> Private keys compromised. Do not shut down. Call verified IT support immediately!\"",
+        defense: "<ul class='defense-list'><li><b>Do not call popup numbers:</b> Lock screen warnings are fake. Close browser, restart device, and call corporate IT.</li></ul>"
+      },
+      {
+        id: "foot_in_the_door",
+        name: "The Safe Lobby Click",
+        emoji: "👣",
+        category: "Commitment & Escalation",
+        exploit: "An attacker gets you to agree to a <b>minor, harmless initial request</b> to build momentum before presenting a <b>high-risk demand</b>.",
+        statement: "\"Rohan, before our interview starts, can you just click this staging link and <b>type 'ready' in the lobby?</b> You don't need credentials!\"",
+        defense: "<ul class='defense-list'><li><b>Evaluate requests independently:</b> Do not say 'yes' to a high-risk request simply because you agreed to initial steps.</li></ul>"
+      },
+      {
+        id: "love_bombing",
+        name: "The Perfect Online Partner",
+        emoji: "💖",
+        category: "Romance & Catfish",
+        exploit: "Scammers build <b>fake romantic relationships</b> and shower you with affection to build a <b>deep emotional bond</b>, using it to extract money.",
+        statement: "\"Rohan, I've never felt this kind of connection before. I'm already looking at flights. By the way, <b>can you test this new neobank app for me?</b>\"",
+        defense: "<ul class='defense-list'><li><b>Verify with live video:</b> Never share money, credentials, or transfers with online contacts you have not verified in-person.</li></ul>"
+      }
+    ];
+
+    let activeTacticId = "ceo_impersonation";
+
+    // ── INITIALIZE ──
+    function init() {
+      renderTacticList();
+      selectTactic(activeTacticId);
+    }
+
+    // ── RENDER SIDEBAR LIST ──
+    function renderTacticList() {
+      const listContainer = document.getElementById('tactic-list');
+      listContainer.innerHTML = TACTICS_DATA.map(t => {
+        return `
+          <button class="tactic-btn" id="btn-${t.id}" onclick="selectTactic('${t.id}')">
+            <span class="tactic-emoji">${t.emoji}</span>
+            <span>${t.name}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    // ── SELECT TACTIC ──
+    function selectTactic(tacticId) {
+      activeTacticId = tacticId;
+
+      // Update Active Button Styles
+      document.querySelectorAll('.tactic-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(`btn-${tacticId}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const t = TACTICS_DATA.find(x => x.id === tacticId);
+      if (!t) return;
+
+      // Populate Detail Card
+      document.getElementById('dc-category').textContent = t.category;
+      document.getElementById('dc-title').textContent = t.name;
+      document.getElementById('dc-exploit').innerHTML = t.exploit;
+      document.getElementById('dc-statement').innerHTML = t.statement;
+      document.getElementById('dc-defense').innerHTML = t.defense;
+
+      // Notify parent height change
+      postHeight();
+    }
+
+    // Run Init on DOM Load
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+
+  <!-- ── RESPONSIVE IFRAME HEIGHT SCRIPT ── -->
+  <script>
+    function postHeight() {
+      window.parent.postMessage({ iframeHeight: document.documentElement.scrollHeight }, '*');
+    }
+    window.addEventListener('load', postHeight);
+    window.addEventListener('resize', postHeight);
+    new MutationObserver(postHeight).observe(document.body, { subtree: true, childList: true });
+  </script>
+</body>
+
+</html>
