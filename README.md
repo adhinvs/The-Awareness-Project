@@ -71,7 +71,7 @@ Opens the site at `http://localhost:3000`. Changes to content files are reflecte
 npm run build
 ```
 
-Generates a static site in the `build/` folder, ready to be deployed to any static hosting service (GitHub Pages, Netlify, Vercel, etc.).
+Generates a static site in the `build/` folder, ready to be deployed to any static hosting service (GitHub Pages, Netlify, Vercel, etc.). 
 
 ---
 
