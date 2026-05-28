@@ -133,6 +133,32 @@
     .m-btn { width: 100%; padding: 10px; background: var(--border); color: var(--text-1); border: none; border-radius: var(--r-md); font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
     .m-btn:hover { background: var(--border-2); }
     .insight-block { font-size: 12px; font-style: italic; color: var(--text-2); border-left: 3px solid var(--blue-dim); padding: 6px 12px; line-height: 1.5; margin-bottom: 16px; background: var(--blue-faint); border-radius: 0 var(--r-sm) var(--r-sm) 0; text-align: left; }
+
+    /* Mobile Responsiveness Improvements */
+    @media (max-width: 580px) {
+      body { padding: 4px; }
+      .simulator-container { padding: 12px 14px; border-radius: var(--r-lg); }
+      .bank-ui { padding: 16px 12px; border-radius: var(--r-lg); margin-bottom: 16px; }
+      .bank-logo { font-size: 30px; margin-bottom: 6px; }
+      .bank-title { font-size: 17.5px; }
+      .bank-user { margin-bottom: 14px; font-size: 12px; }
+      
+      .security-layer { padding: 10px 12px; border-radius: var(--r-md); margin-bottom: 10px; }
+      .sl-icon { font-size: 18px; }
+      .sl-title { font-size: 12.5px; }
+      .sl-desc { font-size: 10px; line-height: 1.35; }
+      .sl-status { font-size: 8.5px; padding: 2px 8px; }
+
+      .mfa-buttons { flex-direction: column; gap: 8px; }
+      .mfa-btn { width: 100%; padding: 10px; }
+      
+      .toolkit-header { font-size: 13px; margin-bottom: 12px; }
+      .exploit-card { padding: 14px; border-radius: var(--r-md); }
+      .ec-header { font-size: 12.5px; }
+      .ec-desc { font-size: 11px; margin-bottom: 10px; }
+      .action-btn { padding: 8px 12px; font-size: 12px; }
+      .terminal-output { height: 76px; padding: 8px 10px; font-size: 10px; }
+    }
   </style>
 </head>
 <body>
