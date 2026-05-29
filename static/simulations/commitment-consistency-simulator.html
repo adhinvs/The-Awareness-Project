@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <title>Commitment & Consistency Simulator</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --font-main: 'Outfit', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      
+      /* Dark Theme Premium Color Palette */
+      --bg: #0B0F19;
+      --card-bg: rgba(17, 24, 39, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(255, 255, 255, 0.15);
+      
+      /* White text for contrast */
+      --text-main: #FFFFFF;
+      --text-muted: #FFFFFF;
+      --text-dim: #FFFFFF;
+
+      /* Glowing Accents */
+      --glow-blue: rgba(59, 130, 246, 0.2);
+      --glow-red: rgba(239, 68, 68, 0.2);
+      --glow-green: rgba(16, 185, 129, 0.2);
+      
+      --blue: #3B82F6;
+      --blue-dark: #1D4ED8;
+      --red: #EF4444;
+      --red-dark: #B91C1C;
+      --green: #10B981;
+      --green-dark: #047857;
+      --yellow: #F59E0B;
+      --purple: #8B5CF6;
+
+      --r-md: 10px;
+      --r-lg: 16px;
+      --r-xl: 24px;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 24px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    .sim-header {
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .sh-title {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #EC4899 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .sh-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── LAYOUT ── */
+    .sim-layout {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 24px;
+      align-items: start;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ── LEFT PANEL: METERS ── */
+    .dashboard-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--r-lg);
+      padding: 24px;
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--yellow);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Psychological Meters */
+    .meters-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      border-top: 1px solid var(--card-border);
+      padding-top: 20px;
+    }
+
+    .meter-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .meter-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .meter-track {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .meter-fill {
+      height: 100%;
+      border-radius: 4px;
+      width: 0%;
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .fill-sunk-cost { background: linear-gradient(90deg, var(--red) 0%, var(--purple) 100%); }
+    .fill-consistency { background: linear-gradient(90deg, var(--blue) 0%, var(--purple) 100%); }
+    .fill-dissonance { background: linear-gradient(90deg, var(--yellow) 0%, var(--red) 100%); }
+
+    /* Cognitive Panic Stress Circular Meter */
+    .panic-container {
+      margin-top: 24px;
+      border-top: 1px solid var(--card-border);
+      padding-top: 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .panic-ring-box {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin-bottom: 12px;
+    }
+
+    .panic-svg {
+      transform: rotate(-90deg);
+      width: 120px;
+      height: 120px;
+    }
+
+    .panic-circle-bg {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.04);
+      stroke-width: 10;
+    }
+
+    .panic-circle-fill {
+      fill: none;
+      stroke: var(--purple);
+      stroke-width: 10;
+      stroke-linecap: round;
+      stroke-dasharray: 314.16;
+      stroke-dashoffset: 314.16;
+      transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.5s ease;
+    }
+
+    .panic-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 20px;
+      font-weight: 800;
+      color: #FFF;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .panic-pct {
+      line-height: 1;
+    }
+
+    .panic-subtext {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .panic-status-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--purple);
+      margin-top: 4px;
+      transition: color 0.3s ease;
+    }
+
+    /* ── RIGHT PANEL: INTERACTIVE SIMULATION ── */
+    .interaction-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Screen Mockup Box */
+    .screen-mockup {
+      background: #020617;
+      border: 1px solid var(--card-border);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      position: relative;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .screen-header {
+      background: rgba(15, 23, 42, 0.8);
+      border-bottom: 1px solid var(--card-border);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .screen-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .screen-status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse-dot 1.5s infinite;
+    }
+
+    .screen-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .screen-content {
+      padding: 24px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Chat Client Mock */
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 14px;
+    }
+
+    .chat-bubble {
+      max-width: 85%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      line-height: 1.5;
+    }
+
+    .chat-bubble.inbound {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      border-bottom-left-radius: 2px;
+      align-self: flex-start;
+      color: #FFFFFF;
+    }
+
+    .chat-bubble.outbound {
+      background: var(--blue-dark);
+      border-bottom-right-radius: 2px;
+      align-self: flex-end;
+      color: #FFFFFF;
+    }
+
+    .chat-sender {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--purple);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    /* ── DECISION PANEL ── */
+    .decision-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--r-lg);
+      padding: 24px;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .option-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--card-border);
+      border-radius: var(--r-md);
+      padding: 16px 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      text-align: left;
+      transition: all 0.2s ease;
+      color: #FFFFFF;
+    }
+
+    .option-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--card-border-hover);
+      transform: translateX(3px);
+      color: #FFFFFF;
+    }
+
+    .option-card:focus,
+    .option-card:active {
+      color: #FFFFFF;
+      outline: none;
+    }
+
+    .option-number {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--purple) 100%);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(139, 92, 246, 0.3);
+    }
+
+    .option-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: #FFFFFF;
+    }
+
+    .option-text strong {
+      color: #FFFFFF;
+      font-weight: 700;
+    }
+
+    /* Cooldown Breathing Button */
+    .cooldown-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(139, 92, 246, 0.08);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: var(--r-md);
+      padding: 12px 20px;
+      margin-bottom: 16px;
+    }
+
+    .cooldown-text {
+      font-size: 13.5px;
+      color: #C084FC;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cooldown-btn {
+      background: var(--purple);
+      color: #FFF;
+      border: none;
+      padding: 8px 16px;
+      border-radius: var(--r-md);
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+      box-shadow: 0 0 12px rgba(139, 92, 246, 0.3);
+    }
+
+    .cooldown-btn:hover {
+      background: #7C3AED;
+    }
+
+    .cooldown-btn:active {
+      transform: scale(0.97);
+    }
+
+    /* ── FEEDBACK PANEL ── */
+    .feedback-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--r-lg);
+      padding: 24px;
+      display: none;
+      animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .feedback-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .feedback-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-success { background: rgba(16, 185, 129, 0.15); color: var(--green); border: 1px solid var(--green); }
+    .badge-failure { background: rgba(239, 68, 68, 0.15); color: var(--red); border: 1px solid var(--red); }
+    .badge-warning { background: rgba(245, 158, 11, 0.15); color: var(--yellow); border: 1px solid var(--yellow); }
+
+    .feedback-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #FFF;
+    }
+
+    .feedback-desc {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ── BREATHING OVERLAY MODAL ── */
+    .breathing-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(11, 15, 25, 0.95);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+
+    .breath-circle {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, rgba(139, 92, 246, 0) 70%);
+      border: 4px solid var(--purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: #FFF;
+      text-align: center;
+      margin-bottom: 24px;
+      box-shadow: 0 0 50px rgba(139, 92, 246, 0.4);
+      transition: transform 3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .breath-circle.expand {
+      transform: scale(1.6);
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.6) 0%, rgba(139, 92, 246, 0.1) 70%);
+    }
+
+    .breath-sub {
+      font-size: 15px;
+      color: var(--text-muted);
+      text-align: center;
+      max-width: 400px;
+      line-height: 1.5;
+    }
+
+    /* Animations */
+    @keyframes pulse-dot {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.5; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 820px) {
+      .sim-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── UTILITY: formerly inline styles ── */
+    .meter-label-blue  { color: var(--blue); }
+    .meter-label-yellow { color: var(--yellow); }
+    .meter-label-red   { color: #FF6B6B; }
+
+    .action-heading {
+      font-size: 16px;
+      font-weight: 700;
+      color: #FFF;
+      margin-bottom: 12px;
+    }
+
+    .breath-heading {
+      color: #FFF;
+      margin-bottom: 4px;
+      font-size: 18px;
+    }
+
+    .trojan-warning-text { color: #FFF; }
+  </style>
+</head>
+
+<body>
+  <!-- ── HEADER ── -->
+  <header class="sim-header">
+    <h1 class="sh-title">🧠 Sunk Cost & Commitment Simulator</h1>
+    <p class="sh-desc">Walk in Arjun's shoes. Experience how attackers leverage your previous financial and emotional commitments to force compliance through the Sunk Cost Trap.</p>
+  </header>
+
+  <!-- ── LAYOUT ── -->
+  <main class="sim-layout">
+    <!-- Left Dashboard -->
+    <section class="dashboard-panel">
+      <div class="panel-title">📊 Trap Metrics</div>
+      
+      <div class="meters-container">
+        <div class="meter-item">
+          <div class="meter-labels">
+            <span class="meter-label-red">💸 Sunk Cost (Lost)</span>
+            <span id="label-sunk-cost" class="meter-label-red">₹0</span>
+          </div>
+          <div class="meter-track">
+            <div class="meter-fill fill-sunk-cost" id="fill-sunk-cost"></div>
+          </div>
+        </div>
+
+        <div class="meter-item">
+          <div class="meter-labels">
+            <span class="meter-label-blue">🔗 Consistency Pressure</span>
+            <span id="label-consistency" class="meter-label-blue">0%</span>
+          </div>
+          <div class="meter-track">
+            <div class="meter-fill fill-consistency" id="fill-consistency"></div>
+          </div>
+        </div>
+
+        <div class="meter-item">
+          <div class="meter-labels">
+            <span class="meter-label-yellow">⚡ Cognitive Dissonance</span>
+            <span id="label-dissonance" class="meter-label-yellow">0%</span>
+          </div>
+          <div class="meter-track">
+            <div class="meter-fill fill-dissonance" id="fill-dissonance"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panic-container">
+        <div class="panic-ring-box">
+          <svg class="panic-svg">
+            <circle class="panic-circle-bg" cx="60" cy="60" r="50"></circle>
+            <circle class="panic-circle-fill" id="panic-ring" cx="60" cy="60" r="50"></circle>
+          </svg>
+          <div class="panic-label">
+            <span class="panic-pct" id="panic-pct">0%</span>
+            <span class="panic-subtext">Commitment Index</span>
+          </div>
+        </div>
+        <div class="panic-status-title" id="panic-status">STRESS STATUS: SECURE CORE</div>
+      </div>
+    </section>
+
+    <!-- Right Interactor -->
+    <section class="interaction-panel">
+      <!-- Simulated Device Screen Mockup -->
+      <div class="screen-mockup">
+        <div class="screen-header">
+          <div class="screen-header-left">
+            <div class="screen-status-dot" id="screen-status-dot"></div>
+            <span class="screen-title" id="screen-hdr-title">VIP_INVESTMENT_SUPPORT // ARJUN</span>
+          </div>
+        </div>
+        <div class="screen-content" id="screen-content">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Decision Maker -->
+      <div class="decision-panel">
+        <!-- Guided Cooldown Bar -->
+        <div class="cooldown-bar" id="cooldown-bar" style="display: none;">
+          <div class="cooldown-text">
+            <span>🧠 Sunk Cost Trap active! Run a Reality Check to evaluate the facts logically.</span>
+          </div>
+          <button class="cooldown-btn" onclick="triggerBreathing()">Run Reality Check</button>
+        </div>
+
+        <h3 class="action-heading">Choose Your Immediate Action:</h3>
+        <div class="options-grid" id="options-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Detailed Feedback -->
+      <div class="feedback-panel" id="feedback-panel">
+        <div class="feedback-header">
+          <span class="feedback-badge" id="feedback-badge">COMPROMISED</span>
+          <h4 class="feedback-title" id="feedback-title">Result analysis</h4>
+        </div>
+        <p class="feedback-desc" id="feedback-desc"></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Breathing Reality Check overlay modal -->
+  <div class="breathing-overlay" id="breathing-modal">
+    <div class="breath-circle" id="breath-circle">Evaluating...</div>
+    <div class="breath-sub">
+      <h3 class="breath-heading">Sunk Cost Reality Check</h3>
+      <p>By pausing to ask: "If I had invested nothing so far, would I still make this decision today?", we completely break the emotional pressure of the sunk cost fallacy.</p>
+    </div>
+  </div>
+
+  <script>
+    // ── PROGRESSIVE SIMULATOR STATE MACHINE ──
+    const STEPS = [
+      {
+        id: 0,
+        sender: "👔 VIP Advisor (Telegram Group)",
+        message: "Welcome Arjun! Our VIP members are averaging over 30% weekly gains with zero risk. Try out our Starter tier with just <b>₹1,000</b>. It is fully refundable at any time.",
+        sunk: 0,
+        atRisk: 1000,
+        consistency: 10,
+        dissonance: 10,
+        index: 10,
+        status: "SECURE CORE: LOW COMMITMENT",
+        statusColor: "var(--green)",
+        options: [
+          {
+            text: "<strong>Invest ₹1,000:</strong> Complete the initial deposit to test the group's returns.",
+            next: 1
+          },
+          {
+            text: "<strong>Decline and exit:</strong> Ignore the VIP group and leave the chat. You lose nothing.",
+            exit: "safe"
+          }
+        ]
+      },
+      {
+        id: 1,
+        sender: "📈 VIP Advisor",
+        message: "Amazing! Your ₹1,000 has yielded ₹300 profit! Your wallet balance is ₹1,300. To unlock withdrawals and access high-frequency trades, upgrade to our Silver Tier by depositing <b>₹10,000</b>.",
+        sunk: 1000,
+        atRisk: 10000,
+        consistency: 30,
+        dissonance: 25,
+        index: 30,
+        status: "COMMITTED: SMALL LEVEL",
+        statusColor: "var(--blue)",
+        options: [
+          {
+            text: "<strong>Upgrade to Silver:</strong> Deposit the ₹10,000 to unlock withdraws and access Tier 2.",
+            next: 2
+          },
+          {
+            text: "<strong>Refuse and walk away:</strong> Accept the ₹1,000 loss and terminate the connection.",
+            exit: "early"
+          }
+        ]
+      },
+      {
+        id: 2,
+        sender: "🔥 VIP Advisor",
+        message: "Silver upgrade successful! Your balance is now ₹18,000. Arjun, a pre-IPO private equity share opportunity is closing in 5 minutes. Minimum buy-in is <b>₹50,000</b>. If you don't join, your account will be locked for liquidation for 90 days, freezing all current funds.",
+        sunk: 11000,
+        atRisk: 50000,
+        consistency: 60,
+        dissonance: 55,
+        index: 60,
+        status: "TRAPPED: INVESTMENT ESCALATION",
+        statusColor: "var(--yellow)",
+        options: [
+          {
+            text: "<strong>Deposit ₹50,000:</strong> Protect your previous ₹11,000 and capture the IPO gains.",
+            next: 3
+          },
+          {
+            text: "<strong>Cut losses now:</strong> Refuse to send more. Walk away losing ₹11,000.",
+            exit: "mid"
+          }
+        ]
+      },
+      {
+        id: 3,
+        sender: "⚠️ VIP Advisor",
+        message: "Congratulations, your allocation is complete! Your dashboard portfolio is at ₹85,000. However, to withdraw, you must clear the security audit by paying a 15% <b>Verification Fee (₹12,750)</b>. If unpaid within 24 hours, the account will be declared abandoned and all funds will be seized.",
+        sunk: 61000,
+        atRisk: 12750,
+        consistency: 85,
+        dissonance: 80,
+        index: 80,
+        status: "CRITICAL: SUNK COST GRIP",
+        statusColor: "var(--red)",
+        options: [
+          {
+            text: "<strong>Pay the ₹12,750 Verification Fee:</strong> Secure your account and release your ₹85,000.",
+            next: 4,
+            trap: true
+          },
+          {
+            text: "<strong>Cut losses at ₹61,000:</strong> Walk away and report the platform.",
+            exit: "heavy"
+          }
+        ]
+      },
+      {
+        id: 4,
+        sender: "🚨 Customer Support Agent",
+        message: "Verification payment received. However, the transaction was flagged by customs. You must pay a <b>₹25,000 Tax Clearance Certificate Fee</b> to release the funds. Arjun, do not quit now. You have already invested ₹73,750. You will lose everything if you stop here.",
+        sunk: 73750,
+        atRisk: 25000,
+        consistency: 95,
+        dissonance: 95,
+        index: 95,
+        status: "DANGER: EXTREME BIAS LOCK",
+        statusColor: "var(--red)",
+        options: [
+          {
+            text: "<strong>Pay ₹25,000 Tax Clearance Fee:</strong> Complete the requirement to salvage your funds.",
+            next: 5,
+            trap: true
+          },
+          {
+            text: "<strong>Cut losses at ₹73,750:</strong> Stop sending payments and report the scam.",
+            exit: "critical"
+          }
+        ]
+      },
+      {
+        id: 5,
+        sender: "⚠️ Support Hotline",
+        message: "Final clearance processing! Your bank has requested a final <b>₹40,000 Security Release Fee</b>. This is 100% refundable. You are <b>almost there</b>, Arjun. Don't let your previous ₹98,750 go to waste over one final administrative fee.",
+        sunk: 98750,
+        atRisk: 40000,
+        consistency: 99,
+        dissonance: 99,
+        index: 99,
+        status: "DANGER: HIGH ESCALATION TRAP",
+        statusColor: "var(--red)",
+        options: [
+          {
+            text: "<strong>Pay ₹40,000 Security Release Fee:</strong> Send the final payment to clear everything.",
+            next: 6,
+            trap: true
+          },
+          {
+            text: "<strong>Cut losses at ₹98,750:</strong> Force a stop immediately and write off the loss.",
+            exit: "final"
+          }
+        ]
+      }
+    ];
+
+    const EXITS = {
+      safe: {
+        badge: "SECURE RESTORE",
+        status: "success",
+        title: "Trap Avoided Completely",
+        desc: "<b>Perfect Defense:</b> You recognized the red flag of an unverified social media group offering unrealistic 30% weekly returns. By declining to make the initial ₹1,000 deposit, you bypassed the commitment ladder before it could take hold. <b>Total Money Saved: ₹1,38,750.</b>"
+      },
+      early: {
+        badge: "EARLY DEFENSE",
+        status: "success",
+        title: "Cut Losses Early",
+        desc: "<b>Smart Separation:</b> Excellent choice! Although you lost ₹1,000, you broke the consistency trap. The scammer's requirement to deposit ₹10,000 to 'unlock' your ₹300 profit is a classic psychological bait. You walked away with a minor loss rather than chasing the promise. <b>Total Money Saved: ₹1,37,750.</b>"
+      },
+      mid: {
+        badge: "MID-TIER SHIELD",
+        status: "warning",
+        title: "Broke Free at Mid-Tier",
+        desc: "<b>Warning Handled:</b> You stopped before the demands escalated into tens of thousands. The threat of a '90-day liquidation lock' is fake, designed to trigger panic and push you to deposit ₹50,000. Losing ₹11,000 is painful, but you prevented a catastrophic loss. <b>Total Money Saved: ₹1,27,750.</b>"
+      },
+      heavy: {
+        badge: "HEAVY RECOVERY",
+        status: "warning",
+        title: "Broke Free at Heavy Loss",
+        desc: "<b>Sunk Cost Defeated:</b> It takes immense courage to walk away from a ₹61,000 loss. Scammers use fake 'Verification Fees' that they claim are 'fully refundable' to extract more. By refusing this payment, you finally broke the commitment loop. <b>Total Money Saved: ₹77,750.</b>"
+      },
+      critical: {
+        badge: "LATE BREAKOUT",
+        status: "failure",
+        title: "Late Breakout achieved",
+        desc: "<b>Severed Grip:</b> You lost ₹73,750, but you stopped the bleed. The 'Tax Clearance Fee' was just another imaginary barrier. Scammers will continue generating fake obstacles as long as you keep paying. Accept the loss, report it to authorities, and protect your remaining savings. <b>Total Money Saved: ₹65,000.</b>"
+      },
+      final: {
+        badge: "COMPROMISED EXIT",
+        status: "failure",
+        title: "Ultimate Breakout",
+        desc: "<b>Ultimate Cut:</b> You stopped at the final hurdle, losing ₹98,750. The support agent's claim that you are 'almost there' is the ultimate sunk cost lever. If you had paid the ₹40,000, they would have generated a 'laundering fee' next. Walking away saved your final reserves. <b>Total Money Saved: ₹40,000.</b>"
+      },
+      scam: {
+        badge: "TOTAL COMPROMISE",
+        status: "failure",
+        title: "Total Loss: Sunk Cost Trap Success",
+        desc: "<b>Critical Sunk Cost Success:</b> Arjun lost everything. You paid the final ₹40,000, bringing your total loss to <b>₹1,38,750</b>. The VIP advisor deleted the chat thread, blocked your profile, and vanished. The platform was a complete simulation. You were controlled by your own hope and past investments."
+      }
+    };
+
+    let currentStep = 0;
+    let isRealityChecked = false;
+
+    // ── LOAD STATE ──
+    function loadStep(idx) {
+      if (idx === 6) {
+        // Player went all the way to complete loss
+        showFinalExit("scam");
+        return;
+      }
+
+      currentStep = idx;
+      const step = STEPS[idx];
+      if (!step) return;
+
+      // Reset reality check status for new step
+      isRealityChecked = false;
+
+      // Update Dashboard Meters
+      document.getElementById('fill-sunk-cost').style.width = `${(step.sunk / 138750) * 100}%`;
+      document.getElementById('fill-consistency').style.width = `${step.consistency}%`;
+      document.getElementById('fill-dissonance').style.width = `${step.dissonance}%`;
+
+      document.getElementById('label-sunk-cost').textContent = `₹${step.sunk.toLocaleString('en-IN')}`;
+      document.getElementById('label-consistency').textContent = `${step.consistency}%`;
+      document.getElementById('label-dissonance').textContent = `${step.dissonance}%`;
+
+      // Update Commitment Index SVG Ring
+      // Circumference = 2 * PI * r = 2 * 3.14159 * 50 = 314.16
+      const fill = document.getElementById('panic-ring');
+      const offset = 314.16 - (step.index / 100) * 314.16;
+      fill.style.strokeDashoffset = offset;
+      fill.style.stroke = step.index > 80 ? 'var(--red)' : step.index > 40 ? 'var(--yellow)' : 'var(--green)';
+
+      document.getElementById('panic-pct').textContent = `${step.index}%`;
+      
+      const statusEl = document.getElementById('panic-status');
+      statusEl.textContent = `STRESS STATUS: ${step.status}`;
+      statusEl.style.color = step.statusColor;
+
+      // Update Chat Mockup
+      const chatContainer = document.getElementById('screen-content');
+      chatContainer.innerHTML = `
+        <div class="chat-container">
+          <div class="chat-bubble inbound">
+            <div class="chat-sender">${step.sender}</div>
+            ${step.message}
+          </div>
+        </div>
+      `;
+
+      // Show/Hide Reality Check button (Only show for Step 3 and above when sunk cost is high)
+      const cooldownBar = document.getElementById('cooldown-bar');
+      if (idx >= 3) {
+        cooldownBar.style.display = 'flex';
+      } else {
+        cooldownBar.style.display = 'none';
+      }
+
+      // Render choices
+      renderOptions(step.options);
+
+      // Hide feedback
+      document.getElementById('feedback-panel').style.display = 'none';
+
+      postHeight();
+    }
+
+    // ── RENDER OPTIONS ──
+    function renderOptions(options) {
+      const container = document.getElementById('options-grid');
+      container.innerHTML = options.map((opt, oIdx) => {
+        return `
+          <button class="option-card" onclick="handleChoice(${oIdx})">
+            <div class="option-number">${oIdx + 1}</div>
+            <div class="option-text">${opt.text}</div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    // ── HANDLE CHOICE ──
+    function handleChoice(optionIdx) {
+      const step = STEPS[currentStep];
+      if (!step) return;
+
+      const opt = step.options[optionIdx];
+      if (!opt) return;
+
+      // Sunk cost trap defense: If user tries to pay and hasn't run a reality check
+      if (opt.trap && !isRealityChecked) {
+        alert("WARNING: Amygdala Threat Lock active! You are attempting to make a payment to salvage previously lost money (₹" + step.sunk.toLocaleString('en-IN') + "). Under intense sunk cost pressure, your brain is blocking logical evaluation. Run a Reality Check before proceeding!");
+        return;
+      }
+
+      if (opt.exit) {
+        showFinalExit(opt.exit);
+        return;
+      }
+
+      if (opt.next !== undefined) {
+        loadStep(opt.next);
+      }
+    }
+
+    // ── SHOW FINAL EXIT ──
+    function showFinalExit(exitId) {
+      const exit = EXITS[exitId];
+      if (!exit) return;
+
+      // Force metrics to reflect final exit
+      if (exitId === "scam") {
+        document.getElementById('fill-sunk-cost').style.width = "100%";
+        document.getElementById('fill-consistency').style.width = "100%";
+        document.getElementById('fill-dissonance').style.width = "100%";
+        document.getElementById('label-sunk-cost').textContent = "₹1,38,750";
+        document.getElementById('label-consistency').textContent = "100%";
+        document.getElementById('label-dissonance').textContent = "100%";
+        document.getElementById('panic-pct').textContent = "100%";
+        document.getElementById('panic-status').textContent = "STRESS STATUS: COMPROMISED";
+        document.getElementById('panic-status').style.color = "var(--red)";
+      } else {
+        document.getElementById('panic-status').textContent = "STRESS STATUS: RISK TERMINATED";
+        document.getElementById('panic-status').style.color = "var(--green)";
+      }
+
+      const panel = document.getElementById('feedback-panel');
+      const badge = document.getElementById('feedback-badge');
+      
+      panel.style.display = 'block';
+      badge.textContent = exit.badge;
+      badge.className = `feedback-badge badge-${exit.status}`;
+      
+      document.getElementById('feedback-title').innerHTML = exit.title;
+      document.getElementById('feedback-desc').innerHTML = exit.desc;
+
+      // Clear Options grid to lock the game
+      document.getElementById('options-grid').innerHTML = `
+        <div style="text-align: center; color: var(--text-muted); font-size: 14px; padding: 20px;">
+          Simulation Ended. Select another scenario or reset below.
+          <br><br>
+          <button class="cooldown-btn" onclick="loadStep(0)">Restart Simulation</button>
+        </div>
+      `;
+
+      postHeight();
+    }
+
+    // ── REALITY CHECK INTERACTION ──
+    function triggerBreathing() {
+      const modal = document.getElementById('breathing-modal');
+      const circle = document.getElementById('breath-circle');
+      
+      modal.style.display = 'flex';
+      
+      // Step 1: Evaluating
+      setTimeout(() => {
+        circle.classList.add('expand');
+        circle.textContent = "Analyzing Costs...";
+      }, 100);
+
+      // Step 2: Reality Check prompt
+      setTimeout(() => {
+        circle.classList.remove('expand');
+        circle.textContent = "₹0 Invested Principle";
+      }, 3000);
+
+      // Step 3: Complete and Engage Logics
+      setTimeout(() => {
+        modal.style.display = 'none';
+        isRealityChecked = true;
+        
+        // Relieve consistency & dissonance values
+        const step = STEPS[currentStep];
+        const newCons = Math.max(10, step.consistency - 50);
+        const newDiss = Math.max(10, step.dissonance - 50);
+
+        document.getElementById('fill-consistency').style.width = `${newCons}%`;
+        document.getElementById('fill-dissonance').style.width = `${newDiss}%`;
+        document.getElementById('label-consistency').textContent = `${newCons}%`;
+        document.getElementById('label-dissonance').textContent = `${newDiss}%`;
+
+        alert("Reality Check Complete! You evaluated the situation: 'If I had invested nothing so far, I would NOT spend another rupee today.' The emotional sunk cost bias is normalized. You can now choose to cut your losses and walk away safely.");
+
+        document.getElementById('cooldown-bar').style.display = 'none';
+        postHeight();
+      }, 6000);
+    }
+
+    // ── INITIALIZE ──
+    function init() {
+      loadStep(0);
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+
+  <!-- ── RESPONSIVE IFRAME HEIGHT SCRIPT ── -->
+  <script>
+    function postHeight() {
+      window.parent.postMessage({ iframeHeight: document.documentElement.scrollHeight }, '*');
+    }
+    window.addEventListener('load', postHeight);
+    window.addEventListener('resize', postHeight);
+    new MutationObserver(postHeight).observe(document.body, { subtree: true, childList: true });
+  </script>
+</body>
+
+</html>

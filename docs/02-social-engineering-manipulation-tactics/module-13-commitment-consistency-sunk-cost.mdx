@@ -1,0 +1,323 @@
+---
+sidebar_position: 13
+title: "Commitment, Consistency & Sunk Cost"
+sidebar_label: "Commitment, Consistency & Sunk Cost"
+description: "Learn how bad actors exploit commitment bias, consistency pressure, and the sunk cost fallacy to keep victims hooked."
+tags: [social-engineering, commitment-bias, consistency, sunk-cost, psychological-manipulation, cyber-hygiene]
+---
+
+When technical defenses are strong, attackers often target human psychology instead. One of the most effective manipulation techniques combines Commitment, Consistency, and the Sunk Cost Fallacy. By securing small commitments first and gradually increasing demands, attackers create psychological pressure that makes victims continue even when warning signs become obvious.
+
+---
+
+## The Hook: The "Almost There" Investment
+
+Arjun joined an investment group on social media.
+
+The group appeared professional.
+
+Members regularly shared screenshots of profits.
+
+The investment advice seemed legitimate.
+
+He invested ₹1,000.
+
+A week later he earned ₹300.
+
+The platform appeared trustworthy.
+
+He invested ₹10,000.
+
+Then ₹50,000.
+
+Then ₹1,00,000.
+
+Everything seemed perfect.
+
+When Arjun attempted to withdraw his money, the platform displayed an error.
+
+Customer support responded immediately.
+
+They claimed a "verification fee" was required.
+
+Arjun paid.
+
+Another issue appeared.
+
+A "tax clearance fee."
+
+He paid again.
+
+Then came a "security release fee."
+
+By now, Arjun knew something felt wrong.
+
+But he had already invested too much.
+
+Eventually he lost everything.
+
+The attacker never hacked Arjun's account.
+
+The attacker hacked his commitment.
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/section2_module13_hook.png"
+    alt="A person staring anxiously at a glowing phone showing escalating investment amounts in a dark room, symbolizing the psychological sunk cost trap."
+    style={{ borderRadius: '12px', maxWidth: '100%' }}
+  />
+</figure>
+
+---
+
+## Understanding Commitment Bias
+
+Commitment bias is the tendency to continue supporting previous decisions even when evidence suggests stopping.
+
+Humans dislike admitting mistakes.
+
+Changing direction feels uncomfortable.
+
+Attackers exploit this natural tendency.
+
+Once a victim commits to something, abandoning it becomes psychologically difficult.
+
+---
+
+## Understanding Consistency Pressure
+
+People naturally want their actions to remain consistent with their previous decisions.
+
+Consistency helps create:
+
+- Stability
+- Predictability
+- Trust
+- Personal identity
+
+Attackers weaponize this behavior.
+
+Victims continue because they think:
+
+> "I've already come this far."
+
+instead of asking:
+
+> "Does this decision still make sense right now?"
+
+---
+
+## Understanding the Sunk Cost Fallacy
+
+A sunk cost is any resource that has already been spent and cannot be recovered.
+
+Examples include:
+
+- Money
+- Time
+- Effort
+- Emotional investment
+- Reputation
+
+Attackers rely on victims believing:
+
+> "If I quit now, everything I've already invested will be wasted."
+
+This mindset often causes victims to lose even more.
+
+---
+
+## The Escalation Trap
+
+Most commitment-based attacks follow a predictable pattern:
+
+1. Small request
+2. Minor investment
+3. Trust building
+4. Larger commitment
+5. Increased pressure
+6. Significant loss
+
+Each step feels reasonable when viewed individually.
+
+Victims rarely notice how far they have been pulled from their original decision.
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/section2_module13_escalation.png"
+    alt="A staircase descending into a dark void with each step labeled with escalating financial demands, representing the commitment escalation trap."
+    style={{ borderRadius: '12px', maxWidth: '100%' }}
+  />
+</figure>
+
+---
+
+## Psychological Science Behind the Attack
+
+### Escalation of Commitment
+
+People continue investing despite evidence that the decision is failing.
+
+### Loss Aversion
+
+People fear losses more than they value equivalent gains.
+
+### Cognitive Dissonance
+
+Victims struggle to accept that they may have been deceived.
+
+### Hope Manipulation
+
+Attackers continuously promise that success is "just one more step away."
+
+---
+
+## Real World Examples
+
+### Fake Investment Platforms
+
+Small early profits encourage larger investments.
+
+### Romance Scams
+
+Emotional commitment makes victims ignore warning signs.
+
+### Employment Scams
+
+Victims spend weeks applying and training before being asked for money.
+
+### Recovery Scams
+
+Previous scam verification is targeted again with fake recovery services.
+
+### Subscription Traps
+
+Small commitments gradually evolve into recurring financial losses.
+
+---
+
+## What Is Actually Happening?
+
+The attacker is not primarily stealing money.
+
+The attacker is creating psychological investment.
+
+Each commitment increases resistance to leaving.
+
+The victim becomes trapped not by technology, but by their own previous decisions.
+
+---
+
+## Warning Signs
+
+Watch for situations where:
+
+- Small requests become larger requests.
+- New fees continuously appear.
+- Deadlines are repeatedly introduced.
+- Leaving feels emotionally difficult.
+- Verification is discouraged.
+- "Just one more payment" is promised.
+
+These are common indicators of commitment-based manipulation.
+
+---
+
+## Now Try It From The Other Side
+
+This simulation demonstrates how attackers gradually increase commitment until victims feel unable to leave.
+
+Observe how each small decision influences the next.
+
+Notice when emotional investment begins overriding logical thinking.
+
+<iframe
+  id="commitment-consistency-iframe"
+  src="/simulations/commitment-consistency-simulator.html"
+  width="100%"
+  height="780"
+  style={{ border: "none", borderRadius: "16px", display: "block", marginTop: "16px" }}
+  title="Commitment Consistency Simulator"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('commitment-consistency-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._commitmentIframeHandler);
+    window._commitmentIframeHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+The simulation illustrates how attackers exploit previous investments to increase compliance. Recognizing the trap early is often the most effective defense.
+
+---
+
+## What That Just Showed You
+
+1. Small commitments often lead to larger commitments.
+
+2. Consistency pressure can override logical thinking.
+
+3. Sunk costs create emotional attachment.
+
+4. Attackers exploit previous investments.
+
+5. Independent verification breaks the manipulation cycle.
+
+6. Walking away becomes harder the longer the attack continues.
+
+---
+
+## Defensive Framework
+
+Before making any decision, ask:
+
+> "If I had invested nothing so far, would I still make this decision today?"
+
+If the answer is **No**, stop immediately.
+
+Evaluate the situation based on current facts, not past investments.
+
+---
+
+## Recovery Strategy
+
+If you suspect commitment manipulation:
+
+1. Pause immediately.
+2. Stop sending money or information.
+3. Consult a trusted third party.
+4. Verify independently.
+5. Report suspicious activity.
+6. Accept previous losses rather than increasing them.
+
+Remember:
+
+A small loss today is better than a larger loss tomorrow.
+
+---
+
+## Key Takeaways
+
+- Attackers start with small commitments.
+- Consistency pressure can cloud judgment.
+- Sunk costs should never determine future decisions.
+- Verification disrupts manipulation.
+- Walking away from a bad decision is a strength.
+- Past investments should not control future choices.
+
+---
+
+## Final Thought
+
+The most successful scams are not built on advanced technology.
+
+They are built on a simple psychological truth:
+
+People often continue investing in bad decisions because they have already invested so much.
+
+The strongest defense is remembering that past commitments do not obligate future ones.
