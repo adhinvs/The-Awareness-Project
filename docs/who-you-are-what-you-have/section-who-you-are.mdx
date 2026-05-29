@@ -1,0 +1,195 @@
+---
+title: "Who You Are & What You Have"
+sidebar_label: "Section 1: Who You Are"
+description: "What your data is worth, who is already buying it, and why the most ordinary details of your life are the most valuable things you own."
+tags:  [data-privacy, digital-safety, data-brokers, online-tracking, targeted-advertising, personal-data, data-security]
+---
+
+import DocCardList from '@theme/DocCardList';
+import Quiz from '@site/src/components/Quiz';
+
+# Who You Are & What You Have
+
+*Before anyone can manipulate, defraud, or exploit you, they need to know who you are. This section is about what you have, what it's worth, and who already has it.*
+
+---
+
+## She Just Needed a Break
+
+Meera had just come out of a relationship.
+
+She was not doing badly. She just needed some air. A change of scene. She opened her phone one evening and started searching. Solo trip destinations. Mountain stays. Places to go alone and think.
+
+She was not planning anything serious. She was just looking.
+
+![They didn't hack you, they already knew you.](/img/section1.webp)
+
+A day later, an ad appeared for a solo trekking package in Himachal. It was more than she had planned to spend. But it looked exactly right. And there was an offer button. Valid for the next two hours only.
+
+She told herself: this is something I need.
+
+She booked it.
+
+Later that week, she mentioned the trip to a friend. The friend said, "How did you find it?" **Meera said she had just seen an Advertisement**.
+
+But she had not gone looking for that ad. She had not searched on that app. She had not told any platform she was going through a breakup, or that she wanted to escape, or that she was the kind of person a time-limited offer would work on.
+
+None of that needed to be told.
+
+Her search history, her scroll patterns, her location, her time of use, and data purchased from other apps had already built a profile of her. **That profile identified her as someone in a transitional emotional moment**.
+
+The two-hour offer was not a coincidence.
+
+**It was a calculation**.
+
+The platform that sold her the trek does not know what happens to her profile next.
+
+*Neither does she!*
+
+---
+
+## What Is Actually Happening to Your Data
+
+These are not warnings. They are the current state of things.
+
+:::danger
+
+**28.15 lakh cybercrime cases were reported in India in 2025.**
+
+That is one case roughly every eleven seconds. Most of them did not begin with a technical hack. They began with data that was already in circulation, assembled and ready before the crime ever happened <span style={{ fontSize: '0.8rem' }}>***- Source: Ministry of Home Affairs, 2026***</span>
+
+:::
+
+:::warning
+
+**The data broker industry is valued at $363 billion in 2026 and growing at nearly 10% every year.**
+
+There are an estimated 5,000 data broker companies operating globally. Most people have never heard of a single one. All of them hold information about you. <span style={{ fontSize: '0.8rem' }}>***— Source: The Business Research Company, 2026***</span>
+
+:::
+
+:::info
+
+**70% of consumers who experience a strong emotional response to an ad are more likely to make a purchase.**
+
+Emotional state is not a byproduct of targeting. It is the target. Platforms do not just know what you like. They model when you are least likely to pause and think before acting. <span style={{ fontSize: '0.8rem' }}>***— Source: Emotional Marketing Statistics Report, 2025***</span>
+
+:::
+
+:::note
+
+**Your data does not stay where you gave it.**
+
+When information is sold from one app, it is merged with data from other sources and sold again. A form you completed four years ago may be in an active targeting database right now, combined with something you did last week.
+
+:::
+
+---
+
+## Now Try It From the Other Side
+
+This is a working model of how data brokers actually price and combine personal information.
+
+You are looking at this from the broker's view.
+
+Toggle the data points you know about a person. Watch the cart. Watch the combinations unlock. Watch what happens to the price the moment individual pieces come together.
+
+The numbers are illustrative. The logic is real.
+
+<iframe
+  id="data-broker-iframe"
+  src="/simulations/data-broker-simulator.html"
+  width="100%"
+  style={{ height: '2300px', border: 'none', borderRadius: '10px', display: 'block', marginTop: '16px' }}
+  title="Data Broker Simulator"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('data-broker-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._iframeHandler);
+    window._iframeHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+*The combinations you just built exist in active databases. The prices are illustrative. The logic is not.*
+
+---
+
+## What That Just Showed You
+
+The simulation is not about hacking.
+
+It is about aggregation. The slow, legal, completely normalised process of collecting small pieces of information from many places, combining them, and selling the result.
+
+Three things it is designed to make visible.
+
+**# The piece is harmless. The combination is not.**
+
+A name is nothing. A name plus a date of birth plus a location pattern plus an emotional profile is enough to build a targeted attack, a financial trap, or a physical threat. None of those inputs would have alarmed you individually. The danger does not live in any single data point. It lives in what becomes possible when they are brought together.
+
+**# The ad market and the fraud market share the same infrastructure.**
+
+The same data pipelines that followed Meera across apps are the pipelines that feed identity brokers, scam operations, and influence campaigns. Targeted advertising is not separate from the larger problem. It is where the infrastructure was built. Everyone else uses the same roads.
+
+**# You are not the customer. You are the inventory.**
+
+Every free app, every loyalty card, every personalised experience is a data collection interface. You did not pay for those services with money. You paid with information about who you are, where you go, what you feel, and when you are most likely to act without thinking.
+
+---
+
+## Three Things Worth Doing
+
+You do not need to do all of this today. Pick one. The one that creates the most discomfort when you read it is usually the right place to start.
+
+**1. Find out what is already known about you.**
+
+Search your own name on at least two people-search sites. Look up your email address on [haveibeenpwned.com](https://haveibeenpwned.com). Check what your social media profiles reveal to someone who does not follow you. Most people find things they did not know were visible.
+
+**2. Audit what you are still feeding.**
+
+Open your phone's app permissions this week. Look at which apps have access to your location, your contacts, your microphone, and your camera. Ask honestly whether each one needs it. Revoking unnecessary access from a handful of apps takes less than ten minutes.
+
+**3. Isolate your most important account.**
+
+Your primary email is the key to almost everything else you own online. Give it a unique password it shares with nothing else, and enable two-factor authentication. This single action reduces your exposure more than almost anything else on this list.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="You share your name with an app. Your date of birth with another. Your location with a third. Separately, none of it seems risky. What changes when these are combined?"
+  options={[
+    {
+      label: "Nothing much. They are still just basic details.",
+      correct: false,
+      explanation: "Individually, yes. Combined, these three pieces are enough to pass identity verification on many platforms and open financial accounts in your name. The risk is not in the pieces. It is in what the combination unlocks."
+    },
+    {
+      label: "The combination can be used to impersonate you",
+      correct: true,
+      explanation: "Correct. Data works like a combination lock. Each number alone means nothing. Together, they open something. Name plus date of birth plus location, when matched with one more piece, clears the checks that banks, government services, and other platforms use to confirm who you are."
+    },
+    {
+      label: "It becomes slightly more useful to advertisers, but nothing serious.",
+      correct: false,
+      explanation: "Advertisers are just one buyer. The same combination is actively purchased by identity brokers, fraud networks, and scam operations. The profile that showed Meera a trekking ad is the same kind of profile that enables account takeovers and loan fraud."
+    },
+    {
+      label: "It only becomes a problem if someone also has your password.",
+      correct: false,
+      explanation: "Passwords are one layer, and many systems can be accessed without them. Security questions, KYC checks, and account recovery flows often rely entirely on personal details, not passwords. A strong combination of identity data can bypass the password layer entirely."
+    }
+  ]}
+/>
+
+---
+
+## Modules in This Section
+
+<DocCardList />

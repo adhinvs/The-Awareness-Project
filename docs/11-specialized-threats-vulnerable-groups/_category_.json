@@ -1,9 +1,0 @@
-{
-  "label": "Specialized threats & vulnerable groups",
-  "position": 11,
-  "className": "icon-specialized-threats-vulnerable-groups",
-  "link": {
-    "type": "generated-index",
-    "description": "Explore the modules in this section."
-  }
-}

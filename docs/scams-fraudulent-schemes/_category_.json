@@ -1,0 +1,9 @@
+{
+  "label": "Scams & Fraudulent Schemes",
+  "position": 3,
+  "link": {
+    "type": "doc",
+    "id": "scams-fraudulent-schemes/section-scams"
+  },
+  "className": "icon-scams-fraudulent-schemes"
+}
