@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <title>Financial Scam Simulator</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --font: 'Poppins', system-ui, -apple-system, sans-serif;
+            --bg: #ffffff;
+            --bg-sidebar: #f9fafb;
+            --bg-card: #ffffff;
+            --border: #e5e7eb;
+            --border-hover: #d1d5db;
+            --text-main: #111827;
+            --text-sub: #4b5563;
+            --text-muted: #6b7280;
+
+            --blue: #2563eb;
+            --blue-dark: #1d4ed8;
+            --blue-dim: #dbeafe;
+            --blue-faint: #eff6ff;
+
+            --green: #16a34a;
+            --green-faint: #f0fdf4;
+            --green-border: #bbf7d0;
+            --green-text: #15803d;
+
+            --red: #dc2626;
+            --red-faint: #fef2f2;
+            --red-border: #fecaca;
+            --red-text: #991b1b;
+
+            --r-md: 8px;
+            --r-lg: 12px;
+            --r-xl: 16px;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 20px 24px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── HEADER ── */
+        .sim-header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
+
+        .sh-title {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+        }
+
+        .sh-desc {
+            font-size: 14px;
+            color: var(--text-sub);
+            margin-top: 4px;
+        }
+
+        /* ── LAYOUT ── */
+        .sim-layout {
+            display: grid;
+            grid-template-columns: 460px 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+
+        /* ── SIDEBAR ── */
+        .sim-sidebar {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border);
+            border-radius: var(--r-xl);
+            padding: 16px;
+            max-height: 700px;
+            overflow-y: auto;
+        }
+
+        .sb-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* 2-Column Matrix */
+        .tactic-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .tactic-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 8px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: var(--r-md);
+            color: var(--text-sub);
+            font-family: inherit;
+            font-size: 12.5px;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            height: 48px;
+            line-height: 1.2;
+        }
+
+        .tactic-btn:hover {
+            background: #f3f4f6;
+            border-color: var(--border-hover);
+            color: var(--text-main);
+        }
+
+        /* Active Tactic Button Highlight */
+        .tactic-btn.active {
+            background: var(--blue) !important;
+            border-color: var(--blue-dark) !important;
+            color: #ffffff !important;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .tactic-emoji {
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        /* ── DETAIL CARD ── */
+        .detail-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--r-xl);
+            padding: 28px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+            border-left: 5px solid var(--blue);
+            animation: fadeIn 0.15s ease-out;
+        }
+
+        .dc-header {
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+        }
+
+        .dc-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .dc-category {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--blue);
+        }
+
+        .dc-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+        }
+
+        .dc-section {
+            margin-bottom: 20px;
+        }
+
+        .dc-sec-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .dc-sec-text {
+            font-size: 14.5px;
+            color: var(--text-sub);
+            line-height: 1.5;
+        }
+
+        /* Scammer Statement Script - Highly Aesthetic Slate Speech Bubble */
+        .statement-box {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--blue);
+            border-radius: var(--r-md);
+            padding: 16px 20px;
+            font-size: 14.5px;
+            color: var(--text-main);
+            line-height: 1.5;
+            position: relative;
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+        }
+
+        .statement-box::before {
+            content: 'SCAMMER SCRIPT';
+            position: absolute;
+            top: 4px;
+            right: 12px;
+            font-size: 8px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: 0.05em;
+        }
+
+        .statement-dialog {
+            margin-top: 4px;
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .statement-dialog b {
+            color: var(--blue-dark);
+            font-weight: 700;
+        }
+
+        /* Actionable Defense Box */
+        .defense-box {
+            background: var(--green-faint);
+            border-left: 4px solid var(--green);
+            border-radius: 0 var(--r-md) var(--r-md) 0;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--green-text);
+            border: 1px solid var(--green-border);
+        }
+
+        .defense-box strong {
+            color: var(--green-text);
+        }
+
+        .defense-list {
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .defense-list li {
+            position: relative;
+            padding-left: 18px;
+        }
+
+        .defense-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--green);
+            font-weight: bold;
+        }
+
+        /* ── RESPONSIVE DESIGN ── */
+        @media (max-width: 996px) {
+            .sim-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tactic-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(3px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ── HEADER ── -->
+    <header class="sim-header">
+        <h1 class="sh-title">Financial Scam Simulator</h1>
+        <p class="sh-desc">Select any real-world financial scam tactic to see how it works, exactly what it sounds like,
+            and how to protect your money.</p>
+    </header>
+
+    <!-- ── LAYOUT ── -->
+    <main class="sim-layout">
+        <!-- Left Sidebar Matrix -->
+        <aside class="sim-sidebar">
+            <div class="sb-title">Scam Tactics & Checklist Matrix</div>
+            <nav class="tactic-list" id="tactic-list"></nav>
+        </aside>
+
+        <!-- Right Detail Panel -->
+        <section class="sim-content">
+            <div class="detail-card" id="detail-card">
+                <div class="dc-header">
+                    <div class="dc-meta">
+                        <span class="dc-category" id="dc-category">Greed & Scarcity</span>
+                    </div>
+                    <h2 class="dc-title" id="dc-title">Pig Butchering Scam</h2>
+                </div>
+
+                <div class="dc-section">
+                    <div class="dc-sec-title">🔍 The Scam</div>
+                    <p class="dc-sec-text" id="dc-exploit">Attackers spend weeks building a trusting friendship or
+                        romance, then pitch a 'guaranteed returns' crypto or forex platform that is entirely fake.</p>
+                </div>
+
+                <div class="dc-section">
+                    <div class="dc-sec-title">💬 What It Sounds Like</div>
+                    <div class="statement-box">
+                        <div class="statement-dialog" id="dc-statement">"Rohan, I've been using this automated trading
+                            bot for 6 months, and I consistently make 3% weekly returns. Let me show you how to get
+                            started—just deposit $500 and watch it grow."</div>
+                    </div>
+                </div>
+
+                <div class="dc-section">
+                    <div class="dc-sec-title">🛡️ Defense Checklist</div>
+                    <div class="defense-box" id="dc-defense">
+                        <ul class='defense-list'>
+                            <li><b>Never invest based on an online friend's advice</b> without independent verification.
+                            </li>
+                            <li>Test any platform with a tiny amount and attempt to withdraw before committing more.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // ── DATA: 20 FINANCIAL SCAM VECTORS ──
+        const TACTICS_DATA = [
+            {
+                id: "pig_butchering",
+                name: "Pig Butchering Scam",
+                emoji: "🐖",
+                category: "Greed & Scarcity",
+                exploit: "Attackers spend weeks building a trusting friendship or romance, then pitch a <b>'guaranteed returns' crypto or forex platform</b> that is entirely fake. They let you withdraw small profits first to build confidence.",
+                statement: "\"Rohan, I've been using this automated trading bot for 6 months, and I consistently make <b>3% weekly returns</b>. Let me show you how to get started—just deposit ₹5,000 and watch it grow. I'll guide you.\"",
+                defense: "<ul class='defense-list'><li><b>Never invest based on an online friend's advice</b> without independent verification.</li><li>Test any platform with a tiny amount and attempt a full withdrawal before committing larger funds.</li></ul>"
+            },
+            {
+                id: "fake_trading_dashboard",
+                name: "Fake Trading Dashboard",
+                emoji: "📊",
+                category: "Greed & Scarcity",
+                exploit: "Fraudsters create professional-looking trading websites that display <b>fake profit charts</b> and let you withdraw small sums to build trust before you deposit your life savings.",
+                statement: "\"See? Your ₹5,000 turned into ₹6,500 in just one week. Most users scale to ₹1,00,000 after seeing these returns. Shall I help you set up a bigger deposit now?\"",
+                defense: "<ul class='defense-list'><li>Check if the platform is registered with <b>SEBI, RBI, or your country's financial regulator</b>.</li><li>Search '[platform name] scam' online before depositing any money.</li></ul>"
+            },
+            {
+                id: "phishing_bank_email",
+                name: "Phishing Bank Alert",
+                emoji: "🎣",
+                category: "Urgency & Fear",
+                exploit: "A spoofed email that looks <b>exactly like your bank's official alert</b> warns of a security breach, forcing you to panic and click a link to a fake login page.",
+                statement: "\"<b>URGENT:</b> We detected an unauthorized login attempt on your HDFC Bank account. Click here immediately to verify your identity or your account will be <b>frozen within 2 hours</b>.\"",
+                defense: "<ul class='defense-list'><li><b>Never click links</b> in security alerts. Type the official bank URL directly.</li><li>Check the sender email address carefully—banks never use generic domains.</li></ul>"
+            },
+            {
+                id: "kyc_fraud_call",
+                name: "KYC Expiry Scam",
+                emoji: "📱",
+                category: "Urgency & Fear",
+                exploit: "Scammers call pretending to be from your bank or wallet, claiming your <b>KYC is expired</b>, and demand immediate remote screen-sharing or an OTP to 'update' it.",
+                statement: "\"Sir, your Paytm KYC is not updated. To avoid account suspension, download <b>AnyDesk</b> from the Play Store and share the 9-digit code. Our executive will update it in 5 minutes.\"",
+                defense: "<ul class='defense-list'><li><b>Banks and wallets never ask</b> you to install remote control apps.</li><li>Verify by calling the number on the back of your card or through the official app support chat.</li></ul>"
+            },
+            {
+                id: "ceo_wire_fraud",
+                name: "CEO Wire Transfer",
+                emoji: "👔",
+                category: "Authority & Obedience",
+                exploit: "An email appears to come from your <b>managing director or CFO</b>, urgently requesting a confidential wire transfer for a sensitive acquisition or vendor payment.",
+                statement: "\"Rohan, I'm in a board meeting and can't speak. Please transfer <b>₹8 lakh</b> to this vendor account immediately. I'll send the invoice later. This is <b>strictly confidential</b>.\"",
+                defense: "<ul class='defense-list'><li><b>Always confirm wire transfers</b> via a separate communication channel (phone call to a known number).</li><li>Be suspicious of urgency combined with demands for secrecy.</li></ul>"
+            },
+            {
+                id: "vendor_redirect",
+                name: "Vendor Payment Redirect",
+                emoji: "📄",
+                category: "Authority & Obedience",
+                exploit: "Attackers compromise a vendor's email and send you a fake invoice with <b>altered bank account details</b>, so your payment goes directly to the scammer.",
+                statement: "\"Please note our bank account has changed for this month's settlement. Kindly update your records and <b>transfer the invoice amount</b> to the new account below.\"",
+                defense: "<ul class='defense-list'><li><b>Verify any change in payment details</b> by calling the vendor's known phone number.</li><li>Always confirm with the person who normally handles the account.</li></ul>"
+            },
+            {
+                id: "romance_emergency",
+                name: "Romantic Emergency Scam",
+                emoji: "💔",
+                category: "Romance & Catfish",
+                exploit: "A fake romantic partner fabricates a sudden <b>medical or travel crisis</b>, pulling your heartstrings to demand an urgent money transfer.",
+                statement: "\"Rohan, my mother had a heart attack and I need <b>₹50,000</b> for surgery. I promise I'll return it next week. Please, you're the only one I can trust right now.\"",
+                defense: "<ul class='defense-list'><li><b>Never send money</b> to someone you haven't met in person, no matter how emotional the plea.</li><li>Suggest helping in other ways (like paying the hospital directly after verifying the bill).</li></ul>"
+            },
+            {
+                id: "romance_crypto_pitch",
+                name: "Romance Crypto Pitch",
+                emoji: "💖",
+                category: "Romance & Catfish",
+                exploit: "After building a deep online relationship, the scammer casually introduces a <b>'family-run' crypto investment opportunity</b> that is actually a pig-butchering front.",
+                statement: "\"My uncle works in finance and shared a small arbitrage window on a new exchange. I've already doubled my money. Let me help you set up an account—we could buy our dream home together.\"",
+                defense: "<ul class='defense-list'><li><b>Romance and investment never mix</b>; this is the hallmark of a pig butchering scam.</li><li>Never share financial credentials or invest based solely on an online relationship.</li></ul>"
+            },
+            {
+                id: "fake_refund_call",
+                name: "Amazon Refund Scam",
+                emoji: "🛒",
+                category: "Helplessness & Savior",
+                exploit: "Scammers pose as customer support from Amazon, Flipkart, or Paytm, claiming an <b>accidental refund</b> and guiding you to a fake portal to 'reverse' it—while stealing your banking OTP.",
+                statement: "\"Sir, your recent order was overcharged. We're processing a <b>₹3,000 refund</b>, but we need to verify your account. Please share the <b>OTP sent to your phone</b> to confirm.\"",
+                defense: "<ul class='defense-list'><li><b>Legitimate refunds do not require OTP sharing</b> or remote access.</li><li>Log into your account directly on the official app or website to check refund status.</li></ul>"
+            },
+            {
+                id: "microsoft_tech_support",
+                name: "Microsoft Tech Support",
+                emoji: "💻",
+                category: "Helplessness & Savior",
+                exploit: "A popup or cold call claims your computer is infected, and a friendly <b>'technician'</b> offers to fix it remotely, then steals your banking passwords or installs malware.",
+                statement: "\"Your computer has been sending error reports to Microsoft. Call us immediately at this number to remove the virus. We'll <b>securely scan your system for free</b>.\"",
+                defense: "<ul class='defense-list'><li><b>Microsoft or any legitimate company will never cold-call</b> you about your computer's security.</li><li>Hang up. Never allow remote access to anyone you don't know.</li></ul>"
+            },
+            {
+                id: "fake_tax_refund",
+                name: "Fake Tax Refund",
+                emoji: "💰",
+                category: "Greed & Scarcity",
+                exploit: "Scammers send messages claiming you're eligible for a large <b>income tax refund</b>, but you need to pay a 'processing fee' to release the funds.",
+                statement: "\"Congratulations! The Income Tax Department has approved a <b>₹12,500 refund</b> for FY 2024-25. Click the link to claim your refund before it expires.\"",
+                defense: "<ul class='defense-list'><li><b>The tax department never sends refund links</b> via SMS or email.</li><li>Log in to the official e-filing portal to check your refund status directly.</li></ul>"
+            },
+            {
+                id: "lottery_prize_scam",
+                name: "You Won a Prize!",
+                emoji: "🎰",
+                category: "Greed & Scarcity",
+                exploit: "An SMS or call tells you you've won a <b>massive lottery or car</b>, but you need to send 'taxes' or 'processing fees' upfront to receive it.",
+                statement: "\"Your mobile number has been selected as the winner of a <b>₹25,00,000 prize</b> in the Jio Lucky Draw. To claim, pay only ₹5,000 as processing charges.\"",
+                defense: "<ul class='defense-list'><li><b>You cannot win a contest you never entered.</b> All such messages are scams.</li><li>Never pay money to receive a prize.</li></ul>"
+            },
+            {
+                id: "advance_fee_loan",
+                name: "Advance Fee Loan",
+                emoji: "💸",
+                category: "Greed & Scarcity",
+                exploit: "Fraudulent loan companies approve huge loans instantly, but require you to pay <b>'processing fees' or 'insurance'</b> upfront before the loan amount is disbursed.",
+                statement: "\"Your loan of <b>₹10 lakh</b> has been pre-approved with 0% interest! To disburse, just pay a one-time processing fee of <b>₹5,500</b>.\"",
+                defense: "<ul class='defense-list'><li><b>Genuine lenders deduct fees from the loan amount</b>, never upfront.</li><li>Verify the lender with the RBI's list of registered NBFCs.</li></ul>"
+            },
+            {
+                id: "rental_deposit_scam",
+                name: "Rental Deposit Scam",
+                emoji: "🏠",
+                category: "Trust & Social Proof",
+                exploit: "A scammer lists a fake apartment, shows you stolen photos, and pressures you to transfer a <b>deposit to 'hold it'</b> before you can visit.",
+                statement: "\"This prime location flat is going fast—three people are viewing today. If you transfer <b>₹20,000 now</b>, I'll block it for you. You can see it tomorrow.\"",
+                defense: "<ul class='defense-list'><li><b>Never pay a deposit</b> without physically visiting the property and verifying ownership documents.</li><li>Insist on a video call walk-through and verify the landlord's identity independently.</li></ul>"
+            },
+            {
+                id: "ponzi_referral_scheme",
+                name: "Multi-Level Referral Trap",
+                emoji: "🔺",
+                category: "Trust & Social Proof",
+                exploit: "A friend or colleague pitches a <b>'passive income' scheme</b> that pays you to recruit others, which eventually collapses, leaving late joiners with losses.",
+                statement: "\"Rohan, join my team and earn <b>₹50,000 per month</b> by simply sharing links. I made ₹2 lakh last month. Look at my bank statement. The first 100 sign-ups get a bonus.\"",
+                defense: "<ul class='defense-list'><li><b>If income depends on recruiting rather than product sales</b>, it's a pyramid scheme.</li><li>Verify the business model with independent financial advisors.</li></ul>"
+            },
+            {
+                id: "fake_charity_appeal",
+                name: "Fake Charity Appeal",
+                emoji: "🎗️",
+                category: "Obligation & Favors",
+                exploit: "Attackers exploit a recent disaster or cause by impersonating a charity, using <b>emotional images</b> to extract immediate donations to their own wallets.",
+                statement: "\"Help us save children affected by the earthquake. Scan this <b>QR code</b> to donate any amount. Your small contribution can make a big difference.\"",
+                defense: "<ul class='defense-list'><li><b>Donate only through official charity websites.</b> Verify the organization's registration number.</li><li>Be wary of high-pressure emotional appeals that demand immediate payment.</li></ul>"
+            },
+            {
+                id: "recovery_scam",
+                name: "Fund Recovery Scam",
+                emoji: "🔄",
+                category: "Commitment & Escalation",
+                exploit: "After you've lost money in a scam, another scammer poses as a <b>'fund recovery agent'</b> who can get your money back for a fee—stealing from you a second time.",
+                statement: "\"We are a cybercrime recovery firm. We can trace your lost ₹2 lakh and get a refund within 7 days. Our service charge is only <b>₹15,000 upfront</b>.\"",
+                defense: "<ul class='defense-list'><li><b>Law enforcement agencies do not charge fees</b> for recovering stolen funds.</li><li>Report directly to the cyber cell; never pay a third party for recovery.</li></ul>"
+            },
+            {
+                id: "identity_theft_loan",
+                name: "Identity Theft Loan Blackmail",
+                emoji: "🪪",
+                category: "Guilt & Shame",
+                exploit: "Scammers use your leaked PAN/Aadhaar to take out loans in your name, then <b>demand money</b> to 'settle' the debt privately and avoid a police complaint.",
+                statement: "\"We have found a <b>₹5 lakh loan</b> issued on your PAN. If you don't pay ₹50,000 now, your credit score will be destroyed, and we will file a police complaint.\"",
+                defense: "<ul class='defense-list'><li><b>Check your credit report regularly</b> for unauthorized loans.</li><li>Never pay blackmailers; contact the bank and police immediately.</li></ul>"
+            },
+            {
+                id: "invoice_malware_attachment",
+                name: "Invoice Malware Attachment",
+                emoji: "📎",
+                category: "Curiosity & Links",
+                exploit: "An email disguised as a pending invoice or tax notice contains a <b>malicious PDF or Word document</b> that steals your banking info when opened.",
+                statement: "\"PFA your pending electricity bill for April. Kindly clear the dues to avoid disconnection. Click the <b>attachment</b> for details.\"",
+                defense: "<ul class='defense-list'><li><b>Don't open attachments from unknown senders.</b> Verify the bill on the official provider's website.</li><li>Keep Microsoft Office macros disabled and use a trusted PDF reader.</li></ul>"
+            },
+            {
+                id: "sim_swap_banking",
+                name: "SIM Swap to Drain Account",
+                emoji: "📶",
+                category: "Commitment & Escalation",
+                exploit: "Criminals duplicate your SIM card by tricking the telecom provider. They then <b>intercept all banking OTPs</b> and reset your passwords to empty your accounts.",
+                statement: "\"Your SIM card has been upgraded to 5G. If you did not request this, call customer care. (Once swapped, attacker receives <b>all banking OTPs</b> and resets your passwords.)\"",
+                defense: "<ul class='defense-list'><li>If your mobile network stops suddenly, <b>contact your operator immediately</b>.</li><li>Use <b>app-based 2FA</b> (Google Authenticator) instead of SMS for banking.</li></ul>"
+            }
+        ];
+
+        let activeTacticId = "pig_butchering";
+
+        // ── INITIALIZE ──
+        function init() {
+            renderTacticList();
+            selectTactic(activeTacticId);
+        }
+
+        // ── RENDER SIDEBAR LIST ──
+        function renderTacticList() {
+            const listContainer = document.getElementById('tactic-list');
+            listContainer.innerHTML = TACTICS_DATA.map(t => {
+                return `
+          <button class="tactic-btn" id="btn-${t.id}" onclick="selectTactic('${t.id}')">
+            <span class="tactic-emoji">${t.emoji}</span>
+            <span>${t.name}</span>
+          </button>
+        `;
+            }).join('');
+        }
+
+        // ── SELECT TACTIC ──
+        function selectTactic(tacticId) {
+            activeTacticId = tacticId;
+
+            // Update Active Button Styles
+            document.querySelectorAll('.tactic-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`btn-${tacticId}`);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            const t = TACTICS_DATA.find(x => x.id === tacticId);
+            if (!t) return;
+
+            // Populate Detail Card
+            document.getElementById('dc-category').textContent = t.category;
+            document.getElementById('dc-title').textContent = t.name;
+            document.getElementById('dc-exploit').innerHTML = t.exploit;
+            document.getElementById('dc-statement').innerHTML = t.statement;
+            document.getElementById('dc-defense').innerHTML = t.defense;
+
+            // Notify parent height change
+            postHeight();
+        }
+
+        // Run Init on DOM Load
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+
+    <!-- ── RESPONSIVE IFRAME HEIGHT SCRIPT ── -->
+    <script>
+        function postHeight() {
+            window.parent.postMessage({ iframeHeight: document.documentElement.scrollHeight }, '*');
+        }
+        window.addEventListener('load', postHeight);
+        window.addEventListener('resize', postHeight);
+        new MutationObserver(postHeight).observe(document.body, { subtree: true, childList: true });
+    </script>
+</body>
+
+</html>
