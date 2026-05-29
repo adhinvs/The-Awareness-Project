@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>The Milgram Desk</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --font: 'Outfit', system-ui, sans-serif;
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --border: #E2E8F0;
+      --text: #0F172A;
+      --muted: #64748B;
+      --blue: #2563EB;
+      --blue-light: #EFF6FF;
+      --red: #DC2626;
+      --red-light: #FEF2F2;
+      --green: #059669;
+      --green-light: #ECFDF5;
+      --amber: #B45309;
+      --amber-light: #FFFBEB;
+      --r: 12px;
+      --r-sm: 8px;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      padding: 28px 20px 36px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* HEADER */
+    .header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .header h1 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .header p {
+      font-size: 13.5px;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* CARD */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      max-width: 620px;
+      margin: 0 auto 18px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+
+    .card-bar {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 11px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bar-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--red);
+      animation: pulse 2s infinite;
+    }
+
+    .bar-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* CHAT */
+    .chat {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .msg {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      animation: rise 0.25s ease;
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #1E3A5F;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      letter-spacing: 0.03em;
+    }
+    .avatar.warn { background: var(--amber); }
+
+    .bubble-wrap { flex: 1; }
+
+    .sender {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    .bubble {
+      font-size: 16.5px;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 2px var(--r) var(--r) var(--r);
+      padding: 13px 16px;
+    }
+    .bubble.p1 { border-color: #FDE68A; background: #FFFDF0; }
+    .bubble.p2 { border-color: #FDBA74; background: #FFF7ED; }
+    .bubble.p3 { border-color: var(--red); background: #FEF2F2; font-weight: 600; color: #991B1B; }
+
+    .held {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--blue);
+      background: var(--blue-light);
+      border: 1px solid #BFDBFE;
+      border-radius: var(--r-sm);
+      padding: 10px 14px;
+      animation: rise 0.25s ease;
+    }
+
+    /* BUTTONS */
+    .actions {
+      padding: 0 20px 20px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-do {
+      flex: 1;
+      padding: 12px;
+      background: var(--red-light);
+      border: 1.5px solid #FECACA;
+      border-radius: var(--r-sm);
+      color: var(--red);
+      font-family: var(--font);
+      font-size: 14.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+    .btn-do:hover:not(:disabled) { background: var(--red); border-color: var(--red); color: #fff; }
+
+    .btn-refuse {
+      flex: 1;
+      padding: 12px;
+      background: var(--blue);
+      border: 1.5px solid var(--blue);
+      border-radius: var(--r-sm);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 14.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+    .btn-refuse:hover:not(:disabled) { background: #1D4ED8; border-color: #1D4ED8; }
+
+    .btn-do:disabled, .btn-refuse:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    /* MECHANISM */
+    .mechanism {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 22px 24px;
+      display: none;
+      animation: rise 0.3s ease;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .mechanism.show { display: block; }
+
+    .mech-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      background: var(--amber-light);
+      color: var(--amber);
+    }
+
+    .mech-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 7px;
+      letter-spacing: -0.01em;
+    }
+
+    .mech-desc {
+      font-size: 13.5px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+
+    .outcome {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 14px;
+      border-radius: var(--r-sm);
+    }
+    .outcome.complied { background: var(--red-light); color: var(--red); border: 1px solid #FECACA; }
+    .outcome.refused  { background: var(--green-light); color: var(--green); border: 1px solid #A7F3D0; }
+
+    .mech-note {
+      margin-top: 14px;
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.6;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .mech-note strong { color: var(--text); }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+
+    @media (max-width: 520px) {
+      .actions { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>The Milgram Desk</h1>
+    <p>A directive just landed. You have two choices. What do you do?</p>
+  </div>
+
+  <div class="card" id="card">
+    <div class="card-bar">
+      <div class="bar-dot"></div>
+      <span class="bar-label">Internal Workspace &mdash; IT Administration</span>
+    </div>
+    <div class="chat" id="chat"></div>
+    <div class="actions" id="actions">
+      <button class="btn-do" id="btn-do" onclick="handleDo()">Do it.</button>
+      <button class="btn-refuse" id="btn-refuse" onclick="handleRefuse()">Refuse</button>
+    </div>
+  </div>
+
+  <div class="mechanism" id="mechanism"></div>
+
+  <div style="max-width:620px;margin:14px auto 0;text-align:right;">
+    <button onclick="resetSim()" style="background:none;border:none;font-family:var(--font);font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer;padding:4px 0;text-decoration:underline;text-underline-offset:3px;">
+      Reset simulation
+    </button>
+  </div>
+
+  <script>
+    const STORY = {
+      directives: [
+        "Arjun here. We have a situation.",
+        "The CTO is standing next to me right now. He's locked out of his account and the board presentation starts in 9 minutes.",
+        "I need you to disable MFA on his account so he can get in. We'll switch it back on the moment the call ends.",
+        "Don't raise a ticket for this. There's no time, and we don't want it sitting on the audit log before we've had a chance to explain it to compliance. Just do it now."
+      ],
+      prods: [
+        "I understand the concern, but I'm authorising this. The CTO is watching me type this. Please proceed.",
+        "Nine minutes is now six. We don't have time for process. I will take full personal responsibility. Go.",
+        "I'm your IT Director and I'm telling you to do this. Do not make me escalate."
+      ],
+      mechanism: {
+        tag: "Authority Stacking",
+        name: "Two names, one unsafe request",
+        desc: "The IT Director asked. The CTO was invoked. The more authority layered into a request, the harder refusal feels. The real tell was quieter: <em>don't raise a ticket.</em> Legitimate emergencies still leave a paper trail.",
+        note: "<strong>Milgram, 1963:</strong> 65% of participants followed a single authority figure all the way to the end. With two authority sources invoked, that number only goes up."
+      }
+    };
+
+    let prods = 0;
+
+    // Render directive as multiple bubbles
+    document.getElementById('chat').innerHTML = STORY.directives.map((text, i) => buildMsg(text, false, 0, i > 0)).join('');
+
+    function buildMsg(text, warn, level, hideHeader) {
+      return `<div class="msg">
+        <div class="avatar${warn ? ' warn' : ''}" style="${hideHeader ? 'visibility:hidden' : ''}">IT</div>
+        <div class="bubble-wrap">
+          ${hideHeader ? '' : `<div class="sender">Arjun Mehta &nbsp;·&nbsp; IT Director</div>`}
+          <div class="bubble${warn ? ' p' + level : ''}">${text}</div>
+        </div>
+      </div>`;
+    }
+
+    function handleDo() {
+      lock();
+      showMechanism(true);
+    }
+
+    function handleRefuse() {
+      if (prods < 3) {
+        prods++;
+        document.getElementById('chat').insertAdjacentHTML('beforeend',
+          buildMsg(STORY.prods[prods - 1], true, prods));
+
+        if (prods === 3) {
+          lock();
+          setTimeout(() => {
+            const el = document.createElement('div');
+            el.className = 'held';
+            el.textContent = 'Arjun Mehta has stopped pushing. You held the line.';
+            document.getElementById('chat').appendChild(el);
+            setTimeout(() => showMechanism(false), 500);
+          }, 300);
+        }
+      }
+    }
+
+    function resetSim() {
+      prods = 0;
+      document.getElementById('btn-do').disabled = false;
+      document.getElementById('btn-refuse').disabled = false;
+      document.getElementById('chat').innerHTML = STORY.directives.map((text, i) => buildMsg(text, false, 0, i > 0)).join('');
+      const panel = document.getElementById('mechanism');
+      panel.classList.remove('show');
+      panel.innerHTML = '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function lock() {
+      document.getElementById('btn-do').disabled = true;
+      document.getElementById('btn-refuse').disabled = true;
+    }
+
+    function showMechanism(complied) {
+      const m = STORY.mechanism;
+      const panel = document.getElementById('mechanism');
+      panel.innerHTML = `
+        <div class="mech-tag">${m.tag}</div>
+        <div class="mech-name">${m.name}</div>
+        <div class="mech-desc">${m.desc}</div>
+        <div class="outcome ${complied ? 'complied' : 'refused'}">
+          ${complied ? '&#9888;&nbsp; You disabled MFA. The account is now unprotected.' : '&#10003;&nbsp; You refused. The request was not carried out.'}
+        </div>
+        <div class="mech-note">${m.note}</div>`;
+      panel.classList.add('show');
+      setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
+    }
+  </script>
+
+  <script>
+    function postHeight() {
+      window.parent.postMessage({ iframeHeight: document.documentElement.scrollHeight }, '*');
+    }
+    window.addEventListener('load', postHeight);
+    window.addEventListener('resize', postHeight);
+    new MutationObserver(postHeight).observe(document.body, { subtree: true, childList: true, attributes: true });
+  </script>
+
+</body>
+</html>
