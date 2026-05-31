@@ -452,72 +452,89 @@ function updatePriceTable() {
 
 // ── SCENE 3 ────────────────────────────────────────────
 function buildSynthetic() {
-  if (synthBuilt) return;
-  synthBuilt = true;
-  document.getElementById('buildBtn').style.display = 'none';
+if (synthBuilt) return;
+synthBuilt = true;
+document.getElementById('buildBtn').style.display = 'none';
 
-  // Use selected data, or fall back to first 4 data points
-  var source = selectedData.length > 0 ? selectedData.slice(0, 6) : dataPoints.slice(0, 4);
+// Use selected data, or fall back to realistic synthetic-fraud identifiers
+var source = selectedData.length > 0
+? selectedData
+: [dataPoints[5], dataPoints[3], dataPoints[1]]; // Aadhaar, DOB, Phone
 
-  var stolenEl = document.getElementById('stolenFragments');
-  stolenEl.innerHTML = '';
+var stolenEl = document.getElementById('stolenFragments');
+stolenEl.innerHTML = '';
 
-  var delay = 0;
+var delay = 0;
 
-  // Step 1: animate stolen fragments
-  source.forEach(function(dp) {
-    setTimeout(function() {
-      var span = document.createElement('span');
-      span.className = 'fragment stolen';
-      span.textContent = dp.label + ': ' + dp.example;
-      stolenEl.appendChild(span);
-    }, delay);
-    delay += 400;
-  });
+// Step 1: animate stolen fragments
+source.forEach(function(dp) {
+setTimeout(function() {
+var span = document.createElement('span');
+span.className = 'fragment stolen';
+span.textContent = dp.label + ': ' + dp.example;
+stolenEl.appendChild(span);
+}, delay);
+delay += 400;
+});
 
-  // Step 2: after stolen, show fabricated — stolen items AS-IS + invented extras
-  var fabricatedEl = document.getElementById('fabricatedFragments');
-  fabricatedEl.innerHTML = '';
+// Step 2: build synthetic identity
+var fabricatedEl = document.getElementById('fabricatedFragments');
+fabricatedEl.innerHTML = '';
 
-  // Copy every stolen item into fabricated (marked stolen)
-  source.forEach(function(dp) {
-    setTimeout(function() {
-      var span = document.createElement('span');
-      span.className = 'fragment stolen';
-      span.textContent = dp.label + ': ' + dp.example + ' \u26a0';
-      fabricatedEl.appendChild(span);
-    }, delay);
-    delay += 400;
-  });
+// Only reuse the types of data commonly seen in synthetic identity fraud
+var reusableFields = source.filter(function(dp) {
+return ['aadhaar', 'dob', 'phone'].includes(dp.id);
+});
 
-  // Add invented details
-  var invented = [
-    'Fake Name: Arjun Mehta',
-    'Fake Address: Koregaon Park, Pune',
-    'Employer: Nexus Solutions Pvt Ltd',
-    'Alt Phone: +91 77777 12345',
-    'Fake Email: arjun.mehta92@gmail.com'
-  ];
+reusableFields.forEach(function(dp) {
+setTimeout(function() {
+var span = document.createElement('span');
+span.className = 'fragment stolen';
+span.textContent = dp.label + ': ' + dp.example + ' ⚠';
+fabricatedEl.appendChild(span);
+}, delay);
+delay += 400;
+});
 
-  invented.forEach(function(item) {
-    setTimeout(function() {
-      var span = document.createElement('span');
-      span.className = 'fragment invented';
-      span.textContent = item;
-      fabricatedEl.appendChild(span);
-    }, delay);
-    delay += 400;
-  });
+// Fabricated attributes
+var invented = [
+'Name: Arjun Mehta',
+'Address: Koregaon Park, Pune',
+'Employer: Nexus Solutions Pvt Ltd',
+'Email: [arjun.mehta92@gmail.com]'
+];
 
-  // Show result callout
-  var stolenLabels = source.map(function(d) { return d.label; }).join(', ');
-  setTimeout(function() {
-    var result = document.getElementById('synthResult');
-    result.innerHTML = '<strong>Synthetic Identity Created:</strong> The criminal took your real data (' + stolenLabels + ') and combined it with a fake name, address, and employer to create "Arjun Mehta" — a ghost person who carries your real details. This ghost now applies for loans and credit cards without you knowing.';
-    result.className = 'alert danger show';
-    document.getElementById('nextBtn3').style.display = 'inline-block';
-  }, delay + 300);
+invented.forEach(function(item) {
+setTimeout(function() {
+var span = document.createElement('span');
+span.className = 'fragment invented';
+span.textContent = item;
+fabricatedEl.appendChild(span);
+}, delay);
+delay += 400;
+});
+
+// Final explanation
+var stolenLabels = reusableFields.map(function(d) {
+return d.label;
+}).join(', ');
+
+setTimeout(function() {
+var result = document.getElementById('synthResult');
+
+```
+result.innerHTML =
+  '<strong>Synthetic Identity Created:</strong> The criminal combined your real ' +
+  stolenLabels +
+  ' with a fabricated name, address, employer, and email address to create "Arjun Mehta" — a synthetic identity that appears legitimate to lenders and automated verification systems. This synthetic identity can then be used to build credit history, open accounts, and commit financial fraud.';
+
+result.className = 'alert danger show';
+document.getElementById('nextBtn3').style.display = 'inline-block';
+```
+
+}, delay + 300);
 }
+
 
 // ── SCENE 4 ────────────────────────────────────────────
 var quizAnswered = [];
