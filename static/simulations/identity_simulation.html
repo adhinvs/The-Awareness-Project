@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Who Are You Online? — Identity Simulation</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --card: #1a1a28;
+    --border: #2a2a40;
+    --accent: #ff4d6d;
+    --accent2: #00f5d4;
+    --accent3: #ffd166;
+    --text: #e8e8f0;
+    --muted: #6b6b88;
+    --danger: #ff3a3a;
+    --safe: #06d6a0;
+    --warn: #ffd166;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content:'';
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(255,77,109,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,77,109,0.03) 1px, transparent 1px);
+    background-size:40px 40px;
+    pointer-events:none;
+    z-index:0;
+  }
+  .container { max-width:960px; margin:0 auto; padding:2rem 1.5rem; position:relative; z-index:1; }
+
+  header { text-align:center; padding:3rem 0 2rem; border-bottom:1px solid var(--border); margin-bottom:3rem; }
+  .tag { font-family:'Space Mono',monospace; font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); border:1px solid var(--accent); display:inline-block; padding:0.3rem 0.8rem; margin-bottom:1.2rem; }
+  h1 { font-size:clamp(2rem,5vw,3.5rem); font-weight:800; line-height:1.1; margin-bottom:1rem; }
+  h1 span { color:var(--accent); }
+  .subtitle { color:var(--muted); font-size:1rem; max-width:500px; margin:0 auto; line-height:1.6; }
+
+  .progress-bar { display:flex; gap:0.4rem; margin-bottom:2.5rem; justify-content:center; }
+  .progress-step { height:4px; flex:1; max-width:80px; background:var(--border); border-radius:2px; transition:background 0.4s; }
+  .progress-step.done { background:var(--accent2); }
+  .progress-step.active { background:var(--accent); }
+
+  .scene { display:none; animation:fadeIn 0.5s ease; }
+  .scene.active { display:block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+  .scene-title { font-family:'Space Mono',monospace; font-size:0.72rem; color:var(--accent2); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:0.6rem; }
+  .scene-heading { font-size:1.8rem; font-weight:800; margin-bottom:1rem; line-height:1.2; }
+  .scene-desc { color:var(--muted); line-height:1.7; margin-bottom:2rem; font-size:0.95rem; }
+
+  .card-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:1rem; margin-bottom:2rem; }
+  .data-card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:1.2rem; cursor:pointer; transition:all 0.25s; position:relative; overflow:hidden; }
+  .data-card:hover { border-color:var(--accent); transform:translateY(-2px); box-shadow:0 8px 24px rgba(255,77,109,0.15); }
+  .data-card.selected { border-color:var(--accent2); background:rgba(0,245,212,0.07); }
+  .data-card.selected::after { content:'✓'; position:absolute; top:0.6rem; right:0.8rem; color:var(--accent2); font-family:'Space Mono',monospace; font-size:0.9rem; }
+  .card-icon { font-size:1.8rem; margin-bottom:0.6rem; }
+  .card-label { font-size:0.88rem; font-weight:600; margin-bottom:0.2rem; }
+  .card-example { font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--muted); }
+
+  .threat-box { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1.5rem; margin-bottom:2rem; }
+  .threat-label { font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--muted); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.8rem; }
+  .threat-meter { height:12px; background:var(--border); border-radius:6px; overflow:hidden; margin-bottom:0.6rem; }
+  .threat-fill { height:100%; border-radius:6px; transition:width 0.6s ease,background 0.4s; background:var(--safe); width:0%; }
+  .threat-value { font-family:'Space Mono',monospace; font-size:1.4rem; font-weight:700; }
+  .threat-value.low { color:var(--safe); }
+  .threat-value.med { color:var(--warn); }
+  .threat-value.high { color:var(--danger); }
+
+  .price-table { background:var(--card); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-bottom:2rem; }
+  .price-row { display:flex; justify-content:space-between; align-items:center; padding:1rem 1.4rem; border-bottom:1px solid var(--border); transition:background 0.2s; opacity:0.3; }
+  .price-row:last-child { border-bottom:none; }
+  .price-row.active { opacity:1; background:rgba(255,77,109,0.05); }
+  .price-item { font-size:0.9rem; font-weight:600; }
+  .price-amt { font-family:'Space Mono',monospace; font-size:0.85rem; color:var(--accent); background:rgba(255,77,109,0.12); padding:0.2rem 0.7rem; border-radius:4px; }
+
+  .scenario-cards { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:2rem; }
+  @media(max-width:600px){ .scenario-cards{grid-template-columns:1fr} }
+  .scenario-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:1.4rem; cursor:pointer; transition:all 0.25s; }
+  .scenario-card:hover { border-color:var(--accent3); box-shadow:0 6px 20px rgba(255,209,102,0.1); }
+  .scenario-card.chosen { border-color:var(--accent2); background:rgba(0,245,212,0.05); }
+  .scenario-card.wrong { border-color:var(--danger); background:rgba(255,58,58,0.05); animation:shake 0.4s; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+  .scenario-card h4 { font-size:0.95rem; font-weight:700; margin-bottom:0.5rem; }
+  .scenario-card p { font-size:0.82rem; color:var(--muted); line-height:1.5; }
+
+  .alert { border-radius:8px; padding:1.2rem 1.4rem; margin-bottom:1.5rem; font-size:0.9rem; line-height:1.6; display:none; }
+  .alert.danger { background:rgba(255,58,58,0.1); border:1px solid rgba(255,58,58,0.3); color:#ff8a8a; }
+  .alert.success { background:rgba(6,214,160,0.1); border:1px solid rgba(6,214,160,0.3); color:#06d6a0; }
+  .alert.warn { background:rgba(255,209,102,0.1); border:1px solid rgba(255,209,102,0.3); color:#ffd166; }
+  .alert.show { display:block; animation:fadeIn 0.3s; }
+
+  .timeline { position:relative; padding-left:2rem; margin-bottom:2rem; }
+  .timeline::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:2px; background:var(--border); }
+  .timeline-item { position:relative; margin-bottom:1.2rem; padding:1rem 1.2rem; background:var(--card); border:1px solid var(--border); border-radius:8px; cursor:pointer; transition:all 0.25s; opacity:0.5; }
+  .timeline-item::before { content:''; position:absolute; left:-1.75rem; top:1.2rem; width:12px; height:12px; border-radius:50%; background:var(--border); border:2px solid var(--bg); transition:background 0.3s; }
+  .timeline-item.done { opacity:1; border-color:var(--accent2); }
+  .timeline-item.done::before { background:var(--accent2); }
+  .timeline-item h4 { font-size:0.92rem; font-weight:700; margin-bottom:0.3rem; }
+  .timeline-item p { font-size:0.8rem; color:var(--muted); line-height:1.5; }
+
+  .score-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:2.5rem; text-align:center; margin-bottom:2rem; }
+  .score-ring { width:120px; height:120px; border-radius:50%; border:6px solid var(--border); display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem; font-family:'Space Mono',monospace; font-size:2rem; font-weight:700; }
+
+  .checklist { display:grid; gap:0.6rem; margin-bottom:2rem; }
+  .check-item { display:flex; align-items:center; gap:1rem; background:var(--card); border:1px solid var(--border); border-radius:8px; padding:1rem 1.2rem; cursor:pointer; transition:all 0.25s; font-size:0.9rem; }
+  .check-item:hover { border-color:var(--muted); }
+  .check-item.checked { border-color:var(--safe); background:rgba(6,214,160,0.06); text-decoration:line-through; color:var(--muted); }
+  .check-icon { width:22px; height:22px; border-radius:50%; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:0.75rem; transition:all 0.25s; }
+  .check-item.checked .check-icon { background:var(--safe); border-color:var(--safe); color:#000; }
+
+  .btn { display:inline-block; padding:0.85rem 2rem; border-radius:6px; font-family:'Syne',sans-serif; font-size:0.9rem; font-weight:700; cursor:pointer; border:none; transition:all 0.2s; letter-spacing:0.03em; }
+  .btn-primary { background:var(--accent); color:white; }
+  .btn-primary:hover { background:#ff2d50; transform:translateY(-1px); box-shadow:0 6px 20px rgba(255,77,109,0.35); }
+  .btn-secondary { background:transparent; color:var(--text); border:1px solid var(--border); }
+  .btn-secondary:hover { border-color:var(--accent2); color:var(--accent2); }
+  .btn-row { display:flex; gap:1rem; flex-wrap:wrap; margin-top:2rem; }
+
+  .badge { display:inline-flex; align-items:center; gap:0.4rem; font-family:'Space Mono',monospace; font-size:0.72rem; padding:0.3rem 0.8rem; border-radius:4px; background:rgba(255,209,102,0.1); border:1px solid rgba(255,209,102,0.3); color:var(--warn); margin-bottom:1.5rem; }
+
+  /* Synthetic scene */
+  .fragment-box { background:var(--card); border:1px dashed var(--border); border-radius:12px; padding:1.5rem; margin-bottom:1.5rem; min-height:100px; }
+  .fragment-box-label { font-family:'Space Mono',monospace; font-size:0.68rem; color:var(--muted); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:1rem; }
+  .fragments { display:flex; flex-wrap:wrap; gap:0.6rem; }
+  .fragment { padding:0.4rem 0.9rem; border-radius:4px; font-family:'Space Mono',monospace; font-size:0.75rem; animation:popIn 0.3s ease; }
+  .fragment.stolen { background:rgba(255,77,109,0.18); border:1px solid rgba(255,77,109,0.5); color:#ff8a8a; }
+  .fragment.invented { background:rgba(255,209,102,0.12); border:1px solid rgba(255,209,102,0.4); color:var(--warn); }
+  @keyframes popIn { from{transform:scale(0.8);opacity:0} to{transform:scale(1);opacity:1} }
+
+  .nav-dots { display:flex; justify-content:center; gap:0.5rem; margin-bottom:2rem; }
+  .dot { width:8px; height:8px; border-radius:50%; background:var(--border); transition:background 0.3s,transform 0.3s; }
+  .dot.active { background:var(--accent); transform:scale(1.3); }
+  .dot.done { background:var(--accent2); }
+
+  footer { text-align:center; padding:2rem 0; border-top:1px solid var(--border); margin-top:3rem; font-family:'Space Mono',monospace; font-size:0.68rem; color:var(--muted); letter-spacing:0.08em; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="tag">Cyber Awareness Simulation</div>
+    <h1>Who Are You<br><span>Online?</span></h1>
+    <p class="subtitle">An interactive simulation to understand how your digital identity can be stolen, sold, and weaponized — and how to fight back.</p>
+  </header>
+
+  <div class="progress-bar" id="progressBar"></div>
+  <div class="nav-dots" id="navDots"></div>
+
+  <!-- SCENE 1 -->
+  <div class="scene active" id="scene1">
+    <div class="scene-title">// Scene 01 — Your Digital Fingerprint</div>
+    <div class="scene-heading">What makes you identifiable?</div>
+    <div class="scene-desc">Select every piece of information you share online or have publicly visible. Watch your exposure score rise as the picture becomes clearer.</div>
+    <div class="threat-box">
+      <div class="threat-label">Identity Exposure Score</div>
+      <div class="threat-meter"><div class="threat-fill" id="threatFill"></div></div>
+      <div class="threat-value low" id="threatValue">0 / 100</div>
+    </div>
+    <div class="card-grid" id="dataCardGrid"></div>
+    <div id="alert1" class="alert danger">
+      🚨 <strong>High Exposure:</strong> With this many data points visible, a criminal has everything needed to impersonate you — open bank accounts, apply for loans, or take over existing accounts.
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="goTo(2)">Next: What's it worth? →</button>
+    </div>
+  </div>
+
+  <!-- SCENE 2 -->
+  <div class="scene" id="scene2">
+    <div class="scene-title">// Scene 02 — The Dark Web Marketplace</div>
+    <div class="scene-heading">Your data has a price tag</div>
+    <div class="scene-desc">Based on what you shared, here's what your information sells for on dark web markets. The more complete the picture, the higher the price.</div>
+    <div class="badge">💰 Estimated dark web value of your profile</div>
+    <div class="price-table" id="priceTable"></div>
+    <div class="alert warn show">⚠ These are real market rates from cybersecurity research reports. Your information is a commodity — bought and sold in bulk, often within hours of a breach.</div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goTo(1)">← Back</button>
+      <button class="btn btn-primary" onclick="goTo(3)">Next: Synthetic Identity →</button>
+    </div>
+  </div>
+
+  <!-- SCENE 3 -->
+  <div class="scene" id="scene3">
+    <div class="scene-title">// Scene 03 — Frankenstein Fraud</div>
+    <div class="scene-heading">Creating a fake "you"</div>
+    <div class="scene-desc">Synthetic identity fraud takes your real stolen data and combines it with made-up details to create a ghost person. Click the button to watch it happen.</div>
+    <div class="fragment-box">
+      <div class="fragment-box-label">🔴 Stolen from you</div>
+      <div class="fragments" id="stolenFragments"><em style="color:var(--muted);font-size:0.8rem">Your selected data will appear here...</em></div>
+    </div>
+    <div class="fragment-box">
+      <div class="fragment-box-label">🟡 Fabricated identity built by criminal</div>
+      <div class="fragments" id="fabricatedFragments"><em style="color:var(--muted);font-size:0.8rem">Waiting...</em></div>
+    </div>
+    <div id="synthResult" class="alert danger"></div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goTo(2)">← Back</button>
+      <button class="btn btn-primary" id="buildBtn" onclick="buildSynthetic()">▶ Build the Synthetic Identity</button>
+      <button class="btn btn-primary" id="nextBtn3" onclick="goTo(4)" style="display:none">Next: Spot the Attack →</button>
+    </div>
+  </div>
+
+  <!-- SCENE 4 -->
+  <div class="scene" id="scene4">
+    <div class="scene-title">// Scene 04 — Threat Recognition</div>
+    <div class="scene-heading">Would you spot the attack?</div>
+    <div class="scene-desc">Real attacks come disguised as normal communications. Choose how you'd respond to each situation.</div>
+    <div id="quizContainer"></div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goTo(3)">← Back</button>
+      <button class="btn btn-primary" id="nextBtn4" onclick="goTo(5)" style="display:none">Next: Recovery Plan →</button>
+    </div>
+  </div>
+
+  <!-- SCENE 5 -->
+  <div class="scene" id="scene5">
+    <div class="scene-title">// Scene 05 — Identity Recovery</div>
+    <div class="scene-heading">Your identity was stolen. Now what?</div>
+    <div class="scene-desc">Work through the official recovery steps. Click each one to complete it.</div>
+    <div class="timeline" id="recoveryTimeline"></div>
+    <div id="alert5" class="alert success">✅ <strong>Recovery Complete!</strong> You've taken all the right steps. Most victims who act quickly restore their identity within 3–6 months.</div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goTo(4)">← Back</button>
+      <button class="btn btn-primary" id="nextBtn5" onclick="goTo(6)" style="display:none">Next: Protect Yourself →</button>
+    </div>
+  </div>
+
+  <!-- SCENE 6 -->
+  <div class="scene" id="scene6">
+    <div class="scene-title">// Scene 06 — Your Defense Protocol</div>
+    <div class="scene-heading">Lock down your identity</div>
+    <div class="scene-desc">Tick off every protection you've put in place. The more boxes checked, the harder you are to attack.</div>
+    <div class="checklist" id="protectionChecklist"></div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goTo(5)">← Back</button>
+      <button class="btn btn-primary" onclick="goTo(7)">See Your Final Score →</button>
+    </div>
+  </div>
+
+  <!-- SCENE 7 -->
+  <div class="scene" id="scene7">
+    <div class="scene-title">// Scene 07 — Simulation Complete</div>
+    <div class="scene-heading">Your Cyber Awareness Score</div>
+    <div class="score-card">
+      <div class="score-ring" id="finalRing">—</div>
+      <div id="finalGrade" style="font-size:1.4rem;font-weight:800;margin-bottom:0.6rem"></div>
+      <div id="finalMessage" style="color:var(--muted);font-size:0.9rem;line-height:1.6;max-width:400px;margin:0 auto"></div>
+    </div>
+    <div id="finalTips" class="alert warn show"></div>
+    <div class="btn-row" style="justify-content:center">
+      <button class="btn btn-secondary" onclick="restartSim()">↺ Restart Simulation</button>
+    </div>
+  </div>
+
+  <footer>CYBER AWARENESS PROGRAM &nbsp;|&nbsp; FOR EDUCATIONAL USE &nbsp;|&nbsp; REPORT CYBER CRIMES: 1930 &nbsp;|&nbsp; cybercrime.gov.in</footer>
+</div>
+
+<script>
+// ── STATE ──────────────────────────────────────────────
+var currentScene = 1;
+var totalScenes  = 7;
+var selectedData = [];        // array of dataPoint objects
+var quizScore    = 0;
+var quizDone     = 0;
+var recoveryDone = 0;
+var checksDone   = 0;
+var synthBuilt   = false;
+
+// ── DATA ───────────────────────────────────────────────
+var dataPoints = [
+  { id:'name',     icon:'👤', label:'Full Name',           example:'Priya Sharma',          weight:8  },
+  { id:'phone',    icon:'📱', label:'Phone Number',         example:'+91 98765 43210',       weight:12 },
+  { id:'email',    icon:'📧', label:'Email Address',        example:'priya@gmail.com',       weight:10 },
+  { id:'dob',      icon:'🎂', label:'Date of Birth',        example:'14 June 1990',          weight:10 },
+  { id:'address',  icon:'🏠', label:'Home Address',         example:'Andheri West, Mumbai',  weight:12 },
+  { id:'aadhaar',  icon:'🪪', label:'Aadhaar / National ID',example:'XXXX-XXXX-8431',        weight:20 },
+  { id:'employer', icon:'🏢', label:'Employer / Workplace', example:'Tech Corp, Bengaluru',  weight:6  },
+  { id:'bank',     icon:'🏦', label:'Bank Account Details', example:'SBI ••••4290',          weight:18 },
+  { id:'mother',   icon:'👩', label:"Mother's Maiden Name", example:'Iyer',                  weight:8  },
+  { id:'photo',    icon:'📸', label:'Profile Photo',        example:'Public on Instagram',   weight:6  }
+];
+
+var priceRows = [
+  { id:'email',   label:'Email + password',         price:'₹150 – ₹800'     },
+  { id:'phone',   label:'Phone + OTP intercept',    price:'₹300 – ₹1,500'   },
+  { id:'dob',     label:'DOB + name combo',         price:'₹200 – ₹600'     },
+  { id:'aadhaar', label:'National ID number',       price:'₹800 – ₹4,000'   },
+  { id:'bank',    label:'Bank login credentials',   price:'₹1,200 – ₹8,000' },
+  { id:'address', label:'Full address record',      price:'₹400 – ₹1,200'   },
+  { id:'all',     label:'Complete "fullz" profile', price:'₹4,000 – ₹20,000+'}
+];
+
+var quizQuestions = [
+  {
+    q: 'You get an SMS from "SBI BANK" saying your account will be blocked. It asks you to verify by clicking a link and entering your OTP. What do you do?',
+    options: [
+      { text:'Click the link quickly — account security is urgent',                      correct:false, explain:'This is a phishing SMS. Banks NEVER ask for OTPs via a link. The urgency is intentional to panic you.' },
+      { text:'Ignore it and call SBI\'s official number (1800-11-2211) directly',        correct:true,  explain:'Correct! Always contact your bank through official channels, never through links in messages.' },
+      { text:'Forward it to family to warn them',                                        correct:false, explain:'Don\'t forward phishing links — they can harm others. Report it to 1930 instead.' },
+      { text:'Reply to the SMS asking if it\'s real',                                    correct:false, explain:'Replying confirms your number is active, which fraudsters exploit.' }
+    ]
+  },
+  {
+    q: 'A job website asks for your Aadhaar number, PAN, and bank details during registration — before any interview. What do you do?',
+    options: [
+      { text:'Fill it in — seems like standard KYC',                                     correct:false, explain:'Legitimate employers never ask for sensitive financial details before hiring. This is a data-harvesting scam.' },
+      { text:'Provide only your name and email for now',                                 correct:true,  explain:'Correct! Never share Aadhaar, PAN, or bank details with unverified platforms.' },
+      { text:'Share Aadhaar only — it\'s government-issued so it\'s safe',               correct:false, explain:'Aadhaar should only be shared with verified, authorised entities. It is extremely sensitive.' },
+      { text:'Give fake details to be safe',                                             correct:false, explain:'This does not protect your real data you may share later and can backfire legally.' }
+    ]
+  },
+  {
+    q: 'You check your credit report and find a credit card you never applied for with ₹45,000 in dues. What is your first move?',
+    options: [
+      { text:'Pay the dues to clear your credit score',                                  correct:false, explain:'Never pay fraudulent dues — it implies acceptance. Dispute it formally first.' },
+      { text:'File a police FIR and dispute the entry with the credit bureau',           correct:true,  explain:'Correct! File an FIR immediately, then dispute the fraudulent entry with your FIR copy attached.' },
+      { text:'Wait to see if it resolves on its own',                                    correct:false, explain:'Waiting allows more damage. Identity fraud compounds quickly — act fast.' },
+      { text:'Contact only the credit card company',                                     correct:false, explain:'You need an FIR first. Without a police complaint, disputes are much harder to resolve.' }
+    ]
+  }
+];
+
+var recoverySteps = [
+  { title:'🔒 Freeze your accounts',        desc:'Contact your bank immediately to freeze or flag your accounts. Request alerts on all transactions.' },
+  { title:'📋 File a police FIR',           desc:'Visit your nearest police station or use cybercrime.gov.in. Get the FIR copy — you will need it for everything else.' },
+  { title:'📞 Call Cyber Crime Helpline',   desc:'Dial 1930. Report all details. They can coordinate with banks to halt transactions.' },
+  { title:'🪪 Lock Aadhaar Biometrics',     desc:'Go to uidai.gov.in → Lock/Unlock Biometrics. This prevents anyone from using your Aadhaar for biometric authentication.' },
+  { title:'📊 Dispute credit entries',      desc:'Pull your CIBIL report. Formally dispute unauthorised accounts or loans, attaching your FIR copy.' },
+  { title:'🔑 Reset all passwords',         desc:'Change passwords for email, banking, social media. Enable 2FA everywhere. Start with email — it is the master key.' }
+];
+
+var protectionItems = [
+  'Use a different strong password for every important account',
+  'Enable two-factor authentication (2FA/OTP) on email and banking',
+  'Check bank statements every week without fail',
+  'Lock my Aadhaar biometrics on the UIDAI portal',
+  'Never share OTPs — not even with "bank officials"',
+  'Check my CIBIL credit report at least twice a year',
+  'Use Masked Aadhaar for non-essential identity verification',
+  'Set up transaction alerts (SMS/app) on all bank accounts',
+  'Avoid logging into banking apps on public Wi-Fi',
+  'Shred physical documents before disposal'
+];
+
+// ── NAV ────────────────────────────────────────────────
+function goTo(n) {
+  document.getElementById('scene' + currentScene).classList.remove('active');
+  currentScene = n;
+  document.getElementById('scene' + n).classList.add('active');
+  updateNav();
+  window.scrollTo({ top:0, behavior:'smooth' });
+  if (n === 7) computeFinalScore();
+}
+
+function updateNav() {
+  // progress bar
+  var bar = document.getElementById('progressBar');
+  bar.innerHTML = '';
+  for (var i = 1; i <= totalScenes; i++) {
+    var s = document.createElement('div');
+    s.className = 'progress-step' + (i < currentScene ? ' done' : i === currentScene ? ' active' : '');
+    bar.appendChild(s);
+  }
+  // dots
+  var dots = document.getElementById('navDots');
+  dots.innerHTML = '';
+  for (var j = 1; j <= totalScenes; j++) {
+    var d = document.createElement('div');
+    d.className = 'dot' + (j < currentScene ? ' done' : j === currentScene ? ' active' : '');
+    dots.appendChild(d);
+  }
+}
+
+// ── SCENE 1 ────────────────────────────────────────────
+function buildDataCards() {
+  var grid = document.getElementById('dataCardGrid');
+  grid.innerHTML = '';
+  dataPoints.forEach(function(dp) {
+    var card = document.createElement('div');
+    card.className = 'data-card';
+    card.id = 'dc_' + dp.id;
+    card.innerHTML = '<div class="card-icon">' + dp.icon + '</div><div class="card-label">' + dp.label + '</div><div class="card-example">' + dp.example + '</div>';
+    card.addEventListener('click', function() { toggleData(dp); });
+    grid.appendChild(card);
+  });
+}
+
+function toggleData(dp) {
+  var card = document.getElementById('dc_' + dp.id);
+  var idx  = selectedData.indexOf(dp);
+  if (idx >= 0) {
+    selectedData.splice(idx, 1);
+    card.classList.remove('selected');
+  } else {
+    selectedData.push(dp);
+    card.classList.add('selected');
+  }
+  updateThreat();
+  updatePriceTable();
+}
+
+function updateThreat() {
+  var score = 0;
+  selectedData.forEach(function(dp) { score += dp.weight; });
+  score = Math.min(score, 100);
+  var fill = document.getElementById('threatFill');
+  var val  = document.getElementById('threatValue');
+  fill.style.width = score + '%';
+  if (score < 30)      { fill.style.background = 'var(--safe)';   val.className = 'threat-value low'; }
+  else if (score < 60) { fill.style.background = 'var(--warn)';   val.className = 'threat-value med'; }
+  else                 { fill.style.background = 'var(--danger)'; val.className = 'threat-value high'; }
+  val.textContent = score + ' / 100';
+  var alert1 = document.getElementById('alert1');
+  alert1.className = 'alert danger' + (score >= 60 ? ' show' : '');
+}
+
+// ── SCENE 2 ────────────────────────────────────────────
+function buildPriceTable() {
+  var table = document.getElementById('priceTable');
+  table.innerHTML = '';
+  priceRows.forEach(function(row) {
+    var div = document.createElement('div');
+    div.className = 'price-row';
+    div.id = 'pr_' + row.id;
+    div.innerHTML = '<span class="price-item">' + row.label + '</span><span class="price-amt">' + row.price + '</span>';
+    table.appendChild(div);
+  });
+}
+
+function updatePriceTable() {
+  priceRows.forEach(function(row) {
+    var el = document.getElementById('pr_' + row.id);
+    if (!el) return;
+    var active = (row.id === 'all')
+      ? selectedData.length >= 5
+      : selectedData.some(function(d) { return d.id === row.id; });
+    el.className = 'price-row' + (active ? ' active' : '');
+  });
+}
+
+// ── SCENE 3 ────────────────────────────────────────────
+function buildSynthetic() {
+if (synthBuilt) return;
+synthBuilt = true;
+document.getElementById('buildBtn').style.display = 'none';
+
+// Use selected data, or fall back to realistic synthetic-fraud identifiers
+var source = selectedData.length > 0
+? selectedData
+: [dataPoints[5], dataPoints[3], dataPoints[1]]; // Aadhaar, DOB, Phone
+
+var stolenEl = document.getElementById('stolenFragments');
+stolenEl.innerHTML = '';
+
+var delay = 0;
+
+// Step 1: animate stolen fragments
+source.forEach(function(dp) {
+setTimeout(function() {
+var span = document.createElement('span');
+span.className = 'fragment stolen';
+span.textContent = dp.label + ': ' + dp.example;
+stolenEl.appendChild(span);
+}, delay);
+delay += 400;
+});
+
+// Step 2: build synthetic identity
+var fabricatedEl = document.getElementById('fabricatedFragments');
+fabricatedEl.innerHTML = '';
+
+// Only reuse the types of data commonly seen in synthetic identity fraud
+var reusableFields = source.filter(function(dp) {
+return ['aadhaar', 'dob', 'phone'].includes(dp.id);
+});
+
+reusableFields.forEach(function(dp) {
+setTimeout(function() {
+var span = document.createElement('span');
+span.className = 'fragment stolen';
+span.textContent = dp.label + ': ' + dp.example + ' ⚠';
+fabricatedEl.appendChild(span);
+}, delay);
+delay += 400;
+});
+
+// Fabricated attributes
+var invented = [
+'Name: Arjun Mehta',
+'Address: Koregaon Park, Pune',
+'Employer: Nexus Solutions Pvt Ltd',
+'Email: [arjun.mehta92@gmail.com]'
+];
+
+invented.forEach(function(item) {
+setTimeout(function() {
+var span = document.createElement('span');
+span.className = 'fragment invented';
+span.textContent = item;
+fabricatedEl.appendChild(span);
+}, delay);
+delay += 400;
+});
+
+// Final explanation
+var stolenLabels = reusableFields.map(function(d) {
+return d.label;
+}).join(', ');
+
+setTimeout(function() {
+var result = document.getElementById('synthResult');
+
+```
+result.innerHTML =
+  '<strong>Synthetic Identity Created:</strong> The criminal combined your real ' +
+  stolenLabels +
+  ' with a fabricated name, address, employer, and email address to create "Arjun Mehta" — a synthetic identity that appears legitimate to lenders and automated verification systems. This synthetic identity can then be used to build credit history, open accounts, and commit financial fraud.';
+
+result.className = 'alert danger show';
+document.getElementById('nextBtn3').style.display = 'inline-block';
+```
+
+}, delay + 300);
+}
+
+
+// ── SCENE 4 ────────────────────────────────────────────
+var quizAnswered = [];
+
+function buildQuiz() {
+  var container = document.getElementById('quizContainer');
+  container.innerHTML = '';
+  quizAnswered = [];
+  quizDone  = 0;
+  quizScore = 0;
+
+  quizQuestions.forEach(function(q, qi) {
+    quizAnswered.push(false);
+    var div = document.createElement('div');
+    div.style.marginBottom = '2rem';
+
+    var opts = q.options.map(function(o, oi) {
+      return '<div class="scenario-card" id="qo_' + qi + '_' + oi + '" onclick="answerQuiz(' + qi + ',' + oi + ')">'
+           + '<h4>' + ['A','B','C','D'][oi] + '. ' + o.text + '</h4>'
+           + '</div>';
+    }).join('');
+
+    div.innerHTML = '<div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.4rem;margin-bottom:1rem">'
+      + '<div style="font-family:\'Space Mono\',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.1em;margin-bottom:0.6rem">SCENARIO ' + (qi+1) + ' of ' + quizQuestions.length + '</div>'
+      + '<div style="font-size:0.95rem;line-height:1.6;font-weight:600">' + q.q + '</div>'
+      + '</div>'
+      + '<div class="scenario-cards">' + opts + '</div>'
+      + '<div id="explain_' + qi + '" class="alert"></div>';
+
+    container.appendChild(div);
+  });
+}
+
+function answerQuiz(qi, oi) {
+  if (quizAnswered[qi]) return;
+  quizAnswered[qi] = true;
+  quizDone++;
+
+  var opt     = quizQuestions[qi].options[oi];
+  var card    = document.getElementById('qo_' + qi + '_' + oi);
+  var explain = document.getElementById('explain_' + qi);
+
+  if (opt.correct) {
+    card.classList.add('chosen');
+    quizScore++;
+    explain.className = 'alert success show';
+    explain.innerHTML = '&#10003; ' + opt.explain;
+  } else {
+    card.classList.add('wrong');
+    explain.className = 'alert danger show';
+    explain.innerHTML = '&#10007; ' + opt.explain;
+    quizQuestions[qi].options.forEach(function(o, i) {
+      if (o.correct) document.getElementById('qo_' + qi + '_' + i).classList.add('chosen');
+    });
+  }
+
+  if (quizDone === quizQuestions.length) {
+    setTimeout(function() {
+      document.getElementById('nextBtn4').style.display = 'inline-block';
+    }, 600);
+  }
+}
+
+// ── SCENE 5 ────────────────────────────────────────────
+function buildTimeline() {
+  var tl = document.getElementById('recoveryTimeline');
+  tl.innerHTML = '';
+  recoveryDone = 0;
+  recoverySteps.forEach(function(step, i) {
+    var div = document.createElement('div');
+    div.className = 'timeline-item';
+    div.id = 'rs_' + i;
+    div.innerHTML = '<h4>' + step.title + '</h4><p>' + step.desc + '</p>';
+    div.addEventListener('click', function() { completeRecovery(i); });
+    tl.appendChild(div);
+  });
+  document.getElementById('alert5').className = 'alert success';
+  document.getElementById('nextBtn5').style.display = 'none';
+}
+
+function completeRecovery(i) {
+  var el = document.getElementById('rs_' + i);
+  if (el.classList.contains('done')) return;
+  el.classList.add('done');
+  recoveryDone++;
+  if (recoveryDone === recoverySteps.length) {
+    document.getElementById('alert5').className = 'alert success show';
+    document.getElementById('nextBtn5').style.display = 'inline-block';
+  }
+}
+
+// ── SCENE 6 ────────────────────────────────────────────
+function buildChecklist() {
+  var list = document.getElementById('protectionChecklist');
+  list.innerHTML = '';
+  checksDone = 0;
+  protectionItems.forEach(function(item, i) {
+    var div = document.createElement('div');
+    div.className = 'check-item';
+    div.id = 'ci_' + i;
+    div.innerHTML = '<div class="check-icon" id="cicon_' + i + '">&#9675;</div><span>' + item + '</span>';
+    div.addEventListener('click', function() { toggleCheck(i); });
+    list.appendChild(div);
+  });
+}
+
+function toggleCheck(i) {
+  var el   = document.getElementById('ci_' + i);
+  var icon = document.getElementById('cicon_' + i);
+  if (el.classList.contains('checked')) {
+    el.classList.remove('checked');
+    icon.innerHTML = '&#9675;';
+    checksDone--;
+  } else {
+    el.classList.add('checked');
+    icon.innerHTML = '&#10003;';
+    checksDone++;
+  }
+}
+
+// ── SCENE 7 ────────────────────────────────────────────
+function computeFinalScore() {
+  var quizPct     = (quizScore / quizQuestions.length) * 40;
+  var recoveryPct = (recoveryDone / recoverySteps.length) * 30;
+  var checkPct    = (checksDone / protectionItems.length) * 30;
+  var total       = Math.round(quizPct + recoveryPct + checkPct);
+
+  var ring = document.getElementById('finalRing');
+  var grade = document.getElementById('finalGrade');
+  var msg   = document.getElementById('finalMessage');
+  var tips  = document.getElementById('finalTips');
+
+  ring.textContent = total + '%';
+
+  if (total >= 80) {
+    ring.style.borderColor = 'var(--safe)';
+    ring.style.color = 'var(--safe)';
+    grade.textContent = 'Shield Defender';
+    grade.style.color = 'var(--safe)';
+    msg.textContent = 'Excellent awareness! You understand identity threats, know how to recover, and have strong protective habits. Keep monitoring and stay updated.';
+    tips.innerHTML = '&#10003; <strong>Keep it up:</strong> Review your privacy settings quarterly and stay alert to new scam tactics — they evolve constantly.';
+    tips.className = 'alert success show';
+  } else if (total >= 50) {
+    ring.style.borderColor = 'var(--warn)';
+    ring.style.color = 'var(--warn)';
+    grade.textContent = 'Getting There';
+    grade.style.color = 'var(--warn)';
+    msg.textContent = 'You have a decent foundation but there are gaps. Work on the protection checklist items you skipped and review the quiz answers you got wrong.';
+    tips.innerHTML = '&#9888; <strong>Priority actions:</strong> Enable 2FA on your email and banking apps today. Check your CIBIL report this week.';
+    tips.className = 'alert warn show';
+  } else {
+    ring.style.borderColor = 'var(--danger)';
+    ring.style.color = 'var(--danger)';
+    grade.textContent = 'At Risk';
+    grade.style.color = 'var(--danger)';
+    msg.textContent = 'You are more vulnerable than you should be. Please go back through each module and take action on the protection checklist.';
+    tips.innerHTML = '&#9888; <strong>Urgent:</strong> Change your email password right now. Enable 2FA. Lock your Aadhaar biometrics. Call 1930 if you suspect any fraud.';
+    tips.className = 'alert danger show';
+  }
+}
+
+// ── RESTART ────────────────────────────────────────────
+function restartSim() {
+  selectedData = [];
+  quizScore    = 0;
+  quizDone     = 0;
+  recoveryDone = 0;
+  checksDone   = 0;
+  synthBuilt   = false;
+
+  // Reset scene 1
+  dataPoints.forEach(function(dp) {
+    var c = document.getElementById('dc_' + dp.id);
+    if (c) c.classList.remove('selected');
+  });
+  document.getElementById('threatFill').style.width = '0%';
+  document.getElementById('threatValue').textContent = '0 / 100';
+  document.getElementById('threatValue').className = 'threat-value low';
+  document.getElementById('alert1').className = 'alert danger';
+
+  // Reset scene 3
+  document.getElementById('stolenFragments').innerHTML = '<em style="color:var(--muted);font-size:0.8rem">Your selected data will appear here...</em>';
+  document.getElementById('fabricatedFragments').innerHTML = '<em style="color:var(--muted);font-size:0.8rem">Waiting...</em>';
+  document.getElementById('synthResult').className = 'alert danger';
+  document.getElementById('synthResult').innerHTML = '';
+  document.getElementById('buildBtn').style.display = 'inline-block';
+  document.getElementById('nextBtn3').style.display = 'none';
+  document.getElementById('nextBtn4').style.display = 'none';
+  document.getElementById('nextBtn5').style.display = 'none';
+
+  updatePriceTable();
+  buildQuiz();
+  buildTimeline();
+  buildChecklist();
+  goTo(1);
+}
+
+// ── INIT ───────────────────────────────────────────────
+updateNav();
+buildDataCards();
+buildPriceTable();
+buildQuiz();
+buildTimeline();
+buildChecklist();
+</script>
+</body>
+</html>
