@@ -533,6 +533,16 @@ Go through every item below before opening a pull request. If any item is not ch
 - [ ] New simulations are placed inside the correct `static/simulations/[section-name]/[module-name]/` folder
 - [ ] If I added a new section, it has an `index.mdx` file and a `_category_.json` file
 - [ ] If I added a new section, the `_category_.json` links to `[section-name]/index` (not a numbered or prefixed ID)
+- [ ] The article frontmatter includes a `title`, `sidebar_label`, `description`, and `tags` field. Example:
+  ```yaml
+  ---
+  title: "Your Passwords & Account Access"
+  sidebar_label: "Your Passwords & Account Access"
+  description: "A one-sentence summary of what this article covers."
+  tags: [passwords, account-security, two-factor-authentication, cybersecurity]
+  ---
+  ```
+- [ ] Tags are lowercase, hyphen-separated, and specific to the article's actual content. Use at least three tags. Do not use vague tags like `article` or `content`.
 
 ---
 

@@ -1,102 +1,67 @@
 ---
 sidebar_position: 1
+title: "Your Identity & Personal Information"
+sidebar_label: "Your Identity & Personal Information"
+description: "What makes up your digital identity, how it gets misused, and what you can do to protect yourself."
+tags: [identity-theft, personal-information, data-privacy, digital-identity, impersonation, synthetic-fraud, cybersecurity]
 ---
 
-# You Are Worth More Than You Think — To Criminals
+import Quiz from '@site/src/components/Quiz';
 
-## A Plain-English Guide to Your Digital Identity and How to Protect It
+# Your Identity & Personal Information
 
-![Digital Identity Hero](/img/who-you-are-what-you-have/your-identity-personal-information/hero-image.webp)
+Your identity is not just your name. It is every detail that, when combined, lets someone **pretend to be you** - online, on the phone, or in person.
 
-*Your digital identity is made up of many pieces of personal information.*
+## The Messages She Never Sent
 
-Imagine waking up one morning to find that someone has taken out a loan in your name, emptied a bank account you didn't know existed, and filed your tax return before you did — all while you were sleeping.
+Neha was a teacher in her mid-thirties. She had a modest social media presence and was careful about what she shared.
 
-The scary part?
+One Monday morning, three colleagues messaged her asking if she was okay. She had no idea what they meant.
 
-They never met you. They never broke into your house. They just had the right pieces of information.
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/who-you-are-what-you-have/your-identity-personal-information/hero-image.webp"
+    alt="A person looking calmly at their phone, with soft overlapping identity fragments around them representing personal data points."
+  />
+</figure>
 
-This is identity theft — and it's more common, more sophisticated, and more damaging than most people realize. :contentReference[oaicite:0]{index=0}
+Someone had created a profile using her name, her photo from a public post, and her school's name from her bio. They had contacted her colleagues, her students' parents, and two of her closest friends - asking for urgent help and small transfers of money.
 
-Let's break it all down in a way that actually helps.
+Neha had not been hacked. No one had broken into her accounts. Her phone was with her the entire time.
 
----
+**All it took was a name, a photo, a workplace, and a phone number.** Everything was already visible.
 
-![Digital Identity Puzzle](/img/who-you-are-what-you-have/your-identity-personal-information/digital-identity.webp)
+It took her three weeks to have the fake accounts removed. **Several people had already sent money.** One parent never spoke to her again.
 
-*Every piece of personal information contributes to your digital identity.*
+## What Is Actually Happening: Your Identity Has a Market Value
 
-## Part 1: What Makes You *You* — Digitally Speaking
-
-Here's a question most people never think about:
-
-> What information, if stolen, could be used to pretend to be you?
-
-The answer is longer than you'd expect.
-
-### The Obvious Stuff
-
-- Your full name
-- Your phone number
-- Your national ID number (Aadhaar, passport, driving licence)
-- Your email address
-- Your home address
-
-### The Not-So-Obvious Stuff
-
-- Your date of birth
-- Your mother's maiden name
-- The name of your first pet
-- Your vehicle registration number
-- Your employer's name
-- Your bank account or card details
-- Your device's IP address
-
-Put any few of these together and you've got what fraudsters call a **"fullz"** — a complete profile of a real person, ready to be exploited. :contentReference[oaicite:1]{index=1}
-
-Think of each piece of personal information like a piece of a puzzle.
-
-One piece alone is usually harmless.
-
-Combine a name, date of birth, phone number, and ID number, and suddenly that puzzle becomes a portrait of **you** in someone else's hands.
-
----
-
-![Dark Web Marketplace](/img/who-you-are-what-you-have/your-identity-personal-information/dark-web-marketplace.webp)
-
-*Stolen personal data is often bought and sold like a commodity.*
-
-## Part 2: Your Information Has a Price Tag
-
-Your personal information isn't just inconvenient to lose — it has actual market value.
-
-On hidden parts of the internet known as the **dark web**, stolen information is bought and sold every day. :contentReference[oaicite:2]{index=2}
+Your personal data is already being bought and sold. The market is larger and more organised than most people imagine.
 
 <div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
-  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>₹20,000+</h2>
-  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>is what a complete stolen identity profile sells for on the dark web.</p>
-  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Your data is not just a privacy risk — it is a commodity actively bought, sold, and weaponised.</p>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>1 in 3</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>people have had their personal information misused without knowing how it was obtained.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>You do not have to do anything wrong for your identity to be exploited. The data is collected, combined, and sold long before anyone targets you.</p>
 </div>
 
 <div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
   <div className="col col--6">
     <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
       <div>
-        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Account Credentials</span>
-        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Your Login Is Already for Sale</h3>
-        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>An <b>email and password combination</b> sells for ₹50–₹200. <b>Bank account login credentials</b> fetch ₹800–₹8,000. Attackers buy these in bulk and run automated tools to test them across hundreds of sites within minutes.</p>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Impersonation</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Your Name and Photo Are Enough</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>A name, a profile photo, and a workplace are enough to create a convincing fake account. <b>Over 60% of impersonation victims</b> say the attacker used only publicly available information - nothing hacked, nothing stolen.</p>
       </div>
-      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Dark Web Market Price Index, 2025</span>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Digital Identity Threat Report, 2025</span>
     </div>
   </div>
   <div className="col col--6">
     <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
       <div>
-        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Identity Profiles</span>
-        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Name + DOB + Address = ₹4,000</h3>
-        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>A <b>full identity profile</b> (name, ID number, date of birth, address) sells for ₹500–₹4,000. A <b>complete "fullz" package</b> — everything needed to impersonate you — goes for ₹2,000 to ₹20,000+. Credit card details add another ₹200–₹2,000 on top.</p>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Account Takeover</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Email Is the Master Key</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Your email address is the recovery route for almost every account you own. Once someone controls your inbox, they can reset passwords for your social media, shopping, and communication accounts without needing any of your other details.</p>
       </div>
-      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Cybercrime Underground Economy Report, 2025</span>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Account Security & Identity Compromise Study, 2025</span>
     </div>
   </div>
 </div>
@@ -105,292 +70,121 @@ On hidden parts of the internet known as the **dark web**, stolen information is
   <div className="col col--6">
     <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
       <div>
-        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Medical Records</span>
-        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>The Most Valuable Data You Own</h3>
-        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Medical records sell for <b>₹1,500–₹12,000</b> — far more than a credit card — because they bundle your full name, address, insurance details, and government ID in one place. Victims often don't discover misuse for <b>months or years</b>, giving criminals a long window to exploit them.</p>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Identity Profiles</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>A Complete Profile Sells for ₹20,000+</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Name, phone number, national ID, email, and address together form a "fullz" profile. On dark web markets, this sells for ₹2,000 to ₹20,000+. It can be used to register SIM cards, create fake accounts, or impersonate you to government services.</p>
       </div>
-      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Healthcare Data Breach Cost Report, 2025</span>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Cybercrime Underground Economy Report, 2025</span>
     </div>
   </div>
   <div className="col col--6">
     <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #06B6D4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
       <div>
         <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>The Criminal Supply Chain</span>
-        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Theft, Sale, Exploit — Three Separate Groups</h3>
-        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Modern cybercrime runs like a business. One group <b>steals</b> the data. Another <b>sells</b> it. A third <b>exploits</b> it. Your personal information becomes the raw material in that economy — passing through multiple hands before anyone uses it against you.</p>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Three Groups, One Target</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Modern identity misuse runs like a business. One group <b>collects</b> the data. Another <b>packages and sells</b> it. A third <b>uses</b> it. Your information passes through multiple hands before anyone targets you - often long after the original source was breached.</p>
       </div>
       <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Interpol Cybercrime Threat Assessment, 2025</span>
     </div>
   </div>
 </div>
 
----
+## Now Try It From the Other Side
 
-![Identity Theft at Scale](/img/who-you-are-what-you-have/your-identity-personal-information/identity-theft-scale.webp)
-
-*Modern identity theft operations can target millions of people at once.*
-
-## Part 3: Identity Theft at Scale
-
-Most people imagine identity theft as one criminal targeting one victim.
-
-Reality is far more industrialized.
-
-A single breach at a hospital, e-commerce platform, or government service can expose millions of records at once. :contentReference[oaicite:4]{index=4}
-
-Automated tools can then:
-
-- Test stolen passwords across hundreds of websites
-- Identify valuable accounts
-- Apply for loans and credit cards in bulk
-- Sell unused data to other criminals
-
-### Real-World Consequences
-
-Victims have experienced:
-
-- Loan rejections caused by fraudulent debts
-- Damaged credit scores
-- Tax issues involving income they never earned
-- Legal complications resulting from impersonation
-
-These situations are difficult, but they happen more often than most people realize. :contentReference[oaicite:5]{index=5}
-
----
-
-![Synthetic Identity Fraud](/img/who-you-are-what-you-have/your-identity-personal-information/synthetic-fraud.webp)
-
-*Synthetic identities combine real information with fabricated details.*
-
-## Part 4: The Frankenstein Identity — Synthetic Fraud
-
-One of the fastest-growing forms of financial crime is **synthetic identity fraud**.
-
-Instead of stealing your entire identity, criminals take one legitimate piece of information — often an ID number or date of birth — and combine it with fabricated details. :contentReference[oaicite:6]{index=6}
-
-### Example
-
-A fraudster obtains:
-
-- Your Aadhaar number
-
-Then invents:
-
-- A fake name
-- A fake address
-- A fake job history
-
-The result is a synthetic person who never existed.
-
-The criminal gradually builds credit under that fake identity:
-
-1. Gets a small credit card.
-2. Pays on time.
-3. Gains trust.
-4. Receives larger credit limits.
-5. Maxes out accounts and disappears.
-
-The victim may not discover the issue until much later. :contentReference[oaicite:7]{index=7}
-
----
-
-![Recovery Roadmap](/img/who-you-are-what-you-have/your-identity-personal-information/recovery-roadmap.webp)
-
-*Quick action can significantly reduce the impact of identity theft.*
-
----
-
-## 🎮 Interactive Identity Theft Simulation
-
-Reading about identity theft is one thing. Seeing how criminals can assemble, value, and exploit a digital identity is another.
-
-Try the interactive simulation below to experience:
-
-- How personal information contributes to your exposure score
-- How stolen data is valued and traded
-- How synthetic identities are created
-- How to recognize common attack scenarios
-- What recovery steps to take after identity theft
-- How to strengthen your defenses
+This simulation shows how someone builds a profile from your personal data, what that profile is worth, and how a fake identity gets constructed from the pieces you leave online.
 
 <iframe
+  id="identity-simulation-iframe"
   src="/simulations/who-you-are-what-you-have/your-identity-personal-information/identity_simulation.html"
-  title="Identity Theft Simulation"
   width="100%"
-  height="900"
-  style={{
-    border: "1px solid #ddd",
-    borderRadius: "12px",
-    marginTop: "1rem",
-    marginBottom: "2rem"
+  style={{ height: '680px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Identity Theft Simulation"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('identity-simulation-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._identityIframeHandler);
+    window._identityIframeHandler = handler;
+    window.addEventListener('message', handler);
   }}
 />
 
-> **Tip:** Complete all seven stages of the simulation to calculate your Cyber Awareness Score.
+*Work through all four steps to see your protection score.*
 
----
+## What That Just Showed You
 
-## Part 5: What To Do If It Happens
+### 1. What makes you identifiable is five things, not one.
 
-Identity theft is serious, but recovery is possible.
+Your **full name**, **phone number**, **national ID** (Aadhaar, PAN, or passport), **email address**, and **home address** are the five pieces that define you digitally. None of them is a secret. All of them are findable. The risk is not in any single piece - it is in what becomes possible when three or four are combined. That combination is enough to impersonate you on social media, register a SIM card in your name, or pass identity checks on most online platforms.
 
-### 🔴 Step 1: Contain the Damage
+### 2. Your data is already for sale, and it is not just used for financial fraud.
 
-- Change passwords immediately
-- Enable two-factor authentication
-- Contact your bank
-- Freeze or monitor affected accounts
+Stolen identity data is used to create **fake social profiles, register phone numbers, access government services**, and target your contacts in your name. The person using your data may never go near your bank account. The damage can be to your **reputation, your relationships, or your ability to prove who you are** when it matters.
 
-### 📋 Step 2: Document Everything
+### 3. Identity theft at scale is automated and not personal.
 
-Keep records of:
+Neha was not chosen. She was a match in a dataset. **Automated tools** scrape publicly visible information, cross-reference it across platforms, and build profiles of real people without any human choosing to target a specific individual. **The harm feels personal when it happens. The process that created it was mechanical.**
 
-- Suspicious activity
-- Screenshots
-- Emails
-- Phone calls
-- Case numbers
+### 4. Synthetic fraud can involve you without anyone taking your full identity.
 
-Documentation can significantly help later investigations. :contentReference[oaicite:8]{index=8}
+An attacker takes **one real piece** of your information - your national ID number or date of birth - and builds a **fictional person** around it with an invented name, address, and contact details. That fake person can be used to register accounts, receive deliveries, or bypass verification checks. **You may not discover it** until something unexpectedly surfaces - a message from a platform you never joined, or a record linked to your ID that you did not create.
 
-### 🏛️ Step 3: Report It
+### 5. Recovery is possible and it has a clear path.
 
-In India:
+If you find accounts, profiles, or registrations in your name that you did not create, **act the same day**. **Document everything** with screenshots and dates. Report the fake account or misuse to the platform directly. File a complaint at [cybercrime.gov.in](https://cybercrime.gov.in) or call **1930**. If your national ID has been misused, file an FIR at your local police station - this creates a formal record that you can use to dispute any consequences. **Notify the people who may have been contacted in your name.**
 
-- File a police complaint (FIR)
-- Notify your bank's fraud department
-- Report via the National Cyber Crime Reporting Portal
-- Call the Cyber Crime Helpline (**1930**)
-- Contact CERT-In if a data breach is involved
+## Five Things Worth Doing
 
-### 📊 Step 4: Review Your Credit Report
+Pick one and do it this week.
 
-Check reports from:
+### 1. Search for yourself online.
 
-- CIBIL
-- Experian
-- CRIF
+Type your full name into a search engine and look at what comes up. Check whether your phone number, address, or workplace appears on people-search sites. Look up your email address on [haveibeenpwned.com](https://haveibeenpwned.com) to see if it has been part of any known breach. **Most people find something they did not know was visible.**
 
-Look for:
+### 2. Lock your national ID when you are not using it.
 
-- Unknown loans
-- Unauthorized inquiries
-- Accounts you didn't open
+If you are in India, visit [myaadhaar.uidai.gov.in](https://myaadhaar.uidai.gov.in) and enable the biometric lock. This prevents anyone from using your Aadhaar for authentication at a telecom outlet, service centre, or verification kiosk without your knowledge. You can unlock it temporarily whenever you need it yourself.
 
-Dispute suspicious entries immediately. :contentReference[oaicite:9]{index=9}
+### 3. Tighten what your social media reveals.
 
-### 🔒 Step 5: Secure Your Identity
+Go through your public profiles and check what a stranger can see. Your workplace, city, phone number, and photos are the **raw material for impersonation**. Set personal details to visible only to people you know. Think carefully before tagging your location or your workplace in posts.
 
-- Request fraud alerts
-- Consider credit freezes
-- Lock Aadhaar biometrics
-- Monitor accounts closely for at least 6–12 months
+### 4. If something looks wrong, act the same day.
 
-Recovery takes time, but prompt action greatly improves outcomes. :contentReference[oaicite:10]{index=10}
+If you find a profile, account, or registration in your name that you did not create, do not wait. Report it to the platform, file a complaint at [cybercrime.gov.in](https://cybercrime.gov.in) or call **1930**, and let people in your contact list know so they are not targeted in your name. **Speed matters** - the longer a fake identity operates, the more damage it can do.
 
----
+### 5. Use a different password for every account that matters.
 
-![Digital Shield Protection](/img/who-you-are-what-you-have/your-identity-personal-information/digital-shield.webp)
+Your email, your social media, your phone account - each one should have a unique password that is not shared with anything else. If one platform is breached, **the compromise stays contained**. A password manager means you only have to remember one master password and it handles the rest.
 
-*Small security habits create strong protection over time.*
+## One Question Before You Continue
 
-## Part 6: Protecting Yourself Before It Happens
-
-### 🔐 Password Security
-
-- Use a unique password for every important account
-- Use a password manager
-- Avoid predictable passwords
-- Enable two-factor authentication everywhere possible
-
-### 📱 Device Security
-
-- Keep devices updated
-- Install apps only from trusted sources
-- Use screen locks
-- Factory reset devices before selling or donating them
-
-### 📧 Email & Browsing Habits
-
-- Be cautious of unexpected emails, SMS messages, or calls requesting personal information
-- Verify links before clicking
-- Prefer websites using HTTPS
-- Avoid sensitive activities on public Wi-Fi
-
-### 🪪 Physical Document Protection
-
-- Use a masked Aadhaar when appropriate
-- Secure physical identity documents
-- Shred sensitive paperwork before disposal
-
-### 🔍 Monitor Yourself
-
-- Review bank statements regularly
-- Enable transaction alerts
-- Check credit reports twice a year
-- Search your name online occasionally to understand your public exposure
-
-### 🌐 Reduce Your Digital Footprint
-
-- Review social media privacy settings
-- Think carefully before sharing personal details
-- Delete unused accounts
-- Limit publicly available personal information
-
-Small habits can dramatically reduce risk. :contentReference[oaicite:11]{index=11}
-
----
-
-## The Bottom Line
-
-Your digital identity isn't just data.
-
-It's your:
-
-- Financial life
-- Reputation
-- Legal standing
-- Access to services
-
-It may take a lifetime to build, but criminals can begin exploiting it in minutes. :contentReference[oaicite:12]{index=12}
-
-The good news is that most identity theft can be prevented through consistent security habits:
-
-- Use strong passwords
-- Enable 2FA
-- Monitor your accounts
-- Protect sensitive information
-- Stay informed
-
-You don't need to be a cybersecurity expert.
-
-You just need to be aware, cautious, and deliberate about what you share and where you share it.
-
----
-
-![Digital Defense](/img/who-you-are-what-you-have/your-identity-personal-information/final-defense.webp)
-
-*Awareness and good security practices remain the strongest defense against identity theft.*
-
-## Useful Resources (India)
-
-### National Cyber Crime Reporting Portal
-
-https://cybercrime.gov.in
-
-### Cyber Crime Helpline
-
-**1930**
-
-### UIDAI Aadhaar Services
-
-https://uidai.gov.in
-
-### Credit Reports
-
-- https://www.cibil.com
-- https://www.experian.in
-
----
-
-
+<Quiz
+  question="Someone creates a fake social media profile using your name, photo, and workplace, then contacts your friends pretending to be you. What made this possible?"
+  options={[
+    {
+      label: "They hacked into your accounts to get your details.",
+      correct: false,
+      explanation: "No hacking was involved. Everything used - name, photo, workplace - was already publicly visible. This is why reviewing what your profiles reveal to strangers matters."
+    },
+    {
+      label: "They used publicly available information to impersonate you without accessing anything private.",
+      correct: true,
+      explanation: "Correct. Impersonation does not require hacking. A name, a photo, and a few visible details are often enough to create a convincing fake identity and use it against the people who trust you."
+    },
+    {
+      label: "They needed your password to copy your profile.",
+      correct: false,
+      explanation: "A password gives access to your real account. Impersonation creates a separate fake account using information already visible to the public - no password needed."
+    },
+    {
+      label: "This can only happen if you shared your details with a suspicious website.",
+      correct: false,
+      explanation: "The information used in impersonation is typically already public - on your social profiles, in search results, or on people-search sites. You do not have to make an active mistake for this to happen."
+    }
+  ]}
+/>
