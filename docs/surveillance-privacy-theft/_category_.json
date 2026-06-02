@@ -1,0 +1,9 @@
+{
+  "label": "Surveillance & Privacy Theft",
+  "position": 8,
+  "link": {
+    "type": "doc",
+    "id": "surveillance-privacy-theft/section-surveillance"
+  },
+  "className": "icon-surveillance-privacy-theft"
+}

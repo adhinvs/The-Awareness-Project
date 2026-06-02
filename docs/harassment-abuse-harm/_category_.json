@@ -1,0 +1,9 @@
+{
+  "label": "Harassment, Abuse & Harm",
+  "position": 10,
+  "link": {
+    "type": "doc",
+    "id": "harassment-abuse-harm/section-harassment"
+  },
+  "className": "icon-harassment-abuse-harm"
+}

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EXIF Metadata Reader & Remover</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Poppins', system-ui, -apple-system, sans-serif; background: #f7fafc; color: #111827; line-height: 1.6; padding: 24px; }
+    h1 { font-size: 24px; margin-bottom: 8px; }
+    p { margin: 0 0 16px; color: #374151; }
+    .panel { background: #fff; border: 1px solid #e5e7eb; border-radius: 20px; box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08); padding: 24px; max-width: 920px; margin: 0 auto; }
+    .notice { border-left: 4px solid #2563eb; background: #eff6ff; padding: 14px 16px; margin-bottom: 20px; color: #1d4ed8; }
+    .row { display: grid; grid-template-columns: 1fr 280px; gap: 24px; }
+    @media(max-width: 860px) { .row { grid-template-columns: 1fr; } }
+    .card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 16px; padding: 18px; }
+    .control { margin-bottom: 16px; }
+    label { display: block; margin-bottom: 8px; font-weight: 600; color: #111827; }
+    input[type='file'] { display: block; width: 100%; }
+    button { background: #2563eb; color: #fff; border: none; border-radius: 12px; padding: 12px 18px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s ease; }
+    button:hover:not(:disabled) { background: #1d4ed8; }
+    button:disabled { background: #c7d2fe; cursor: not-allowed; }
+    .meta-list { list-style: none; padding: 0; margin: 0; }
+    .meta-list li { padding: 10px 12px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; gap: 16px; }
+    .meta-list li:last-child { border-bottom: none; }
+    .meta-key { font-weight: 700; color: #111827; }
+    .meta-val { color: #475569; text-align: right; max-width: 60%; word-break: break-word; }
+    .preview { margin-top: 22px; text-align: center; }
+    .preview img { max-width: 100%; border-radius: 16px; border: 1px solid #e5e7eb; }
+    .map-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 14px; color: #2563eb; text-decoration: none; }
+    .map-link:hover { text-decoration: underline; }
+    .status { font-size: 13px; color: #475569; margin-bottom: 12px; }
+    .hidden { display: none; }
+    .table-heading { margin-bottom: 14px; font-weight: 700; color: #111827; }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <div class="notice">
+      <strong>Local-only EXIF scan.</strong> Nothing is sent to a server. Your photo stays on your device.
+    </div>
+    <h1>Upload a photo to inspect hidden location metadata</h1>
+    <p>Choose any image file and see whether it contains GPS coordinates, timestamps, camera details, or other hidden EXIF tags. Then remove the metadata before sharing.</p>
+
+    <div class="row">
+      <div>
+        <div class="card">
+          <div class="control">
+            <label for="file-input">Select a photo</label>
+            <input id="file-input" type="file" accept="image/*" />
+          </div>
+          <div class="control">
+            <button id="clean-button" disabled>Download photo without metadata</button>
+          </div>
+          <div class="status" id="status-text">No photo selected.</div>
+          <div id="results" class="hidden">
+            <div class="table-heading">EXIF metadata found</div>
+            <ul class="meta-list" id="meta-list"></ul>
+            <a id="map-link" class="map-link hidden" target="_blank" rel="noreferrer noopener">View location on map</a>
+          </div>
+          <div id="no-meta" class="status hidden">No EXIF metadata or GPS location found.</div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="table-heading">How this works</div>
+          <p>Photos stored on your phone often include an invisible EXIF data packet. That packet can contain:</p>
+          <ul style="padding-left: 20px; color: #475569;">
+            <li>GPS coordinates</li>
+            <li>camera make and model</li>
+            <li>date and time taken</li>
+            <li>orientation, shutter speed, and more</li>
+          </ul>
+          <p>When you export the image from a canvas, the resulting file is stripped of this metadata.</p>
+          <div class="preview hidden" id="preview-container">
+            <div class="table-heading">Preview</div>
+            <img id="preview-image" alt="Selected photo preview" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const input = document.getElementById('file-input');
+    const statusText = document.getElementById('status-text');
+    const metaList = document.getElementById('meta-list');
+    const results = document.getElementById('results');
+    const noMeta = document.getElementById('no-meta');
+    const cleanButton = document.getElementById('clean-button');
+    const previewContainer = document.getElementById('preview-container');
+    const previewImage = document.getElementById('preview-image');
+    const mapLink = document.getElementById('map-link');
+    let currentFile = null;
+
+    function parseRational(value, littleEndian) {
+      const numerator = value.getUint32(0, littleEndian);
+      const denominator = value.getUint32(4, littleEndian);
+      return denominator === 0 ? 0 : numerator / denominator;
+    }
+
+    function parseGPS(tags, littleEndian) {
+      if (!tags.GPSLatitude || !tags.GPSLongitude || !tags.GPSLatitudeRef || !tags.GPSLongitudeRef) {
+        return null;
+      }
+      const lat = tags.GPSLatitude.map((entry) => parseRational(entry, littleEndian));
+      const lon = tags.GPSLongitude.map((entry) => parseRational(entry, littleEndian));
+      const latitude = (lat[0] + lat[1] / 60 + lat[2] / 3600) * (tags.GPSLatitudeRef === 'S' ? -1 : 1);
+      const longitude = (lon[0] + lon[1] / 60 + lon[2] / 3600) * (tags.GPSLongitudeRef === 'W' ? -1 : 1);
+      return { latitude, longitude };
+    }
+
+    function getString(dataView, start, length) {
+      let out = '';
+      for (let i = 0; i < length; i++) {
+        const char = dataView.getUint8(start + i);
+        if (char === 0) break;
+        out += String.fromCharCode(char);
+      }
+      return out;
+    }
+
+    function parseExif(arrayBuffer) {
+      const view = new DataView(arrayBuffer);
+      let offset = 2;
+      const length = view.byteLength;
+      if (view.getUint16(0) !== 0xFFD8) {
+        return null;
+      }
+      while (offset < length) {
+        const marker = view.getUint16(offset);
+        offset += 2;
+        const size = view.getUint16(offset);
+        offset += 2;
+        if (marker === 0xFFE1) {
+          const exifHeader = getString(view, offset, 4);
+          if (exifHeader !== 'Exif') return null;
+          offset += 6;
+          const littleEndian = view.getUint16(offset) === 0x4949;
+          const firstIFDOffset = view.getUint32(offset + 4, littleEndian);
+          const tags = {};
+          const gps = {};
+          let gpsOffset = 0;
+          const tiffOffset = offset;
+          const ifdOffset = tiffOffset + firstIFDOffset;
+          const numTags = view.getUint16(ifdOffset, littleEndian);
+          let pointer = ifdOffset + 2;
+          for (let i = 0; i < numTags; i++) {
+            const tag = view.getUint16(pointer, littleEndian);
+            const format = view.getUint16(pointer + 2, littleEndian);
+            const components = view.getUint32(pointer + 4, littleEndian);
+            let valueOffset = view.getUint32(pointer + 8, littleEndian);
+            const tagNames = {
+              0x010F: 'Make', 0x0110: 'Model', 0x0132: 'DateTime', 0x8825: 'GPSInfo',
+              0x0112: 'Orientation', 0x829A: 'ExposureTime', 0x829D: 'FNumber'
+            };
+            const name = tagNames[tag] || `Tag_${tag.toString(16).toUpperCase()}`;
+            if (format === 2) {
+              if (valueOffset > 0xFFFF) valueOffset = tiffOffset + valueOffset;
+              const str = getString(view, valueOffset, components);
+              tags[name] = str;
+            } else if (format === 5 || format === 10) {
+              valueOffset = tiffOffset + valueOffset;
+              const values = [];
+              for (let j = 0; j < components; j++) {
+                values.push(new DataView(arrayBuffer, valueOffset + j * 8, 8));
+              }
+              tags[name] = values;
+            } else if (tag === 0x8825) {
+              gpsOffset = tiffOffset + valueOffset;
+            }
+            pointer += 12;
+          }
+          if (gpsOffset) {
+            const gpsTagsCount = view.getUint16(gpsOffset, littleEndian);
+            let gpsPointer = gpsOffset + 2;
+            for (let i = 0; i < gpsTagsCount; i++) {
+              const tag = view.getUint16(gpsPointer, littleEndian);
+              const format = view.getUint16(gpsPointer + 2, littleEndian);
+              const components = view.getUint32(gpsPointer + 4, littleEndian);
+              let valueOffset = view.getUint32(gpsPointer + 8, littleEndian);
+              const nameMap = {
+                0x0001: 'GPSLatitudeRef', 0x0002: 'GPSLatitude',
+                0x0003: 'GPSLongitudeRef', 0x0004: 'GPSLongitude',
+                0x0005: 'GPSAltitudeRef', 0x0006: 'GPSAltitude'
+              };
+              const name = nameMap[tag] || `GPS_${tag.toString(16).toUpperCase()}`;
+              if (format === 2) {
+                valueOffset = tiffOffset + valueOffset;
+                const str = getString(view, valueOffset, components);
+                gps[name] = str;
+              } else if (format === 5 || format === 10) {
+                valueOffset = tiffOffset + valueOffset;
+                const values = [];
+                for (let j = 0; j < components; j++) {
+                  values.push(new DataView(arrayBuffer, valueOffset + j * 8, 8));
+                }
+                gps[name] = values;
+              }
+              gpsPointer += 12;
+            }
+          }
+          if (Object.keys(gps).length > 0) {
+            tags.GPS = gps;
+          }
+          return { tags, littleEndian };
+        }
+        offset += size - 2;
+      }
+      return null;
+    }
+
+    function updateUI(exif) {
+      metaList.innerHTML = '';
+      mapLink.classList.add('hidden');
+      if (!exif || !exif.tags) {
+        results.classList.add('hidden');
+        noMeta.classList.remove('hidden');
+        return;
+      }
+      const metadata = [];
+      const tags = exif.tags;
+      if (tags.Make) metadata.push(['Device make', tags.Make]);
+      if (tags.Model) metadata.push(['Device model', tags.Model]);
+      if (tags.DateTime) metadata.push(['Photo timestamp', tags.DateTime]);
+      if (tags.Orientation) metadata.push(['Orientation', tags.Orientation]);
+      if (tags.GPS) {
+        const gps = parseGPS(tags.GPS, exif.littleEndian);
+        if (gps) {
+          metadata.push(['GPS latitude', gps.latitude.toFixed(6)]);
+          metadata.push(['GPS longitude', gps.longitude.toFixed(6)]);
+          metadata.push(['GPS reference', `${tags.GPS.GPSLatitudeRef} / ${tags.GPS.GPSLongitudeRef}`]);
+          mapLink.href = `https://www.google.com/maps/search/?api=1&query=${gps.latitude},${gps.longitude}`;
+          mapLink.textContent = `View location on Google Maps (${gps.latitude.toFixed(6)}, ${gps.longitude.toFixed(6)})`;
+          mapLink.classList.remove('hidden');
+        }
+      }
+      Object.keys(tags).forEach((key) => {
+        if (['Make', 'Model', 'DateTime', 'Orientation', 'GPS'].includes(key)) return;
+        const value = tags[key];
+        if (Array.isArray(value)) {
+          metadata.push([key, 'Multiple entries']);
+        } else {
+          metadata.push([key, String(value)]);
+        }
+      });
+
+      if (metadata.length === 0) {
+        results.classList.add('hidden');
+        noMeta.classList.remove('hidden');
+      } else {
+        noMeta.classList.add('hidden');
+        results.classList.remove('hidden');
+        metadata.forEach(([key, value]) => {
+          const li = document.createElement('li');
+          const name = document.createElement('span');
+          const val = document.createElement('span');
+          name.className = 'meta-key';
+          val.className = 'meta-val';
+          name.textContent = key;
+          val.textContent = value;
+          li.appendChild(name);
+          li.appendChild(val);
+          metaList.appendChild(li);
+        });
+      }
+    }
+
+    function showPreview(file) {
+      previewContainer.classList.remove('hidden');
+      const reader = new FileReader();
+      reader.onload = () => {
+        previewImage.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function stripMetadata(file) {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob((blob) => {
+          if (!blob) return;
+          const downloadLink = document.createElement('a');
+          downloadLink.href = URL.createObjectURL(blob);
+          downloadLink.download = `${file.name.replace(/\.[^.]+$/, '')}-stripped.jpg`;
+          downloadLink.click();
+          URL.revokeObjectURL(downloadLink.href);
+        }, 'image/jpeg', 0.92);
+        URL.revokeObjectURL(url);
+      };
+      img.src = url;
+    }
+
+    input.addEventListener('change', () => {
+      const file = input.files?.[0];
+      if (!file) {
+        statusText.textContent = 'No photo selected.';
+        cleanButton.disabled = true;
+        previewContainer.classList.add('hidden');
+        results.classList.add('hidden');
+        noMeta.classList.add('hidden');
+        return;
+      }
+      currentFile = file;
+      statusText.textContent = `Scanning ${file.name} ...`;
+      cleanButton.disabled = false;
+      showPreview(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        const exif = parseExif(reader.result);
+        statusText.textContent = exif ? 'EXIF metadata detected.' : 'No EXIF metadata detected.';
+        updateUI(exif);
+      };
+      reader.onerror = () => {
+        statusText.textContent = 'Could not read the file. Please try another photo.';
+        results.classList.add('hidden');
+        noMeta.classList.remove('hidden');
+      };
+      reader.readAsArrayBuffer(file);
+    });
+
+    cleanButton.addEventListener('click', () => {
+      if (!currentFile) return;
+      stripMetadata(currentFile);
+    });
+
+    function sendHeight() {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ iframeHeight: document.body.scrollHeight }, '*');
+      }
+    }
+    window.addEventListener('load', sendHeight);
+    window.addEventListener('resize', sendHeight);
+  </script>
+</body>
+</html>
