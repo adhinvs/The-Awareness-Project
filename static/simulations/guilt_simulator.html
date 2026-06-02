@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Incident Help Desk Simulator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+            color: #f1f5f9;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding: 24px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 16px;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            color: #60a5fa;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .panel h2 {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        select,
+        textarea,
+        input[type="file"] {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            color: #f1f5f9;
+            font-family: inherit;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .upload-zone {
+            border: 2px dashed rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .upload-zone:hover {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .preview-box {
+            display: none;
+            margin-top: 10px;
+            text-align: center;
+            position: relative;
+        }
+
+        .preview-box img {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+        }
+
+        .dashboard-item {
+            background: #0f172a;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .risk-indicator {
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .response-area {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            min-height: 250px;
+            white-space: pre-line;
+            font-size: 0.95rem;
+        }
+
+        .action-badge {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚨 Emergency Incident & Threat Advisor</h1>
+            <p>Simulate uploading blackmailer threats or suspicious messaging to receive an instant triage analysis and
+                step-by-step containment procedures.</p>
+        </div>
+
+        <div class="grid">
+            <div class="panel">
+                <h2>📤 Threat Upload Portal</h2>
+
+                <div class="form-group">
+                    <label for="threat-type">What type of threat are you experiencing?</label>
+                    <select id="threat-type">
+                        <option value="sextortion">Sextortion / Webcam Blackmail</option>
+                        <option value="digital-arrest">Digital Arrest / Law Enforcement Impersonation</option>
+                        <option value="phishing-scam">Financial Trap / Family Emergency Spoofing</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Threat Screenshot / Evidence Log:</label>
+                    <div class="upload-zone" onclick="document.getElementById('file-input').click()">
+                        <span style="font-size: 24px;">📁</span>
+                        <p style="font-size: 0.85rem; margin-top: 4px;" id="upload-status">Click to simulate screenshot
+                            attachments (PNG, JPG)</p>
+                        <input type="file" id="file-input" style="display:none;" accept="image/*"
+                            onchange="previewImage(event)">
+                    </div>
+                    <div class="preview-box" id="preview-container">
+                        <img id="img-preview" src="#" alt="Screenshot preview">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Paste text details or add context (What are they demanding?):</label>
+                    <textarea id="description"
+                        placeholder="Example: They claim they will leak my contacts if I don't pay 50k in bitcoin..."></textarea>
+                </div>
+
+                <button class="btn" onclick="analyzeThreat()">Analyze Evidence & Get Help</button>
+            </div>
+
+            <div class="panel">
+                <h2>🛠️ Threat Countermeasures Dashboard</h2>
+
+                <div class="dashboard-item">
+                    <span>Threat Vector Severity:</span>
+                    <span id="risk" class="risk-indicator"
+                        style="background:rgba(241,245,249,0.1); color:#94a3b8;">Pending Input</span>
+                </div>
+
+                <div class="form-group">
+                    <label>Counselor Assessment & Survival Playbook:</label>
+                    <div class="response-area" id="response-output">
+                        Your legal guidance analysis will populate here once evidence files are parsed.
+
+                        Ensure you document everything before acting.
+                    </div>
+                </div>
+
+                <div id="urgent-actions" style="display:none;">
+                    <div class="action-badge">⚠️ Immediate Containment Actions Needed!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function previewImage(event) {
+            const input = event.target;
+            const reader = new FileReader();
+            reader.onload = function () {
+                const dataURL = reader.result;
+                const output = document.getElementById('img-preview');
+                output.src = dataURL;
+                document.getElementById('preview-container').style.display = 'block';
+                document.getElementById('upload-status').innerText = "✅ Evidence Attached: " + input.files[0].name;
+            };
+            if (input.files[0]) {
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function analyzeThreat() {
+            const type = document.getElementById('threat-type').value;
+            const desc = document.getElementById('description').value;
+            const fileInput = document.getElementById('file-input');
+            const responseBox = document.getElementById('response-output');
+            const riskBadge = document.getElementById('risk');
+            const actionAlert = document.getElementById('urgent-actions');
+
+            if (!fileInput.files[0] && desc.trim() === "") {
+                alert("Please upload a screenshot or write a text description so the framework can parse the attack patterns.");
+                return;
+            }
+
+            responseBox.innerHTML = "🔄 <b>Parsing metadata and extracting textual coercion indicators...</b>";
+
+            setTimeout(() => {
+                let outputText = "";
+
+                if (type === 'sextortion') {
+                    riskBadge.innerText = "CRITICAL RISK";
+                    riskBadge.style.background = "rgba(239, 68, 68, 0.2)";
+                    riskBadge.style.color = "#f87171";
+                    actionAlert.style.display = "block";
+
+                    outputText = `📋 <b>INCIDENT COUNTERMEASURES:</b>\n
+          1. 🛑 <b>DO NOT PAY:</b> Criminals operate on automated extraction loops. If you pay ₹5,000, they will immediately demand ₹50,000. Paying never results in data deletion.
+          
+          2. 🔒 <b>DEACTIVATE, DO NOT DELETE:</b> Instantly set all your social platform spaces (Facebook, Instagram, LinkedIn) to maximum privacy restriction or temporarily deactivate them. This limits their ability to scrape or locate your contacts list.
+          
+          3. 🤫 <b>CEASE ENGAGEMENT:</b> Completely go dark on the attacker. Block their number. Do not threaten them, do not argue, and do not show despair.
+          
+          4. 🛡️ <b>REPORT DIRECTLY:</b> File the screenshot and communications log immediately on <b>cybercrime.gov.in</b> or call national emergency helplines. You are the victim of blackmail—you did nothing wrong.`;
+                }
+
+                else if (type === 'digital-arrest') {
+                    riskBadge.innerText = "HIGH EXPLOIT PROFILE";
+                    riskBadge.style.background = "rgba(245, 158, 11, 0.2)";
+                    riskBadge.style.color = "#fbbf24";
+                    actionAlert.style.display = "block";
+
+                    outputText = `📋 <b>INCIDENT COUNTERMEASURES:</b>\n
+          1. 🕵️‍♂️ <b>BLUFF IDENTIFIED:</b> Real law enforcement units will never issue warrants or process official holding citations via video conferencing systems (Skype, WhatsApp) or through third-party text interfaces.
+          
+          2. 🚫 <b>TERMINATE LINKAGE:</b> Disconnect from the call or text interaction instantly. Do not share banking credentials, Aadhaar configurations, or OTP codes under the premise of 'verification protocols'.
+          
+          3. 🏢 <b>MANUAL VERIFICATION:</b> If you feel anxious, manually locate your closest local jurisdiction police post and walk in to inspect your files. Never accept numbers or identification credentials supplied by the incoming texter.`;
+                }
+
+                else {
+                    riskBadge.innerText = "MEDIUM RISK";
+                    riskBadge.style.background = "rgba(59, 130, 246, 0.2)";
+                    riskBadge.style.color = "#60a5fa";
+                    actionAlert.style.display = "none";
+
+                    outputText = `📋 <b>INCIDENT COUNTERMEASURES:</b>\n
+          1. 🛡️ <b>BAIT ANALYSIS:</b> This is an isolation scheme designed to bypass financial validations via sudden situational panic.
+          
+          2. 🤙 <b>OFFLINE CHANNEL CHECK:</b> Call the family member or target entity using a separate, trusted communications line to verify if they are genuinely in jeopardy.
+          
+          3. ✖️ <b>REPORT EXPLOIT:</b> Block the source profile and pass the scam footprint metadata to official messaging platforms to secure the node.`;
+                }
+
+                responseBox.innerHTML = outputText;
+            }, 1200);
+        }
+    </script>
+</body>
+
+</html>
