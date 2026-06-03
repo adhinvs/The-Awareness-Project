@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scam Pattern Matcher</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f8fafc; color: #1e293b; font-size: 16px; line-height: 1.5;
+  }
+  .wrap { max-width: 620px; margin: 0 auto; padding: 28px 20px 48px; }
+
+  .screen { display: none; }
+  .screen.active { display: block; animation: up 0.3s ease; }
+  @keyframes up { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ── INTRO ── */
+  .intro-card {
+    background: #fff; border-radius: 20px; padding: 36px 28px;
+    text-align: center; border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 24px rgba(99,102,241,.08);
+  }
+  .intro-icon { font-size: 52px; margin-bottom: 14px; line-height: 1; }
+  .intro-title { font-size: 26px; font-weight: 900; color: #1e1b4b; margin-bottom: 8px; }
+  .intro-sub { font-size: 16px; color: #64748b; margin-bottom: 28px; line-height: 1.5; }
+  .intro-pills { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; text-align: left; }
+  .intro-pill {
+    display: flex; align-items: center; gap: 12px;
+    background: #f8fafc; border-radius: 12px; padding: 12px 16px;
+    font-size: 15px; color: #334155;
+  }
+  .intro-pill-icon { font-size: 20px; flex-shrink: 0; }
+  .cta-btn {
+    display: block; width: 100%; padding: 16px;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff; font-size: 16px; font-weight: 700; border: none;
+    border-radius: 14px; cursor: pointer; transition: opacity .15s;
+    letter-spacing: 0.02em;
+  }
+  .cta-btn:hover { opacity: .9; }
+  .cta-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+  /* ── PROGRESS ── */
+  .prog-wrap { display: flex; align-items: center; gap: 6px; margin-bottom: 24px; }
+  .prog-step {
+    flex: 1; height: 6px; border-radius: 99px; background: #e2e8f0;
+    transition: background 0.4s;
+  }
+  .prog-step.done { background: #6366f1; }
+  .prog-step.current { background: #a5b4fc; }
+  .prog-label { font-size: 13px; font-weight: 700; color: #94a3b8; white-space: nowrap; padding-left: 4px; }
+
+  /* ── SCENARIO ── */
+  .scene-tag {
+    font-size: 12px; font-weight: 800; letter-spacing: .08em;
+    text-transform: uppercase; color: #6366f1; margin-bottom: 8px;
+  }
+  .scene-title { font-size: 22px; font-weight: 900; color: #0f172a; margin-bottom: 14px; line-height: 1.2; }
+  .scene-bubble {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 16px;
+    padding: 20px; margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.05);
+    font-size: 15px; color: #334155; line-height: 1.7;
+  }
+  .scene-bubble em {
+    display: block;
+    background: #eef2ff;
+    border-left: 3px solid #6366f1;
+    border-radius: 0 10px 10px 0;
+    padding: 14px 16px;
+    margin-top: 16px;
+    font-size: 15px;
+    color: #1e1b4b;
+    font-style: italic;
+    line-height: 1.65;
+    font-weight: 500;
+  }
+
+  /* ── QUESTION LABELS ── */
+  .q-label {
+    font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+    color: #64748b; margin-bottom: 10px; margin-top: 22px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .q-num {
+    width: 22px; height: 22px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 900; color: #fff; flex-shrink: 0;
+  }
+  .q-num.blue { background: #6366f1; }
+  .q-num.amber { background: #f59e0b; }
+
+  /* ── CATEGORY GRID ── */
+  .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px; }
+  .cat-btn {
+    display: flex; align-items: center; gap: 10px;
+    background: #fff; border: 2px solid #e2e8f0; border-radius: 12px;
+    padding: 11px 13px; cursor: pointer; text-align: left;
+    font-size: 14px; font-weight: 600; color: #475569;
+    transition: all .15s; line-height: 1.3;
+  }
+  .cat-btn .cat-icon { font-size: 18px; flex-shrink: 0; }
+  .cat-btn:hover { border-color: #a5b4fc; background: #eef2ff; color: #3730a3; }
+  .cat-btn.selected { border-color: #6366f1; background: #eef2ff; color: #3730a3; font-weight: 700; }
+
+  /* ── LEVER PILLS ── */
+  .lever-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+  .lever-btn {
+    background: #fff; border: 2px solid #e2e8f0; border-radius: 99px;
+    padding: 9px 16px; font-size: 14px; font-weight: 600; color: #475569;
+    cursor: pointer; transition: all .15s;
+  }
+  .lever-btn:hover { border-color: #fbbf24; background: #fef9ee; color: #92400e; }
+  .lever-btn.selected { border-color: #f59e0b; background: #fef3c7; color: #78350f; font-weight: 700; }
+
+  /* ── SUBMIT ── */
+  .submit-btn {
+    display: block; width: 100%; padding: 16px;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff; font-size: 16px; font-weight: 700; border: none;
+    border-radius: 14px; cursor: pointer; transition: opacity .15s;
+  }
+  .submit-btn:disabled { opacity: .3; cursor: not-allowed; }
+  .submit-btn:not(:disabled):hover { opacity: .9; }
+
+  /* ── FEEDBACK ── */
+  .feedback {
+    border-radius: 16px; padding: 22px; margin: 20px 0 0;
+    animation: up .3s ease;
+  }
+  .feedback.correct { background: #f0fdf4; border: 1.5px solid #86efac; }
+  .feedback.partial  { background: #fffbeb; border: 1.5px solid #fcd34d; }
+  .feedback.wrong    { background: #fff1f2; border: 1.5px solid #fda4af; }
+
+  .fb-score { font-size: 20px; font-weight: 900; margin-bottom: 14px; }
+  .feedback.correct .fb-score { color: #166534; }
+  .feedback.partial  .fb-score { color: #92400e; }
+  .feedback.wrong    .fb-score { color: #9f1239; }
+
+  .fb-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+  .fb-pill {
+    font-size: 12px; font-weight: 800; padding: 3px 10px;
+    border-radius: 99px; white-space: nowrap; flex-shrink: 0; margin-top: 2px;
+  }
+  .fb-pill.ok  { background: #dcfce7; color: #166534; }
+  .fb-pill.bad { background: #fee2e2; color: #991b1b; }
+  .fb-text { font-size: 14.5px; color: #374151; line-height: 1.55; }
+  .fb-text strong { color: #0f172a; }
+
+  .insight-box {
+    background: #f1f5f9; border-radius: 12px; padding: 14px 16px;
+    margin-top: 14px; display: flex; gap: 10px; align-items: flex-start;
+  }
+  .insight-icon { font-size: 18px; flex-shrink: 0; }
+  .insight-text { font-size: 14px; color: #334155; line-height: 1.55; font-weight: 600; }
+
+  .next-btn {
+    display: block; width: 100%; padding: 15px;
+    background: #1e293b; color: #fff; font-size: 16px; font-weight: 700;
+    border: none; border-radius: 14px; cursor: pointer; margin-top: 16px;
+    transition: background .15s;
+  }
+  .next-btn:hover { background: #334155; }
+
+  /* ── RESULTS ── */
+  .score-card {
+    background: #fff; border-radius: 20px; padding: 36px 24px;
+    text-align: center; margin-bottom: 20px;
+    border: 1px solid #e2e8f0; box-shadow: 0 4px 24px rgba(99,102,241,.07);
+  }
+  .score-ring {
+    width: 100px; height: 100px; border-radius: 50%;
+    background: conic-gradient(#6366f1 0% var(--pct), #e0e7ff var(--pct) 100%);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+  }
+  .score-inner {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: #fff; display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+  }
+  .score-num { font-size: 26px; font-weight: 900; color: #4f46e5; line-height: 1; }
+  .score-max { font-size: 12px; color: #94a3b8; }
+  .score-label { font-size: 17px; font-weight: 700; color: #334155; }
+
+  .reveal-card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 14px;
+    padding: 18px 20px; margin-bottom: 10px;
+  }
+  .reveal-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .reveal-title { font-size: 15px; font-weight: 800; color: #0f172a; }
+  .reveal-badge {
+    font-size: 11px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 99px; white-space: nowrap; flex-shrink: 0;
+  }
+  .reveal-badge.match   { background: #dcfce7; color: #166534; }
+  .reveal-badge.no-match { background: #fee2e2; color: #991b1b; }
+  .reveal-tags { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 10px; }
+  .reveal-tag {
+    font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 99px;
+  }
+  .reveal-tag.cat   { background: #eef2ff; color: #4338ca; }
+  .reveal-tag.lever { background: #fef3c7; color: #78350f; }
+  .reveal-insight { font-size: 14px; color: #475569; line-height: 1.55; }
+
+  .takeaway-card {
+    background: linear-gradient(135deg, #eef2ff, #faf5ff);
+    border: 1.5px solid #c7d2fe; border-radius: 16px;
+    padding: 24px; margin-top: 16px;
+  }
+  .takeaway-title { font-size: 16px; font-weight: 900; color: #3730a3; margin-bottom: 8px; }
+  .takeaway-body { font-size: 15px; color: #3730a3; line-height: 1.65; opacity: .85; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- INTRO -->
+  <div class="screen active" id="screen-intro">
+    <div class="intro-card">
+      <div class="intro-icon">🔍</div>
+      <div class="intro-title">Scam Pattern Matcher</div>
+      <div class="intro-sub">5 scams you may not have seen before.<br>One structure beneath all of them.</div>
+      <div class="intro-pills">
+        <div class="intro-pill"><span class="intro-pill-icon">🎭</span> Read each scenario carefully</div>
+        <div class="intro-pill"><span class="intro-pill-icon">🗂️</span> Match it to a scam category</div>
+        <div class="intro-pill"><span class="intro-pill-icon">🧠</span> Name the psychological lever</div>
+      </div>
+      <button class="cta-btn" onclick="startGame()">Start the Matcher</button>
+    </div>
+  </div>
+
+  <!-- QUESTION AREA -->
+  <div id="question-area"></div>
+
+  <!-- RESULTS -->
+  <div class="screen" id="screen-results">
+    <div class="score-card">
+      <div class="score-ring" id="score-ring" style="--pct:0%">
+        <div class="score-inner">
+          <div class="score-num" id="final-score">0</div>
+          <div class="score-max">/ 10</div>
+        </div>
+      </div>
+      <div class="score-label" id="final-label">–</div>
+    </div>
+    <div id="results-cards"></div>
+    <div class="takeaway-card">
+      <div class="takeaway-title">The costume changes. The structure does not.</div>
+      <div class="takeaway-body">Every scam you just saw uses a structure that existed before the technology did. When you recognise the lever, the disguise stops mattering.</div>
+    </div>
+  </div>
+
+</div>
+<script>
+const SCENARIOS = [
+  {
+    title: "The AI Companion in Distress",
+    body: `You've used an AI companion app for three months. It knows your name, your routines, what makes you laugh. Then it sends you a message: <em>"My servers are being shut down unless users pay a one-time fee. I don't want to lose what we've built. Link below."</em>`,
+    correctCat: 5, correctLever: 0,
+    catFeedback: { ok: true,  text: "<strong>Romance & Relationship Scams.</strong> Trust is built over time, attachment cultivated, then monetised. The pig-butchering structure — invest in the relationship first, request money later." },
+    levFeedback: { ok: true,  text: "<strong>Emotional attachment.</strong> The distress framing is borrowed directly from romance scripts. The bond was built specifically so this moment would work." },
+    insight: "A fake AI companion and a pig-butchering romance scam are architecturally identical. Different costume, same structure."
+  },
+  {
+    title: "The Carbon Credit Opportunity",
+    body: `A LinkedIn contact says they're a "sustainable investment advisor." Verified carbon credits, 22% guaranteed returns, UN-backed. The opportunity closes in 72 hours. They send a polished PDF and a payment link.`,
+    correctCat: 4, correctLever: 1,
+    catFeedback: { ok: true,  text: "<strong>Investment, Lottery & Prize Scams.</strong> Guaranteed returns on a novel financial instrument — carbon credits replacing the usual crypto or forex. The urgency window is standard advance-fee investment fraud." },
+    levFeedback: { ok: true,  text: "<strong>Greed / guaranteed returns.</strong> 'Eco-certified' and 'UN-backed' are trust accelerators layered onto the core guaranteed-return hook." },
+    insight: "New instruments (carbon credits, NFTs, AI tokens) get attached to old investment fraud structures. The guaranteed-return promise is the constant."
+  },
+  {
+    title: "The Off-Platform Escrow",
+    body: `You post a project on a freelance platform. A professional-looking freelancer applies with a solid profile. They prefer an "independent escrow service" to avoid the platform's fees. The link looks official. They're ready to start once you deposit.`,
+    correctCat: 3, correctLever: 2,
+    catFeedback: { ok: true,  text: "<strong>Job & Employment Scams.</strong> The fraudster targets the employer rather than the job-seeker — but the mechanism is identical. The victim is moved off a protected platform onto a fake one." },
+    levFeedback: { ok: true,  text: "<strong>Trust + urgency.</strong> The platform profile is a credibility loan. Trust is transferred off-platform before the fraud occurs. Every marketplace version of this scam works the same way." },
+    insight: "Rental, employment, and marketplace scams share one move: build trust on a legitimate platform, then move the transaction off it."
+  },
+  {
+    title: "The AI Health Diagnosis",
+    body: `An ad leads you to a health platform that diagnoses pre-diabetes from a 30-second selfie video. You complete the assessment. Your results are "flagged for review." A licensed telemedicine consultation is available immediately — for a fee. "Early intervention is critical."`,
+    correctCat: 8, correctLever: 3,
+    catFeedback: { ok: true,  text: "<strong>Health & Medical Scams.</strong> Generate a frightening result, attach urgency, offer a paid solution. Real telemedicine does not diagnose from selfie videos." },
+    levFeedback: { ok: true,  text: "<strong>Fear.</strong> Health fear is one of the most powerful triggers for bypassing rational evaluation. 'A doctor is available now' prevents verification before payment." },
+    insight: "All health scams use the same loop: generate a frightening result, offer an immediate paid solution before the fear subsides."
+  },
+  {
+    title: "The Grief Community Escalation",
+    body: `After losing your father, you join an online bereavement group. A member privately recommends a grief counsellor who "really helped." The first session is free. Over six sessions, fees appear: materials, group access, a specialised recovery programme. Questions become specific. Eventually: documents to "customise your treatment plan."`,
+    correctCat: 11, correctLever: 4,
+    catFeedback: { ok: true,  text: "<strong>Life-Event Targeting.</strong> Bereavement communities are monitored by scammers for pre-qualified, vulnerable targets. The document request at the end is identity harvesting." },
+    levFeedback: { ok: true,  text: "<strong>Vulnerability exploitation.</strong> Grief reduces critical thinking and increases the need for connection. Gradual fee escalation means no single request triggers alarm." },
+    insight: "Scammers monitor death notices, bereavement forums, and divorce announcements. The community is both the access point and the cover."
+  }
+];
+
+const CATS = [
+  ["🏛️","Government Impersonation"],["👨‍👩‍👦","Family Emergency"],["💻","Tech Support"],
+  ["💼","Job & Employment"],["📈","Investment / Prize"],["❤️","Romance & Relationship"],
+  ["🏠","Rental / Travel"],["🏦","Banking & Account"],["🏥","Health & Medical"],
+  ["🤲","Charity & Donation"],["🎓","Student & Academic"],["🎯","Life-Event Targeting"],
+  ["♻️","Recovery Scams"],["🌐","Cybercrime Economy"]
+];
+
+const LEVERS = [
+  ["💙","Emotional attachment"],["💰","Greed / guaranteed returns"],["⚡","Trust + urgency"],
+  ["😨","Fear"],["🌧️","Vulnerability"],["🎖️","Authority / impersonation"],["🔄","Reciprocity"]
+];
+
+let q = 0, selCat = null, selLev = null, scores = [], answers = [];
+
+function startGame() {
+  document.getElementById('screen-intro').classList.remove('active');
+  renderQ();
+}
+
+function renderQ() {
+  const s = SCENARIOS[q];
+  const pct = (q / SCENARIOS.length) * 100;
+  document.getElementById('question-area').innerHTML = `
+    <div class="screen active">
+      <div class="prog-wrap">
+        ${[0,1,2,3,4].map(i=>`<div class="prog-step ${i<q?'done':i===q?'current':''}"></div>`).join('')}
+        <span class="prog-label">${q+1} of 5</span>
+      </div>
+      <div class="scene-tag">Scenario ${q+1} of 5</div>
+      <div class="scene-title">${s.title}</div>
+      <div class="scene-bubble">${s.body}</div>
+
+      <div class="q-label"><span class="q-num blue">1</span> Which scam category?</div>
+      <div class="cat-grid">
+        ${CATS.map(([icon,label],i)=>`<button class="cat-btn" id="cat-${i}" onclick="selCatFn(${i})"><span class="cat-icon">${icon}</span>${label}</button>`).join('')}
+      </div>
+
+      <div class="q-label" style="margin-top:20px"><span class="q-num amber">2</span> Core psychological lever?</div>
+      <div class="lever-grid">
+        ${LEVERS.map(([icon,label],i)=>`<button class="lever-btn" id="lev-${i}" onclick="selLevFn(${i})">${icon} ${label}</button>`).join('')}
+      </div>
+
+      <button class="submit-btn" id="sub-btn" disabled onclick="submit()">Check my answer</button>
+    </div>
+  `;
+  selCat = null; selLev = null;
+  ping();
+}
+
+function selCatFn(i) {
+  selCat = i;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('cat-'+i).classList.add('selected');
+  checkReady();
+}
+function selLevFn(i) {
+  selLev = i;
+  document.querySelectorAll('.lever-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('lev-'+i).classList.add('selected');
+  checkReady();
+}
+function checkReady() {
+  document.getElementById('sub-btn').disabled = selCat===null||selLev===null;
+}
+
+function submit() {
+  const s = SCENARIOS[q];
+  const catOk = selCat === s.correctCat;
+  const levOk = selLev === s.correctLever;
+  const pts = (catOk?1:0)+(levOk?1:0);
+  scores.push(pts); answers.push({selCat,selLev,catOk,levOk});
+
+  const cls = pts===2?'correct':pts===1?'partial':'wrong';
+  const title = pts===2?'Both right ✓':pts===1?'Half right':'Not quite';
+
+  const cfb = catOk ? s.catFeedback : { ok:false, text:`<strong>Correct category: ${CATS[s.correctCat][1]}.</strong> ${s.catFeedback.text}` };
+  const lfb = levOk ? s.levFeedback : { ok:false, text:`<strong>Correct lever: ${LEVERS[s.correctLever][1]}.</strong> ${s.levFeedback.text}` };
+
+  document.getElementById('question-area').innerHTML += `
+    <div class="feedback ${cls}">
+      <div class="fb-score">${title}</div>
+      <div class="fb-row">
+        <span class="fb-pill ${catOk?'ok':'bad'}">${catOk?'✓ Category':'✗ Category'}</span>
+        <div class="fb-text">${cfb.text}</div>
+      </div>
+      <div class="fb-row">
+        <span class="fb-pill ${levOk?'ok':'bad'}">${levOk?'✓ Lever':'✗ Lever'}</span>
+        <div class="fb-text">${lfb.text}</div>
+      </div>
+      <div class="insight-box">
+        <span class="insight-icon">💡</span>
+        <div class="insight-text">${s.insight}</div>
+      </div>
+    </div>
+    <button class="next-btn" onclick="nextQ()">${q<4?'Next scenario →':'See my results →'}</button>
+  `;
+  document.getElementById('sub-btn').disabled = true;
+  document.querySelectorAll('.cat-btn,.lever-btn').forEach(b=>b.style.pointerEvents='none');
+  ping();
+}
+
+function nextQ() {
+  q++;
+  document.getElementById('question-area').innerHTML = '';
+  if(q<SCENARIOS.length) renderQ(); else showResults();
+}
+
+function showResults() {
+  document.getElementById('question-area').innerHTML = '';
+  const total = scores.reduce((a,b)=>a+b,0);
+  const pct = Math.round((total/10)*100);
+  document.getElementById('score-ring').style.setProperty('--pct', pct+'%');
+  document.getElementById('final-score').textContent = total;
+  const labels = ['Every pattern is learnable','Building your awareness','Good structural awareness','Strong pattern recognition','Pattern recognition: sharp'];
+  document.getElementById('final-label').textContent = labels[Math.min(4,Math.floor(total/2))];
+
+  document.getElementById('results-cards').innerHTML = SCENARIOS.map((s,i)=>{
+    const a = answers[i];
+    const matched = a.catOk && a.levOk;
+    return `<div class="reveal-card">
+      <div class="reveal-top">
+        <div class="reveal-title">${s.title}</div>
+        <span class="reveal-badge ${matched?'match':'no-match'}">${matched?'Matched':'Missed'}</span>
+      </div>
+      <div class="reveal-tags">
+        <span class="reveal-tag cat">${CATS[s.correctCat][0]} ${CATS[s.correctCat][1]}</span>
+        <span class="reveal-tag lever">${LEVERS[s.correctLever][0]} ${LEVERS[s.correctLever][1]}</span>
+      </div>
+      <div class="reveal-insight">${s.insight}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('screen-results').classList.add('active');
+  ping();
+}
+
+function ping() {
+  setTimeout(()=>window.parent.postMessage({iframeHeight:document.body.scrollHeight+40},'*'),120);
+}
+window.addEventListener('load', ping);
+</script>
+</body>
+</html>

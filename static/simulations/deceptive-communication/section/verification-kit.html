@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>60-Second Verification Kit</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f8fafc; color: #1e293b; font-size: 16px; line-height: 1.5;
+  }
+  .wrap { max-width: 620px; margin: 0 auto; padding: 28px 20px 48px; }
+
+  .screen { display: none; }
+  .screen.active { display: block; animation: up 0.3s ease; }
+  @keyframes up { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ── INTRO ── */
+  .intro-card {
+    background: #fff; border-radius: 20px; padding: 36px 28px;
+    text-align: center; border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 24px rgba(16,185,129,.08);
+    margin-bottom: 20px;
+  }
+  .intro-icon { font-size: 52px; margin-bottom: 14px; line-height: 1; }
+  .intro-title { font-size: 26px; font-weight: 900; color: #064e3b; margin-bottom: 8px; }
+  .intro-sub { font-size: 16px; color: #64748b; margin-bottom: 6px; line-height: 1.5; }
+  .intro-note { font-size: 14px; color: #94a3b8; font-style: italic; margin-bottom: 28px; }
+
+  .fmt-section-label {
+    font-size: 13px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;
+    color: #64748b; margin-bottom: 12px;
+  }
+  .fmt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+  .fmt-btn {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    background: #fff; border: 2px solid #e2e8f0; border-radius: 16px;
+    padding: 18px 10px; cursor: pointer; transition: all .15s; text-align: center;
+  }
+  .fmt-btn:hover { border-color: #10b981; background: #f0fdf4; }
+  .fmt-btn.active { border-color: #10b981; background: #ecfdf5; box-shadow: 0 0 0 3px rgba(16,185,129,.12); }
+  .fmt-icon { font-size: 28px; line-height: 1; }
+  .fmt-name { font-size: 14px; font-weight: 700; color: #1e293b; }
+  .fmt-sub  { font-size: 12px; color: #94a3b8; }
+
+  .go-btn {
+    display: block; width: 100%; padding: 16px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff; font-size: 16px; font-weight: 700; border: none;
+    border-radius: 14px; cursor: pointer; transition: opacity .15s;
+  }
+  .go-btn:disabled { opacity: .3; cursor: not-allowed; }
+  .go-btn:not(:disabled):hover { opacity: .9; }
+
+  /* ── VERIFY SCREEN ── */
+  .verify-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+  }
+  .fmt-badge {
+    font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+    color: #059669; background: #d1fae5; padding: 4px 12px; border-radius: 99px;
+  }
+  .back-btn {
+    margin-left: auto; font-size: 13px; font-weight: 600; color: #94a3b8;
+    background: none; border: none; cursor: pointer; padding: 4px 8px; border-radius: 8px;
+  }
+  .back-btn:hover { background: #f1f5f9; color: #475569; }
+
+  /* Scenario mockup */
+  .msg-card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 16px;
+    overflow: hidden; margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.05);
+  }
+  .msg-header {
+    background: #f8fafc; border-bottom: 1px solid #e2e8f0;
+    padding: 12px 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .msg-dot { width: 9px; height: 9px; border-radius: 50%; background: #ef4444; flex-shrink: 0; }
+  .msg-from { font-size: 13px; font-weight: 700; color: #ef4444; }
+  .msg-label { font-size: 12px; color: #94a3b8; margin-left: auto; }
+  .msg-body { padding: 18px; font-size: 15px; color: #334155; line-height: 1.7; }
+  .msg-body b { color: #0f172a; }
+  .msg-url { font-family: monospace; font-size: 13px; color: #0284c7; word-break: break-all; background: #f0f9ff; padding: 2px 6px; border-radius: 4px; }
+  .msg-danger { color: #dc2626; font-weight: 700; }
+  .msg-hint { font-size: 12.5px; color: #94a3b8; margin-top: 12px; font-style: italic; }
+
+  /* Annotation badges */
+  .anno {
+    display: inline-flex; align-items: center; gap: 3px;
+    background: #fef9c3; border: 1px solid #fde047;
+    color: #713f12; font-size: 11px; font-weight: 700;
+    padding: 2px 8px; border-radius: 99px; margin-left: 5px;
+    vertical-align: middle; white-space: nowrap; cursor: default;
+  }
+  .msg-line { margin-bottom: 10px; line-height: 1.75; }
+  .msg-line:last-child { margin-bottom: 0; }
+  .msg-key {
+    display: inline-block; font-size: 10px; font-weight: 800;
+    letter-spacing: .07em; text-transform: uppercase; color: #94a3b8;
+    background: #f1f5f9; padding: 2px 7px; border-radius: 5px;
+    margin-right: 6px; vertical-align: middle;
+  }
+  .msg-divider { border: none; border-top: 1px dashed #e2e8f0; margin: 12px 0; }
+
+  /* Steps progress bar */
+  .steps-prog { display: flex; gap: 6px; margin-bottom: 20px; }
+  .sp { flex: 1; height: 5px; border-radius: 99px; background: #e2e8f0; transition: background .35s; }
+  .sp.done    { background: #10b981; }
+  .sp.current { background: #34d399; }
+
+  /* Step cards */
+  .step-card {
+    background: #fff; border: 1.5px solid #e2e8f0; border-radius: 16px;
+    margin-bottom: 10px; overflow: hidden; transition: border-color .2s;
+  }
+  .step-card.current { border-color: #10b981; }
+  .step-card.done-card { border-color: #d1fae5; }
+
+  .step-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 18px; cursor: pointer;
+  }
+  .step-num {
+    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800;
+  }
+  .step-num.pending { background: #f1f5f9; color: #94a3b8; }
+  .step-num.active  { background: #d1fae5; color: #065f46; }
+  .step-num.done    { background: #10b981; color: #fff; font-size: 16px; }
+  .step-title-wrap { flex: 1; }
+  .step-title { font-size: 16px; font-weight: 700; color: #0f172a; }
+  .step-status { font-size: 12px; color: #94a3b8; margin-top: 1px; }
+  .step-chevron { font-size: 14px; color: #cbd5e1; transition: transform .2s; }
+  .step-chevron.open { transform: rotate(180deg); }
+
+  .step-body { display: none; padding: 0 18px 18px; }
+  .step-body.open { display: block; animation: up .2s ease; }
+
+  .check-list { list-style: none; margin-bottom: 14px; }
+  .check-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 0; border-bottom: 1px solid #f8fafc;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-box {
+    width: 22px; height: 22px; border-radius: 6px; border: 2px solid #cbd5e1;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0; margin-top: 1px; transition: all .15s;
+    font-size: 12px;
+  }
+  .check-box.checked { background: #10b981; border-color: #10b981; color: #fff; }
+  .check-text { font-size: 15px; color: #374151; line-height: 1.5; }
+  .check-text b { color: #0f172a; }
+
+  .done-btn {
+    display: block; width: 100%; padding: 13px;
+    background: #f1f5f9; border: 1.5px solid #e2e8f0; border-radius: 12px;
+    font-size: 15px; font-weight: 700; color: #64748b; cursor: pointer;
+    transition: all .15s;
+  }
+  .done-btn:hover { background: #d1fae5; border-color: #6ee7b7; color: #065f46; }
+  .done-btn.complete { background: #d1fae5; border-color: #6ee7b7; color: #065f46; cursor: default; }
+
+  .see-verdict-btn {
+    display: block; width: 100%; padding: 16px; margin-top: 16px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff; font-size: 16px; font-weight: 700; border: none;
+    border-radius: 14px; cursor: pointer; transition: opacity .15s;
+  }
+  .see-verdict-btn:hover { opacity: .9; }
+
+  /* ── VERDICT ── */
+  .risk-banner {
+    border-radius: 18px; padding: 24px 22px; margin-bottom: 20px;
+    display: flex; align-items: flex-start; gap: 16px;
+  }
+  .risk-banner.danger { background: #fff1f2; border: 1.5px solid #fda4af; }
+  .risk-banner.warn   { background: #fffbeb; border: 1.5px solid #fcd34d; }
+  .risk-banner.safe   { background: #f0fdf4; border: 1.5px solid #86efac; }
+  .risk-icon { font-size: 36px; flex-shrink: 0; line-height: 1; }
+  .risk-text {}
+  .risk-title { font-size: 19px; font-weight: 900; margin-bottom: 6px; }
+  .risk-banner.danger .risk-title { color: #9f1239; }
+  .risk-banner.warn   .risk-title { color: #92400e; }
+  .risk-banner.safe   .risk-title { color: #166534; }
+  .risk-body { font-size: 15px; color: #374151; line-height: 1.6; }
+  .risk-body b { color: #0f172a; }
+
+  .actions-label {
+    font-size: 13px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;
+    color: #64748b; margin-bottom: 12px;
+  }
+  .action-row {
+    display: flex; gap: 12px; align-items: flex-start;
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 14px 16px; margin-bottom: 8px;
+  }
+  .action-num {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: #6366f1; color: #fff; font-size: 13px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .action-text { font-size: 15px; color: #334155; line-height: 1.5; }
+  .action-text b { color: #0f172a; }
+
+  .ref-strip {
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px;
+    padding: 18px; margin-top: 16px;
+  }
+  .ref-strip-label { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: #6366f1; margin-bottom: 12px; }
+  .ref-row { display: flex; gap: 10px; margin-bottom: 8px; font-size: 14px; color: #334155; }
+  .ref-row:last-child { margin-bottom: 0; }
+  .ref-icon { flex-shrink: 0; }
+
+  .again-btn {
+    display: block; width: 100%; padding: 15px; margin-top: 16px;
+    background: #1e293b; color: #fff; font-size: 16px; font-weight: 700;
+    border: none; border-radius: 14px; cursor: pointer; transition: background .15s;
+  }
+  .again-btn:hover { background: #334155; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- INTRO -->
+  <div class="screen active" id="screen-intro">
+    <div class="intro-card">
+      <div class="intro-icon">🔎</div>
+      <div class="intro-title">60-Second Verification Kit</div>
+      <div class="intro-sub">Pick the type of message you just received.<br>Get 4 checks built for that format.</div>
+      <div class="intro-note">Works as a practice exercise — and as a real-time reference.</div>
+    </div>
+
+    <div class="fmt-section-label">What did you receive?</div>
+    <div class="fmt-grid">
+      <button class="fmt-btn" onclick="pick('email',this)">
+        <span class="fmt-icon">📧</span>
+        <span class="fmt-name">Email</span>
+        <span class="fmt-sub">Incl. attachments</span>
+      </button>
+      <button class="fmt-btn" onclick="pick('sms',this)">
+        <span class="fmt-icon">💬</span>
+        <span class="fmt-name">Text / SMS</span>
+        <span class="fmt-sub">WhatsApp too</span>
+      </button>
+      <button class="fmt-btn" onclick="pick('call',this)">
+        <span class="fmt-icon">📞</span>
+        <span class="fmt-name">Phone call</span>
+        <span class="fmt-sub">Incl. video calls</span>
+      </button>
+      <button class="fmt-btn" onclick="pick('website',this)">
+        <span class="fmt-icon">🌐</span>
+        <span class="fmt-name">Website / link</span>
+        <span class="fmt-sub">URL you were sent</span>
+      </button>
+      <button class="fmt-btn" onclick="pick('qr',this)">
+        <span class="fmt-icon">📷</span>
+        <span class="fmt-name">QR code</span>
+        <span class="fmt-sub">Physical or digital</span>
+      </button>
+      <button class="fmt-btn" onclick="pick('social',this)">
+        <span class="fmt-icon">👤</span>
+        <span class="fmt-name">Social DM</span>
+        <span class="fmt-sub">Account message</span>
+      </button>
+    </div>
+    <button class="go-btn" id="go-btn" disabled onclick="startVerify()">Start verification →</button>
+  </div>
+
+  <!-- VERIFY -->
+  <div class="screen" id="screen-verify">
+    <div class="verify-header">
+      <span class="fmt-badge" id="fmt-badge">Email</span>
+      <button class="back-btn" onclick="goBack()">← Change format</button>
+    </div>
+    <div id="msg-area"></div>
+    <div class="steps-prog" id="steps-prog"></div>
+    <div id="steps-area"></div>
+    <button class="see-verdict-btn" id="verdict-btn" style="display:none" onclick="showVerdict()">See verdict →</button>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="screen" id="screen-verdict">
+    <div id="verdict-area"></div>
+    <button class="again-btn" onclick="restart()">Try a different format</button>
+  </div>
+
+</div>
+<script>
+const DATA = {
+  email: {
+    badge: "📧 Email",
+    msg: {
+      from: "Red flags to look for",
+      label: "Annotated email template",
+      body: `
+        <div class="msg-line"><span class="msg-key">From</span> Organisation Support &lt;<span class="msg-danger">noreply@org-secure-alerts.net</span>&gt; <span class="anno">⚠ Domain doesn't match the real organisation</span></div>
+        <div class="msg-line"><span class="msg-key">Subject</span> <span class="msg-danger">Urgent:</span> Action Required — Your Account <span class="anno">⚠ Urgency word in the subject line</span></div>
+        <div class="msg-line"><span class="msg-key">To</span> <span class="msg-danger">Dear Valued Customer</span> <span class="anno">⚠ Generic greeting — your name is not used</span></div>
+        <hr class="msg-divider">
+        <div class="msg-line">We detected unusual activity. <span class="msg-danger">Verify within 24 hours</span> or your account will be suspended. <span class="anno">⚠ Vague threat + artificial deadline</span></div>
+        <div class="msg-line"><span class="msg-url">http://org-secure-verify.net/confirm?id=XXXX</span> <span class="anno">⚠ Link goes to a third-party domain</span></div>
+        <div class="msg-line"><span class="msg-danger">Failure to act will result in permanent suspension.</span> <span class="anno">⚠ Disproportionate consequence to force action</span></div>`
+    },
+    steps: [
+      { title:"Check the source", status:"Is the sender who they claim to be?", checks:[
+        "Look at the domain after @ — does it exactly match the sender's official website?",
+        "The display name can say anything. The actual email address is the only reliable part.",
+        "Hover over any link — does the destination URL match the real official domain?"
+      ]},
+      { title:"Check the request", status:"What is it actually asking you to do?", checks:[
+        "Is it asking for a password, OTP, or personal credentials?",
+        "Is there a threat — suspension, legal action — if you don't act right now?",
+        "Does this message relate to something you actually did or initiated recently?"
+      ]},
+      { title:"Check the channel", status:"Is this how they normally reach you?", checks:[
+        "Would this organisation send you a link by email to re-enter your credentials?",
+        "Is there a matching notification inside their official app at the same time?",
+        "Have you received emails from this exact address before in a verified context?"
+      ]},
+      { title:"Verify independently", status:"Use a source you already trust", checks:[
+        "Type the official URL directly into your browser — don't click any link in this message",
+        "Log in to your account and check for any real alerts or notices there",
+        "Search the sending domain online — are there fraud or scam reports about it?"
+      ]}
+    ],
+    verdict: { cls:"danger", icon:"🚨", title:"Multiple red flags — do not click or respond", body:"The domain in the sender address doesn't match the real organisation. A generic greeting, urgency language, an artificial deadline, and a third-party link together form a consistent deceptive pattern. Verify through your own channel before taking any action." },
+    actions: ["Do not click any link in the message","Report it as phishing in your email client","Open the official website by typing the URL yourself and check your account directly","If you already clicked and entered details: change your passwords and enable 2FA now"]
+  },
+  sms: {
+    badge: "💬 Text / SMS",
+    msg: {
+      from: "Red flags to look for",
+      label: "Annotated SMS template",
+      body: `
+        <div class="msg-line"><span class="msg-key">From</span> <span class="msg-danger">+XX XXXXX XXXXX</span> <span class="anno">⚠ Personal mobile number — not a registered sender ID</span></div>
+        <hr class="msg-divider">
+        <div class="msg-line">Your account / service requires <span class="msg-danger">immediate action.</span> <span class="anno">⚠ Vague — no account name or specific detail</span></div>
+        <div class="msg-line">Your access will be <span class="msg-danger">suspended in 24 hours</span> unless you act now. <span class="anno">⚠ Artificial deadline to prevent verification</span></div>
+        <div class="msg-line">Update here: <span class="msg-url">org-verify-update.net/confirm</span> <span class="anno">⚠ Domain doesn't match the real service</span></div>
+        <div class="msg-line"><span class="msg-danger">Ignoring this will result in permanent block.</span> <span class="anno">⚠ Disproportionate consequence for a routine update</span></div>`
+    },
+    steps: [
+      { title:"Check the source", status:"Where did this message actually come from?", checks:[
+        "Is this from a personal mobile number or a short registered sender ID?",
+        "Search the number online — does it appear in scam or fraud reports?",
+        "Does the sender format match previous genuine messages from this service?"
+      ]},
+      { title:"Check the request", status:"What is it asking you to do?", checks:[
+        "Is it asking you to click a link or call a number it provides?",
+        "Is there a time limit designed to stop you from verifying independently?",
+        "Does the message reference a specific account or action you actually recognise?"
+      ]},
+      { title:"Check the channel", status:"Is this how the service normally contacts you?", checks:[
+        "Would this service send you an unsolicited SMS with a third-party link?",
+        "Is the same notice visible inside their official app right now?",
+        "Is the language and format consistent with genuine messages you've received before?"
+      ]},
+      { title:"Verify independently", status:"Use their official app or website", checks:[
+        "Open the official app and check your account status directly",
+        "Find the organisation's real contact number from their official website — not from this SMS",
+        "If genuinely unsure, visit a physical service location with your ID"
+      ]}
+    ],
+    verdict: { cls:"danger", icon:"🚨", title:"Multiple red flags — do not call or click", body:"A personal mobile number instead of a registered sender ID, a third-party link domain, a vague account reference, and an artificial deadline together form the standard pattern of a deceptive message. Verify through the official app before taking any action." },
+    actions: ["Do not click the link or call any number in the message","Open the official app and check your account status directly","Find the real contact number from the official website","Report the number to your country's telecom or cybercrime fraud portal"]
+  },
+  call: {
+    badge: "📞 Phone call",
+    msg: {
+      from: "Red flags to look for",
+      label: "Annotated call script template",
+      body: `
+        <div class="msg-line"><span class="msg-key">Caller ID</span> <span class="msg-danger">[Any official-sounding name]</span> <span class="anno">⚠ Caller ID can be set to any name by anyone</span></div>
+        <hr class="msg-divider">
+        <div class="msg-line">Claims you have <span class="msg-danger">violated a rule</span> or owe an outstanding amount — with no prior written notice. <span class="anno">⚠ Serious matters always come in writing first</span></div>
+        <div class="msg-line">Demands payment to a <span class="msg-danger">personal number or wallet</span> they provide, right now. <span class="anno">⚠ Legitimate organisations never collect payment this way</span></div>
+        <div class="msg-line">Threatens <span class="msg-danger">immediate consequences</span> — disconnection, arrest, legal action. <span class="anno">⚠ Fear and urgency designed to bypass rational thought</span></div>
+        <div class="msg-line"><span class="msg-danger">"Do not hang up. Do not call anyone else."</span> <span class="anno">⚠ Isolation tactic — the single clearest signal of a scam</span></div>`
+    },
+    steps: [
+      { title:"Check the source", status:"Caller ID proves nothing", checks:[
+        "Did you initiate this call, or did they call you with an urgent accusation?",
+        "Are they telling you not to hang up or contact anyone? That is a control tactic.",
+        "Can you find a verified public number for this authority and call them back yourself?"
+      ]},
+      { title:"Check the request", status:"What are they asking you to do?", checks:[
+        "Are they demanding payment via an unofficial method — a personal number or wallet?",
+        "Are they asking for your personal ID, OTPs, or account access details?",
+        "Are they threatening a consequence that requires you to act right now, on this call?"
+      ]},
+      { title:"Check the channel", status:"Would a real authority work this way?", checks:[
+        "Would this authority act on something this serious without any prior written notice?",
+        "Do you have a written notice, reference number, or case ID you can verify independently?",
+        "Does the process they describe match any real procedure you know of?"
+      ]},
+      { title:"Verify independently", status:"Hang up first — then verify", checks:[
+        "<b>Hang up.</b> No legitimate authority loses its case because you paused to verify.",
+        "Find the organisation's official number from their real website or a physical document and call back",
+        "Tell a trusted person what happened before taking any action"
+      ]}
+    ],
+    verdict: { cls:"danger", icon:"🚨", title:"Multiple red flags — hang up immediately", body:"The instruction not to hang up or contact anyone is the single clearest signal. It exists specifically to prevent verification. No legitimate authority operates by demanding immediate payment through an unofficial channel on an unsolicited call." },
+    actions: ["Hang up immediately — you can always call back through a verified number","Find the real contact number from the organisation's official website or a document you already have","Tell a trusted person what happened before taking any further action","Report the call to your national cybercrime helpline"]
+  },
+  website: {
+    badge: "🌐 Website / link",
+    msg: {
+      from: "Red flags to look for",
+      label: "Annotated link and page template",
+      body: `
+        <div class="msg-line"><span class="msg-key">URL</span> <span class="msg-danger">www.official-name-secure-verify.com</span>/action <span class="anno">⚠ Extra words in the domain — not the real address</span></div>
+        <div class="msg-line"><span class="msg-key">Padlock</span> Visible in the browser <span class="anno">⚠ Means encrypted only — not safe or official</span></div>
+        <div class="msg-line"><span class="msg-key">Design</span> Exact copy of the real site — logo, colours, layout <span class="anno">⚠ Any site design can be copied in minutes</span></div>
+        <hr class="msg-divider">
+        <div class="msg-line">Asks for: <span class="msg-danger">credentials, personal ID, or payment</span> to access something <span class="anno">⚠ Sensitive request arriving via unsolicited link</span></div>
+        <div class="msg-line">Shows: <span class="msg-danger">countdown timer</span> or "limited time remaining" <span class="anno">⚠ Artificial urgency to prevent pausing</span></div>
+        <div class="msg-line">Arrived via: <span class="msg-danger">unsolicited message or forward</span> — you didn't find it yourself <span class="anno">⚠ Legitimate offers are always findable on the real site</span></div>`
+    },
+    steps: [
+      { title:"Check the source", status:"The domain is the only reliable check", checks:[
+        "Read the domain character by character — does it exactly match the real official website?",
+        "Look for extra words, hyphens, or unusual endings that make it look similar but different",
+        "The padlock only confirms encryption — 87% of phishing sites now have one"
+      ]},
+      { title:"Check the request", status:"What does the page want from you?", checks:[
+        "Is it asking for credentials, personal ID, or payment to access something you're entitled to freely?",
+        "Is there a countdown timer or 'limited slots' message pushing you to act immediately?",
+        "Would the real organisation ask for this through an unsolicited link or forward?"
+      ]},
+      { title:"Check the channel", status:"Is this how they actually communicate?", checks:[
+        "Would this organisation send you to this URL through a forwarded message or social post?",
+        "Is this offer or notice visible when you log in to your real account independently?",
+        "Did you find this link yourself, or was it sent to you without asking?"
+      ]},
+      { title:"Verify independently", status:"Navigate to the real site yourself", checks:[
+        "Type the official URL directly into your browser — never use a link sent to you",
+        "Log in to your real account directly and check for any matching notices",
+        "Search the suspicious URL — are there scam reports about it?"
+      ]}
+    ],
+    verdict: { cls:"danger", icon:"🚨", title:"Multiple red flags — do not enter anything", body:"The domain doesn't match the real organisation's website. Page design can be copied exactly in minutes and proves nothing. Urgency elements and a credential or payment request on an unsolicited link complete the pattern. The domain is the only check that cannot be faked." },
+    actions: ["Do not enter any credentials, personal ID, or payment details","Close the tab immediately","Type the real official URL into your browser directly to check your account","Report the suspicious URL using your browser's built-in phishing report feature"]
+  },
+  qr: {
+    badge: "📷 QR code",
+    msg: {
+      from: "Red flags to look for",
+      label: "Annotated QR code template",
+      body: `
+        <div class="msg-line"><span class="msg-key">Location</span> Placed in a public space — on a surface, screen, or printed material <span class="anno">⚠ Anyone can place a QR sticker on any surface</span></div>
+        <div class="msg-line"><span class="msg-key">Placement</span> <span class="msg-danger">Sticker placed over</span> an existing official interface <span class="anno">⚠ Check whether it is original or added later</span></div>
+        <hr class="msg-divider">
+        <div class="msg-line">Scanning opens a payment or data-entry page <span class="anno">⚠ The QR destination is invisible before you scan</span></div>
+        <div class="msg-line">Page shows <span class="msg-danger">no official branding</span> and a non-official domain <span class="anno">⚠ Official pages have verifiable domain names</span></div>
+        <div class="msg-line">Asks for <span class="msg-danger">payment details or personal information</span> <span class="anno">⚠ Your payment app should always show a verified merchant name first</span></div>`
+    },
+    steps: [
+      { title:"Check the source", status:"Is this QR part of the original installation?", checks:[
+        "Is it a sticker added to a surface, or is it part of the original printed design?",
+        "Does it look recently added — different material, brighter, or slightly misaligned?",
+        "Is there official branding or a verified seal near the original installation?"
+      ]},
+      { title:"Check the request", status:"What does the destination page ask for?", checks:[
+        "When scanned, does the destination show a verified official domain?",
+        "Does your payment app show a verified merchant name before you confirm?",
+        "Is it asking for personal details beyond what the transaction requires?"
+      ]},
+      { title:"Check the channel", status:"Is there an official alternative?", checks:[
+        "Is there an official app or website where this payment can be made instead?",
+        "Can you complete this through another method — cash or an official terminal?",
+        "Would this organisation give you no other way to pay except a QR sticker?"
+      ]},
+      { title:"Verify independently", status:"Find the official method before paying", checks:[
+        "Check the organisation's official website for their verified payment method",
+        "If already scanned: close the page without entering any details",
+        "If already paid: raise a dispute through your payment app immediately"
+      ]}
+    ],
+    verdict: { cls:"warn", icon:"⚠️", title:"Caution — verify before paying", body:"A QR code placed by an unknown party in a public space cannot be verified without checking the destination independently. Sticker placement over official interfaces and the absence of a verified merchant name in your payment app are the key signals to act on." },
+    actions: ["Do not complete any payment until the merchant is verified through an official channel","Find the official payment method from the organisation's real website or app","If you already paid: raise a dispute through your payment app immediately","Report the suspicious QR to the location management or relevant authority"]
+  },
+  social: {
+    badge: "👤 Social media DM",
+    msg: {
+      from: "Red flags to look for",
+      label: "Annotated DM template",
+      body: `
+        <div class="msg-line"><span class="msg-key">Account</span> <span class="msg-danger">Created recently</span> — days or weeks old <span class="anno">⚠ Official support accounts are years old with large followings</span></div>
+        <div class="msg-line"><span class="msg-key">Username</span> Mimics an official name with extra words, underscores, or numbers <span class="anno">⚠ Not the same as the real verified account</span></div>
+        <div class="msg-line"><span class="msg-key">Verified</span> <span class="msg-danger">No real badge</span> next to the name, or a fake one typed into the bio <span class="anno">⚠ Real verification appears next to the name — never in the bio text</span></div>
+        <hr class="msg-divider">
+        <div class="msg-line">Claims your account will be <span class="msg-danger">banned or penalised</span> unless you act immediately <span class="anno">⚠ Platforms notify violations through in-app alerts — not DMs</span></div>
+        <div class="msg-line">Asks for your <span class="msg-danger">password, OTP, or login</span> through an external link <span class="anno">⚠ No legitimate platform ever requests this via a direct message</span></div>`
+    },
+    steps: [
+      { title:"Check the source", status:"Who is this account really?", checks:[
+        "When was this account created? Days or weeks old is a clear signal.",
+        "How many followers does it have? Real official accounts have large, long-standing followings.",
+        "Is there a real verified badge next to the name, or a fake one written into the bio?"
+      ]},
+      { title:"Check the request", status:"What is it asking for?", checks:[
+        "Is it asking for your password or OTP? No legitimate platform ever does this via DM.",
+        "Is there a deadline — 24 hours, immediate action — to prevent you from thinking?",
+        "Does the linked page look like the real login page but have a different URL?"
+      ]},
+      { title:"Check the channel", status:"How does the platform actually communicate?", checks:[
+        "Check your real notification centre and registered email for any official notice",
+        "Go to Settings in the app — is there an actual violation listed in your account status?",
+        "Real platforms communicate violations through in-app alerts and registered email — not DMs"
+      ]},
+      { title:"Verify independently", status:"One check ends this immediately", checks:[
+        "Report the account and DM using the in-app report function",
+        "Check your real account status in Settings — is there actually anything wrong?",
+        "Enable two-factor authentication on your real account right now"
+      ]}
+    ],
+    verdict: { cls:"danger", icon:"🚨", title:"Multiple red flags — report and ignore", body:"Real platforms communicate account issues through in-app notifications and email to your registered address. A recently created account, a username imitating an official one, and a request for your password via DM are each independently sufficient to ignore and report." },
+    actions: ["Do not click any link or enter any credentials","Report the account and message in-app immediately","Check your real account status in Settings — there is no actual violation","Enable two-factor authentication on your account right now"]
+  }
+};
+
+let selFmt = null, stepsDone = [];
+
+function pick(fmt, el) {
+  selFmt = fmt;
+  document.querySelectorAll('.fmt-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('go-btn').disabled = false;
+}
+
+function startVerify() {
+  document.getElementById('screen-intro').classList.remove('active');
+  const d = DATA[selFmt];
+  stepsDone = [false,false,false,false];
+  document.getElementById('fmt-badge').textContent = d.badge;
+  renderMsg(d); renderSteps(d); renderProg();
+  document.getElementById('screen-verify').classList.add('active');
+  ping();
+}
+
+function renderMsg(d) {
+  const m = d.msg;
+  document.getElementById('msg-area').innerHTML = `
+    <div class="msg-card">
+      <div class="msg-header">
+        <div class="msg-dot"></div>
+        <span class="msg-from">${m.from}</span>
+        <span class="msg-label">${m.label}</span>
+      </div>
+      <div class="msg-body">${m.body}<div class="msg-hint">Generic template — the highlighted flags apply to any suspicious communication of this type.</div></div>
+    </div>`;
+}
+
+function renderProg() {
+  document.getElementById('steps-prog').innerHTML = [0,1,2,3].map(i=>`<div class="sp ${i===0?'current':''}" id="sp-${i}"></div>`).join('');
+}
+
+function renderSteps(d) {
+  document.getElementById('steps-area').innerHTML = d.steps.map((s,i)=>`
+    <div class="step-card ${i===0?'current':''}" id="sc-${i}">
+      <div class="step-head" onclick="toggleStep(${i})">
+        <div class="step-num ${i===0?'active':'pending'}" id="sn-${i}">${i+1}</div>
+        <div class="step-title-wrap">
+          <div class="step-title">${s.title}</div>
+          <div class="step-status" id="ss-${i}">${s.status}</div>
+        </div>
+        <div class="step-chevron ${i===0?'open':''}" id="sv-${i}">▼</div>
+      </div>
+      <div class="step-body ${i===0?'open':''}" id="sb-${i}">
+        <ul class="check-list">
+          ${s.checks.map((c,j)=>`
+            <li class="check-item">
+              <div class="check-box" id="cb-${i}-${j}" onclick="toggleCheck(${i},${j})"></div>
+              <span class="check-text">${c}</span>
+            </li>`).join('')}
+        </ul>
+        <button class="done-btn" id="db-${i}" onclick="markDone(${i})">Mark as done ✓</button>
+      </div>
+    </div>`).join('');
+}
+
+function toggleStep(i) {
+  const b = document.getElementById('sb-'+i), v = document.getElementById('sv-'+i);
+  const isOpen = b.classList.toggle('open');
+  v.classList.toggle('open', isOpen);
+  ping();
+}
+
+function toggleCheck(i,j) {
+  const cb = document.getElementById(`cb-${i}-${j}`);
+  const checked = cb.classList.toggle('checked');
+  cb.textContent = checked ? '✓' : '';
+  ping();
+}
+
+function markDone(i) {
+  stepsDone[i] = true;
+  const db = document.getElementById('db-'+i);
+  db.textContent = 'Done ✓'; db.classList.add('complete');
+  const sn = document.getElementById('sn-'+i);
+  sn.classList.remove('active','pending'); sn.classList.add('done'); sn.textContent = '✓';
+  document.getElementById('sc-'+i).classList.remove('current'); document.getElementById('sc-'+i).classList.add('done-card');
+  document.getElementById('sb-'+i).classList.remove('open');
+  document.getElementById('sv-'+i).classList.remove('open');
+  document.getElementById('sp-'+i).classList.remove('current'); document.getElementById('sp-'+i).classList.add('done');
+
+  if(i < 3) {
+    document.getElementById('sc-'+(i+1)).classList.add('current');
+    document.getElementById('sn-'+(i+1)).classList.remove('pending'); document.getElementById('sn-'+(i+1)).classList.add('active');
+    document.getElementById('sb-'+(i+1)).classList.add('open');
+    document.getElementById('sv-'+(i+1)).classList.add('open');
+    document.getElementById('sp-'+(i+1)).classList.add('current');
+  }
+
+  document.getElementById('verdict-btn').style.display = stepsDone.every(Boolean) ? 'block' : 'none';
+  ping();
+}
+
+function showVerdict() {
+  document.getElementById('screen-verify').classList.remove('active');
+  const d = DATA[selFmt];
+  const v = d.verdict;
+  document.getElementById('verdict-area').innerHTML = `
+    <div class="risk-banner ${v.cls}">
+      <div class="risk-icon">${v.icon}</div>
+      <div class="risk-text">
+        <div class="risk-title">${v.title}</div>
+        <div class="risk-body">${v.body}</div>
+      </div>
+    </div>
+    <div class="actions-label">What to do now</div>
+    ${d.actions.map((a,i)=>`<div class="action-row"><div class="action-num">${i+1}</div><div class="action-text">${a}</div></div>`).join('')}
+    <div class="ref-strip">
+      <div class="ref-strip-label">Your ${d.badge} checklist</div>
+      ${DATA[selFmt].steps.map(s=>`<div class="ref-row"><span class="ref-icon">✓</span> <span><b>${s.title}</b> — ${s.status.toLowerCase()}</span></div>`).join('')}
+    </div>`;
+  document.getElementById('screen-verdict').classList.add('active');
+  ping();
+}
+
+function goBack() {
+  document.getElementById('screen-verify').classList.remove('active');
+  document.getElementById('screen-intro').classList.add('active');
+  ping();
+}
+
+function restart() {
+  selFmt = null;
+  document.querySelectorAll('.fmt-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('go-btn').disabled = true;
+  document.getElementById('screen-verdict').classList.remove('active');
+  document.getElementById('verdict-btn').style.display = 'none';
+  document.getElementById('screen-intro').classList.add('active');
+  ping();
+}
+
+function ping() {
+  setTimeout(()=>window.parent.postMessage({iframeHeight:document.body.scrollHeight+40},'*'),120);
+}
+window.addEventListener('load', ping);
+</script>
+</body>
+</html>
