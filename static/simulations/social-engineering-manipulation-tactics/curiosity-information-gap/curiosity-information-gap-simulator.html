@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Curiosity Check</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --font: 'Outfit', system-ui, sans-serif;
+      --bg: #F9FAFB;
+      --surface: #FFFFFF;
+      --border: #D1D5DB;
+      --text: #0F172A;
+      --muted: #475569;
+      --blue: #2563EB;
+      --blue-light: #EFF6FF;
+      --green: #16A34A;
+      --green-light: #DCFCE7;
+      --red: #DC2626;
+      --red-light: #FEF2F2;
+      --amber: #B45309;
+      --amber-light: #FEF3C7;
+      --r: 14px;
+      --r-sm: 10px;
+    }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      padding: 28px 18px 28px;
+      line-height: 1.7;
+    }
+
+    /* ── Progress bar ── */
+    .progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .progress-track {
+      flex: 1;
+      height: 6px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--blue);
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+    .progress-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      box-shadow: 0 8px 28px rgba(15,23,42,0.06);
+      overflow: hidden;
+      animation: fadeUp 0.35s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Lure visual ── */
+    .lure-visual {
+      padding: 22px 24px 18px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .lure-type-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+    .badge-email   { background: #EFF6FF; color: #1D4ED8; }
+    .badge-usb     { background: #FEF3C7; color: #92400E; }
+    .badge-qr      { background: #F0FDF4; color: #15803D; }
+    .badge-doc     { background: #FDF4FF; color: #7E22CE; }
+    .badge-tool    { background: #FFF7ED; color: #C2410C; }
+    .badge-subject { background: #F0F9FF; color: #0369A1; }
+
+    /* Email mockup */
+    .mockup-email {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: var(--r-sm);
+      padding: 16px;
+      font-size: 13.5px;
+    }
+    .email-meta { color: var(--muted); font-size: 12.5px; margin-bottom: 8px; line-height: 1.8; }
+    .email-subject { font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 10px; }
+    .email-body { color: #334155; font-size: 13.5px; line-height: 1.7; }
+    .email-link {
+      display: inline-block;
+      margin-top: 10px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      cursor: default;
+    }
+
+    /* USB mockup */
+    .mockup-usb {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: #FAFAF5;
+      border: 1px solid #E8E8D8;
+      border-radius: var(--r-sm);
+      padding: 18px;
+    }
+    .usb-icon {
+      flex-shrink: 0;
+      width: 54px;
+      height: 54px;
+      background: #1E293B;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    .usb-label { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.4; }
+    .usb-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+    /* QR mockup */
+    .mockup-qr {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: #F0FDF4;
+      border: 1px dashed #86EFAC;
+      border-radius: var(--r-sm);
+      padding: 18px;
+    }
+    .qr-box {
+      flex-shrink: 0;
+      width: 64px;
+      height: 64px;
+      background: #fff;
+      border: 2px solid #166534;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+    }
+    .qr-text { font-size: 14px; font-weight: 700; line-height: 1.4; }
+    .qr-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+    /* Document mockup */
+    .mockup-doc {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #FDF4FF;
+      border: 1px solid #E9D5FF;
+      border-radius: var(--r-sm);
+      padding: 16px;
+    }
+    .doc-icon {
+      flex-shrink: 0;
+      width: 48px;
+      height: 60px;
+      background: #7E22CE;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: #fff;
+      position: relative;
+    }
+    .doc-name { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.4; }
+    .doc-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+    /* Tool mockup */
+    .mockup-tool {
+      background: #1E293B;
+      border-radius: var(--r-sm);
+      padding: 16px;
+      color: #E2E8F0;
+    }
+    .tool-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .tool-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .tool-name { font-size: 13px; font-weight: 700; color: #fff; }
+    .tool-body { font-size: 13px; color: #94A3B8; line-height: 1.6; }
+    .tool-cta {
+      display: inline-block;
+      margin-top: 12px;
+      background: #2563EB;
+      color: #fff;
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 7px 16px;
+      border-radius: 6px;
+      cursor: default;
+    }
+
+    /* Subject line mockup */
+    .mockup-subject {
+      background: #F0F9FF;
+      border: 1px solid #BAE6FD;
+      border-radius: var(--r-sm);
+      padding: 16px;
+    }
+    .subject-line {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0C4A6E;
+      margin-bottom: 6px;
+    }
+    .subject-preview { font-size: 13px; color: var(--muted); }
+
+    /* ── Interaction zone ── */
+    .interact {
+      padding: 22px 24px;
+    }
+    .interact-prompt {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      font-style: italic;
+    }
+
+    /* Highlight zones */
+    .highlight-area {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .highlight-chip {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      transition: all 0.18s ease;
+      color: var(--muted);
+      user-select: none;
+    }
+    .highlight-chip:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+      background: var(--blue-light);
+    }
+    .highlight-chip.selected-right {
+      border-color: var(--green);
+      background: var(--green-light);
+      color: var(--green);
+    }
+    .highlight-chip.selected-wrong {
+      border-color: var(--red);
+      background: var(--red-light);
+      color: var(--red);
+    }
+
+    /* Trigger selector */
+    .trigger-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .trigger-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .trigger-btn {
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      transition: all 0.18s ease;
+      color: var(--muted);
+    }
+    .trigger-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+    .trigger-btn.selected { border-color: var(--blue); background: var(--blue); color: #fff; }
+    .trigger-btn.correct  { border-color: var(--green); background: var(--green-light); color: var(--green); }
+    .trigger-btn.wrong    { border-color: var(--red); background: var(--red-light); color: var(--red); }
+
+    /* Reveal button */
+    .reveal-btn {
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 700;
+      padding: 11px 24px;
+      border-radius: 999px;
+      border: none;
+      background: var(--blue);
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+    .reveal-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(37,99,235,0.25); }
+    .reveal-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    /* ── Autopsy panel ── */
+    .autopsy {
+      margin-top: 20px;
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 20px;
+      animation: fadeUp 0.3s ease both;
+    }
+    .autopsy-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 14px;
+    }
+    .bone {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 14px;
+      align-items: flex-start;
+    }
+    .bone-icon {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .bone-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+    .bone-text {
+      font-size: 13.5px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .safe-action {
+      background: var(--green-light);
+      border-left: 3px solid var(--green);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 13.5px;
+      color: #14532D;
+      line-height: 1.6;
+      margin-top: 6px;
+    }
+
+    /* ── Next / Done ── */
+    .nav-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+    .next-btn {
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 700;
+      padding: 11px 26px;
+      border-radius: 999px;
+      border: none;
+      background: var(--text);
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.16s ease;
+    }
+    .next-btn:hover { transform: translateY(-1px); }
+
+    /* ── Summary screen ── */
+    .summary {
+      animation: fadeUp 0.4s ease both;
+      text-align: center;
+    }
+    .summary-icon { font-size: 48px; margin-bottom: 16px; }
+    .summary h2 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+    .summary-sub { color: var(--muted); font-size: 15px; margin-bottom: 28px; line-height: 1.6; max-width: 480px; margin-left: auto; margin-right: auto; }
+    .score-row {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .score-chip {
+      padding: 10px 20px;
+      border-radius: var(--r-sm);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .score-chip.correct { background: var(--green-light); color: var(--green); }
+    .score-chip.wrong   { background: var(--red-light);   color: var(--red);   }
+    .missed-list { text-align: left; margin-bottom: 24px; }
+    .missed-list h3 { font-size: 14px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 12px; }
+    .missed-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 14px;
+      margin-bottom: 10px;
+      font-size: 13.5px;
+    }
+    .missed-item strong { display: block; margin-bottom: 4px; color: var(--text); }
+    .missed-item span { color: var(--muted); }
+    .restart-btn {
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 999px;
+      border: none;
+      background: var(--blue);
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.16s ease;
+    }
+    .restart-btn:hover { transform: translateY(-1px); }
+  </style>
+</head>
+<body>
+
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="progress-label" id="progressLabel">1 of 6</div>
+</div>
+
+<div id="cardWrap"></div>
+
+<script>
+const ITEMS = [
+  {
+    type: 'email',
+    badgeClass: 'badge-email',
+    badgeText: 'Email',
+    title: 'The Accidental Forwarded Email',
+    mockupHTML: `
+      <div class="mockup-email">
+        <div class="email-meta">
+          <b>From:</b> rajesh.k@companyname.com<br>
+          <b>To:</b> [You]<br>
+          <b>Date:</b> Tuesday, 9:14 AM
+        </div>
+        <div class="email-subject">Fwd: Fwd: Do not share outside core team - Q3 restructuring list</div>
+        <div class="email-body">
+          Sorry - sent this to the wrong group. Please disregard if you are not on the core team.<br><br>
+          <span class="email-link">Confidential Document - View Only</span>
+        </div>
+      </div>`,
+    chips: ['The forwarded chain', 'The apology line', 'The "View Only" link', 'The sender name'],
+    correctChip: 1,
+    chipExplain: 'The apology is the hook. It signals accidental access - making you feel like you stumbled onto something private. That feeling overrides caution.',
+    triggers: ['Information Gap', 'Forbidden Knowledge', 'Urgency', 'Free Offer', 'Social Hook', 'Authority'],
+    correctTrigger: 1,
+    triggerExplain: '"Forbidden Knowledge" - the message is framed as something you were not supposed to receive, making it feel exclusive and urgent to open.',
+    safeAction: 'Check the actual sender address carefully. Do not click any link inside. If you genuinely need to verify, navigate to the site yourself in a new tab.'
+  },
+  {
+    type: 'usb',
+    badgeClass: 'badge-usb',
+    badgeText: 'Physical Object',
+    title: 'The USB Drive in the Car Park',
+    mockupHTML: `
+      <div class="mockup-usb">
+        <div class="usb-icon">💾</div>
+        <div>
+          <div class="usb-label">SALARY REVIEW 2024<br>CONFIDENTIAL</div>
+          <div class="usb-sub">Found near the main entrance. No name on it.</div>
+        </div>
+      </div>`,
+    chips: ['The word CONFIDENTIAL', 'The year 2024', 'The fact it was found', 'The physical size'],
+    correctChip: 0,
+    chipExplain: '"CONFIDENTIAL" is doing all the work. It signals restricted access and makes the contents feel valuable - exactly the pull that makes people insert the drive.',
+    triggers: ['Information Gap', 'Forbidden Knowledge', 'Urgency', 'Free Offer', 'Social Hook', 'Authority'],
+    correctTrigger: 1,
+    triggerExplain: '"Forbidden Knowledge" - the label implies this data is not for everyone. That exclusion is what makes people want to look.',
+    safeAction: 'Never plug a found drive into any device. Hand it to your IT team or security desk. The label is the trap - not the contents.'
+  },
+  {
+    type: 'qr',
+    badgeClass: 'badge-qr',
+    badgeText: 'QR Code',
+    title: 'The QR Code on the Noticeboard',
+    mockupHTML: `
+      <div class="mockup-qr">
+        <div class="qr-box">▦</div>
+        <div>
+          <div class="qr-text">🎁 Claim your FREE Spotify Premium<br>Scan to activate - limited spots</div>
+          <div class="qr-sub">Sticker placed over original venue poster</div>
+        </div>
+      </div>`,
+    chips: ['The word FREE', 'The QR code itself', 'The word "limited spots"', 'The Spotify branding'],
+    correctChip: 2,
+    chipExplain: '"Limited spots" creates scarcity, which adds urgency on top of the free offer. Together they push you to scan before thinking.',
+    triggers: ['Information Gap', 'Forbidden Knowledge', 'Urgency', 'Free Offer', 'Social Hook', 'Authority'],
+    correctTrigger: 3,
+    triggerExplain: '"Free Offer" combined with artificial scarcity. The reward feels real and the window feels short - both designed to bypass your pause reflex.',
+    safeAction: 'Look closely at whether the sticker is placed over something else. If you did not go looking for this offer yourself, ignore it. Verify the source independently before scanning.'
+  },
+  {
+    type: 'subject',
+    badgeClass: 'badge-subject',
+    badgeText: 'Subject Line',
+    title: 'The Notification That Knows Your Name',
+    mockupHTML: `
+      <div class="mockup-subject">
+        <div class="subject-line">We noticed something unusual, Priya.</div>
+        <div class="subject-preview">Your account was accessed from a new location at 3:42 AM. Tap to review activity before your session is closed.</div>
+      </div>`,
+    chips: ['Using your first name', 'The specific time "3:42 AM"', 'The phrase "before your session is closed"', 'The word "unusual"'],
+    correctChip: 2,
+    chipExplain: '"Before your session is closed" creates a closing window. It implies something bad is already in progress and you have limited time to stop it - collapsing the gap between reading and clicking.',
+    triggers: ['Information Gap', 'Forbidden Knowledge', 'Urgency', 'Free Offer', 'Social Hook', 'Authority'],
+    correctTrigger: 2,
+    triggerExplain: '"Urgency" - the message creates a time-limited threat. The combination of personalisation, a specific timestamp, and a closing window is designed to override rational evaluation.',
+    safeAction: 'Do not click any link in this message. Open a new tab, type your bank or account address directly, and check your activity from there. Urgency in an email is almost always engineered.'
+  }
+];
+
+let current = 0;
+let selectedChip = null;
+let selectedTrigger = null;
+let revealed = false;
+let score = { correct: 0, wrong: 0, missed: [] };
+
+/* ── Tell parent page the iframe height, and ask it to scroll to the iframe top ── */
+function syncFrame(scrollToTop) {
+  const h = document.body.scrollHeight;
+  window.parent.postMessage({ iframeHeight: h + 32, scrollToTop: !!scrollToTop }, '*');
+}
+
+/* ── Progress bar ── */
+function updateProgress(label) {
+  document.getElementById('progressFill').style.width =
+    (current / ITEMS.length * 100) + '%';
+  document.getElementById('progressLabel').textContent =
+    label || (current + 1) + ' of ' + ITEMS.length;
+}
+
+/* ── Render a lure card ── */
+function render() {
+  if (current >= ITEMS.length) { renderSummary(); return; }
+  updateProgress();
+  const item = ITEMS[current];
+  selectedChip = null;
+  selectedTrigger = null;
+  revealed = false;
+
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  document.getElementById('cardWrap').innerHTML = `
+    <div class="card">
+      <div class="lure-visual">
+        <div class="lure-type-badge ${item.badgeClass}">${item.badgeText}</div>
+        <div style="font-size:15px;font-weight:700;margin-bottom:14px;">${item.title}</div>
+        ${item.mockupHTML}
+      </div>
+      <div class="interact">
+        <div class="interact-prompt">Step 1 — Which part is doing the psychological work?</div>
+        <div class="highlight-area" id="chipArea">
+          ${item.chips.map((c, i) => `<div class="highlight-chip" onclick="pickChip(${i})">${c}</div>`).join('')}
+        </div>
+        <div class="trigger-label">Step 2 — What trigger is being used?</div>
+        <div class="trigger-grid" id="triggerArea">
+          ${item.triggers.map((t, i) => `<button class="trigger-btn" onclick="pickTrigger(${i})">${t}</button>`).join('')}
+        </div>
+        <button class="reveal-btn" id="revealBtn" onclick="reveal()" disabled>See the autopsy</button>
+        <div id="autopsyPanel"></div>
+        <div class="nav-row" id="navRow" style="display:none;"></div>
+      </div>
+    </div>`;
+
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  syncFrame(true);
+}
+
+/* ── Chip pick ── */
+function pickChip(i) {
+  selectedChip = i;
+  document.querySelectorAll('.highlight-chip').forEach((el, idx) => {
+    el.classList.remove('selected-right', 'selected-wrong');
+    if (idx === i) el.classList.add('selected-right');
+  });
+  checkRevealReady();
+}
+
+/* ── Trigger pick ── */
+function pickTrigger(i) {
+  selectedTrigger = i;
+  document.querySelectorAll('.trigger-btn').forEach((el, idx) => {
+    el.classList.remove('selected');
+    if (idx === i) el.classList.add('selected');
+  });
+  checkRevealReady();
+}
+
+function checkRevealReady() {
+  const btn = document.getElementById('revealBtn');
+  if (btn) btn.disabled = (selectedChip === null || selectedTrigger === null);
+}
+
+/* ── Reveal autopsy ── */
+function reveal() {
+  if (revealed) return;
+  revealed = true;
+  const item = ITEMS[current];
+  const chipRight = selectedChip === item.correctChip;
+  const trigRight = selectedTrigger === item.correctTrigger;
+
+  if (chipRight && trigRight) {
+    score.correct++;
+  } else {
+    score.wrong++;
+    score.missed.push({
+      title:   item.title,
+      chip:    item.chips[item.correctChip],
+      trigger: item.triggers[item.correctTrigger]
+    });
+  }
+
+  document.querySelectorAll('.highlight-chip').forEach((el, idx) => {
+    el.classList.remove('selected-right', 'selected-wrong');
+    if (idx === item.correctChip) el.classList.add('selected-right');
+    else if (idx === selectedChip && !chipRight) el.classList.add('selected-wrong');
+  });
+
+  document.querySelectorAll('.trigger-btn').forEach((el, idx) => {
+    el.classList.remove('selected', 'correct', 'wrong');
+    if (idx === item.correctTrigger) el.classList.add('correct');
+    else if (idx === selectedTrigger && !trigRight) el.classList.add('wrong');
+  });
+
+  document.getElementById('revealBtn').style.display = 'none';
+
+  document.getElementById('autopsyPanel').innerHTML = `
+    <div class="autopsy">
+      <div class="autopsy-title">Lure Autopsy</div>
+      <div class="bone">
+        <div class="bone-icon" style="background:#EFF6FF;">🔍</div>
+        <div class="bone-body">
+          <div class="bone-label">The Hook</div>
+          <div class="bone-text"><strong>${item.chips[item.correctChip]}</strong> - ${item.chipExplain}</div>
+        </div>
+      </div>
+      <div class="bone">
+        <div class="bone-icon" style="background:#FDF4FF;">🧠</div>
+        <div class="bone-body">
+          <div class="bone-label">The Trigger</div>
+          <div class="bone-text"><strong>${item.triggers[item.correctTrigger]}</strong> - ${item.triggerExplain}</div>
+        </div>
+      </div>
+      <div class="bone">
+        <div class="bone-icon" style="background:#F0FDF4;">🛡️</div>
+        <div class="bone-body">
+          <div class="bone-label">The Safe Move</div>
+          <div class="safe-action">${item.safeAction}</div>
+        </div>
+      </div>
+    </div>`;
+
+  const isLast = current >= ITEMS.length - 1;
+  const navRow = document.getElementById('navRow');
+  navRow.innerHTML = `<button class="next-btn" onclick="${isLast ? 'renderSummary()' : 'nextLure()'}">${isLast ? 'See my results' : 'Next lure'} &rarr;</button>`;
+  navRow.style.display = 'flex';
+
+  syncFrame(false);
+}
+
+/* ── Go to next lure ── */
+function nextLure() {
+  current++;
+  render();
+}
+
+/* ── Summary ── */
+function renderSummary() {
+  updateProgress('Complete');
+  document.getElementById('progressFill').style.width = '100%';
+
+  const perfect = score.correct === ITEMS.length;
+  const good    = score.correct >= 3;
+  const emoji   = perfect ? '🎯' : good ? '🔍' : '👀';
+  const headline = perfect
+    ? 'Sharp eye. You caught them all.'
+    : good ? 'Solid instincts. A few slipped through.'
+    : 'The mechanisms are subtle. Now you know what to look for.';
+  const sub = perfect
+    ? 'You identified every hook and trigger correctly. The skill is recognising it fast enough to pause before acting.'
+    : 'Review the ones you missed below and notice the specific element that makes each one work.';
+
+  const missedHTML = score.missed.length > 0
+    ? `<div class="missed-list">
+        <h3>Review these</h3>
+        ${score.missed.map(m => `
+          <div class="missed-item">
+            <strong>${m.title}</strong>
+            <span>Hook: <b>${m.chip}</b> &nbsp;|&nbsp; Trigger: <b>${m.trigger}</b></span>
+          </div>`).join('')}
+       </div>`
+    : '';
+
+  document.getElementById('cardWrap').innerHTML = `
+    <div class="card" style="padding:32px 24px;">
+      <div class="summary">
+        <div class="summary-icon">${emoji}</div>
+        <h2>${headline}</h2>
+        <div class="summary-sub">${sub}</div>
+        <div class="score-row">
+          <div class="score-chip correct">&#10003; ${score.correct} caught</div>
+          <div class="score-chip wrong">&#10007; ${score.wrong} missed</div>
+        </div>
+        ${missedHTML}
+        <button class="restart-btn" onclick="restart()">Try again</button>
+      </div>
+    </div>`;
+
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  syncFrame(true);
+}
+
+/* ── Restart ── */
+function restart() {
+  current = 0;
+  score = { correct: 0, wrong: 0, missed: [] };
+  render();
+  syncFrame(true);
+}
+
+/* ── Listen for parent asking iframe to scroll ── */
+window.addEventListener('message', (e) => {
+  if (e.data && e.data.type === 'scrollIframeToTop') {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }
+});
+
+/* ── Boot ── */
+render();
+
+if (window.ResizeObserver) {
+  new ResizeObserver(() => syncFrame(false)).observe(document.body);
+} else {
+  window.addEventListener('resize', () => syncFrame(false));
+}
+window.addEventListener('load', () => syncFrame(false));
+</script>
+</body>
+</html>
