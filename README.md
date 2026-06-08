@@ -12,7 +12,7 @@ The Awareness Project is a free, open-source education platform covering digital
 
 We live in a world where attention is manipulated and deception is engineered at scale. The Awareness Project exists to close the gap between knowing threats exist and actually recognizing them in real time.
 
-The curriculum is structured across **13 sections and 89 modules**, covering everything from phishing and social engineering to AI deepfakes, dark patterns, financial exploitation, and recovery when things go wrong. Every module ends with specific, actionable steps you can apply to your digital life immediately.
+The curriculum is structured across **15 sections and 106 modules**, covering everything from phishing and social engineering to AI deepfakes, dark patterns, financial exploitation, and recovery when things go wrong. Every module ends with specific, actionable steps you can apply to your digital life immediately.
 
 ---
 
