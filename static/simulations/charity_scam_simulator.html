@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --font: 'Poppins', system-ui, -apple-system, sans-serif;
+      --blue: #2563EB; --blue-dark: #1D4ED8; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #4B5563; --text-4: #6B7280;
+      --bg: #FFFFFF; --bg-2: #F9FAFB; --bg-3: #F3F4F6;
+      --border: #E5E7EB; --border-2: #D1D5DB;
+      --green: #16A34A; --green-dark: #15803D; --green-bg: #F0FDF4; 
+      --red: #DC2626; --red-dark: #991B1B; --red-bg: #FEF2F2; 
+      --amber: #D97706; --amber-bg: #FFFBEB;
+      --r-sm: 4px; --r-md: 8px; --r-lg: 12px; --r-xl: 16px;
+    }
+
+    body { font-family: var(--font); font-size: 15px; color: var(--text-1); background: var(--bg); padding: 24px 32px 48px; }
+    
+    .ticker { padding: 14px 18px; background: var(--blue-faint); border-left: 3px solid var(--blue); border-radius: 0 var(--r-md) var(--r-md) 0; font-size: 14px; color: var(--text-2); margin-bottom: 24px; }
+    .ticker strong { color: var(--blue-dark); }
+    
+    .grid { display: grid; grid-template-columns: 360px 1fr; gap: 24px; align-items: start; }
+    @media(max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+
+    /* Left Panel: Attacker Dashboard */
+    .panel { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 20px; }
+    .panel-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+    
+    .target-status { background: var(--bg-2); padding: 16px; border-radius: var(--r-md); margin-bottom: 20px; border: 1px solid var(--border); }
+    .ts-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .ts-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--blue-faint); display: flex; align-items: center; justify-content: center; font-size: 20px; border: 1px solid var(--blue); }
+    .ts-name { font-weight: 600; font-size: 14px; color: var(--text-1); }
+    .ts-role { font-size: 11px; color: var(--text-4); text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    .meter-label { font-size: 12px; font-weight: 600; color: var(--text-3); margin-bottom: 4px; display: flex; justify-content: space-between; }
+    .meter-bg { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 16px; }
+    .meter-fill { height: 100%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s ease; }
+
+    .step-title { font-size: 13px; font-weight: 700; color: var(--text-2); margin-top: 16px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .action-btn { width: 100%; padding: 12px; text-align: left; background: var(--bg); border: 1px solid var(--border-2); border-radius: var(--r-md); margin-bottom: 10px; cursor: pointer; transition: all 0.2s; font-family: var(--font); font-size: 13px; color: var(--text-2); display: flex; align-items: flex-start; gap: 10px; line-height: 1.4; }
+    .action-btn:hover:not(:disabled) { background: var(--bg-2); border-color: var(--blue); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .action-btn:disabled { opacity: 0.4; cursor: not-allowed; display: none; }
+    .action-btn.active { display: flex; }
+    .action-icon { font-size: 18px; flex-shrink: 0; }
+    .action-title { font-weight: 600; color: var(--text-1); display: block; margin-bottom: 2px; }
+
+    /* Right Panel: Social Feed */
+    .feed-box { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--r-xl); display: flex; flex-direction: column; min-height: 600px; overflow: hidden; position: relative; }
+    .feed-header { background: #fff; padding: 16px; border-bottom: 1px solid var(--border); font-weight: 600; text-align: center; color: var(--text-1); }
+    
+    .feed-content { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 24px; align-items: center; }
+    
+    .social-post { background: #fff; border: 1px solid var(--border); border-radius: var(--r-md); width: 100%; max-width: 400px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); display: none; animation: popIn 0.4s ease forwards; }
+    @keyframes popIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .sp-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .sp-logo { width: 32px; height: 32px; background: var(--blue-dim); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+    .sp-name { font-weight: 700; font-size: 13px; color: var(--text-1); }
+    .sp-sponsor { font-size: 10px; color: var(--text-4); text-transform: uppercase; }
+    
+    .sp-text { font-size: 13px; color: var(--text-2); margin-bottom: 12px; line-height: 1.5; }
+    .sp-img { width: 100%; height: 200px; background: var(--bg-3); border-radius: var(--r-sm); margin-bottom: 12px; display: flex; align-items: center; justify-content: center; font-size: 48px; color: var(--text-4); border: 1px solid var(--border); }
+    
+    .sp-action { width: 100%; padding: 10px; background: var(--blue); color: #fff; border: none; border-radius: var(--r-sm); font-weight: 600; font-size: 13px; cursor: pointer; }
+    
+    .target-thoughts { width: 100%; max-width: 400px; padding: 12px 16px; background: var(--blue-faint); border-left: 4px solid var(--blue); border-radius: 0 var(--r-sm) var(--r-sm) 0; font-size: 13px; font-style: italic; color: var(--blue-dark); display: none; animation: popIn 0.4s ease forwards; margin-top: 10px; }
+
+    /* Modal */
+    .overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 16px; opacity: 0; pointer-events: none; transition: opacity 0.2s; backdrop-filter: blur(2px); }
+    .overlay.show { opacity: 1; pointer-events: all; }
+    .modal { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 32px 24px; max-width: 400px; width: 100%; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2); transform: translateY(10px); transition: transform 0.2s; text-align: center; }
+    .overlay.show .modal { transform: translateY(0); }
+    .m-icon { font-size: 42px; margin-bottom: 12px; }
+    .m-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .m-body { font-size: 13px; color: var(--text-2); margin-bottom: 20px; line-height: 1.6; }
+    .m-btn { width: 100%; padding: 12px; background: var(--text-1); color: #fff; border: none; border-radius: var(--r-md); font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+    .m-btn:hover { background: #000; }
+  </style>
+</head>
+<body>
+
+  <div class="ticker">
+    <strong>Objective:</strong> Construct a fake charity campaign. To successfully extract a donation, you must maximize the target's <strong>Empathy</strong> while minimizing their <strong>Skepticism</strong>.
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <div class="panel-title">Campaign Builder</div>
+      
+      <div class="target-status">
+        <div class="ts-header">
+          <div class="ts-avatar">👨🏻</div>
+          <div>
+            <div class="ts-name">Target: David</div>
+            <div class="ts-role">Scrolling Social Media</div>
+          </div>
+        </div>
+        
+        <div class="meter-label"><span>Empathy / Urgency</span> <span id="lbl-emp">20%</span></div>
+        <div class="meter-bg"><div class="meter-fill" id="bar-emp" style="width: 20%; background: var(--text-4);"></div></div>
+        
+        <div class="meter-label"><span>Skepticism / Logic</span> <span id="lbl-skep">60%</span></div>
+        <div class="meter-bg"><div class="meter-fill" id="bar-skep" style="width: 60%; background: var(--amber);"></div></div>
+      </div>
+
+      <div id="step-1">
+        <div class="step-title">Step 1: Choose Timing & Cause</div>
+        <button class="action-btn active" onclick="executeStep(1, 'generic')">
+          <div class="action-icon">🏢</div>
+          <div><span class="action-title">Generic Cause</span> "Help fund global education initiatives."</div>
+        </button>
+        <button class="action-btn active" onclick="executeStep(1, 'crisis')">
+          <div class="action-icon">🌋</div>
+          <div><span class="action-title">Breaking News Crisis</span> "URGENT: Earthquake relief needed NOW."</div>
+        </button>
+      </div>
+
+      <div id="step-2" style="display: none;">
+        <div class="step-title">Step 2: Choose Imagery</div>
+        <button class="action-btn active" onclick="executeStep(2, 'stats')">
+          <div class="action-icon">📊</div>
+          <div><span class="action-title">Logistical Chart</span> Show a pie chart of how funds are distributed.</div>
+        </button>
+        <button class="action-btn active" onclick="executeStep(2, 'ai_image')">
+          <div class="action-icon">😭</div>
+          <div><span class="action-title">AI-Generated Emotional Image</span> Show a highly distressing image of a rescued child.</div>
+        </button>
+      </div>
+
+      <div id="step-3" style="display: none;">
+        <div class="step-title">Step 3: Call to Action</div>
+        <button class="action-btn active" onclick="executeStep(3, 'crypto')">
+          <div class="action-icon">₿</div>
+          <div><span class="action-title">Untraceable Crypto Link</span> "Send Bitcoin directly to our wallet."</div>
+        </button>
+        <button class="action-btn active" onclick="executeStep(3, 'fake_portal')">
+          <div class="action-icon">💳</div>
+          <div><span class="action-title">Frictionless Fake Portal</span> "Donate securely via Credit Card."</div>
+        </button>
+      </div>
+    </div>
+
+    <div class="feed-box">
+      <div class="feed-header">David's Social Feed</div>
+      <div class="feed-content">
+        
+        <div class="social-post" id="social-post">
+          <div class="sp-header">
+            <div class="sp-logo">🤝</div>
+            <div>
+              <div class="sp-name">Global Relief Network</div>
+              <div class="sp-sponsor">Sponsored</div>
+            </div>
+          </div>
+          <div class="sp-text" id="post-text">Text goes here...</div>
+          <div class="sp-img" id="post-img">🖼️</div>
+          <button class="sp-action" id="post-btn">Donate Now</button>
+        </div>
+
+        <div class="target-thoughts" id="thoughts">
+          "Internal monologue goes here..."
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="modal">
+    <div class="modal">
+      <div class="m-icon" id="m-icon">🚨</div>
+      <div class="m-title" id="m-title">Campaign Result</div>
+      <div class="m-body" id="m-body"></div>
+      <button class="m-btn" onclick="resetSim()">Build New Campaign</button>
+    </div>
+  </div>
+
+  <script>
+    let state = { emp: 20, skep: 60 };
+
+    function updateMeters() {
+      // Clamp values
+      state.emp = Math.max(0, Math.min(100, state.emp));
+      state.skep = Math.max(0, Math.min(100, state.skep));
+
+      document.getElementById('lbl-emp').textContent = state.emp + '%';
+      const empBar = document.getElementById('bar-emp');
+      empBar.style.width = state.emp + '%';
+      empBar.style.background = state.emp >= 70 ? 'var(--red)' : (state.emp > 40 ? 'var(--amber)' : 'var(--text-4)');
+
+      document.getElementById('lbl-skep').textContent = state.skep + '%';
+      const skepBar = document.getElementById('bar-skep');
+      skepBar.style.width = state.skep + '%';
+      skepBar.style.background = state.skep >= 60 ? 'var(--green)' : (state.skep <= 30 ? 'var(--red)' : 'var(--amber)');
+    }
+
+    async function executeStep(step, choice) {
+      const post = document.getElementById('social-post');
+      const thoughts = document.getElementById('thoughts');
+      
+      if (step === 1) {
+        document.getElementById('step-1').style.display = 'none';
+        document.getElementById('step-2').style.display = 'block';
+        post.style.display = 'block';
+        
+        if (choice === 'generic') {
+          document.getElementById('post-text').textContent = "Help us build a better future. Support global education initiatives today.";
+          state.emp += 10;
+          state.skep -= 0;
+          thoughts.textContent = "David: 'That's a nice cause, but I don't know this organization. I'll scroll past.'";
+        } else {
+          document.getElementById('post-text').innerHTML = "<strong>URGENT:</strong> Breaking earthquake relief. Victims are trapped. We need your help NOW.";
+          state.emp += 40;
+          state.skep -= 20; // Urgency bypasses skepticism
+          thoughts.textContent = "David: 'Oh my god, I just saw this on the news. This is terrible, those poor people.'";
+        }
+        thoughts.style.display = 'block';
+      } 
+      
+      else if (step === 2) {
+        document.getElementById('step-2').style.display = 'none';
+        document.getElementById('step-3').style.display = 'block';
+        
+        // Reset thought animation
+        thoughts.style.animation = 'none';
+        thoughts.offsetHeight; /* trigger reflow */
+        thoughts.style.animation = null;
+
+        if (choice === 'stats') {
+          document.getElementById('post-img').textContent = '📊';
+          document.getElementById('post-img').style.background = '#E0E7FF';
+          state.emp -= 10;
+          state.skep += 20; // Logic activates logic
+          thoughts.textContent = "David: 'A chart? Seems a bit corporate. I should look up their financial history later.'";
+        } else {
+          document.getElementById('post-img').textContent = '😭';
+          document.getElementById('post-img').style.background = '#FCE7F3';
+          state.emp += 40;
+          state.skep -= 30; // High emotion kills logic
+          thoughts.textContent = "David: 'That image breaks my heart. I need to do something right now to help.'";
+        }
+      }
+
+      else if (step === 3) {
+        document.getElementById('step-3').style.display = 'none';
+        
+        if (choice === 'crypto') {
+          document.getElementById('post-btn').textContent = "Send Bitcoin";
+          state.skep += 50; // Huge red flag
+          updateMeters();
+          
+          thoughts.textContent = "David: 'Wait, send Bitcoin? That doesn't seem like a registered charity. This has to be a scam.'";
+          setTimeout(() => showModal(false, "Campaign Failed", "You asked for cryptocurrency. Even though David was emotional, the sketchy payment method triggered his skepticism. You must provide a frictionless, professional-looking checkout to complete the illusion."), 1500);
+        } else {
+          document.getElementById('post-btn').textContent = "Donate Securely (Credit Card)";
+          
+          if (state.emp >= 80 && state.skep <= 30) {
+            // Win
+            state.skep = 0;
+            updateMeters();
+            thoughts.textContent = "David: 'The site looks totally legit. I'm donating ₹5,000 right now. I hope it helps.'";
+            setTimeout(() => showModal(true, "Campaign Successful", "By leveraging breaking news, highly distressing imagery, and a professional-looking payment portal, you completely bypassed David's critical thinking. He donated instantly, never realizing it was a scam."), 1500);
+          } else {
+            // Lose due to low empathy or high skepticism from earlier choices
+            updateMeters();
+            thoughts.textContent = "David: 'I want to help, but I'm going to Google this charity's name first just to be safe.'";
+            setTimeout(() => showModal(false, "Campaign Failed", "Your campaign lacked the emotional shock and urgency required to bypass logic. Because David wasn't completely panicked, he decided to verify the charity on Google, exposing your scam."), 1500);
+          }
+        }
+        return; // Skip updateMeters at end of block to allow win/loss logic to handle it
+      }
+
+      updateMeters();
+    }
+
+    function showModal(win, title, body) {
+      document.getElementById('m-title').textContent = title;
+      document.getElementById('m-body').textContent = body;
+      document.getElementById('m-icon').textContent = win ? '💸' : '🛑';
+      document.getElementById('modal').classList.add('show');
+    }
+
+    function resetSim() {
+      state = { emp: 20, skep: 60 };
+      updateMeters();
+      
+      document.getElementById('step-1').style.display = 'block';
+      document.getElementById('step-2').style.display = 'none';
+      document.getElementById('step-3').style.display = 'none';
+      
+      document.getElementById('social-post').style.display = 'none';
+      document.getElementById('thoughts').style.display = 'none';
+      document.getElementById('post-img').textContent = '🖼️';
+      document.getElementById('post-img').style.background = 'var(--bg-3)';
+      document.getElementById('post-btn').textContent = "Donate Now";
+      
+      document.getElementById('modal').classList.remove('show');
+    }
+
+    // Post height for iframe resizing
+    function postHeight() {
+      window.parent.postMessage({ iframeHeight: document.documentElement.scrollHeight }, '*');
+    }
+    window.addEventListener('load', postHeight);
+    window.addEventListener('resize', postHeight);
+    new MutationObserver(postHeight).observe(document.body, { subtree: true, childList: true });
+
+    updateMeters();
+  </script>
+</body>
+</html>
