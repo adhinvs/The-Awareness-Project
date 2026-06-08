@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employment Scam Trust Meter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .scenario-stage {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .scenario-stage.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stage-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .stage-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+
+        .stage-description {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+        }
+
+        .trust-meter-section {
+            margin: 30px 0;
+        }
+
+        .meter-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .meter-bar {
+            width: 100%;
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981 0%, #f59e0b 50%, #ef4444 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .meter-fill.stage1 { width: 0%; }
+        .meter-fill.stage2 { width: 25%; }
+        .meter-fill.stage3 { width: 45%; }
+        .meter-fill.stage4 { width: 65%; }
+        .meter-fill.stage5 { width: 85%; }
+        .meter-fill.stage6 { width: 60%; }
+
+        .slider-container {
+            margin: 20px 0;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e0e0e0;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.6);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .slider::-moz-range-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.6);
+        }
+
+        .slider-value {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 12px;
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .slider-value span {
+            font-weight: 600;
+            font-size: 14px;
+            color: #667eea;
+        }
+
+        .trust-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .trust-status.low {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .trust-status.medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .trust-status.high {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: space-between;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-prev {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-prev:hover {
+            background: #d0d0d0;
+        }
+
+        .btn-prev:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-next {
+            background: #667eea;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-next:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-restart {
+            background: #10b981;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-restart:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .progress-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+
+        .progress-dot {
+            flex: 1;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            transition: background 0.3s ease;
+        }
+
+        .progress-dot.active {
+            background: #667eea;
+        }
+
+        .final-summary {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .final-summary.active {
+            display: block;
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .summary-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+
+        .summary-content {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .key-insight {
+            background: white;
+            padding: 20px;
+            border-left: 4px solid #ef4444;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 14px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .key-insight strong {
+            color: #1a1a1a;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+
+            .stage-title {
+                font-size: 18px;
+            }
+
+            .stage-description {
+                font-size: 14px;
+                padding: 15px;
+            }
+
+            button {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Employment Scam Trust Meter</h1>
+            <p>How does your trust change as the process unfolds?</p>
+        </div>
+
+        <div class="content">
+            <div class="progress-bar" id="progressBar"></div>
+
+            <!-- Stage 1: Initial Contact -->
+            <div class="scenario-stage active" data-stage="1">
+                <div class="stage-number">1</div>
+                <div class="stage-title">LinkedIn Recruiter Contact</div>
+                <div class="stage-description">
+                    A recruiter named Ankit Sharma messages you on LinkedIn. His profile looks professional—photo, job title, 400+ connections, listed as working at "TalentBridge Consulting." He mentions your internship and suggests a digital marketing coordinator role.
+                </div>
+                <div class="trust-meter-section">
+                    <div class="meter-label">
+                        <span>Your Trust Level</span>
+                        <span id="stage1-trust">Not Suspicious</span>
+                    </div>
+                    <div class="meter-bar">
+                        <div class="meter-fill stage1"></div>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" min="0" max="100" value="20" class="slider" id="stage1-slider">
+                        <div class="slider-value">
+                            <span>How suspicious are you?</span>
+                            <span class="trust-status low" id="stage1-status">Trusting</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 2: Salary Offer -->
+            <div class="scenario-stage" data-stage="2">
+                <div class="stage-number">2</div>
+                <div class="stage-title">Salary Offer: ₹52,000/month</div>
+                <div class="stage-description">
+                    After a brief screening call, Ankit sends an email with a salary offer. The role pays ₹52,000 per month. You were expecting ₹32,000. The number is impressive—60% above market rate for this role. You feel validated, lucky, chosen.
+                </div>
+                <div class="trust-meter-section">
+                    <div class="meter-label">
+                        <span>Your Trust Level</span>
+                        <span id="stage2-trust">Optimistic</span>
+                    </div>
+                    <div class="meter-bar">
+                        <div class="meter-fill stage2"></div>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" min="0" max="100" value="45" class="slider" id="stage2-slider">
+                        <div class="slider-value">
+                            <span>How suspicious are you?</span>
+                            <span class="trust-status medium" id="stage2-status">Fairly Trusting</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 3: Video Interview -->
+            <div class="scenario-stage" data-stage="3">
+                <div class="stage-number">3</div>
+                <div class="stage-title">Professional Video Interview</div>
+                <div class="stage-description">
+                    Two days later, you complete a Google Meet interview with two people on camera. They ask structured questions about your marketing experience. Professional backgrounds. Real-looking business setting. They mention next steps and timelines. By the end, you feel like this is a legitimate job.
+                </div>
+                <div class="trust-meter-section">
+                    <div class="meter-label">
+                        <span>Your Trust Level</span>
+                        <span id="stage3-trust">Confident</span>
+                    </div>
+                    <div class="meter-bar">
+                        <div class="meter-fill stage3"></div>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" min="0" max="100" value="65" class="slider" id="stage3-slider">
+                        <div class="slider-value">
+                            <span>How suspicious are you?</span>
+                            <span class="trust-status medium" id="stage3-status">Quite Trusting</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 4: Formal Offer Letter -->
+            <div class="scenario-stage" data-stage="4">
+                <div class="stage-number">4</div>
+                <div class="stage-title">Official Offer Letter Arrives</div>
+                <div class="stage-description">
+                    Within 48 hours, an email arrives from "HR" with a formal offer letter. It has a company letterhead, a company seal, joining date, and a detailed salary breakdown with CTC components. You feel like this is really happening. You call your mother and tell her you got the job.
+                </div>
+                <div class="trust-meter-section">
+                    <div class="meter-label">
+                        <span>Your Trust Level</span>
+                        <span id="stage4-trust">Very Confident</span>
+                    </div>
+                    <div class="meter-bar">
+                        <div class="meter-fill stage4"></div>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" min="0" max="100" value="80" class="slider" id="stage4-slider">
+                        <div class="slider-value">
+                            <span>How suspicious are you?</span>
+                            <span class="trust-status high" id="stage4-status">Highly Trusting</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 5: The Payment Request -->
+            <div class="scenario-stage" data-stage="5">
+                <div class="stage-number">5</div>
+                <div class="stage-title">The Equipment Deposit Request</div>
+                <div class="stage-description">
+                    The next morning, another "HR" message arrives: "Before system access activation, please pay ₹4,800 as a refundable deposit for your work laptop and onboarding kit. This will be deducted from your first salary." It feels like a normal process step. You have an offer letter. You had professional interviews. Surely this is legitimate?
+                </div>
+                <div class="trust-meter-section">
+                    <div class="meter-label">
+                        <span>Your Trust Level</span>
+                        <span id="stage5-trust">Pause Starting Here?</span>
+                    </div>
+                    <div class="meter-bar">
+                        <div class="meter-fill stage5"></div>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" min="0" max="100" value="85" class="slider" id="stage5-slider">
+                        <div class="slider-value">
+                            <span>How suspicious are you?</span>
+                            <span class="trust-status high" id="stage5-status">Still Trusting, But Hesitant</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 6: The Reality -->
+            <div class="scenario-stage" data-stage="6">
+                <div class="stage-number">6</div>
+                <div class="stage-title">The Moment of Truth</div>
+                <div class="stage-description">
+                    You transfer ₹4,800. The HR number stops responding. The LinkedIn profile disappears. The company website returns a 404 error. You search the company name and find 34 complaints in a consumer forum. All the same story. Same ₹4,800. Same promise of a laptop that never came. The interviewers on Google Meet were using pre-recorded video, played back in real time.
+                </div>
+                <div class="trust-meter-section">
+                    <div class="meter-label">
+                        <span>Your Final Trust Level</span>
+                        <span id="stage6-trust">Realization</span>
+                    </div>
+                    <div class="meter-bar">
+                        <div class="meter-fill stage6"></div>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" min="0" max="100" value="20" class="slider" id="stage6-slider" disabled>
+                        <div class="slider-value">
+                            <span>You realize: This was a scam from the beginning.</span>
+                            <span class="trust-status low" id="stage6-status">Too Late</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Summary -->
+            <div class="final-summary" id="finalSummary">
+                <div class="summary-box">
+                    <div class="summary-title">What This Exercise Reveals</div>
+                    <div class="summary-content">
+                        Your trust increased or remained high at almost every stage. This is <b>exactly what scammers design for.</b> They do not ask for money on day one. They build credibility first.
+                    </div>
+                </div>
+
+                <div class="key-insight">
+                    <strong>The Interview Was Not Verification—It Was Investment</strong><br>
+                    A fake interview is not a mistake. It is an intentional tool to build false legitimacy. Pre-recorded video, AI-generated faces, or hired actors can all look convincing. The fact that you "passed" an interview makes you significantly more likely to comply with later requests like document sharing or money transfer.
+                </div>
+
+                <div class="key-insight">
+                    <strong>Your Documents Are the Real Target</strong><br>
+                    The ₹4,800 was a test and a hook. The real goal is often your Aadhaar, PAN, and bank details. Stolen identity documents are used to register companies, open bank accounts for money laundering, take loans, and file fraudulent tax returns. Years later, a notice arrives about a loan you never took.
+                </div>
+
+                <div class="key-insight">
+                    <strong>Trust Should Never Replace Verification</strong><br>
+                    A professional interview is not proof of legitimacy. An offer letter is not proof of legitimacy. A LinkedIn profile is not proof of legitimacy. Search the company on <b>mca.gov.in</b> (Ministry of Corporate Affairs). Check the website domain creation date with WHOIS. Verify independently, outside the recruitment conversation, every single time.
+                </div>
+
+                <div class="key-insight">
+                    <strong>Any Advance Payment Is a Disqualifier</strong><br>
+                    Legitimate employers pay you to work. They do not ask you to pay them to start. No deposit. No registration fee. No equipment charge. No training payment. Not now, not ever. If money is asked before your first salary, the opportunity is fraudulent, regardless of how many interviews you completed.
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls">
+                <button class="btn-prev" id="btnPrev" onclick="previousStage()">← Previous</button>
+                <button class="btn-next" id="btnNext" onclick="nextStage()">Next Stage →</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStage = 1;
+        const totalStages = 6;
+
+        function initSlider(stageNum) {
+            const slider = document.getElementById(`stage${stageNum}-slider`);
+            if (!slider) return;
+
+            slider.addEventListener('input', function() {
+                updateTrustStatus(stageNum, this.value);
+            });
+
+            // Initialize status
+            updateTrustStatus(stageNum, slider.value);
+        }
+
+        function updateTrustStatus(stageNum, value) {
+            const statusEl = document.getElementById(`stage${stageNum}-status`);
+            const val = parseInt(value);
+
+            if (val < 40) {
+                statusEl.textContent = 'Suspicious';
+                statusEl.className = 'trust-status low';
+            } else if (val < 70) {
+                statusEl.textContent = 'Moderately Suspicious';
+                statusEl.className = 'trust-status medium';
+            } else {
+                statusEl.textContent = 'Highly Trusting';
+                statusEl.className = 'trust-status high';
+            }
+        }
+
+        function showStage(stage) {
+            document.querySelectorAll('.scenario-stage').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            document.querySelector(`[data-stage="${stage}"]`).classList.add('active');
+            document.getElementById('finalSummary').classList.remove('active');
+
+            updateProgressBar();
+            updateButtons();
+            initSlider(stage);
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateProgressBar() {
+            const dots = document.querySelectorAll('.progress-dot');
+            dots.forEach((dot, idx) => {
+                dot.classList.remove('active');
+                if (idx < currentStage) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('btnPrev');
+            const nextBtn = document.getElementById('btnNext');
+
+            prevBtn.disabled = currentStage === 1;
+
+            if (currentStage === totalStages) {
+                nextBtn.textContent = 'See What This Reveals';
+            } else {
+                nextBtn.textContent = 'Next Stage →';
+            }
+        }
+
+        function nextStage() {
+            if (currentStage < totalStages) {
+                currentStage++;
+                showStage(currentStage);
+            } else {
+                showFinalSummary();
+            }
+        }
+
+        function previousStage() {
+            if (currentStage > 1) {
+                currentStage--;
+                showStage(currentStage);
+            }
+        }
+
+        function showFinalSummary() {
+            document.querySelectorAll('.scenario-stage').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            document.getElementById('finalSummary').classList.add('active');
+
+            const btnPrev = document.getElementById('btnPrev');
+            const btnNext = document.getElementById('btnNext');
+            btnPrev.textContent = '← Go Back';
+            btnPrev.disabled = false;
+            btnNext.textContent = 'Restart Exercise';
+            btnNext.className = 'btn-restart';
+            btnNext.onclick = restart;
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function restart() {
+            currentStage = 1;
+            document.getElementById('btnNext').className = 'btn-next';
+            document.getElementById('btnNext').onclick = nextStage;
+            showStage(currentStage);
+        }
+
+        // Initialize progress dots
+        function initProgressDots() {
+            const progressBar = document.getElementById('progressBar');
+            for (let i = 0; i < totalStages; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot';
+                if (i === 0) dot.classList.add('active');
+                progressBar.appendChild(dot);
+            }
+        }
+
+        // Initialize
+        initProgressDots();
+        showStage(1);
+
+        // Send iframe height to parent
+        function adjustHeight() {
+            const height = document.documentElement.scrollHeight;
+            window.parent.postMessage({ iframeHeight: height }, '*');
+        }
+
+        // Adjust on load and when stages change
+        window.addEventListener('load', adjustHeight);
+        const observer = new MutationObserver(adjustHeight);
+        observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+    </script>
+</body>
+</html>
