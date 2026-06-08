@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300">
+  <rect width="800" height="300" fill="#f6f5f3" rx="16"/>
+
+  <!-- Title -->
+  <text x="400" y="38" font-family="Georgia,serif" font-size="15" fill="#1a1a18" text-anchor="middle" font-weight="600">FOMO vs Fear - Same Brain Response, Different Emotion</text>
+
+  <!-- LEFT: FOMO -->
+  <rect x="36" y="58" width="330" height="208" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.07)" stroke-width="1"/>
+  <rect x="36" y="58" width="330" height="40" rx="12" fill="#eaf3de"/>
+  <rect x="36" y="82" width="330" height="16" fill="#eaf3de"/>
+  <text x="201" y="83" font-family="system-ui,sans-serif" font-size="13" fill="#3b6d11" text-anchor="middle" font-weight="600">FOMO — Fear of Missing Out</text>
+
+  <text x="201" y="118" font-family="system-ui,sans-serif" font-size="11.5" fill="#5f5e5a" text-anchor="middle">Emotion: Desire + Anxiety</text>
+  <text x="201" y="136" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">Trigger: Reward about to disappear</text>
+
+  <rect x="56" y="152" width="290" height="50" rx="8" fill="#eaf3de"/>
+  <text x="201" y="172" font-family="system-ui,sans-serif" font-size="10.5" fill="#27500a" text-anchor="middle" font-style="italic">"Only 3 spots left. This exclusive</text>
+  <text x="201" y="188" font-family="system-ui,sans-serif" font-size="10.5" fill="#27500a" text-anchor="middle" font-style="italic">investment offer closes tonight."</text>
+
+  <text x="201" y="226" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">Urgency type: Positive pressure</text>
+  <text x="201" y="244" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">(you gain, not avoid loss)</text>
+
+  <!-- RIGHT: Fear -->
+  <rect x="434" y="58" width="330" height="208" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.07)" stroke-width="1"/>
+  <rect x="434" y="58" width="330" height="40" rx="12" fill="#fcebeb"/>
+  <rect x="434" y="82" width="330" height="16" fill="#fcebeb"/>
+  <text x="599" y="83" font-family="system-ui,sans-serif" font-size="13" fill="#a32d2d" text-anchor="middle" font-weight="600">Fear — Direct Threat</text>
+
+  <text x="599" y="118" font-family="system-ui,sans-serif" font-size="11.5" fill="#5f5e5a" text-anchor="middle">Emotion: Panic + Dread</text>
+  <text x="599" y="136" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">Trigger: Punishment about to happen</text>
+
+  <rect x="454" y="152" width="290" height="50" rx="8" fill="#fcebeb"/>
+  <text x="599" y="172" font-family="system-ui,sans-serif" font-size="10.5" fill="#791f1f" text-anchor="middle" font-style="italic">"Your account will be permanently</text>
+  <text x="599" y="188" font-family="system-ui,sans-serif" font-size="10.5" fill="#791f1f" text-anchor="middle" font-style="italic">suspended in 2 hours."</text>
+
+  <text x="599" y="226" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">Urgency type: Negative pressure</text>
+  <text x="599" y="244" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">(you lose, not fail to gain)</text>
+
+  <!-- Centre arrow both ways -->
+  <text x="400" y="166" font-family="system-ui,sans-serif" font-size="18" text-anchor="middle" fill="#888780">⇄</text>
+  <rect x="362" y="172" width="76" height="20" rx="10" fill="#1a1a18"/>
+  <text x="400" y="186" font-family="system-ui,sans-serif" font-size="9.5" fill="#f1efe8" text-anchor="middle" font-weight="500">Same result</text>
+
+  <!-- Bottom -->
+  <text x="400" y="285" font-family="system-ui,sans-serif" font-size="11" fill="#888780" text-anchor="middle">Both trigger the amygdala and shut down verification. A real opportunity survives a 10-minute check.</text>
+</svg>

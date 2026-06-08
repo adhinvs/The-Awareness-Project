@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 310" width="800" height="310">
+  <rect width="800" height="310" fill="#f6f5f3" rx="16"/>
+
+  <!-- Title -->
+  <text x="400" y="36" font-family="Georgia,serif" font-size="15" fill="#1a1a18" text-anchor="middle" font-weight="600">The Amygdala Hijack — What Happens in Your Brain</text>
+  <text x="400" y="55" font-family="system-ui,sans-serif" font-size="12" fill="#888780" text-anchor="middle">Why fear makes you act before you think</text>
+
+  <!-- Step boxes -->
+  <!-- Step 1 -->
+  <rect x="30" y="76" width="130" height="148" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.07)" stroke-width="1"/>
+  <rect x="30" y="76" width="130" height="6" rx="6" fill="#afa9ec"/>
+  <text x="95" y="106" font-family="system-ui,sans-serif" font-size="22" text-anchor="middle">📩</text>
+  <text x="95" y="130" font-family="system-ui,sans-serif" font-size="11" fill="#534ab7" text-anchor="middle" font-weight="600">Threat arrives</text>
+  <text x="95" y="148" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a" text-anchor="middle">Scam message,</text>
+  <text x="95" y="163" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a" text-anchor="middle">call, or pop-up</text>
+  <text x="95" y="178" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a" text-anchor="middle">is received</text>
+  <rect x="50" y="193" width="90" height="20" rx="6" fill="#eeedfe"/>
+  <text x="95" y="207" font-family="system-ui,sans-serif" font-size="9.5" fill="#534ab7" text-anchor="middle">Step 1</text>
+
+  <!-- Arrow 1 -->
+  <text x="173" y="157" font-family="system-ui,sans-serif" font-size="20" fill="#888780" text-anchor="middle">→</text>
+
+  <!-- Step 2 -->
+  <rect x="195" y="76" width="130" height="148" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.07)" stroke-width="1"/>
+  <rect x="195" y="76" width="130" height="6" rx="6" fill="#e8a020"/>
+  <text x="260" y="106" font-family="system-ui,sans-serif" font-size="22" text-anchor="middle">🧠</text>
+  <text x="260" y="130" font-family="system-ui,sans-serif" font-size="11" fill="#854f0b" text-anchor="middle" font-weight="600">Amygdala fires</text>
+  <text x="260" y="148" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a" text-anchor="middle">Detects threat.</text>
+  <text x="260" y="163" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a" text-anchor="middle">Sends "danger"</text>
+  <text x="260" y="178" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a" text-anchor="middle">signal instantly</text>
+  <rect x="215" y="193" width="90" height="20" rx="6" fill="#faeeda"/>
+  <text x="260" y="207" font-family="system-ui,sans-serif" font-size="9.5" fill="#854f0b" text-anchor="middle">Step 2 — fast</text>
+
+  <!-- Arrow 2 -->
+  <text x="338" y="157" font-family="system-ui,sans-serif" font-size="20" fill="#888780" text-anchor="middle">→</text>
+
+  <!-- Step 3 -->
+  <rect x="360" y="76" width="130" height="148" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.07)" stroke-width="1"/>
+  <rect x="360" y="76" width="130" height="6" rx="6" fill="#e24b4a"/>
+  <text x="425" y="106" font-family="system-ui,sans-serif" font-size="22" text-anchor="middle">⚡</text>
+  <text x="425" y="130" font-family="system-ui,sans-serif" font-size="11" fill="#a32d2d" text-anchor="middle" font-weight="600">Hijack happens</text>
+  <text x="425" y="148" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a" text-anchor="middle">Rational brain</text>
+  <text x="425" y="163" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a" text-anchor="middle">bypassed before</text>
+  <text x="425" y="178" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a" text-anchor="middle">it can respond</text>
+  <rect x="380" y="193" width="90" height="20" rx="6" fill="#fcebeb"/>
+  <text x="425" y="207" font-family="system-ui,sans-serif" font-size="9.5" fill="#a32d2d" text-anchor="middle">Step 3 — critical</text>
+
+  <!-- Arrow 3 -->
+  <text x="503" y="157" font-family="system-ui,sans-serif" font-size="20" fill="#888780" text-anchor="middle">→</text>
+
+  <!-- Step 4 -->
+  <rect x="525" y="76" width="130" height="148" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.07)" stroke-width="1"/>
+  <rect x="525" y="76" width="130" height="6" rx="6" fill="#a32d2d"/>
+  <text x="590" y="106" font-family="system-ui,sans-serif" font-size="22" text-anchor="middle">🏃</text>
+  <text x="590" y="130" font-family="system-ui,sans-serif" font-size="11" fill="#a32d2d" text-anchor="middle" font-weight="600">Victim acts</text>
+  <text x="590" y="148" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a" text-anchor="middle">Clicks, calls, or</text>
+  <text x="590" y="163" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a" text-anchor="middle">transfers money</text>
+  <text x="590" y="178" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a" text-anchor="middle">without verifying</text>
+  <rect x="545" y="193" width="90" height="20" rx="6" fill="#fcebeb"/>
+  <text x="590" y="207" font-family="system-ui,sans-serif" font-size="9.5" fill="#a32d2d" text-anchor="middle">Scam succeeds</text>
+
+  <!-- Arrow break-out -->
+  <text x="668" y="157" font-family="system-ui,sans-serif" font-size="20" fill="#888780" text-anchor="middle">→</text>
+
+  <!-- Step 5 interrupt — pause box -->
+  <rect x="688" y="76" width="88" height="148" rx="12" fill="#eaf3de" stroke="#639922" stroke-width="1.5"/>
+  <text x="732" y="106" font-family="system-ui,sans-serif" font-size="22" text-anchor="middle">✋</text>
+  <text x="732" y="128" font-family="system-ui,sans-serif" font-size="10.5" fill="#3b6d11" text-anchor="middle" font-weight="600">Pause</text>
+  <text x="732" y="145" font-family="system-ui,sans-serif" font-size="9.5" fill="#27500a" text-anchor="middle">Hijack fades</text>
+  <text x="732" y="160" font-family="system-ui,sans-serif" font-size="9.5" fill="#27500a" text-anchor="middle">in seconds.</text>
+  <text x="732" y="176" font-family="system-ui,sans-serif" font-size="9.5" fill="#27500a" text-anchor="middle">Verify now.</text>
+  <rect x="698" y="193" width="68" height="20" rx="6" fill="#c8e8a0"/>
+  <text x="732" y="207" font-family="system-ui,sans-serif" font-size="9" fill="#27500a" text-anchor="middle">Break it here</text>
+
+  <!-- Bottom note -->
+  <text x="400" y="258" font-family="system-ui,sans-serif" font-size="11.5" fill="#1a1a18" text-anchor="middle" font-weight="500">This is not a failure of intelligence. It is the brain working as designed - exploited by someone who studied it.</text>
+  <text x="400" y="278" font-family="system-ui,sans-serif" font-size="11" fill="#888780" text-anchor="middle">The hijack lasts only seconds to minutes. A pause is enough to break it.</text>
+</svg>

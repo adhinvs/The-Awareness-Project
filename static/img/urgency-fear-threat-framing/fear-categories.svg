@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" height="320">
+  <rect width="800" height="320" fill="#f6f5f3" rx="16"/>
+
+  <!-- Title -->
+  <text x="400" y="38" font-family="Georgia,serif" font-size="15" fill="#1a1a18" text-anchor="middle" font-weight="600">Three Categories of Fear-Based Manipulation</text>
+  <text x="400" y="57" font-family="system-ui,sans-serif" font-size="12" fill="#888780" text-anchor="middle">Scammers target what matters most to you</text>
+
+  <!-- Card 1: Financial -->
+  <rect x="36" y="74" width="222" height="218" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.07)" stroke-width="1"/>
+  <rect x="36" y="74" width="222" height="6" rx="6" fill="#e8a020"/>
+  <!-- Icon circle -->
+  <circle cx="147" cy="116" r="28" fill="#faeeda"/>
+  <text x="147" y="122" font-family="system-ui,sans-serif" font-size="22" text-anchor="middle">💳</text>
+  <text x="147" y="163" font-family="Georgia,serif" font-size="13.5" fill="#1a1a18" text-anchor="middle" font-weight="600">Financial Fear</text>
+  <text x="147" y="180" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">Account frozen</text>
+  <text x="147" y="195" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">Money seized</text>
+  <text x="147" y="210" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">Assets at risk</text>
+  <rect x="56" y="228" width="182" height="46" rx="8" fill="#faeeda"/>
+  <text x="147" y="246" font-family="system-ui,sans-serif" font-size="10" fill="#854f0b" text-anchor="middle" font-style="italic">"Your SBI account will</text>
+  <text x="147" y="261" font-family="system-ui,sans-serif" font-size="10" fill="#854f0b" text-anchor="middle" font-style="italic">be closed in 2 hours."</text>
+
+  <!-- Card 2: Freedom -->
+  <rect x="289" y="74" width="222" height="218" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.07)" stroke-width="1"/>
+  <rect x="289" y="74" width="222" height="6" rx="6" fill="#a32d2d"/>
+  <circle cx="400" cy="116" r="28" fill="#fcebeb"/>
+  <text x="400" y="122" font-family="system-ui,sans-serif" font-size="22" text-anchor="middle">⚖️</text>
+  <text x="400" y="163" font-family="Georgia,serif" font-size="13.5" fill="#1a1a18" text-anchor="middle" font-weight="600">Freedom Fear</text>
+  <text x="400" y="180" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">Arrest threats</text>
+  <text x="400" y="195" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">Legal action</text>
+  <text x="400" y="210" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">Warrants issued</text>
+  <rect x="309" y="228" width="182" height="46" rx="8" fill="#fcebeb"/>
+  <text x="400" y="246" font-family="system-ui,sans-serif" font-size="10" fill="#a32d2d" text-anchor="middle" font-style="italic">"A warrant has been</text>
+  <text x="400" y="261" font-family="system-ui,sans-serif" font-size="10" fill="#a32d2d" text-anchor="middle" font-style="italic">issued in your name."</text>
+
+  <!-- Card 3: Reputational -->
+  <rect x="542" y="74" width="222" height="218" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.07)" stroke-width="1"/>
+  <rect x="542" y="74" width="222" height="6" rx="6" fill="#534ab7"/>
+  <circle cx="653" cy="116" r="28" fill="#eeedfe"/>
+  <text x="653" y="122" font-family="system-ui,sans-serif" font-size="22" text-anchor="middle">👁️</text>
+  <text x="653" y="163" font-family="Georgia,serif" font-size="13.5" fill="#1a1a18" text-anchor="middle" font-weight="600">Reputational Fear</text>
+  <text x="653" y="180" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">Public exposure</text>
+  <text x="653" y="195" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">Family notified</text>
+  <text x="653" y="210" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">Employer informed</text>
+  <rect x="562" y="228" width="182" height="46" rx="8" fill="#eeedfe"/>
+  <text x="653" y="246" font-family="system-ui,sans-serif" font-size="10" fill="#534ab7" text-anchor="middle" font-style="italic">"Pay or we notify your</text>
+  <text x="653" y="261" font-family="system-ui,sans-serif" font-size="10" fill="#534ab7" text-anchor="middle" font-style="italic">family and employer."</text>
+
+  <!-- Bottom note -->
+  <text x="400" y="308" font-family="system-ui,sans-serif" font-size="11" fill="#888780" text-anchor="middle">Every threat is fabricated. No legitimate agency operates this way.</text>
+</svg>

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360">
+  <rect width="800" height="360" fill="#f6f5f3" rx="16"/>
+
+  <!-- Title -->
+  <text x="400" y="36" font-family="Georgia,serif" font-size="15" fill="#1a1a18" text-anchor="middle" font-weight="600">Scam Pop-up vs Real System Alert</text>
+  <text x="400" y="55" font-family="system-ui,sans-serif" font-size="12" fill="#888780" text-anchor="middle">How to tell them apart instantly</text>
+
+  <!-- LEFT: Scam pop-up mockup -->
+  <rect x="36" y="70" width="330" height="250" rx="12" fill="#ffffff" stroke="rgba(200,0,0,0.2)" stroke-width="1.5"/>
+  <!-- Browser chrome -->
+  <rect x="36" y="70" width="330" height="28" rx="12" fill="#e8e6e0"/>
+  <rect x="36" y="84" width="330" height="14" fill="#e8e6e0"/>
+  <circle cx="56" cy="84" r="5" fill="#e24b4a"/>
+  <circle cx="72" cy="84" r="5" fill="#e8a020"/>
+  <circle cx="88" cy="84" r="5" fill="#639922"/>
+  <rect x="106" y="76" width="220" height="16" rx="8" fill="#ffffff"/>
+  <text x="216" y="88" font-family="system-ui,sans-serif" font-size="9" fill="#888780" text-anchor="middle">alertsecure-microsoft-help.net</text>
+
+  <!-- Scam content -->
+  <text x="201" y="122" font-family="system-ui,sans-serif" font-size="13" fill="#a32d2d" text-anchor="middle" font-weight="700">⚠ MICROSOFT SECURITY ALERT</text>
+  <text x="201" y="142" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a" text-anchor="middle">Your computer has been blocked.</text>
+  <text x="201" y="158" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a" text-anchor="middle">5 viruses detected. Personal data at risk.</text>
+
+  <rect x="76" y="168" width="250" height="32" rx="8" fill="#e24b4a"/>
+  <text x="201" y="188" font-family="system-ui,sans-serif" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">Call: 1800-XXX-XXXX NOW</text>
+
+  <text x="201" y="218" font-family="system-ui,sans-serif" font-size="9.5" fill="#888780" text-anchor="middle">Do not close this window.</text>
+
+  <!-- Red flags callouts -->
+  <rect x="46" y="238" width="310" height="70" rx="8" fill="#fcebeb"/>
+  <text x="201" y="256" font-family="system-ui,sans-serif" font-size="10" fill="#a32d2d" text-anchor="middle" font-weight="600">Red flags in this pop-up</text>
+  <text x="66" y="272" font-family="system-ui,sans-serif" font-size="9.5" fill="#791f1f">✗  Phone number displayed (OS never does this)</text>
+  <text x="66" y="286" font-family="system-ui,sans-serif" font-size="9.5" fill="#791f1f">✗  Runs inside a browser tab, not a system window</text>
+  <text x="66" y="300" font-family="system-ui,sans-serif" font-size="9.5" fill="#791f1f">✗  URL is not microsoft.com</text>
+
+  <!-- VS -->
+  <circle cx="400" cy="196" r="18" fill="#1a1a18"/>
+  <text x="400" y="201" font-family="system-ui,sans-serif" font-size="12" fill="#f1efe8" text-anchor="middle" font-weight="600">VS</text>
+
+  <!-- RIGHT: Real OS alert mockup -->
+  <rect x="434" y="70" width="330" height="250" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.08)" stroke-width="1"/>
+  <!-- Window chrome -->
+  <rect x="434" y="70" width="330" height="28" rx="12" fill="#e8e6e0"/>
+  <rect x="434" y="84" width="330" height="14" fill="#e8e6e0"/>
+  <circle cx="454" cy="84" r="5" fill="#e24b4a"/>
+  <circle cx="470" cy="84" r="5" fill="#e8a020"/>
+  <circle cx="486" cy="84" r="5" fill="#639922"/>
+  <text x="599" y="88" font-family="system-ui,sans-serif" font-size="9" fill="#888780" text-anchor="middle">Windows Security</text>
+
+  <!-- Real content -->
+  <text x="599" y="118" font-family="system-ui,sans-serif" font-size="11" fill="#1a1a18" text-anchor="middle" font-weight="600">Windows Security</text>
+  <text x="599" y="136" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a" text-anchor="middle">Virus and threat protection</text>
+  <text x="599" y="158" font-family="system-ui,sans-serif" font-size="10" fill="#3b6d11" text-anchor="middle">No current threats detected.</text>
+  <text x="599" y="176" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a" text-anchor="middle">Last scan: Today, 10:22 AM</text>
+
+  <rect x="519" y="188" width="160" height="26" rx="6" fill="#e8e6e0"/>
+  <text x="599" y="205" font-family="system-ui,sans-serif" font-size="10" fill="#1a1a18" text-anchor="middle">Quick scan</text>
+
+  <!-- Green flags callouts -->
+  <rect x="444" y="238" width="310" height="70" rx="8" fill="#eaf3de"/>
+  <text x="599" y="256" font-family="system-ui,sans-serif" font-size="10" fill="#3b6d11" text-anchor="middle" font-weight="600">Signs of a real system alert</text>
+  <text x="464" y="272" font-family="system-ui,sans-serif" font-size="9.5" fill="#27500a">✓  Opens as a native system window, not a browser tab</text>
+  <text x="464" y="286" font-family="system-ui,sans-serif" font-size="9.5" fill="#27500a">✓  Never shows a phone number to call</text>
+  <text x="464" y="300" font-family="system-ui,sans-serif" font-size="9.5" fill="#27500a">✓  Provides action buttons, not a hotline</text>
+
+  <!-- Bottom instruction -->
+  <text x="400" y="336" font-family="system-ui,sans-serif" font-size="11.5" fill="#1a1a18" text-anchor="middle" font-weight="500">If you see a phone number in a browser pop-up: force-close the browser. Do not call.</text>
+  <text x="400" y="353" font-family="system-ui,sans-serif" font-size="11" fill="#888780" text-anchor="middle">Windows: Ctrl+Shift+Esc  |  Mac: Cmd+Option+Esc</text>
+</svg>
