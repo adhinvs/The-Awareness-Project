@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 340" width="800" height="340">
+  <rect width="800" height="340" fill="#f6f5f3" rx="16"/>
+
+  <!-- Title -->
+  <text x="400" y="38" font-family="Georgia,serif" font-size="15" fill="#1a1a18" text-anchor="middle" font-weight="600">FOMO vs. Fear-Based Urgency</text>
+  <text x="400" y="58" font-family="system-ui,sans-serif" font-size="12" fill="#888780" text-anchor="middle">Different emotional triggers, identical cognitive traps</text>
+
+  <!-- Left: Fear-Based Urgency -->
+  <rect x="40" y="80" width="330" height="150" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.08)" stroke-width="1"/>
+  <rect x="40" y="80" width="330" height="36" rx="12" fill="#fcebeb"/>
+  <rect x="40" y="100" width="330" height="16" rx="0" fill="#fcebeb"/>
+  <text x="205" y="104" font-family="system-ui,sans-serif" font-size="12" fill="#a32d2d" text-anchor="middle" font-weight="600">Fear-Based Urgency (Threat of Loss)</text>
+  
+  <text x="60" y="142" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" font-weight="600">Trigger:</text>
+  <text x="120" y="142" font-family="system-ui,sans-serif" font-size="11" fill="#1a1a18">Punishment, arrest, account freeze</text>
+  
+  <text x="60" y="167" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" font-weight="600">Emotion:</text>
+  <text x="120" y="167" font-family="system-ui,sans-serif" font-size="11" fill="#e24b4a" font-weight="600">Anxiety &amp; Panic ("Avoid Pain")</text>
+  
+  <text x="60" y="192" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" font-weight="600">Example:</text>
+  <text x="120" y="192" font-family="system-ui,sans-serif" font-size="11" fill="#888780" font-style="italic">"Pay taxes in 24 hours or face arrest."</text>
+
+  <!-- Right: FOMO-Based Urgency -->
+  <rect x="430" y="80" width="330" height="150" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.08)" stroke-width="1"/>
+  <rect x="430" y="80" width="330" height="36" rx="12" fill="#fff7e6"/>
+  <rect x="430" y="100" width="330" height="16" rx="0" fill="#fff7e6"/>
+  <text x="595" y="104" font-family="system-ui,sans-serif" font-size="12" fill="#b25e00" text-anchor="middle" font-weight="600">FOMO-Based Urgency (Promise of Gain)</text>
+  
+  <text x="450" y="142" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" font-weight="600">Trigger:</text>
+  <text x="510" y="142" font-family="system-ui,sans-serif" font-size="11" fill="#1a1a18">Exclusive reward, limited investment, lottery</text>
+  
+  <text x="450" y="167" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" font-weight="600">Emotion:</text>
+  <text x="510" y="167" font-family="system-ui,sans-serif" font-size="11" fill="#d97706" font-weight="600">Excitement &amp; Greed ("Capture Gain")</text>
+  
+  <text x="450" y="192" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" font-weight="600">Example:</text>
+  <text x="510" y="192" font-family="system-ui,sans-serif" font-size="11" fill="#888780" font-style="italic">"Only 3 seats left at this discount!"</text>
+
+  <!-- Bottom Common Ground -->
+  <rect x="180" y="250" width="440" height="65" rx="10" fill="#1a1a18"/>
+  <text x="400" y="274" font-family="system-ui,sans-serif" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="600">The Shared Mechanism: Amygdala Hijack</text>
+  <text x="400" y="295" font-family="system-ui,sans-serif" font-size="11" fill="#c3c2bc" text-anchor="middle">Both states shut down the rational mind to force actions before you can verify.</text>
+</svg>

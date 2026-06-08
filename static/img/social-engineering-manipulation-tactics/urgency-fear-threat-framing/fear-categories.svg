@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 340" width="800" height="340">
+  <rect width="800" height="340" fill="#f6f5f3" rx="16"/>
+
+  <!-- Title -->
+  <text x="400" y="38" font-family="Georgia,serif" font-size="15" fill="#1a1a18" text-anchor="middle" font-weight="600">Three Categories of Fear-Based Manipulation</text>
+  <text x="400" y="58" font-family="system-ui,sans-serif" font-size="12" fill="#888780" text-anchor="middle">How attackers exploit our survival instincts</text>
+
+  <!-- CARD 1: Financial Fear -->
+  <rect x="40" y="80" width="226" height="220" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.08)" stroke-width="1"/>
+  <rect x="40" y="80" width="226" height="36" rx="12" fill="#fcebeb"/>
+  <rect x="40" y="100" width="226" height="16" rx="0" fill="#fcebeb"/>
+  <text x="153" y="104" font-family="system-ui,sans-serif" font-size="12" fill="#a32d2d" text-anchor="middle" font-weight="600">1. Financial Fear</text>
+  
+  <text x="153" y="140" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" font-weight="600" text-anchor="middle">Asset &amp; Account Threats</text>
+  <!-- Message Box -->
+  <rect x="55" y="155" width="196" height="65" rx="6" fill="#fcfbf9" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+  <text x="65" y="173" font-family="system-ui,sans-serif" font-size="9.5" fill="#e24b4a" font-style="italic">"Your SBI account has been</text>
+  <text x="65" y="188" font-family="system-ui,sans-serif" font-size="9.5" fill="#e24b4a" font-style="italic">flagged. Verify now or your</text>
+  <text x="65" y="203" font-family="system-ui,sans-serif" font-size="9.5" fill="#e24b4a" font-style="italic">account will be closed."</text>
+  
+  <text x="153" y="244" font-family="system-ui,sans-serif" font-size="10" fill="#888780" text-anchor="middle">Targets: Savings, livelihood</text>
+  <text x="153" y="260" font-family="system-ui,sans-serif" font-size="10" fill="#888780" text-anchor="middle">Mechanism: Panic of sudden</text>
+  <text x="153" y="274" font-family="system-ui,sans-serif" font-size="10" fill="#888780" text-anchor="middle">financial paralysis</text>
+
+  <!-- CARD 2: Freedom Fear -->
+  <rect x="287" y="80" width="226" height="220" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.08)" stroke-width="1"/>
+  <rect x="287" y="80" width="226" height="36" rx="12" fill="#fcebeb"/>
+  <rect x="287" y="100" width="226" height="16" rx="0" fill="#fcebeb"/>
+  <text x="400" y="104" font-family="system-ui,sans-serif" font-size="12" fill="#a32d2d" text-anchor="middle" font-weight="600">2. Freedom Fear</text>
+  
+  <text x="400" y="140" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" font-weight="600" text-anchor="middle">Arrest &amp; Legal Threats</text>
+  <!-- Message Box -->
+  <rect x="302" y="155" width="196" height="65" rx="6" fill="#fcfbf9" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+  <text x="312" y="173" font-family="system-ui,sans-serif" font-size="9.5" fill="#e24b4a" font-style="italic">"A warrant is issued. You</text>
+  <text x="312" y="188" font-family="system-ui,sans-serif" font-size="9.5" fill="#e24b4a" font-style="italic">will be arrested unless you</text>
+  <text x="312" y="203" font-family="system-ui,sans-serif" font-size="9.5" fill="#e24b4a" font-style="italic">cooperate immediately."</text>
+  
+  <text x="400" y="244" font-family="system-ui,sans-serif" font-size="10" fill="#888780" text-anchor="middle">Targets: Personal liberty</text>
+  <text x="400" y="260" font-family="system-ui,sans-serif" font-size="10" fill="#888780" text-anchor="middle">Mechanism: "Digital arrest"</text>
+  <text x="400" y="274" font-family="system-ui,sans-serif" font-size="10" fill="#888780" text-anchor="middle">and intimidation by authority</text>
+
+  <!-- CARD 3: Reputational Fear -->
+  <rect x="534" y="80" width="226" height="220" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.08)" stroke-width="1"/>
+  <rect x="534" y="80" width="226" height="36" rx="12" fill="#fcebeb"/>
+  <rect x="534" y="100" width="226" height="16" rx="0" fill="#fcebeb"/>
+  <text x="647" y="104" font-family="system-ui,sans-serif" font-size="12" fill="#a32d2d" text-anchor="middle" font-weight="600">3. Reputational Fear</text>
+  
+  <text x="647" y="140" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" font-weight="600" text-anchor="middle">Shame &amp; Exposure Threats</text>
+  <!-- Message Box -->
+  <rect x="549" y="155" width="196" height="65" rx="6" fill="#fcfbf9" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+  <text x="559" y="173" font-family="system-ui,sans-serif" font-size="9.5" fill="#e24b4a" font-style="italic">"We have evidence of illegal</text>
+  <text x="559" y="188" font-family="system-ui,sans-serif" font-size="9.5" fill="#e24b4a" font-style="italic">activity. Pay now or we</text>
+  <text x="559" y="203" font-family="system-ui,sans-serif" font-size="9.5" fill="#e24b4a" font-style="italic">notify family/employer."</text>
+  
+  <text x="647" y="244" font-family="system-ui,sans-serif" font-size="10" fill="#888780" text-anchor="middle">Targets: Social standing, relationships</text>
+  <text x="647" y="260" font-family="system-ui,sans-serif" font-size="10" fill="#888780" text-anchor="middle">Mechanism: Blackmail and</text>
+  <text x="647" y="274" font-family="system-ui,sans-serif" font-size="10" fill="#888780" text-anchor="middle">the anxiety of public shame</text>
+</svg>
