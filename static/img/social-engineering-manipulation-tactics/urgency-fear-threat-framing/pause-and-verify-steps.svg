@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 350" width="800" height="350">
+  <rect width="800" height="350" fill="#f6f5f3" rx="16"/>
+
+  <!-- Title -->
+  <text x="400" y="38" font-family="Georgia,serif" font-size="15" fill="#1a1a18" text-anchor="middle" font-weight="600">The Pause-and-Verify Rule</text>
+  <text x="400" y="58" font-family="system-ui,sans-serif" font-size="12" fill="#888780" text-anchor="middle">Six steps to break the scammer's urgency loop</text>
+
+  <!-- Step 1 -->
+  <rect x="40" y="80" width="226" height="110" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+  <circle cx="65" cy="110" r="14" fill="#eaf3de"/>
+  <text x="65" y="114" font-family="system-ui,sans-serif" font-size="12" fill="#3b6d11" text-anchor="middle" font-weight="700">1</text>
+  <text x="90" y="114" font-family="system-ui,sans-serif" font-size="12" fill="#1a1a18" font-weight="700">Stop &amp; Breathe</text>
+  <text x="55" y="145" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a">Do not click links, call numbers,</text>
+  <text x="55" y="160" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a">or transfer any funds. Pause.</text>
+
+  <!-- Step 2 -->
+  <rect x="286" y="80" width="226" height="110" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+  <circle cx="311" cy="110" r="14" fill="#eaf3de"/>
+  <text x="311" y="114" font-family="system-ui,sans-serif" font-size="12" fill="#3b6d11" text-anchor="middle" font-weight="700">2</text>
+  <text x="336" y="114" font-family="system-ui,sans-serif" font-size="12" fill="#1a1a18" font-weight="700">Name the Tactic</text>
+  <text x="301" y="145" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a">Say out loud: "They are trying</text>
+  <text x="301" y="160" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a">to make me feel rushed."</text>
+
+  <!-- Step 3 -->
+  <rect x="532" y="80" width="226" height="110" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+  <circle cx="557" cy="110" r="14" fill="#eaf3de"/>
+  <text x="557" y="114" font-family="system-ui,sans-serif" font-size="12" fill="#3b6d11" text-anchor="middle" font-weight="700">3</text>
+  <text x="582" y="114" font-family="system-ui,sans-serif" font-size="12" fill="#1a1a18" font-weight="700">Verify Independently</text>
+  <text x="547" y="145" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a">Find the official number yourself.</text>
+  <text x="547" y="160" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a">Never use contact info in message.</text>
+
+  <!-- Step 4 -->
+  <rect x="40" y="205" width="226" height="110" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+  <circle cx="65" cy="235" r="14" fill="#eaf3de"/>
+  <text x="65" y="239" font-family="system-ui,sans-serif" font-size="12" fill="#3b6d11" text-anchor="middle" font-weight="700">4</text>
+  <text x="90" y="239" font-family="system-ui,sans-serif" font-size="12" fill="#1a1a18" font-weight="700">Tell Someone</text>
+  <text x="55" y="270" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a">Explain it to someone else. Sharing</text>
+  <text x="55" y="285" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a">breaks the scammer's isolation.</text>
+
+  <!-- Step 5 -->
+  <rect x="286" y="205" width="226" height="110" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+  <circle cx="311" cy="235" r="14" fill="#eaf3de"/>
+  <text x="311" y="239" font-family="system-ui,sans-serif" font-size="12" fill="#3b6d11" text-anchor="middle" font-weight="700">5</text>
+  <text x="336" y="239" font-family="system-ui,sans-serif" font-size="12" fill="#1a1a18" font-weight="700">Check the Source</text>
+  <text x="301" y="270" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a">Inspect sender's actual address,</text>
+  <text x="301" y="285" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a">full URL paths, and SMS headers.</text>
+
+  <!-- Step 6 -->
+  <rect x="532" y="205" width="226" height="110" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+  <circle cx="557" cy="235" r="14" fill="#eaf3de"/>
+  <text x="557" y="239" font-family="system-ui,sans-serif" font-size="12" fill="#3b6d11" text-anchor="middle" font-weight="700">6</text>
+  <text x="582" y="239" font-family="system-ui,sans-serif" font-size="12" fill="#1a1a18" font-weight="700">Report &amp; Protect</text>
+  <text x="547" y="270" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a">File report at cybercrime.gov.in</text>
+  <text x="547" y="285" font-family="system-ui,sans-serif" font-size="10" fill="#5f5e5a">or call 1930 helpline directly.</text>
+</svg>

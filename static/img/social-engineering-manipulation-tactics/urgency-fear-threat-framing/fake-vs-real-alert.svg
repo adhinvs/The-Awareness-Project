@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 350" width="800" height="350">
+  <rect width="800" height="350" fill="#f6f5f3" rx="16"/>
+
+  <!-- Title -->
+  <text x="400" y="36" font-family="Georgia,serif" font-size="15" fill="#1a1a18" text-anchor="middle" font-weight="600">Fake Security Alert vs. Real OS Security Notice</text>
+  <text x="400" y="55" font-family="system-ui,sans-serif" font-size="12" fill="#888780" text-anchor="middle">How to tell browser-based scams apart from actual system warnings</text>
+
+  <!-- LEFT: Fake Browser Alert -->
+  <rect x="40" y="75" width="330" height="250" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.08)" stroke-width="1"/>
+  <rect x="40" y="75" width="330" height="36" rx="12" fill="#e24b4a"/>
+  <rect x="40" y="99" width="330" height="12" rx="0" fill="#e24b4a"/>
+  <text x="205" y="98" font-family="system-ui,sans-serif" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="600">⚠️ Fake Windows Alert (Browser)</text>
+  
+  <text x="55" y="132" font-family="system-ui,sans-serif" font-size="11" fill="#e24b4a" font-weight="700">"Infection found! Call 1800-XXX-XXXX"</text>
+  <text x="55" y="152" font-family="system-ui,sans-serif" font-size="10.5" fill="#5f5e5a">✗ Play loud alarms or block browser closure.</text>
+  <text x="55" y="170" font-family="system-ui,sans-serif" font-size="10.5" fill="#5f5e5a">✗ Insist you must pay or call to save files.</text>
+  <text x="55" y="188" font-family="system-ui,sans-serif" font-size="10.5" fill="#5f5e5a">✗ Are actually web pages run in full-screen.</text>
+  
+  <rect x="55" y="242" width="300" height="70" rx="8" fill="#fcebeb"/>
+  <text x="70" y="262" font-family="system-ui,sans-serif" font-size="10.5" fill="#a32d2d" font-weight="600">RED FLAG:</text>
+  <text x="70" y="278" font-family="system-ui,sans-serif" font-size="10" fill="#a32d2d">Microsoft/Apple will NEVER display a phone number</text>
+  <text x="70" y="293" font-family="system-ui,sans-serif" font-size="10" fill="#a32d2d">and ask you to call them for support.</text>
+
+  <!-- RIGHT: Real OS Security Notice -->
+  <rect x="430" y="75" width="330" height="250" rx="12" fill="#ffffff" stroke="rgba(0,0,0,0.08)" stroke-width="1"/>
+  <rect x="430" y="75" width="330" height="36" rx="12" fill="#185fa5"/>
+  <rect x="430" y="99" width="330" height="12" rx="0" fill="#185fa5"/>
+  <text x="595" y="98" font-family="system-ui,sans-serif" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="600">🛡️ Windows Defender (Genuine OS)</text>
+  
+  <text x="445" y="132" font-family="system-ui,sans-serif" font-size="11" fill="#3b6d11" font-weight="700">"Threat blocked &amp; quarantined"</text>
+  <text x="445" y="152" font-family="system-ui,sans-serif" font-size="10.5" fill="#5f5e5a">✓ Actions taken quietly in the background.</text>
+  <text x="445" y="170" font-family="system-ui,sans-serif" font-size="10.5" fill="#5f5e5a">✓ Never prompt you to call any telephone numbers.</text>
+  <text x="445" y="188" font-family="system-ui,sans-serif" font-size="10.5" fill="#5f5e5a">✓ Manage via built-in Settings, not web tabs.</text>
+  
+  <rect x="445" y="242" width="300" height="70" rx="8" fill="#eaf3de"/>
+  <text x="460" y="262" font-family="system-ui,sans-serif" font-size="10.5" fill="#3b6d11" font-weight="600">SAFE OPERATION:</text>
+  <text x="460" y="278" font-family="system-ui,sans-serif" font-size="10" fill="#3b6d11">Real antivirus removes malware automatically.</text>
+  <text x="460" y="293" font-family="system-ui,sans-serif" font-size="10" fill="#3b6d11">You do not need to contact anyone to complete it.</text>
+</svg>

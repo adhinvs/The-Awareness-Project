@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Spot the Manipulation</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #ffffff;
+    color: #1a1a18;
+    padding: 1.5rem;
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  h2 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .subtitle { font-size: 0.85rem; color: #5f5e5a; margin-bottom: 1.25rem; }
+
+  /* Topic pill row */
+  .topic-row {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-bottom: 1.25rem;
+  }
+  .topic-pill {
+    font-size: 11px; font-weight: 500;
+    padding: 3px 10px; border-radius: 99px;
+    background: #f6f5f3; color: #5f5e5a;
+    border: 0.5px solid rgba(0,0,0,0.1);
+    transition: background 0.2s, color 0.2s;
+  }
+  .topic-pill.active { background: #1a1a18; color: #f1efe8; border-color: #1a1a18; }
+
+  /* Progress */
+  .progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; }
+  .progress-bar-wrap { flex: 1; height: 4px; background: #e8e6e0; border-radius: 99px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: #3b6d11; border-radius: 99px; transition: width 0.4s ease; width: 0%; }
+  .progress-label { font-size: 12px; color: #888780; white-space: nowrap; }
+
+  /* Card */
+  .card { background: #f6f5f3; border-radius: 14px; padding: 1.25rem; }
+
+  .channel-tag {
+    display: inline-block; font-size: 11px; font-weight: 500;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 99px;
+    background: #e6f1fb; color: #185fa5;
+    margin-bottom: 0.75rem;
+  }
+
+  .topic-tag {
+    display: inline-block; font-size: 11px; font-weight: 500;
+    padding: 3px 10px; border-radius: 99px;
+    background: #eeedfe; color: #534ab7;
+    margin-left: 6px; margin-bottom: 0.75rem;
+  }
+
+  .message-bubble {
+    background: #ffffff;
+    border: 0.5px solid rgba(0,0,0,0.1);
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+    color: #1a1a18;
+  }
+
+  .question { font-size: 0.85rem; font-weight: 500; color: #444441; margin-bottom: 0.6rem; }
+
+  .options { display: flex; flex-direction: column; gap: 7px; margin-bottom: 0.75rem; }
+
+  .option-btn {
+    background: #ffffff;
+    border: 0.5px solid rgba(0,0,0,0.15);
+    border-radius: 9px;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.84rem;
+    text-align: left;
+    cursor: pointer;
+    color: #1a1a18;
+    transition: background 0.15s, border-color 0.15s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .option-btn:hover:not(:disabled) { background: #eeedfe; border-color: #afa9ec; }
+  .option-btn.correct { background: #eaf3de; border-color: #639922; color: #27500a; font-weight: 500; }
+  .option-btn.wrong { background: #fcebeb; border-color: #e24b4a; color: #791f1f; }
+  .option-btn:disabled { cursor: default; }
+  .option-icon { font-size: 13px; flex-shrink: 0; }
+
+  .explanation {
+    display: none;
+    background: #ffffff;
+    border-left: 3px solid #639922;
+    border-radius: 0 9px 9px 0;
+    padding: 0.8rem 1rem;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: #444441;
+    margin-top: 0.5rem;
+  }
+  .explanation.visible { display: block; }
+  .explanation strong { color: #1a1a18; }
+
+  .next-btn {
+    display: none;
+    margin-top: 0.85rem;
+    background: #1a1a18; color: #f1efe8;
+    border: none; border-radius: 9px;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.85rem; font-weight: 500;
+    cursor: pointer; transition: opacity 0.15s;
+  }
+  .next-btn:hover { opacity: 0.82; }
+  .next-btn.visible { display: inline-block; }
+
+  /* Result */
+  .result-screen { display: none; text-align: center; padding: 2rem 1rem; }
+  .result-screen.visible { display: block; }
+  .result-score { font-size: 2.4rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .result-label { font-size: 0.9rem; color: #5f5e5a; margin-bottom: 1.25rem; }
+  .result-msg { font-size: 0.85rem; color: #444441; line-height: 1.75; max-width: 420px; margin: 0 auto 1.5rem; }
+
+  .restart-btn {
+    background: #1a1a18; color: #f1efe8;
+    border: none; border-radius: 9px;
+    padding: 0.65rem 1.4rem;
+    font-size: 0.85rem; font-weight: 500;
+    cursor: pointer;
+  }
+  .restart-btn:hover { opacity: 0.82; }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div id="quiz-wrap">
+  <h2>Spot the Manipulation</h2>
+  <p class="subtitle">Each message uses a tactic from Module 6. Identify it before the answer is revealed.</p>
+
+  <div class="topic-row" id="topic-row">
+    <span class="topic-pill" data-topic="urgency">Manufactured Urgency</span>
+    <span class="topic-pill" data-topic="fear">Fear-Based Manipulation</span>
+    <span class="topic-pill" data-topic="fomo">FOMO</span>
+    <span class="topic-pill" data-topic="amygdala">Amygdala Hijack</span>
+    <span class="topic-pill" data-topic="tech">Tech Support Scam</span>
+    <span class="topic-pill" data-topic="pause">Pause-and-Verify</span>
+  </div>
+
+  <div class="progress-row">
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill"></div></div>
+    <span class="progress-label" id="progress-label">1 / 7</span>
+  </div>
+
+  <div id="question-area" class="card"></div>
+</div>
+
+<div class="result-screen" id="result-screen">
+  <div class="result-score" id="result-score"></div>
+  <div class="result-label" id="result-label"></div>
+  <p class="result-msg" id="result-msg"></p>
+  <button class="restart-btn" onclick="restart()">Try again</button>
+</div>
+
+<script>
+const questions = [
+  {
+    topic: "urgency",
+    channel: "SMS",
+    topicLabel: "Manufactured Urgency",
+    message: "ALERT: Your SBI account has been temporarily locked due to suspicious activity. Click here to verify your identity within 2 hours or your account will be permanently closed: sbi-secure-verify.com",
+    question: "What makes this message dangerous?",
+    options: [
+      "It uses an official-sounding bank name",
+      "The 2-hour deadline stops you from verifying before acting",
+      "The link looks like a real website",
+      "It comes from an unknown number"
+    ],
+    correct: 1,
+    explanation: "<strong>The 2-hour deadline is the weapon.</strong> Real banks send formal written notices giving you days to respond. This artificial deadline is designed to collapse your verification window - to force you to click before you can pause and check whether the message is real. Remove the deadline, and the scam loses most of its power."
+  },
+  {
+    topic: "fear",
+    channel: "Phone Call",
+    topicLabel: "Fear-Based Manipulation",
+    message: '"This is Officer Sharma from the Cyber Crime Department, Delhi. A non-bailable arrest warrant has been issued in your name for money laundering. You must cooperate immediately. Do not disconnect this call or officers will be sent to your location."',
+    question: "Which fear category is this message targeting?",
+    options: [
+      "Financial fear - loss of money",
+      "Freedom fear - threat of arrest",
+      "Reputational fear - public exposure",
+      "All three simultaneously"
+    ],
+    correct: 1,
+    explanation: "<strong>This is the digital arrest scam - targeting freedom fear.</strong> The threat of arrest targets the most fundamental human instinct: avoiding loss of freedom. This scam caused losses of over Rs 1,776 crore in India in 2024. There is no such thing as a digital arrest under Indian law. No government agency conducts arrests over phone calls. If you receive this, hang up immediately and call 1930."
+  },
+  {
+    topic: "fomo",
+    channel: "WhatsApp",
+    topicLabel: "FOMO",
+    message: "Congratulations! You have been selected for an exclusive investment opportunity with guaranteed 40% returns. Only 5 spots remaining. This offer closes at midnight tonight. Send Rs 10,000 to lock in your position. Reply YES to confirm.",
+    question: "This message uses FOMO. What is the core psychological trigger?",
+    options: [
+      "The high return percentage",
+      "The fear of missing a limited opportunity before it disappears",
+      "The word 'congratulations'",
+      "The specific amount requested"
+    ],
+    correct: 1,
+    explanation: "<strong>FOMO creates urgency through the fear of missing out on a reward, not a punishment.</strong> The scarcity (only 5 spots) and the expiring deadline trigger the same brain response as fear-based urgency - the amygdala reads the approaching deadline as a threat and pushes you to act. A real investment opportunity does not expire at midnight. If you cannot take 24 hours to verify it, it is not worth taking."
+  },
+  {
+    topic: "amygdala",
+    channel: "Email",
+    topicLabel: "Amygdala Hijack",
+    message: "Subject: URGENT - Your child has been reported absent today\n\nDear Parent, your child was not found in school during the mandatory safety roll call at 10:15 AM. Please call the school emergency number immediately: 9876-XXXXXX. Do not delay. This is time-sensitive.",
+    question: "Why does this message work even on people who know about scams?",
+    options: [
+      "It uses an official school email address",
+      "The amygdala processes the child-safety threat before rational thinking can catch up",
+      "The time stamp makes it feel authentic",
+      "It avoids asking for money directly"
+    ],
+    correct: 1,
+    explanation: "<strong>This is an amygdala hijack targeting a parent's strongest instinct.</strong> Psychologist Daniel Goleman identified the amygdala hijack as the moment the emotional brain overrides rational thinking. A threat to a child's safety triggers this instantly - before the prefrontal cortex can evaluate whether the message is genuine. This is why intelligent people fall for these attacks. The physical sensation of fear makes the threat feel real, regardless of whether it is. The correct response: hang up, then call the school on the number you already have."
+  },
+  {
+    topic: "tech",
+    channel: "Browser Pop-up",
+    topicLabel: "Tech Support Scam",
+    message: "MICROSOFT SECURITY ALERT\nYour computer has been blocked due to suspicious activity. Your personal data, banking information and email passwords are at risk. Call Microsoft Support immediately: 1800-XXX-XXXX. Do not close this window - closing it will permanently damage your files.",
+    question: "What is the first thing you should do when you see this?",
+    options: [
+      "Call the number to find out if it is genuine",
+      "Close the browser tab using Task Manager or Force Quit",
+      "Run your antivirus software",
+      "Disconnect from the internet"
+    ],
+    correct: 1,
+    explanation: "<strong>Force-close the browser immediately.</strong> This is a webpage pretending to be a system alert - not a real Windows or macOS message. Real operating systems never display a phone number in a pop-up and ask you to call. On Windows, use Ctrl + Shift + Esc to open Task Manager and end the browser process. On Mac, use Cmd + Option + Esc. The pop-up disappears the moment the browser closes. Do not call the number - it connects to a scam call centre."
+  },
+  {
+    topic: "urgency",
+    channel: "Email",
+    topicLabel: "Manufactured Urgency + Threat Framing",
+    message: "Subject: Final Notice - Unpaid Tax Demand\n\nDear Taxpayer, the Income Tax Department has recorded an outstanding demand of Rs 18,400 against your PAN. Failure to pay within 48 hours will result in seizure of your bank accounts and property. Pay now at the link below to avoid legal action.",
+    question: "What is the key tell that reveals this is manufactured pressure?",
+    options: [
+      "The Income Tax Department does not send emails",
+      "Real tax notices arrive by registered post with weeks to respond, not 48-hour email deadlines",
+      "The amount is too specific",
+      "It mentions your PAN"
+    ],
+    correct: 1,
+    explanation: "<strong>Real government notices do not come with 48-hour email deadlines.</strong> The Income Tax Department sends formal notices via registered post or the official IT portal. Demands include a long formal process with time to respond, appeal, and seek legal advice. A 48-hour deadline in an email exists for one reason: to stop you from verifying. The moment you check the official IT portal or call the official helpline, the scam collapses."
+  },
+  {
+    topic: "pause",
+    channel: "WhatsApp",
+    topicLabel: "Pause-and-Verify",
+    message: "Hi, this is from Arjun's school. He was in a minor accident near the school gate and is now at the hospital. The doctor requires Rs 15,000 before they begin treatment. Please send immediately to this UPI ID. Do not call Arjun as his phone was damaged. His teacher is with him.",
+    question: "Which pause-and-verify step would immediately break this scam?",
+    options: [
+      "Ask the WhatsApp contact to send a photo",
+      "Call Arjun or another family member on a number you already have",
+      "Check if the school's name is spelled correctly",
+      "Ask the sender to confirm Arjun's date of birth"
+    ],
+    correct: 1,
+    explanation: "<strong>Call on a number you already have - not any number they provide.</strong> The 'do not call Arjun' instruction is not a coincidence - it is the scam's most critical mechanism. It blocks the one action that would instantly expose the lie. The pause-and-verify rule is simple: when a message makes you feel rushed, treat that feeling as a signal to slow down. Use a contact you already have, not the one the message provides. One call to Arjun's real number ends this scam in seconds."
+  }
+];
+
+let current = 0;
+let score = 0;
+let answered = false;
+
+function updateTopicPills(topic) {
+  document.querySelectorAll('.topic-pill').forEach(p => {
+    p.classList.toggle('active', p.dataset.topic === topic);
+  });
+}
+
+function render() {
+  answered = false;
+  const q = questions[current];
+  const total = questions.length;
+
+  document.getElementById('progress-fill').style.width = ((current / total) * 100) + '%';
+  document.getElementById('progress-label').textContent = (current + 1) + ' / ' + total;
+  updateTopicPills(q.topic);
+
+  const optionsHTML = q.options.map((opt, i) =>
+    `<button class="option-btn" onclick="choose(${i})">
+      <span class="option-icon">○</span>
+      <span>${opt}</span>
+    </button>`
+  ).join('');
+
+  document.getElementById('question-area').innerHTML = `
+    <span class="channel-tag">${q.channel}</span>
+    <span class="topic-tag">${q.topicLabel}</span>
+    <div class="message-bubble">${q.message.replace(/\n/g, '<br>')}</div>
+    <p class="question">${q.question}</p>
+    <div class="options">${optionsHTML}</div>
+    <div class="explanation" id="explanation"></div>
+    <button class="next-btn" id="next-btn" onclick="next()">
+      ${current < total - 1 ? 'Next message &rarr;' : 'See my result &rarr;'}
+    </button>
+  `;
+}
+
+function choose(index) {
+  if (answered) return;
+  answered = true;
+  const q = questions[current];
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.correct) {
+      btn.classList.add('correct');
+      btn.querySelector('.option-icon').textContent = '✓';
+    } else if (i === index && index !== q.correct) {
+      btn.classList.add('wrong');
+      btn.querySelector('.option-icon').textContent = '✗';
+    }
+  });
+  if (index === q.correct) score++;
+  const exp = document.getElementById('explanation');
+  exp.innerHTML = q.explanation;
+  exp.classList.add('visible');
+  document.getElementById('next-btn').classList.add('visible');
+}
+
+function next() {
+  current++;
+  if (current >= questions.length) showResult();
+  else render();
+}
+
+function showResult() {
+  document.getElementById('quiz-wrap').classList.add('hidden');
+  const screen = document.getElementById('result-screen');
+  screen.classList.add('visible');
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('progress-label').textContent = questions.length + ' / ' + questions.length;
+  document.getElementById('result-score').textContent = score + ' / ' + questions.length;
+
+  let label, msg;
+  if (score === questions.length) {
+    label = 'You caught every tactic.';
+    msg = 'All six sub-topics covered - urgency, fear, FOMO, amygdala hijack, tech support scams, and the pause-and-verify rule. Recognising the pattern is the skill. You have it.';
+  } else if (score >= 5) {
+    label = 'Strong awareness. One or two slipped through.';
+    msg = 'You identified most tactics correctly. Revisit the questions you missed - scammers deliberately layer multiple tactics together so that even one missed signal is enough for them to succeed.';
+  } else if (score >= 3) {
+    label = 'Good foundation. Some tactics are still subtle.';
+    msg = 'You are building the right instincts. The scenarios you missed are worth a second read - pay attention to how each one manufactures a reason to act before verifying.';
+  } else {
+    label = 'These are designed to be hard to spot.';
+    msg = 'That is the point. These messages are engineered to overwhelm rational thinking. Now that you have seen all six tactics and how they work, you are significantly better prepared for the next one.';
+  }
+
+  document.getElementById('result-label').textContent = label;
+  document.getElementById('result-msg').textContent = msg;
+}
+
+function restart() {
+  current = 0; score = 0;
+  document.getElementById('result-screen').classList.remove('visible');
+  document.getElementById('quiz-wrap').classList.remove('hidden');
+  render();
+}
+
+render();
+
+// Dynamic height resize mechanism
+function postHeight() {
+  window.parent.postMessage({ iframeHeight: document.documentElement.scrollHeight }, '*');
+}
+window.addEventListener('load', postHeight);
+window.addEventListener('resize', postHeight);
+new MutationObserver(postHeight).observe(document.body, { subtree: true, childList: true, attributes: true });
+</script>
+</body>
+</html>
