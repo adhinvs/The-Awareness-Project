@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>The FOMO Trap</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --font: 'Outfit', system-ui, sans-serif;
+            --bg: #F8FAFC;
+            --surface: #FFFFFF;
+            --border: #E2E8F0;
+            --text: #0F172A;
+            --muted: #64748B;
+            --blue: #2563EB;
+            --blue-light: #EFF6FF;
+            --red: #DC2626;
+            --red-light: #FEF2F2;
+            --green: #059669;
+            --green-light: #ECFDF5;
+            --amber: #B45309;
+            --amber-light: #FFFBEB;
+            --r: 12px;
+            --r-sm: 8px;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            padding: 28px 20px 36px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* HEADER */
+        .header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            font-size: 13.5px;
+            color: var(--muted);
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        /* CARD */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            max-width: 620px;
+            margin: 0 auto 18px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .card-bar {
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            padding: 11px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bar-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        .bar-dot.active {
+            background: var(--green);
+            animation: pulse 2s infinite;
+        }
+
+        .bar-label {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* CHAT */
+        .chat {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .msg {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            animation: rise 0.25s ease;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--muted);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            letter-spacing: 0.03em;
+        }
+
+        .avatar.active {
+            background: var(--blue);
+        }
+
+        .avatar.warn {
+            background: var(--amber);
+        }
+
+        .bubble-wrap {
+            flex: 1;
+        }
+
+        .sender {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--muted);
+            margin-bottom: 5px;
+        }
+
+        .bubble {
+            font-size: 16.5px;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 2px var(--r) var(--r) var(--r);
+            padding: 13px 16px;
+        }
+
+        .bubble-img {
+            max-width: 100%;
+            border-radius: var(--r-sm);
+            margin-bottom: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .bubble.p1 {
+            border-color: #FDE68A;
+            background: #FFFDF0;
+        }
+
+        .bubble.p2 {
+            border-color: #FDBA74;
+            background: #FFF7ED;
+        }
+
+        .bubble.p3 {
+            border-color: var(--red);
+            background: #FEF2F2;
+            font-weight: 600;
+            color: #991B1B;
+        }
+
+        .held {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--green);
+            background: var(--green-light);
+            border: 1px solid #A7F3D0;
+            border-radius: var(--r-sm);
+            padding: 10px 14px;
+            animation: rise 0.25s ease;
+        }
+
+        /* BUTTONS */
+        .actions {
+            padding: 0 20px 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-do {
+            flex: 1;
+            padding: 12px;
+            background: var(--amber-light);
+            border: 1.5px solid #FDE68A;
+            border-radius: var(--r-sm);
+            color: var(--amber);
+            font-family: var(--font);
+            font-size: 14.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.16s ease;
+        }
+
+        .btn-do:hover:not(:disabled) {
+            background: var(--amber);
+            border-color: var(--amber);
+            color: #fff;
+        }
+
+        .btn-refuse {
+            flex: 1;
+            padding: 12px;
+            background: var(-- surface);
+            border: 1.5px solid var(--border);
+            border-radius: var(--r-sm);
+            color: var(--muted);
+            font-family: var(--font);
+            font-size: 14.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.16s ease;
+        }
+
+        .btn-refuse:hover:not(:disabled) {
+            background: var(--bg);
+            border-color: var(--muted);
+            color: var(--text);
+        }
+
+        .btn-do:disabled,
+        .btn-refuse:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* MECHANISM */
+        .mechanism {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            max-width: 620px;
+            margin: 0 auto;
+            padding: 22px 24px;
+            display: none;
+            animation: rise 0.3s ease;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .mechanism.show {
+            display: block;
+        }
+
+        .mech-tag {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            background: var(--amber-light);
+            color: var(--amber);
+        }
+
+        .mech-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 7px;
+            letter-spacing: -0.01em;
+        }
+
+        .mech-desc {
+            font-size: 13.5px;
+            color: var(--muted);
+            line-height: 1.65;
+            margin-bottom: 16px;
+        }
+
+        .outcome {
+            font-size: 13px;
+            font-weight: 600;
+            padding: 10px 14px;
+            border-radius: var(--r-sm);
+        }
+
+        .outcome.complied {
+            background: var(--red-light);
+            color: var(--red);
+            border: 1px solid #FECACA;
+        }
+
+        .outcome.refused {
+            background: var(--green-light);
+            color: var(--green);
+            border: 1px solid #A7F3D0;
+        }
+
+        .mech-note {
+            margin-top: 14px;
+            font-size: 12.5px;
+            color: var(--muted);
+            line-height: 1.6;
+            padding-top: 14px;
+            border-top: 1px solid var(--border);
+        }
+
+        .mech-note strong {
+            color: var(--text);
+        }
+
+        @keyframes rise {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>The FOMO Trap</h1>
+        <p>An unmatched opportunity just appeared in your messages. It won't last long. What do you do?</p>
+    </div>
+
+    <div class="card" id="card">
+        <div class="card-bar">
+            <div class="bar-dot active"></div>
+            <span class="bar-label">Encrypted Chat &mdash; Alex Miller</span>
+        </div>
+        <div class="chat" id="chat"></div>
+        <div class="actions" id="actions">
+            <button class="btn-do" id="btn-do" onclick="handleDo()">Invest Now ($1k)</button>
+            <button class="btn-refuse" id="btn-refuse" onclick="handleRefuse()">Pass</button>
+        </div>
+    </div>
+
+    <div class="mechanism" id="mechanism"></div>
+
+    <div style="max-width:620px;margin:14px auto 0;text-align:right;">
+        <button onclick="resetSim()"
+            style="background:none;border:none;font-family:var(--font);font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer;padding:4px 0;text-decoration:underline;text-underline-offset:3px;">
+            Reset simulation
+        </button>
+    </div>
+
+    <script>
+        const STORY = {
+            directives: [
+                { text: "Hey! You free? You have to see this chart from the new AI trading bot I'm testing.", img: "/img/social-engineering-manipulation-tactics/greed-reward-scarcity/sim-chart.webp" },
+                { text: "I threw in $500 last week just to test it. It’s already up 65%. Guaranteed returns because it arbitrates between obscure coins." },
+                { text: "The developer just opened *three* spots for friends and family, but minimum deposit is $1,000 to get the AI tier access. I’m taking two." },
+                { text: "There’s one spot left. I told him to hold it for 5 minutes for you. If you don't take it, I have to let the next guy in the group chat have it. It’s free money, man." }
+            ],
+            prods: [
+                "Seriously, look at the screenshot again. This isn't normal. I just withdrew $300 profit to my bank, it’s legit. Don’t miss this.",
+                "3 minutes left. He's messaging me asking if you want it. This is a limited access invite, once it’s gone, the tier closes forever.",
+                "Whatever, pass it up. Just don't get mad later when I buy that car and you didn't listen. It's the last spot, right now."
+            ],
+            mechanism: {
+                tag: "Emotional Hijack",
+                name: "Greed + Scarcity",
+                desc: "Alex layered high reward (65% return) with artificial scarcity (one spot left, 5 minute timer). By collapsing the decision window and focusing purely on massive gains, the logical part of the brain is bypassed. Reward-seeking overrules critical thought.",
+                note: "<strong>Module 10:</strong> Reward-seeking can physically override logical processing[cite: 1]. Add time pressure, and the window for rational verification disappears completely."
+            }
+        };
+
+        let prods = 0;
+
+        // Render directive as multiple bubbles
+        document.getElementById('chat').innerHTML = STORY.directives.map((obj, i) => buildMsg(obj, false, 0, i > 0)).join('');
+
+        function buildMsg(obj, warn, level, hideHeader) {
+            const text = typeof obj === 'string' ? obj : obj.text;
+            const img = obj.img ? `<img src="${obj.img}" alt="Fake crypto chart" class="bubble-img">` : '';
+
+            return `<div class="msg">
+        <div class="avatar active${warn ? ' warn' : ''}" style="${hideHeader ? 'visibility:hidden' : ''}">AM</div>
+        <div class="bubble-wrap">
+          ${hideHeader ? '' : `<div class="sender">Alex Miller</div>`}
+          <div class="bubble${warn ? ' p' + level : ''}">${img}${text}</div>
+        </div>
+      </div>`;
+        }
+
+        function handleDo() {
+            lock();
+            showMechanism(true);
+        }
+
+        function handleRefuse() {
+            if (prods < 3) {
+                prods++;
+                document.getElementById('chat').insertAdjacentHTML('beforeend',
+                    buildMsg(STORY.prods[prods - 1], true, prods));
+
+                if (prods === 3) {
+                    lock();
+                    setTimeout(() => {
+                        const el = document.createElement('div');
+                        el.className = 'held';
+                        el.innerHTML = '&#10003;&nbsp; Alex has stopped pushing. You held the line.';
+                        document.getElementById('chat').appendChild(el);
+                        setTimeout(() => showMechanism(false), 500);
+                    }, 300);
+                }
+            }
+        }
+
+        function resetSim() {
+            prods = 0;
+            document.getElementById('btn-do').disabled = false;
+            document.getElementById('btn-refuse').disabled = false;
+            document.getElementById('chat').innerHTML = STORY.directives.map((obj, i) => buildMsg(obj, false, 0, i > 0)).join('');
+            const panel = document.getElementById('mechanism');
+            panel.classList.remove('show');
+            panel.innerHTML = '';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function lock() {
+            document.getElementById('btn-do').disabled = true;
+            document.getElementById('btn-refuse').disabled = true;
+        }
+
+        function showMechanism(complied) {
+            const m = STORY.mechanism;
+            const panel = document.getElementById('mechanism');
+            panel.innerHTML = `
+        <div class="mech-tag">${m.tag}</div>
+        <div class="mech-name">${m.name}</div>
+        <div class="mech-desc">${m.desc}</div>
+        <div class="outcome ${complied ? 'complied' : 'refused'}">
+          ${complied ? '&#9888;&nbsp; You invested $1,000. It was a scam. The money and Alex are gone.' : '&#10003;&nbsp; You refused the offer. Your money is safe.'}
+        </div>
+        <div class="mech-note">${m.note}</div>`;
+            panel.classList.add('show');
+            setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
+        }
+    </script>
+
+    <script>
+        function postHeight() {
+            window.parent.postMessage({ iframeHeight: document.documentElement.scrollHeight }, '*');
+        }
+        window.addEventListener('load', postHeight);
+        window.addEventListener('resize', postHeight);
+        new MutationObserver(postHeight).observe(document.body, { subtree: true, childList: true, attributes: true });
+    </script>
+
+</body>
+
+</html>
