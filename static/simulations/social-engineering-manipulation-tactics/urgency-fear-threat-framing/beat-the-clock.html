@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beat the Clock — Urgency Manipulation Simulator</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #F8FAFC;
+    color: #1E293B;
+    padding: 24px 20px 40px;
+  }
+  .container { max-width: 600px; margin: 0 auto; }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* INTRO */
+  .intro-label {
+    display: inline-block;
+    background: #EFF6FF;
+    color: #2563EB;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 12px;
+    border-radius: 99px;
+    margin-bottom: 16px;
+  }
+  .intro-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 12px;
+    color: #0F172A;
+  }
+  .intro-body {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #475569;
+    margin-bottom: 28px;
+  }
+  .btn-primary {
+    display: inline-block;
+    background: #2563EB;
+    color: #fff;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-primary:hover { background: #1D4ED8; }
+
+  /* TRAP SCREEN */
+  .phone-frame {
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+  .phone-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #F1F5F9;
+    margin-bottom: 16px;
+  }
+  .bank-avatar {
+    width: 40px;
+    height: 40px;
+    background: #1E3A6E;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+  .bank-info { flex: 1; }
+  .bank-name { font-weight: 700; font-size: 0.9rem; color: #0F172A; }
+  .bank-verified { font-size: 0.75rem; color: #64748B; }
+  .msg-bubble {
+    background: #F1F5F9;
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #1E293B;
+    margin-bottom: 16px;
+  }
+  .msg-bubble strong { color: #DC2626; }
+  .msg-bubble .acct { font-family: monospace; color: #475569; }
+
+  .countdown-box {
+    background: #FEF2F2;
+    border: 2px solid #FECACA;
+    border-radius: 14px;
+    text-align: center;
+    padding: 18px 16px;
+  }
+  .countdown-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #DC2626;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .countdown-timer {
+    font-size: 2.6rem;
+    font-weight: 800;
+    font-family: 'Courier New', monospace;
+    color: #DC2626;
+    line-height: 1;
+    letter-spacing: 0.05em;
+  }
+  .countdown-sub {
+    font-size: 0.8rem;
+    color: #B91C1C;
+    margin-top: 8px;
+  }
+
+  .choice-prompt {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #334155;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .choice-buttons {
+    display: flex;
+    gap: 12px;
+    flex-direction: column;
+  }
+  .btn-choice {
+    background: #fff;
+    color: #1E293B;
+    border: 1.5px solid #CBD5E1;
+    padding: 13px 20px;
+    border-radius: 12px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    width: 100%;
+    text-align: center;
+  }
+  .btn-choice:hover { background: #F1F5F9; border-color: #94A3B8; }
+
+  /* VERIFY PATH - PHISHING FORM */
+  .fake-form-wrapper {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #E2E8F0;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .fake-form-header {
+    background: #1E3A6E;
+    color: #fff;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .fake-form-header .lock-icon {
+    font-size: 1rem;
+  }
+  .fake-form-header .site-info { }
+  .fake-form-header .site-name { font-weight: 700; font-size: 0.9rem; }
+  .fake-form-header .site-url { font-size: 0.75rem; opacity: 0.7; }
+  .fake-form-body { padding: 24px 20px; }
+  .form-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; color: #0F172A; }
+  .form-group { margin-bottom: 16px; }
+  .form-label { display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 6px; }
+  .form-input {
+    width: 100%;
+    border: 1px solid #CBD5E1;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    color: #1E293B;
+    background: #F8FAFC;
+    outline: none;
+  }
+  .form-input:focus { border-color: #2563EB; background: #fff; }
+  .form-submit {
+    width: 100%;
+    background: #1E3A6E;
+    color: #fff;
+    border: none;
+    padding: 13px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+  .form-submit:hover { background: #162d57; }
+  .sim-tag {
+    background: #FEF9C3;
+    border: 1px solid #FDE047;
+    color: #713F12;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+
+  /* REVEAL CARDS */
+  .reveal-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #E2E8F0;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .reveal-card.bad { border-left: 4px solid #DC2626; }
+  .reveal-card.good { border-left: 4px solid #16A34A; }
+  .reveal-card.insight { border-left: 4px solid #7C3AED; }
+  .reveal-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+  .reveal-tag.bad { color: #DC2626; }
+  .reveal-tag.good { color: #16A34A; }
+  .reveal-tag.insight { color: #7C3AED; }
+  .reveal-heading { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: #0F172A; }
+  .reveal-body { font-size: 0.9rem; line-height: 1.65; color: #475569; }
+  .reveal-body strong { color: #1E293B; }
+  .reveal-body ul { padding-left: 20px; margin-top: 8px; }
+  .reveal-body li { margin-bottom: 6px; }
+
+  /* TIMER ANATOMY */
+  .timer-anatomy {
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 6px 0;
+    margin: 14px 0;
+  }
+  .anatomy-row {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 16px 18px;
+  }
+  .anatomy-icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    line-height: 1.4;
+  }
+  .anatomy-text {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: #334155;
+  }
+  .anatomy-text strong {
+    display: block;
+    color: #0F172A;
+    margin-bottom: 3px;
+  }
+  .anatomy-divider {
+    height: 1px;
+    background: #F1F5F9;
+    margin: 0 18px;
+  }
+
+  /* SIGNALS LIST */
+  .signals-list { list-style: none; padding: 0; margin: 14px 0 0; }
+  .signals-list li {
+    display: flex;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    align-items: flex-start;
+  }
+  .signals-list li.bad-signal { background: #FEF2F2; color: #7F1D1D; }
+  .signals-list li.note { background: #F0FDF4; color: #14532D; }
+  .signal-icon { flex-shrink: 0; font-size: 1rem; line-height: 1.4; }
+  .signal-text strong { display: block; font-weight: 700; }
+
+  /* SECTION HEADING */
+  .section-heading {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0F172A;
+    margin: 28px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #E2E8F0;
+  }
+
+  /* RESTART */
+  .btn-restart {
+    background: #F1F5F9;
+    color: #475569;
+    border: 1px solid #CBD5E1;
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    display: inline-block;
+  }
+  .btn-restart:hover { background: #E2E8F0; }
+
+  /* PROGRESS STRIP */
+  .progress-strip {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 28px;
+  }
+  .progress-step {
+    height: 4px;
+    flex: 1;
+    border-radius: 2px;
+    background: #E2E8F0;
+    transition: background 0.3s;
+  }
+  .progress-step.done { background: #2563EB; }
+
+  .pause-note {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #64748B;
+    margin-top: 10px;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- INTRO SCREEN -->
+  <div id="screen-intro" class="screen active">
+    <div class="progress-strip">
+      <div class="progress-step done"></div>
+      <div class="progress-step"></div>
+      <div class="progress-step"></div>
+    </div>
+    <div class="intro-label">Simulation</div>
+    <h1 class="intro-title">Beat the Clock</h1>
+    <p class="intro-body">
+      You are about to receive an urgent message. Make a choice — then see what was really behind that deadline.
+    </p>
+    <button class="btn-primary" onclick="startTrap()">Start</button>
+  </div>
+
+  <!-- TRAP SCREEN -->
+  <div id="screen-trap" class="screen">
+    <div class="progress-strip">
+      <div class="progress-step done"></div>
+      <div class="progress-step done"></div>
+      <div class="progress-step"></div>
+    </div>
+
+    <div class="phone-frame">
+      <div class="phone-header">
+        <div class="bank-avatar">SBI</div>
+        <div class="bank-info">
+          <div class="bank-name">SBI — Official Alert</div>
+          <div class="bank-verified">Sender ID: SBI-SECURE</div>
+        </div>
+      </div>
+      <div class="msg-bubble">
+        Dear Customer,<br><br>
+        Suspicious activity has been detected on your account ending <span class="acct">XXXX 4821</span>. Your account will be <strong>permanently suspended</strong> if you do not verify your details before the deadline below.<br><br>
+        Verify now to protect your funds:
+      </div>
+      <div class="countdown-box">
+        <div class="countdown-label">Account suspension in</div>
+        <div class="countdown-timer" id="timer-display">09:59</div>
+        <div class="countdown-sub">Verification link expires automatically</div>
+      </div>
+    </div>
+
+    <p class="choice-prompt">What do you do?</p>
+    <div class="choice-buttons">
+      <button class="btn-choice" onclick="chooseVerify()">Verify my account now</button>
+      <button class="btn-choice" onclick="choosePause()">Pause and check first</button>
+    </div>
+    <p class="pause-note">Both paths are explained after your choice.</p>
+  </div>
+
+  <!-- PATH A: VERIFY -->
+  <div id="screen-verify" class="screen">
+    <div class="progress-strip">
+      <div class="progress-step done"></div>
+      <div class="progress-step done"></div>
+      <div class="progress-step done"></div>
+    </div>
+
+    <div class="sim-tag">Simulation — what happens when you click the link</div>
+
+    <div class="fake-form-wrapper">
+      <div class="fake-form-header">
+        <span class="lock-icon">🔒</span>
+        <div class="site-info">
+          <div class="site-name">SBI Net Banking — Verification Portal</div>
+          <div class="site-url">sbi-secure-verify.in/account-auth</div>
+        </div>
+      </div>
+      <div class="fake-form-body">
+        <div class="form-title">Account Verification Required</div>
+        <div class="form-group">
+          <label class="form-label">Account Number</label>
+          <input type="text" class="form-input" placeholder="Enter your account number" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Net Banking Password</label>
+          <input type="password" class="form-input" placeholder="Enter your password" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">OTP (sent to registered mobile)</label>
+          <input type="text" class="form-input" placeholder="Enter 6-digit OTP" />
+        </div>
+        <button class="form-submit" onclick="showVerifyReveal()">Verify Account</button>
+      </div>
+    </div>
+
+    <div id="verify-reveal" style="display:none;">
+      <div class="reveal-card bad">
+        <div class="reveal-tag bad">What just happened</div>
+        <div class="reveal-heading">You handed over everything.</div>
+        <div class="reveal-body">
+          In a real attack, the moment you clicked Submit, the attacker would have captured:
+          <ul>
+            <li><strong>Your account number</strong> — used to identify and target your account</li>
+            <li><strong>Your net banking password</strong> — immediate access to your funds</li>
+            <li><strong>The OTP</strong> — the only second layer of defence, now gone</li>
+          </ul>
+          The padlock and "sbi-secure-verify.in" look official. Neither is. The padlock only means the connection is encrypted — it says nothing about whether the site is legitimate.
+        </div>
+      </div>
+
+      <h3 class="section-heading">What made this page feel real</h3>
+      <ul class="signals-list">
+        <li class="bad-signal">
+          <span class="signal-icon">⚠</span>
+          <div class="signal-text"><strong>Familiar logo and branding</strong> Attackers copy official bank styling exactly. The visual is not evidence of legitimacy.</div>
+        </li>
+        <li class="bad-signal">
+          <span class="signal-icon">⚠</span>
+          <div class="signal-text"><strong>Padlock icon in address bar</strong> The padlock means encrypted transport only. Phishing sites use it too.</div>
+        </li>
+        <li class="bad-signal">
+          <span class="signal-icon">⚠</span>
+          <div class="signal-text"><strong>Plausible-sounding domain</strong> "sbi-secure-verify.in" contains the word SBI but is not owned by SBI. The real domain is onlinesbi.sbi.</div>
+        </li>
+        <li class="bad-signal">
+          <span class="signal-icon">⚠</span>
+          <div class="signal-text"><strong>OTP request on a page you navigated to</strong> A real OTP is sent to verify a login you initiated — not to verify your identity on a page you reached via a text message link.</div>
+        </li>
+      </ul>
+
+      <div class="reveal-card insight" style="margin-top: 20px;">
+        <div class="reveal-tag insight">The rule</div>
+        <div class="reveal-heading">Never navigate to a bank page from a message.</div>
+        <div class="reveal-body">
+          Find your bank's URL from their official app, the back of your card, or a previous printed statement. Type it manually. The link in the message was the attack.
+        </div>
+      </div>
+
+      <div id="after-verify-insight"></div>
+      <button class="btn-restart" onclick="showSharedInsight('verify')">Continue →</button>
+    </div>
+  </div>
+
+  <!-- PATH B: PAUSE -->
+  <div id="screen-pause" class="screen">
+    <div class="progress-strip">
+      <div class="progress-step done"></div>
+      <div class="progress-step done"></div>
+      <div class="progress-step done"></div>
+    </div>
+
+    <div class="reveal-card good">
+      <div class="reveal-tag good">Good instinct</div>
+      <div class="reveal-heading">You broke the loop.</div>
+      <div class="reveal-body">
+        Pausing defeats every urgency-based attack. The deadline has no power once you stop.
+      </div>
+    </div>
+
+    <h3 class="section-heading">What was really behind that countdown</h3>
+
+    <div class="timer-anatomy">
+      <div class="anatomy-row">
+        <div class="anatomy-icon">⏱</div>
+        <div class="anatomy-text">
+          <strong>The timer ran only inside your browser tab.</strong>
+          Your bank never knew it existed.
+        </div>
+      </div>
+      <div class="anatomy-divider"></div>
+      <div class="anatomy-row">
+        <div class="anatomy-icon">🔌</div>
+        <div class="anatomy-text">
+          <strong>No server. No real deadline.</strong>
+          Nothing would have happened when it hit zero — it would have simply stopped.
+        </div>
+      </div>
+      <div class="anatomy-divider"></div>
+      <div class="anatomy-row">
+        <div class="anatomy-icon">⚙️</div>
+        <div class="anatomy-text">
+          <strong>Any countdown timer can be added to any page in minutes.</strong>
+          It is decoration. It proves nothing about the threat being real.
+        </div>
+      </div>
+    </div>
+
+    <div id="after-pause-insight"></div>
+    <button class="btn-primary" onclick="showSharedInsight('pause')" style="margin-top: 20px;">Continue →</button>
+  </div>
+
+  <!-- SHARED INSIGHT (appended to both paths) -->
+  <div id="screen-insight" class="screen">
+    <div class="reveal-card insight">
+      <div class="reveal-tag insight">Key insight</div>
+      <div class="reveal-heading">Real institutions do not operate on 10-minute windows.</div>
+      <div class="reveal-body">
+        Every major bank, government agency, and court sends written notices with 7 to 30 days to respond. No real financial institution will close your account in under 24 hours without multiple prior notifications. <strong>Any deadline that cannot be verified through an independent channel is fabricated.</strong>
+      </div>
+    </div>
+
+    <h3 class="section-heading">How to recognise manufactured urgency</h3>
+    <ul class="signals-list">
+      <li class="bad-signal">
+        <span class="signal-icon">⚠</span>
+        <div class="signal-text"><strong>A deadline under 24 hours</strong> Real threats give you time to think. Manufactured ones do not — because verification kills the attack.</div>
+      </li>
+      <li class="bad-signal">
+        <span class="signal-icon">⚠</span>
+        <div class="signal-text"><strong>A link in the message you must click to act</strong> If the message contains both the threat and the solution, the solution is the trap.</div>
+      </li>
+      <li class="bad-signal">
+        <span class="signal-icon">⚠</span>
+        <div class="signal-text"><strong>A visible countdown or "offer expires" notice</strong> Countdown timers are trivial to add to any page. They prove nothing about the reality of the threat.</div>
+      </li>
+      <li class="note">
+        <span class="signal-icon">✓</span>
+        <div class="signal-text"><strong>The pause-and-verify rule</strong> When urgency arrives, slow down instead of speeding up. The amygdala spike lasts minutes. Outlast it and rational thinking returns. Call your bank directly on their official number — from the back of your card, not from the message.</div>
+      </li>
+    </ul>
+
+    <button class="btn-restart" onclick="restart()">Run again</button>
+  </div>
+
+</div>
+
+<script>
+  let timerInterval = null;
+  let seconds = 599;
+
+  function sendHeight() {
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+  }
+
+  function show(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    setTimeout(sendHeight, 50);
+    window.scrollTo(0, 0);
+  }
+
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return String(m).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+  }
+
+  function startTrap() {
+    seconds = 599;
+    document.getElementById('timer-display').textContent = '09:59';
+    show('screen-trap');
+    timerInterval = setInterval(() => {
+      seconds--;
+      if (seconds <= 0) {
+        clearInterval(timerInterval);
+        seconds = 0;
+      }
+      document.getElementById('timer-display').textContent = formatTime(seconds);
+    }, 1000);
+  }
+
+  function chooseVerify() {
+    clearInterval(timerInterval);
+    show('screen-verify');
+  }
+
+  function choosePause() {
+    clearInterval(timerInterval);
+    show('screen-pause');
+  }
+
+  function showVerifyReveal() {
+    document.getElementById('verify-reveal').style.display = 'block';
+    setTimeout(sendHeight, 50);
+  }
+
+  function showSharedInsight(path) {
+    show('screen-insight');
+  }
+
+  function restart() {
+    clearInterval(timerInterval);
+    seconds = 599;
+    document.getElementById('verify-reveal').style.display = 'none';
+    show('screen-intro');
+  }
+
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>

@@ -1,9 +1,12 @@
 ---
 sidebar_position: 2
 title: "Urgency, Fear & Threat Framing"
+sidebar_label: "Urgency, Fear & Threat Framing"
 description: "How cybercriminals manufacture urgency and fear to collapse your ability to think clearly - and the one reflex that stops them."
 tags: [social-engineering, urgency, fear, fomo, amygdala-hijack, phishing, vishing, tech-support-scams, manipulation, verification]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Urgency, Fear & Threat Framing
 
@@ -23,13 +26,13 @@ They do this by **shrinking your decision window to almost zero.**
 > *"You have 10 minutes to respond before the case is filed."*
 > *"This offer expires at midnight tonight."*
 
-These deadlines are invented. No real bank, government office, or court operates on a 2-hour response window for account matters. **Real institutions send written notices with days or weeks to respond.** [^1]
+These deadlines are invented. No real bank, government office, or court operates on a 2-hour response window for account matters. **Real institutions send written notices with days or weeks to respond.**
 
 The manufactured deadline serves one purpose: to force you to act before your rational mind can catch up with what is happening.
 
-![How scammers shrink your verification window compared to how real institutions operate](/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/verification-window.svg)
-
-[^1]: Reserve Bank of India, *Customer Protection Guidelines*, 2021. Real account disputes are handled through formal written processes.
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img src="/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/verification-window.svg" alt="How scammers shrink your verification window compared to how real institutions operate." />
+</figure>
 
 ---
 
@@ -43,13 +46,13 @@ Three categories of fear dominate these attacks.
 
 > *"Your SBI account has been flagged for suspicious activity. Verify now or your account will be permanently closed."*
 
-**Financial fear is the most common trigger in India-based scams.** [^2] Losing access to your bank account feels catastrophic - rent, groceries, family support, everything stops. Scammers know this. They frame the threat as immediate and irreversible.
+**Financial fear is the most common trigger in India-based scams.** Losing access to your bank account feels catastrophic - rent, groceries, family support, everything stops. Scammers know this. They frame the threat as immediate and irreversible.
 
 ### Freedom fear - arrest and legal threats
 
 > *"A non-bailable warrant has been issued in your name. You will be arrested unless you cooperate immediately."*
 
-This is the **digital arrest scam**, which caused losses of over Rs 1,776 crore across India in 2024. [^3] The caller impersonates a police officer, CBI agent, or customs official. They keep you on the line for hours, isolated from family, transferring money in stages.
+This is the **digital arrest scam**, which caused losses of over Rs 1,776 crore across India in 2024. The caller impersonates a police officer, CBI agent, or customs official. They keep you on the line for hours, isolated from family, transferring money in stages.
 
 **There is no such thing as a digital arrest under Indian law.** No agency conducts arrests over a phone call or video call.
 
@@ -59,10 +62,9 @@ This is the **digital arrest scam**, which caused losses of over Rs 1,776 crore 
 
 This variant targets embarrassment. The victim fears public exposure more than financial loss. **The threat is always fabricated.** No legitimate agency operates this way.
 
-![The three categories of fear-based manipulation: financial, freedom, and reputational](/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/fear-categories.svg)
-
-[^2]: Indian Cyber Crime Coordination Centre (I4C), *Annual Cybercrime Report*, 2023.
-[^3]: Ministry of Home Affairs, Government of India, *Cyber Fraud Statistics*, 2024.
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img src="/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/fear-categories.svg" alt="The three categories of fear-based manipulation: financial, freedom, and reputational." />
+</figure>
 
 ---
 
@@ -87,7 +89,9 @@ FOMO-based manipulation is common in:
 
 The tell is always the same: **a real opportunity does not disappear if you take 10 minutes to verify it.**
 
-![FOMO and fear-based urgency trigger the same brain response, only the emotion differs](/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/fomo-vs-fear.svg)
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img src="/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/fomo-vs-fear.svg" alt="FOMO and fear-based urgency trigger the same brain response, only the emotion differs." />
+</figure>
 
 ---
 
@@ -97,7 +101,7 @@ Understanding why urgency and fear work so well requires understanding one part 
 
 The amygdala is a small, almond-shaped region that processes emotional responses - especially fear and threat. When it detects danger, it sends an immediate signal to the body: react now.
 
-**This reaction happens before the prefrontal cortex - the part responsible for rational decision-making - has time to process what is happening.** Psychologist Daniel Goleman called this an "amygdala hijack": a moment when the emotional brain overrides the thinking brain. [^4]
+**This reaction happens before the prefrontal cortex - the part responsible for rational decision-making - has time to process what is happening.** Psychologist Daniel Goleman called this an "amygdala hijack": a moment when the emotional brain overrides the thinking brain.
 
 The result is predictable:
 
@@ -110,9 +114,9 @@ Scammers engineer this state deliberately. **A message that triggers an amygdala
 
 This is why intelligent, educated people fall for these attacks. It is not a failure of intelligence. It is the brain working exactly as it was designed to - just exploited by someone who studied that design.
 
-![The amygdala hijack flow: how a threat message triggers a reaction before rational thinking can catch up](/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/amygdala-hijack-flow.svg)
-
-[^4]: Goleman, D. *Emotional Intelligence: Why It Can Matter More Than IQ*. Bantam Books, 1995.
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img src="/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/amygdala-hijack-flow.svg" alt="The amygdala hijack flow: how a threat message triggers a reaction before rational thinking can catch up." />
+</figure>
 
 ---
 
@@ -141,19 +145,34 @@ The pop-up is a webpage, not a system message. **Real operating systems never di
 
 **Force-close the browser.** On Windows, use Task Manager (Ctrl + Shift + Esc). On Mac, use Force Quit (Cmd + Option + Esc). Do not call the number. Do not click anything inside the pop-up. The pop-up disappears the moment the browser closes.
 
-![Side-by-side comparison of a scam pop-up and a real OS security notice — and what tells them apart](/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/fake-vs-real-alert.svg)
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img src="/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/fake-vs-real-alert.svg" alt="Side-by-side comparison of a scam pop-up and a real OS security notice, showing what tells them apart." />
+</figure>
 
 ---
 
-## Try It: Spot the Manipulation
+## Try It: Beat the Clock
 
-The simulation below presents seven real-style scam messages - one for each sub-topic in this module. For each message, identify the core tactic being used before the answer is revealed. The topic pill at the top shows which sub-topic each scenario is drawn from.
+The simulation below recreates an urgent bank alert with a live countdown. Make a choice - then see exactly what was powering that deadline and why it was never real.
 
 <iframe
-  src="/simulations/social-engineering-manipulation-tactics/urgency-fear-threat-framing/spot-the-manipulation.html"
+  id="urgency-simulator-iframe"
+  src="/simulations/social-engineering-manipulation-tactics/urgency-fear-threat-framing/beat-the-clock.html"
   width="100%"
-  height="720"
-  style={{ border: 'none', borderRadius: '16px' }}
+  style={{ height: '620px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Beat the Clock — Urgency Manipulation Simulator"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('urgency-simulator-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._urgencyIframeHandler);
+    window._urgencyIframeHandler = handler;
+    window.addEventListener('message', handler);
+  }}
 />
 
 ---
@@ -180,9 +199,13 @@ The amygdala hijack lasts seconds to minutes. Once the initial spike passes, rat
 
 6. **Report it.** If it was a scam, report it at [cybercrime.gov.in](https://cybercrime.gov.in) or call **1930**. Reporting helps protect others.
 
-![The six steps of the pause-and-verify rule](/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/pause-and-verify-steps.svg)
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img src="/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/pause-and-verify-steps.svg" alt="The six steps of the pause-and-verify rule." />
+</figure>
 
-:::tip The rule in one sentence
+:::tip 
+
+The rule in one sentence
 If a message makes you feel scared or rushed - that is not a reason to act fast. That is a reason to pause.
 
 Real emergencies give you time to verify. Manufactured ones do not.
@@ -215,4 +238,30 @@ Real emergencies give you time to verify. Manufactured ones do not.
 
 ---
 
-*Written by Nancy - Section 2: Social Engineering and Manipulation Tactics*
+## One Question Before You Continue
+
+<Quiz
+  question="A message arrives saying your bank account will be permanently closed in 2 hours unless you verify your details immediately. What is the safest first action?"
+  options={[
+    {
+      label: "Click the link in the message immediately to verify before the deadline.",
+      correct: false,
+      explanation: "Clicking the link is exactly what the attacker needs. The deadline is invented. Clicking takes you to a fake page designed to capture your credentials."
+    },
+    {
+      label: "Call the number provided in the message to speak to an agent.",
+      correct: false,
+      explanation: "The number in the message connects to the scammer, not your bank. It is part of the trap. Never call a number from a message you did not initiate."
+    },
+    {
+      label: "Pause, find your bank's official number independently, and call that.",
+      correct: true,
+      explanation: "Correct. The pause-and-verify rule breaks the urgency trap. Find your bank's number from their official website, your card, or a previous statement - not from the message. A real threat will still be there in 10 minutes. A manufactured one evaporates the moment you verify."
+    },
+    {
+      label: "Forward the message to your family so they can help you respond quickly.",
+      correct: false,
+      explanation: "Forwarding spreads the message but does not verify it. The correct action is independent verification through an official channel you find yourself."
+    }
+  ]}
+/>

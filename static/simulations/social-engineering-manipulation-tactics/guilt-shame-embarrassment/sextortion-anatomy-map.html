@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sextortion Anatomy Map</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #F8FAFC;
+    color: #1E293B;
+    padding: 24px 20px 48px;
+  }
+  .container { max-width: 680px; margin: 0 auto; }
+
+  .map-label {
+    display: inline-block;
+    background: #FEF3C7;
+    color: #92400E;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 12px;
+    border-radius: 99px;
+    margin-bottom: 14px;
+  }
+  .map-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0F172A;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .map-intro {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: #64748B;
+    margin-bottom: 28px;
+  }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.78rem;
+    color: #475569;
+    font-weight: 600;
+  }
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .legend-dot.attacker { background: #DC2626; }
+  .legend-dot.victim { background: #2563EB; }
+  .legend-dot.lever { background: #7C3AED; }
+  .legend-dot.exit { background: #16A34A; }
+
+  /* TIMELINE */
+  .timeline { position: relative; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #E2E8F0;
+    z-index: 0;
+  }
+
+  .stage {
+    position: relative;
+    margin-bottom: 6px;
+  }
+
+  /* Stage header - always visible */
+  .stage-header {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+    padding: 2px 0;
+  }
+
+  .stage-left {
+    flex: 1;
+    padding-right: 20px;
+    text-align: right;
+  }
+  .stage-right {
+    flex: 1;
+    padding-left: 20px;
+    text-align: left;
+  }
+
+  /* Center node */
+  .stage-node {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #fff;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: transform 0.2s;
+  }
+  .stage-header:hover .stage-node { transform: scale(1.1); }
+
+  .stage-node.s1 { background: #F59E0B; }
+  .stage-node.s2 { background: #F97316; }
+  .stage-node.s3 { background: #EF4444; }
+  .stage-node.s4 { background: #DC2626; }
+  .stage-node.s5 { background: #B91C1C; }
+  .stage-node.s6 { background: #991B1B; }
+  .stage-node.s7 { background: #7F1D1D; }
+  .stage-node.exit { background: #16A34A; width: 52px; height: 52px; font-size: 0.7rem; }
+
+  .stage-name {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #0F172A;
+  }
+  .stage-sub {
+    font-size: 0.72rem;
+    color: #94A3B8;
+    margin-top: 2px;
+  }
+
+  .attacker-pill {
+    display: inline-block;
+    background: #FEF2F2;
+    color: #DC2626;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 8px;
+    max-width: 100%;
+    line-height: 1.4;
+  }
+  .victim-pill {
+    display: inline-block;
+    background: #EFF6FF;
+    color: #1D4ED8;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 8px;
+    max-width: 100%;
+    line-height: 1.4;
+  }
+
+  /* Expanded detail panel */
+  .stage-detail {
+    display: none;
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 20px;
+    margin: 10px 0 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .stage-detail.open { display: block; }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .detail-cell {
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .detail-cell.attacker { background: #FEF2F2; border-left: 3px solid #DC2626; }
+  .detail-cell.victim { background: #EFF6FF; border-left: 3px solid #2563EB; }
+  .detail-cell-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+  .detail-cell.attacker .detail-cell-label { color: #DC2626; }
+  .detail-cell.victim .detail-cell-label { color: #2563EB; }
+  .detail-cell-body { font-size: 0.82rem; line-height: 1.55; color: #334155; }
+
+  .lever-box {
+    background: #F5F3FF;
+    border: 1px solid #DDD6FE;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+  }
+  .lever-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #7C3AED;
+    margin-bottom: 4px;
+  }
+  .lever-body {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: #4C1D95;
+  }
+
+  .redflag-box {
+    background: #FFFBEB;
+    border: 1px solid #FDE68A;
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .redflag-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #B45309;
+    margin-bottom: 6px;
+  }
+  .redflag-list {
+    list-style: none;
+    padding: 0;
+  }
+  .redflag-list li {
+    font-size: 0.82rem;
+    color: #78350F;
+    padding: 3px 0 3px 16px;
+    position: relative;
+    line-height: 1.45;
+  }
+  .redflag-list li::before {
+    content: '⚑';
+    position: absolute;
+    left: 0;
+    color: #D97706;
+    font-size: 0.7rem;
+    top: 5px;
+  }
+
+  .expand-hint {
+    font-size: 0.72rem;
+    color: #94A3B8;
+    text-align: center;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  /* CONNECTOR */
+  .connector {
+    display: flex;
+    justify-content: center;
+    padding: 4px 0;
+    position: relative;
+    z-index: 1;
+  }
+  .connector-arrow {
+    font-size: 1.2rem;
+    color: #CBD5E1;
+  }
+
+  /* EXIT STAGE */
+  .exit-card {
+    background: #F0FDF4;
+    border: 2px solid #86EFAC;
+    border-radius: 16px;
+    padding: 22px 20px;
+    margin-top: 24px;
+  }
+  .exit-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .exit-node-sm {
+    width: 44px;
+    height: 44px;
+    background: #16A34A;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .exit-title { font-size: 1rem; font-weight: 800; color: #14532D; }
+  .exit-sub { font-size: 0.8rem; color: #16A34A; margin-top: 2px; }
+  .exit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .exit-step {
+    background: #fff;
+    border-radius: 10px;
+    padding: 12px 14px;
+    border: 1px solid #BBF7D0;
+  }
+  .exit-step-num {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #16A34A;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+  .exit-step-text {
+    font-size: 0.82rem;
+    color: #14532D;
+    line-height: 1.5;
+    font-weight: 600;
+  }
+  .exit-step-body {
+    font-size: 0.78rem;
+    color: #166534;
+    line-height: 1.45;
+    margin-top: 4px;
+  }
+
+  /* COLUMN HEADERS */
+  .col-headers {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 0;
+  }
+  .col-header {
+    flex: 1;
+    text-align: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 6px 8px;
+    border-radius: 8px;
+  }
+  .col-header.attacker { color: #DC2626; background: #FEF2F2; }
+  .col-header.victim { color: #2563EB; background: #EFF6FF; }
+  .col-header-center { width: 44px; flex-shrink: 0; }
+
+  @media (max-width: 480px) {
+    .detail-grid, .exit-grid { grid-template-columns: 1fr; }
+    .timeline::before { left: 22px; }
+    .stage-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .stage-left, .stage-right { text-align: left; padding: 0; }
+    .col-headers { display: none; }
+    .stage-node { margin-bottom: 6px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="map-label">Interactive Visualisation</div>
+  <h1 class="map-title">Sextortion Anatomy Map</h1>
+  <p class="map-intro">
+    Sextortion attacks follow a predictable 7-stage script. Each stage is designed to move a victim further in before they realise what is happening.
+    Click any stage to see what the attacker does, what the victim experiences, and the psychological lever being pulled.
+  </p>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot attacker"></div>Attacker actions</div>
+    <div class="legend-item"><div class="legend-dot victim"></div>Victim's experience</div>
+    <div class="legend-item"><div class="legend-dot lever"></div>Psychological lever</div>
+    <div class="legend-item"><div class="legend-dot exit"></div>Breaking the cycle</div>
+  </div>
+
+  <p class="expand-hint">Tap any stage to expand the detail</p>
+
+  <div class="col-headers">
+    <div class="col-header attacker">Attacker does this</div>
+    <div class="col-header-center"></div>
+    <div class="col-header victim">Victim feels this</div>
+  </div>
+
+  <div class="timeline">
+
+    <!-- STAGE 1 -->
+    <div class="stage">
+      <div class="stage-header" onclick="toggle('s1')">
+        <div class="stage-left">
+          <span class="attacker-pill">Creates a fake persona on social media or a dating app</span>
+        </div>
+        <div class="stage-node s1" id="node-s1">1</div>
+        <div class="stage-right">
+          <span class="victim-pill">Receives a connection request from an unknown but attractive profile</span>
+        </div>
+      </div>
+      <div class="stage-detail" id="detail-s1">
+        <div class="detail-grid">
+          <div class="detail-cell attacker">
+            <div class="detail-cell-label">Attacker</div>
+            <div class="detail-cell-body">Sets up a convincing fake profile — usually an attractive photo (often AI-generated or stolen from someone else), a plausible job description, and mutual interests. The profile may be weeks or months old to appear established.</div>
+          </div>
+          <div class="detail-cell victim">
+            <div class="detail-cell-label">Victim</div>
+            <div class="detail-cell-body">Has no reason to suspect anything yet. The request seems like a normal connection. There is mild curiosity or flattery from the attention of an attractive stranger.</div>
+          </div>
+        </div>
+        <div class="lever-box">
+          <div class="lever-label">Psychological lever: Novelty &amp; Flattery</div>
+          <div class="lever-body">New social contact from someone attractive triggers a small dopamine response. The brain is primed to view this person positively before any trust has been established.</div>
+        </div>
+        <div class="redflag-box">
+          <div class="redflag-label">Red flags at this stage</div>
+          <ul class="redflag-list">
+            <li>Profile photo looks too perfect or symmetric (possible AI generation)</li>
+            <li>Very few posts, all recent — account appears new despite an old-looking setup date</li>
+            <li>No mutual connections with anyone you actually know</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><span class="connector-arrow">↓</span></div>
+
+    <!-- STAGE 2 -->
+    <div class="stage">
+      <div class="stage-header" onclick="toggle('s2')">
+        <div class="stage-left">
+          <span class="attacker-pill">Begins intensive messaging — flattery, shared interests, emotional attention</span>
+        </div>
+        <div class="stage-node s2" id="node-s2">2</div>
+        <div class="stage-right">
+          <span class="victim-pill">Begins to feel genuinely seen and valued — the connection feels real</span>
+        </div>
+      </div>
+      <div class="stage-detail" id="detail-s2">
+        <div class="detail-grid">
+          <div class="detail-cell attacker">
+            <div class="detail-cell-label">Attacker</div>
+            <div class="detail-cell-body">Mirrors the victim's language and interests. Responds quickly. Asks personal but non-threatening questions. Expresses early romantic or emotional interest. This is called "love bombing" — an overwhelming volume of positive attention designed to accelerate trust formation.</div>
+          </div>
+          <div class="detail-cell victim">
+            <div class="detail-cell-label">Victim</div>
+            <div class="detail-cell-body">Begins to invest emotionally. The conversation feels like it is "going somewhere." The attacker has become part of the daily routine — they respond faster and more warmly than most real relationships. This person feels important.</div>
+          </div>
+        </div>
+        <div class="lever-box">
+          <div class="lever-label">Psychological lever: Love Bombing / Manufactured Intimacy</div>
+          <div class="lever-body">Sustained positive attention triggers oxytocin — the brain's bonding chemical. The attacker is manufacturing the neurological feeling of a genuine relationship. This takes days, not weeks.</div>
+        </div>
+        <div class="redflag-box">
+          <div class="redflag-label">Red flags at this stage</div>
+          <ul class="redflag-list">
+            <li>Intensity of emotional expression feels disproportionate to time spent together</li>
+            <li>They always seem available — responds at any hour, never busy</li>
+            <li>Early claims of deep connection: "I've never felt like this before"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><span class="connector-arrow">↓</span></div>
+
+    <!-- STAGE 3 -->
+    <div class="stage">
+      <div class="stage-header" onclick="toggle('s3')">
+        <div class="stage-left">
+          <span class="attacker-pill">Suggests moving to a more "private" platform — WhatsApp, Telegram, Snapchat</span>
+        </div>
+        <div class="stage-node s3" id="node-s3">3</div>
+        <div class="stage-right">
+          <span class="victim-pill">Agrees — it feels like natural progression of a growing relationship</span>
+        </div>
+      </div>
+      <div class="stage-detail" id="detail-s3">
+        <div class="detail-grid">
+          <div class="detail-cell attacker">
+            <div class="detail-cell-label">Attacker</div>
+            <div class="detail-cell-body">Moves the conversation to a platform with less oversight and more media-sharing capability. This is also a test: if the victim complies, they are deeply invested. Moving platforms reduces the chance of the original platform's reporting tools being used later.</div>
+          </div>
+          <div class="detail-cell victim">
+            <div class="detail-cell-label">Victim</div>
+            <div class="detail-cell-body">Experiences this as a step toward more intimacy and privacy. The trust already built makes this feel natural. There is no alarm signal — this is exactly how real relationships develop online.</div>
+          </div>
+        </div>
+        <div class="lever-box">
+          <div class="lever-label">Psychological lever: Incremental Compliance</div>
+          <div class="lever-body">Each small step the victim takes — accepting a request, continuing conversation, switching platforms — increases their psychological investment. Saying no becomes harder with each "yes" already given. The relationship feels worth protecting.</div>
+        </div>
+        <div class="redflag-box">
+          <div class="redflag-label">Red flags at this stage</div>
+          <ul class="redflag-list">
+            <li>Push to move platforms happens quickly — within days of first contact</li>
+            <li>Framing the platform move as for "privacy" or "so we can talk properly"</li>
+            <li>They resist video calls on the new platform, always citing technical problems</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><span class="connector-arrow">↓</span></div>
+
+    <!-- STAGE 4 -->
+    <div class="stage">
+      <div class="stage-header" onclick="toggle('s4')">
+        <div class="stage-left">
+          <span class="attacker-pill">Initiates sexual conversation and requests intimate images or video</span>
+        </div>
+        <div class="stage-node s4" id="node-s4">4</div>
+        <div class="stage-right">
+          <span class="victim-pill">Feels safe enough to comply — and may have already received fake intimate content first</span>
+        </div>
+      </div>
+      <div class="stage-detail" id="detail-s4">
+        <div class="detail-grid">
+          <div class="detail-cell attacker">
+            <div class="detail-cell-label">Attacker</div>
+            <div class="detail-cell-body">Often "shares" intimate content first (always someone else's image, or AI-generated) to normalise the exchange and create a false sense of reciprocity. Once the victim's content is received, the trap is set. The attacker may immediately screenshot or record the live video before the victim can disconnect.</div>
+          </div>
+          <div class="detail-cell victim">
+            <div class="detail-cell-label">Victim</div>
+            <div class="detail-cell-body">Believes they are in a private, trusted exchange with someone they care about. The reciprocity of the attacker sharing first made it feel mutual and safe. The idea that this content could be weaponised has not entered their thinking.</div>
+          </div>
+        </div>
+        <div class="lever-box">
+          <div class="lever-label">Psychological lever: Reciprocity &amp; False Safety</div>
+          <div class="lever-body">Receiving intimate content from someone creates a strong norm of reciprocity. The victim believes the exchange is private and symmetrical. In fact, the attacker's content is not their own, and the victim's content is immediately being preserved.</div>
+        </div>
+        <div class="redflag-box">
+          <div class="redflag-label">Red flags at this stage</div>
+          <ul class="redflag-list">
+            <li>Pressure to share even if you feel hesitant — framed as proof of trust</li>
+            <li>Live video requests where the camera on their side is blurry or they are in shadow</li>
+            <li>Requests escalate gradually — each step is small compared to the last</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><span class="connector-arrow">↓</span></div>
+
+    <!-- STAGE 5 -->
+    <div class="stage">
+      <div class="stage-header" onclick="toggle('s5')">
+        <div class="stage-left">
+          <span class="attacker-pill">Reveals the trap — shows the captured content and names specific contacts who will receive it</span>
+        </div>
+        <div class="stage-node s5" id="node-s5">5</div>
+        <div class="stage-right">
+          <span class="victim-pill">Experiences shock, shame, and panic — and becomes completely isolated</span>
+        </div>
+      </div>
+      <div class="stage-detail" id="detail-s5">
+        <div class="detail-grid">
+          <div class="detail-cell attacker">
+            <div class="detail-cell-label">Attacker</div>
+            <div class="detail-cell-body">The persona switch is immediate and total. The attacker shows proof they have the content, may display a list of the victim's real contacts or friends pulled from social media, and delivers a clear demand: pay within a stated window or the content gets distributed. The deadline is artificial but creates immediate paralysis.</div>
+          </div>
+          <div class="detail-cell victim">
+            <div class="detail-cell-label">Victim</div>
+            <div class="detail-cell-body">The emotional whiplash — from intimacy to extortion — is designed to be disorienting. Shame activates immediately. The instinct is to solve the problem alone and quickly, which is exactly what the attacker is counting on. Telling anyone feels unthinkable.</div>
+          </div>
+        </div>
+        <div class="lever-box">
+          <div class="lever-label">Psychological lever: Shame as Isolation</div>
+          <div class="lever-body">Shame is not collateral damage — it is the primary tool. A victim who feels ashamed will not report to police, will not tell family, and will try to solve the problem alone. Isolation removes every resource the victim has to resist the attack. The attacker depends on silence to operate.</div>
+        </div>
+        <div class="redflag-box">
+          <div class="redflag-label">What victims are told at this stage</div>
+          <ul class="redflag-list">
+            <li>"Do not tell anyone or I will send it immediately"</li>
+            <li>"I have your contact list — I know everyone who matters to you"</li>
+            <li>"You have 2 hours to pay. After that I start sending."</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><span class="connector-arrow">↓</span></div>
+
+    <!-- STAGE 6 -->
+    <div class="stage">
+      <div class="stage-header" onclick="toggle('s6')">
+        <div class="stage-left">
+          <span class="attacker-pill">Accepts payment — then immediately demands more</span>
+        </div>
+        <div class="stage-node s6" id="node-s6">6</div>
+        <div class="stage-right">
+          <span class="victim-pill">Pays hoping it will end — and discovers it does not</span>
+        </div>
+      </div>
+      <div class="stage-detail" id="detail-s6">
+        <div class="detail-grid">
+          <div class="detail-cell attacker">
+            <div class="detail-cell-label">Attacker</div>
+            <div class="detail-cell-body">Accepts the payment, issues a brief "thank you," then immediately returns with a new demand — often double the previous amount. The threat is escalated: "I still have the content. Pay again or it goes out now." The payment proved the victim will pay, making them a high-value target.</div>
+          </div>
+          <div class="detail-cell victim">
+            <div class="detail-cell-label">Victim</div>
+            <div class="detail-cell-body">Feels the ground drop away. The payment that was supposed to end it has made things worse. The sense of helplessness intensifies. At this point, many victims have depleted savings, borrowed money, or are considering increasingly desperate options.</div>
+          </div>
+        </div>
+        <div class="lever-box">
+          <div class="lever-label">Psychological lever: Sunk Cost &amp; Escalation Trap</div>
+          <div class="lever-body">Having already paid makes the victim feel they must continue paying — otherwise the previous loss was pointless. This is the sunk cost fallacy weaponised. Each payment is treated as partial evidence that paying more will eventually resolve the situation. It will not.</div>
+        </div>
+        <div class="redflag-box">
+          <div class="redflag-label">Critical fact</div>
+          <ul class="redflag-list">
+            <li>Paying never stops the cycle — it confirms willingness to pay and escalates demands</li>
+            <li>Most victims who pay once are approached for a second and third demand</li>
+            <li>Many attackers share victim lists with other operators — payment marks you as a verified target</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><span class="connector-arrow">↓</span></div>
+
+    <!-- STAGE 7 -->
+    <div class="stage">
+      <div class="stage-header" onclick="toggle('s7')">
+        <div class="stage-left">
+          <span class="attacker-pill">Continues demands indefinitely — or stops if the victim cuts contact entirely</span>
+        </div>
+        <div class="stage-node s7" id="node-s7">7</div>
+        <div class="stage-right">
+          <span class="victim-pill">Trapped between paying endlessly or facing the feared exposure</span>
+        </div>
+      </div>
+      <div class="stage-detail" id="detail-s7">
+        <div class="detail-grid">
+          <div class="detail-cell attacker">
+            <div class="detail-cell-label">Attacker</div>
+            <div class="detail-cell-body">If the victim continues to engage, demands continue indefinitely. If the victim goes silent and blocks all contact, attackers often do NOT follow through on distribution — it requires effort and provides no further financial gain. The threat of exposure is worth more as a threat than as an action.</div>
+          </div>
+          <div class="detail-cell victim">
+            <div class="detail-cell-label">Victim</div>
+            <div class="detail-cell-body">Continued engagement — even to argue or plead — signals that pressure is working and keeps the cycle alive. The most counterintuitive but effective action is to stop all contact and report immediately. The attacker depends entirely on continued engagement to extract further payment.</div>
+          </div>
+        </div>
+        <div class="lever-box">
+          <div class="lever-label">Psychological lever: The Bluff</div>
+          <div class="lever-body">Distribution is the threat, not the goal. Distributing content produces nothing. Continued threats extract payment. Most attackers are running multiple simultaneous extortion campaigns — they move to easier targets when one victim stops engaging. Silence and reporting is more effective than any payment.</div>
+        </div>
+        <div class="redflag-box">
+          <div class="redflag-label">What research shows</div>
+          <ul class="redflag-list">
+            <li>The majority of sextortion attackers do not follow through on distribution when contact is cut</li>
+            <li>Those who do follow through are not stopped by payment — they distribute regardless</li>
+            <li>Reporting to cybercrime.gov.in or calling 1930 begins a documented record that can assist law enforcement</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BREAKING THE CYCLE -->
+  <div class="exit-card">
+    <div class="exit-header">
+      <div class="exit-node-sm">✓</div>
+      <div>
+        <div class="exit-title">Breaking the Cycle</div>
+        <div class="exit-sub">What actually works — and why</div>
+      </div>
+    </div>
+    <div class="exit-grid">
+      <div class="exit-step">
+        <div class="exit-step-num">Step 1</div>
+        <div class="exit-step-text">Stop all contact immediately</div>
+        <div class="exit-step-body">Block on every platform. Do not respond, argue, or plead. Any engagement signals that pressure is working.</div>
+      </div>
+      <div class="exit-step">
+        <div class="exit-step-num">Step 2</div>
+        <div class="exit-step-text">Do not pay anything</div>
+        <div class="exit-step-body">Payment confirms willingness to pay and escalates demands. It has never ended a sextortion campaign.</div>
+      </div>
+      <div class="exit-step">
+        <div class="exit-step-num">Step 3</div>
+        <div class="exit-step-text">Tell someone you trust</div>
+        <div class="exit-step-body">Shame is the attack's main weapon. A trusted person provides perspective and breaks the isolation the attacker depends on.</div>
+      </div>
+      <div class="exit-step">
+        <div class="exit-step-num">Step 4</div>
+        <div class="exit-step-text">Report to authorities</div>
+        <div class="exit-step-body">File at cybercrime.gov.in or call 1930. Preserve all evidence — screenshots, messages, profile links — before blocking.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggle(id) {
+    const detail = document.getElementById('detail-' + id);
+    const isOpen = detail.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.stage-detail').forEach(d => d.classList.remove('open'));
+    // Open this one if it wasn't open
+    if (!isOpen) {
+      detail.classList.add('open');
+    }
+    setTimeout(sendHeight, 50);
+  }
+
+  function sendHeight() {
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+  }
+
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>

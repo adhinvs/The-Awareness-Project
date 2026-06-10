@@ -2,6 +2,8 @@
 sidebar_position: 3
 title: "Guilt, Shame & Embarrassment"
 sidebar_label: "Guilt, Shame & Embarrassment"
+description: "How scammers weaponise guilt, shame, and embarrassment to force compliance, silence victims, and prevent reporting."
+tags: [social-engineering, sextortion, shame, guilt, digital-arrest, emotional-manipulation, cybersecurity, reporting, cultural-exploitation]
 ---
 
 import Quiz from '@site/src/components/Quiz';
@@ -20,12 +22,6 @@ Priya had spent months chatting with someone she met on social media. The conver
 
 Priya wasn't worried about losing money; she was terrified of what her friends, relatives, and colleagues might think. 
 
-<figure style={{ margin: '32px 0', textAlign: 'center' }}>
-  <img 
-    src="/img/module7_threat_of_exposure.png.png"
-    alt="A visual representation of the threat of exposure." 
-  />
-</figure>
 
 The embarrassment felt overwhelming. Questions raced through her mind: *"What if everyone judges me?"*, *"What if my reputation is ruined?"*, *"What if this follows me forever?"*
 
@@ -162,21 +158,26 @@ These emotional tactics repeatedly appear in scams involving guilt, shame, and e
 
 ## Now Try It From the Other Side
 
-You are looking at the situation from the manipulator's perspective. The goal is not to steal information immediately. The goal is to create enough emotional pressure that the victim acts without thinking.
+Sextortion attacks follow a predictable 7-stage script. The map below shows what the attacker does at each stage, what the victim experiences, and the specific psychological lever being pulled. Click any stage to expand the detail.
 
 <iframe
-  id="sextortion-simulator-iframe"
-  src="/simulations/guilt_simulator.html"
+  id="guilt-simulator-iframe"
+  src="/simulations/social-engineering-manipulation-tactics/guilt-shame-embarrassment/sextortion-anatomy-map.html"
   width="100%"
-  style={{
-    height: '900px',
-    border: 'none',
-    borderRadius: '16px',
-    display: 'block',
-    marginTop: '16px'
-  }}
-  title="Sextortion Decision Simulator"
+  style={{ height: '700px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Sextortion Anatomy Map"
   loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('guilt-simulator-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._guiltIframeHandler);
+    window._guiltIframeHandler = handler;
+    window.addEventListener('message', handler);
+  }}
 />
 
 ## What That Just Showed You
@@ -200,7 +201,7 @@ You can build emotional resilience against these attacks. Pick one action to rem
 If a situation online is causing you intense anxiety, guilt, or embarrassment, force yourself to step away from the device for 24 hours (or at least 1 hour) before making any decisions or payments.
 
 ### 2. Find a "No-Judgment" Contact:
-Identify one person in your life—a friend, family member, or colleague—who you can contact if you're ever in trouble online, knowing they will focus on helping you rather than judging you.
+Identify one person in your life, a friend, family member, or colleague, who you can contact if you're ever in trouble online, knowing they will focus on helping you rather than judging you.
 
 ### 3. Remember that reporting is power:
 If you are targeted, remember that paying scammers almost never stops the harassment; it only proves you are willing to pay. Reporting the interaction to authorities is the best way to regain control.

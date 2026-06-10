@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fake Profile Spotter</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #F8FAFC;
+    color: #1E293B;
+    padding: 24px 20px 48px;
+  }
+  .container { max-width: 640px; margin: 0 auto; }
+
+  .sim-label {
+    display: inline-block;
+    background: #EFF6FF;
+    color: #1D4ED8;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 12px;
+    border-radius: 99px;
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0F172A;
+    margin-bottom: 10px;
+    line-height: 1.25;
+  }
+  .intro {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: #64748B;
+    margin-bottom: 28px;
+  }
+
+  /* PROGRESS */
+  .progress-bar-wrap {
+    background: #E2E8F0;
+    border-radius: 99px;
+    height: 6px;
+    margin-bottom: 6px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: #2563EB;
+    border-radius: 99px;
+    transition: width 0.4s;
+  }
+  .progress-text {
+    font-size: 0.78rem;
+    color: #94A3B8;
+    margin-bottom: 24px;
+  }
+
+  /* PROFILE CARD */
+  .profile-card {
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: box-shadow 0.2s;
+  }
+  .profile-card.judged { opacity: 0.5; pointer-events: none; }
+  .profile-card.judged-correct { opacity: 1; pointer-events: none; border: 2px solid; }
+  .profile-card.judged-correct.was-correct { border-color: #16A34A; }
+  .profile-card.judged-correct.was-wrong { border-color: #DC2626; }
+
+  .profile-top {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+    font-family: Georgia, serif;
+  }
+  .profile-info { flex: 1; min-width: 0; }
+  .profile-name { font-size: 1rem; font-weight: 700; color: #0F172A; margin-bottom: 2px; }
+  .profile-title { font-size: 0.82rem; color: #475569; margin-bottom: 2px; line-height: 1.4; }
+  .profile-company {
+    font-size: 0.78rem;
+    color: #94A3B8;
+  }
+
+  .profile-stats {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    font-size: 0.78rem;
+    color: #64748B;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .stat-icon { font-size: 0.85rem; }
+
+  .profile-detail-row {
+    font-size: 0.8rem;
+    color: #64748B;
+    margin-bottom: 8px;
+    line-height: 1.5;
+    padding: 8px 12px;
+    background: #F8FAFC;
+    border-radius: 8px;
+  }
+  .profile-detail-row strong { color: #334155; }
+
+  .skill-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .skill-tag {
+    background: #F1F5F9;
+    color: #475569;
+    font-size: 0.75rem;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-weight: 500;
+  }
+
+  .choice-row {
+    display: flex;
+    gap: 10px;
+  }
+  .btn-real {
+    flex: 1;
+    background: #fff;
+    border: 2px solid #16A34A;
+    color: #16A34A;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .btn-real:hover { background: #F0FDF4; }
+  .btn-fake {
+    flex: 1;
+    background: #fff;
+    border: 2px solid #DC2626;
+    color: #DC2626;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .btn-fake:hover { background: #FEF2F2; }
+
+  /* RESULTS */
+  #results-section { display: none; }
+
+  .score-banner {
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .score-banner.great { background: #F0FDF4; border: 2px solid #86EFAC; }
+  .score-banner.good { background: #EFF6FF; border: 2px solid #93C5FD; }
+  .score-banner.low { background: #FEF9C3; border: 2px solid #FDE047; }
+  .score-num {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .score-banner.great .score-num { color: #16A34A; }
+  .score-banner.good .score-num { color: #2563EB; }
+  .score-banner.low .score-num { color: #B45309; }
+  .score-label { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+  .score-sub { font-size: 0.85rem; color: #64748B; }
+
+  .result-heading {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0F172A;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #E2E8F0;
+  }
+
+  /* RESULT PROFILE CARD */
+  .result-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #E2E8F0;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .result-card.correct-guess { border-left: 4px solid #16A34A; }
+  .result-card.wrong-guess { border-left: 4px solid #DC2626; }
+
+  .result-card-header {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .result-verdict {
+    flex-shrink: 0;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .result-verdict.real { background: #F0FDF4; color: #16A34A; }
+  .result-verdict.fake { background: #FEF2F2; color: #DC2626; }
+  .result-verdict.wrong-label { background: #FEF9C3; color: #B45309; }
+
+  .result-name-row {
+    flex: 1;
+  }
+  .result-name { font-size: 0.95rem; font-weight: 700; color: #0F172A; }
+  .result-title-sm { font-size: 0.78rem; color: #94A3B8; }
+
+  .guess-label {
+    font-size: 0.75rem;
+    color: #94A3B8;
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+  .guess-label.correct { color: #16A34A; }
+  .guess-label.wrong { color: #DC2626; }
+
+  /* SIGNAL ANNOTATIONS */
+  .signal-list { list-style: none; padding: 0; }
+  .signal-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    align-items: flex-start;
+  }
+  .signal-item.bad { background: #FEF2F2; color: #7F1D1D; }
+  .signal-item.good { background: #F0FDF4; color: #14532D; }
+  .signal-item.neutral { background: #F8FAFC; color: #334155; }
+  .signal-icon { flex-shrink: 0; font-size: 0.95rem; line-height: 1.5; }
+  .signal-text strong { display: block; font-weight: 700; margin-bottom: 2px; }
+
+  .key-lesson {
+    background: #F5F3FF;
+    border: 1px solid #DDD6FE;
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-top: 16px;
+  }
+  .key-lesson-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #7C3AED;
+    margin-bottom: 6px;
+  }
+  .key-lesson-body {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: #4C1D95;
+  }
+
+  .btn-restart {
+    display: inline-block;
+    background: #F1F5F9;
+    color: #475569;
+    border: 1px solid #CBD5E1;
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  .btn-restart:hover { background: #E2E8F0; }
+
+  .divider { height: 1px; background: #E2E8F0; margin: 24px 0; }
+
+  /* Pending indicator on judged cards */
+  .judged-stamp {
+    display: none;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+  .judged-stamp.marked-fake { display: inline-block; background: #FEF2F2; color: #DC2626; }
+  .judged-stamp.marked-real { display: inline-block; background: #F0FDF4; color: #16A34A; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div id="game-section">
+    <div class="sim-label">Simulation</div>
+    <h1>Fake Profile Spotter</h1>
+    <p class="intro">
+      Four LinkedIn-style profiles are shown below. Two are real people. Two are fabricated by attackers.
+      Judge each one as "Looks Real" or "Suspicious" — then see the annotated reveal.
+    </p>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progress-fill" style="width: 0%"></div>
+    </div>
+    <p class="progress-text" id="progress-text">0 of 4 profiles judged</p>
+
+    <!-- PROFILE 1: FAKE — Meera Iyer -->
+    <div class="profile-card" id="card-0">
+      <div class="judged-stamp" id="stamp-0"></div>
+      <div class="profile-top">
+        <div class="avatar" style="background: #7C3AED;">MI</div>
+        <div class="profile-info">
+          <div class="profile-name">Meera Iyer</div>
+          <div class="profile-title">Senior Investment Partner · BlueSky Capital Partners</div>
+          <div class="profile-company">Mumbai, Maharashtra</div>
+        </div>
+      </div>
+      <div class="profile-stats">
+        <div class="stat"><span class="stat-icon">👥</span> 500+ connections</div>
+        <div class="stat"><span class="stat-icon">🕐</span> Member since 2 months ago</div>
+        <div class="stat"><span class="stat-icon">⭐</span> 0 recommendations</div>
+      </div>
+      <div class="profile-detail-row"><strong>About:</strong> Passionate investment professional with a track record of delivering exceptional returns across private equity and venture capital portfolios. Let's connect and grow together!</div>
+      <div class="profile-detail-row"><strong>Latest post (3 days ago):</strong> "Success is not final, failure is not fatal. Keep pushing forward! 💼🚀 #Finance #Investment #Growth"</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Finance</span>
+        <span class="skill-tag">Investment Analysis</span>
+        <span class="skill-tag">Bloomberg Terminal</span>
+        <span class="skill-tag">Private Equity</span>
+        <span class="skill-tag">Venture Capital</span>
+      </div>
+      <div class="choice-row">
+        <button class="btn-real" onclick="judge(0, 'real')">Looks Real</button>
+        <button class="btn-fake" onclick="judge(0, 'fake')">Suspicious</button>
+      </div>
+    </div>
+
+    <!-- PROFILE 2: REAL — Rajesh Nair -->
+    <div class="profile-card" id="card-1">
+      <div class="judged-stamp" id="stamp-1"></div>
+      <div class="profile-top">
+        <div class="avatar" style="background: #0369A1;">RN</div>
+        <div class="profile-info">
+          <div class="profile-name">Rajesh Nair</div>
+          <div class="profile-title">Senior Product Manager · Flipkart</div>
+          <div class="profile-company">Bengaluru, Karnataka</div>
+        </div>
+      </div>
+      <div class="profile-stats">
+        <div class="stat"><span class="stat-icon">👥</span> 847 connections</div>
+        <div class="stat"><span class="stat-icon">🕐</span> Member since 2017</div>
+        <div class="stat"><span class="stat-icon">⭐</span> 4 recommendations</div>
+      </div>
+      <div class="profile-detail-row"><strong>About:</strong> Building consumer products at Flipkart. Previously at Dunzo and redBus. Interested in growth loops, retention mechanics, and 0-to-1 product decisions. IIT Bombay CSE '14.</div>
+      <div class="profile-detail-row"><strong>Latest post (2 weeks ago):</strong> "Interesting A/B test result from last quarter — we saw 23% lift in checkout completion when we moved the coupon entry field below the payment button. Counterintuitive. Thread on why this might work:"</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Product Management</span>
+        <span class="skill-tag">Growth</span>
+        <span class="skill-tag">User Research</span>
+        <span class="skill-tag">A/B Testing</span>
+        <span class="skill-tag">SQL</span>
+      </div>
+      <div class="choice-row">
+        <button class="btn-real" onclick="judge(1, 'real')">Looks Real</button>
+        <button class="btn-fake" onclick="judge(1, 'fake')">Suspicious</button>
+      </div>
+    </div>
+
+    <!-- PROFILE 3: FAKE — Alex Thompson -->
+    <div class="profile-card" id="card-2">
+      <div class="judged-stamp" id="stamp-2"></div>
+      <div class="profile-top">
+        <div class="avatar" style="background: #0891B2;">AT</div>
+        <div class="profile-info">
+          <div class="profile-name">Alex Thompson</div>
+          <div class="profile-title">Global Head of Talent Acquisition · Global Talent Solutions Ltd.</div>
+          <div class="profile-company">London, United Kingdom</div>
+        </div>
+      </div>
+      <div class="profile-stats">
+        <div class="stat"><span class="stat-icon">👥</span> 500+ connections</div>
+        <div class="stat"><span class="stat-icon">🕐</span> Member since 3 weeks ago</div>
+        <div class="stat"><span class="stat-icon">⭐</span> 0 recommendations</div>
+      </div>
+      <div class="profile-detail-row"><strong>Education:</strong> Oxford University 2017–2021 AND London Business School 2019–2021 AND Harvard Online 2020–2021</div>
+      <div class="profile-detail-row"><strong>First message after connecting:</strong> "Hi! I came across your profile and I think you'd be a perfect fit for an exclusive senior role at a Fortune 500 company. Salary: $180K. Interested? Reply with your CV and I'll share more details."</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Executive Search</span>
+        <span class="skill-tag">Global Recruitment</span>
+        <span class="skill-tag">Talent Strategy</span>
+        <span class="skill-tag">Leadership Hiring</span>
+      </div>
+      <div class="choice-row">
+        <button class="btn-real" onclick="judge(2, 'real')">Looks Real</button>
+        <button class="btn-fake" onclick="judge(2, 'fake')">Suspicious</button>
+      </div>
+    </div>
+
+    <!-- PROFILE 4: REAL — Priya Menon -->
+    <div class="profile-card" id="card-3">
+      <div class="judged-stamp" id="stamp-3"></div>
+      <div class="profile-top">
+        <div class="avatar" style="background: #059669;">PM</div>
+        <div class="profile-info">
+          <div class="profile-name">Priya Menon</div>
+          <div class="profile-title">Software Engineer II · Tata Consultancy Services</div>
+          <div class="profile-company">Pune, Maharashtra</div>
+        </div>
+      </div>
+      <div class="profile-stats">
+        <div class="stat"><span class="stat-icon">👥</span> 312 connections</div>
+        <div class="stat"><span class="stat-icon">🕐</span> Member since 2020</div>
+        <div class="stat"><span class="stat-icon">⭐</span> 2 recommendations</div>
+      </div>
+      <div class="profile-detail-row"><strong>About:</strong> Java backend developer working on microservices at TCS Pune. Previously intern at Wipro during final year. VJTI Mumbai, BE Computer Engineering 2020. Currently learning Kubernetes and getting better at system design.</div>
+      <div class="profile-detail-row"><strong>Latest post (1 month ago):</strong> "Finally cleared my AWS Solutions Architect Associate! Third attempt 😅. If anyone else is studying for it — the Stephane Maarek course was the most useful resource by far."</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Java</span>
+        <span class="skill-tag">Spring Boot</span>
+        <span class="skill-tag">Microservices</span>
+        <span class="skill-tag">AWS</span>
+        <span class="skill-tag">SQL</span>
+      </div>
+      <div class="choice-row">
+        <button class="btn-real" onclick="judge(3, 'real')">Looks Real</button>
+        <button class="btn-fake" onclick="judge(3, 'fake')">Suspicious</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS SECTION -->
+  <div id="results-section">
+
+    <div id="score-banner-el" class="score-banner">
+      <div class="score-num" id="score-num-el">0/4</div>
+      <div class="score-label" id="score-label-el"></div>
+      <div class="score-sub" id="score-sub-el"></div>
+    </div>
+
+    <div class="result-heading">Profile-by-profile breakdown</div>
+
+    <!-- Result 1: Meera Iyer — FAKE -->
+    <div class="result-card" id="result-0">
+      <div class="result-card-header">
+        <div class="avatar" style="background: #7C3AED; width:44px; height:44px; font-size:1rem; flex-shrink:0;">MI</div>
+        <div class="result-name-row">
+          <div class="result-name">Meera Iyer</div>
+          <div class="result-title-sm">Senior Investment Partner · BlueSky Capital Partners</div>
+        </div>
+        <div class="result-verdict fake">FAKE</div>
+      </div>
+      <div class="guess-label" id="guess-label-0"></div>
+      <ul class="signal-list">
+        <li class="signal-item bad">
+          <span class="signal-icon">⚠</span>
+          <div class="signal-text">
+            <strong>Exactly "500+" connections</strong>
+            LinkedIn shows the exact number up to 500, then switches to "500+". A legitimate profile with 500+ connections built over time will often show that precise number once it clears the threshold. A new fake account cannot organically build real connections — so operators use mass connection farms to hit the 500+ display quickly. The vague "500+" on a 2-month-old account is a major red flag.
+          </div>
+        </li>
+        <li class="signal-item bad">
+          <span class="signal-icon">⚠</span>
+          <div class="signal-text">
+            <strong>Account created 2 months ago with a senior title</strong>
+            "Senior Investment Partner" typically requires 10-15 years of career progression. A profile reaching this title in 2 months of LinkedIn existence has no history to validate it.
+          </div>
+        </li>
+        <li class="signal-item bad">
+          <span class="signal-icon">⚠</span>
+          <div class="signal-text">
+            <strong>Zero recommendations</strong>
+            A genuine senior finance professional with 500+ connections and years of experience would have at least one specific recommendation from a colleague or client.
+          </div>
+        </li>
+        <li class="signal-item bad">
+          <span class="signal-icon">⚠</span>
+          <div class="signal-text">
+            <strong>Generic skills with no specificity</strong>
+            "Finance" and "Investment Analysis" are category-level terms, not skills. Real professionals in this space list specific deal types, asset classes, or tools they've actually used.
+          </div>
+        </li>
+        <li class="signal-item bad">
+          <span class="signal-icon">⚠</span>
+          <div class="signal-text">
+            <strong>"BlueSky Capital Partners" has no verifiable web presence</strong>
+            The firm name is entirely generic. A legitimate PE/VC firm of any size has a website, press coverage, and portfolio company mentions. Search independently before engaging.
+          </div>
+        </li>
+        <li class="signal-item bad">
+          <span class="signal-icon">⚠</span>
+          <div class="signal-text">
+            <strong>Latest post is a motivational quote with no substance</strong>
+            Real finance professionals share deal analysis, market commentary, or industry observations. Posting motivational quotes with emoji is filler content used to appear active without saying anything verifiable.
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Result 2: Rajesh Nair — REAL -->
+    <div class="result-card" id="result-1">
+      <div class="result-card-header">
+        <div class="avatar" style="background: #0369A1; width:44px; height:44px; font-size:1rem; flex-shrink:0;">RN</div>
+        <div class="result-name-row">
+          <div class="result-name">Rajesh Nair</div>
+          <div class="result-title-sm">Senior Product Manager · Flipkart</div>
+        </div>
+        <div class="result-verdict real">REAL</div>
+      </div>
+      <div class="guess-label" id="guess-label-1"></div>
+      <ul class="signal-list">
+        <li class="signal-item good">
+          <span class="signal-icon">✓</span>
+          <div class="signal-text">
+            <strong>Specific connection count (847)</strong>
+            A precise number — not a rounded figure or "500+" — suggests the account was built gradually through real networking over time, not inflated overnight.
+          </div>
+        </li>
+        <li class="signal-item good">
+          <span class="signal-icon">✓</span>
+          <div class="signal-text">
+            <strong>Coherent career trajectory</strong>
+            Intern → junior roles → senior PM is a believable arc. The companies named (Dunzo, redBus, Flipkart) are real, well-known Indian companies that can be independently verified.
+          </div>
+        </li>
+        <li class="signal-item good">
+          <span class="signal-icon">✓</span>
+          <div class="signal-text">
+            <strong>Specific educational detail</strong>
+            "IIT Bombay CSE '14" is a verifiable claim. Fake profiles rarely include institution-specific details that can be cross-checked.
+          </div>
+        </li>
+        <li class="signal-item good">
+          <span class="signal-icon">✓</span>
+          <div class="signal-text">
+            <strong>Posts with domain-specific, verifiable content</strong>
+            Describing a real A/B test result with a specific metric (23% lift) and a nuanced observation requires actual product experience. This type of content is hard to fake convincingly.
+          </div>
+        </li>
+        <li class="signal-item neutral">
+          <span class="signal-icon">→</span>
+          <div class="signal-text">
+            <strong>Note: a real-looking profile is not automatically safe</strong>
+            Sophisticated attacks can build genuine-looking profiles over months. Always verify requests involving money, access, or sensitive data through a separate channel — regardless of how authentic a profile appears.
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Result 3: Alex Thompson — FAKE -->
+    <div class="result-card" id="result-2">
+      <div class="result-card-header">
+        <div class="avatar" style="background: #0891B2; width:44px; height:44px; font-size:1rem; flex-shrink:0;">AT</div>
+        <div class="result-name-row">
+          <div class="result-name">Alex Thompson</div>
+          <div class="result-title-sm">Global Head of Talent Acquisition · Global Talent Solutions Ltd.</div>
+        </div>
+        <div class="result-verdict fake">FAKE</div>
+      </div>
+      <div class="guess-label" id="guess-label-2"></div>
+      <ul class="signal-list">
+        <li class="signal-item bad">
+          <span class="signal-icon">⚠</span>
+          <div class="signal-text">
+            <strong>Overlapping education dates that are impossible</strong>
+            Oxford 2017–2021 AND London Business School 2019–2021 AND Harvard Online 2020–2021 are listed simultaneously. No one attends two full-time degree programmes at separate institutions concurrently. This is a common data-entry error on fake profiles built quickly.
+          </div>
+        </li>
+        <li class="signal-item bad">
+          <span class="signal-icon">⚠</span>
+          <div class="signal-text">
+            <strong>Account only 3 weeks old</strong>
+            A "Global Head of Talent Acquisition" would have a LinkedIn presence dating back years. An account this new for a senior-sounding title is almost always fraudulent.
+          </div>
+        </li>
+        <li class="signal-item bad">
+          <span class="signal-icon">⚠</span>
+          <div class="signal-text">
+            <strong>Immediate job offer after connection</strong>
+            The first message after connecting is a job offer asking for a CV. Legitimate recruiters do not operate this way. This is a data-harvesting or credential-phishing technique — they want your CV for personal data (address, phone, previous employer names) or to send a malicious attachment as a "position description."
+          </div>
+        </li>
+        <li class="signal-item bad">
+          <span class="signal-icon">⚠</span>
+          <div class="signal-text">
+            <strong>"Global Talent Solutions Ltd." is a generic, unverifiable company name</strong>
+            Search independently. The name is designed to sound plausible but cannot be traced to a real registered business.
+          </div>
+        </li>
+        <li class="signal-item bad">
+          <span class="signal-icon">⚠</span>
+          <div class="signal-text">
+            <strong>Unusually high salary for an unsolicited cold approach</strong>
+            "$180K" in an opening message is a FOMO trigger. Real senior roles at this level are filled through referral networks or specialist recruiters, not cold LinkedIn messages to profiles that may not match the requirement.
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Result 4: Priya Menon — REAL -->
+    <div class="result-card" id="result-3">
+      <div class="result-card-header">
+        <div class="avatar" style="background: #059669; width:44px; height:44px; font-size:1rem; flex-shrink:0;">PM</div>
+        <div class="result-name-row">
+          <div class="result-name">Priya Menon</div>
+          <div class="result-title-sm">Software Engineer II · Tata Consultancy Services</div>
+        </div>
+        <div class="result-verdict real">REAL</div>
+      </div>
+      <div class="guess-label" id="guess-label-3"></div>
+      <ul class="signal-list">
+        <li class="signal-item good">
+          <span class="signal-icon">✓</span>
+          <div class="signal-text">
+            <strong>Modest, specific career history</strong>
+            Intern at Wipro → Engineer II at TCS is an entirely normal junior engineer trajectory. Fake profiles tend toward inflated titles. Real ones show realistic progression with occasional setbacks.
+          </div>
+        </li>
+        <li class="signal-item good">
+          <span class="signal-icon">✓</span>
+          <div class="signal-text">
+            <strong>Specific education with verifiable institution</strong>
+            VJTI Mumbai is a real, well-known engineering college. The mention of the specific stream (BE Computer Engineering) and graduation year adds verifiable detail that a fake profile would typically omit.
+          </div>
+        </li>
+        <li class="signal-item good">
+          <span class="signal-icon">✓</span>
+          <div class="signal-text">
+            <strong>Post mentions a real resource and a realistic struggle</strong>
+            "Third attempt 😅" and recommending a specific course by name (Stephane Maarek) reflects genuine experience. Fake profiles do not post about personal setbacks or recommend specific third-party resources.
+          </div>
+        </li>
+        <li class="signal-item good">
+          <span class="signal-icon">✓</span>
+          <div class="signal-text">
+            <strong>Specific, low connection count (312)</strong>
+            A 4-year-old account for a junior engineer with 312 connections is entirely plausible. It is not inflated to the "500+" threshold that fake accounts target.
+          </div>
+        </li>
+        <li class="signal-item neutral">
+          <span class="signal-icon">→</span>
+          <div class="signal-text">
+            <strong>Some real profiles look sparse or unpolished</strong>
+            Do not flag profiles as suspicious simply because they are modest, lower-seniority, or less active. Fake profiles are optimised to impress — real ones often are not.
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="key-lesson">
+      <div class="key-lesson-label">The pattern behind all fake profiles</div>
+      <div class="key-lesson-body">
+        Fake profiles optimise for looking impressive and credible at a glance — vague senior titles, suspiciously rounded connection counts, and generic skills that cannot be questioned. Real profiles contain friction: specific institutions, modest career steps, posts that reference real tools and past failures, and connection counts that reflect actual networking rather than a target threshold. When a profile triggers a quick yes, slow down and verify the company and title independently before acting on any request.
+      </div>
+    </div>
+
+    <button class="btn-restart" onclick="restart()">Try again</button>
+  </div>
+
+</div>
+
+<script>
+  const TRUTH = ['fake', 'real', 'fake', 'real'];
+  const guesses = [null, null, null, null];
+  let judged = 0;
+
+  function sendHeight() {
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+  }
+
+  function judge(idx, choice) {
+    if (guesses[idx] !== null) return;
+    guesses[idx] = choice;
+    judged++;
+
+    // Visual feedback on card
+    const card = document.getElementById('card-' + idx);
+    const stamp = document.getElementById('stamp-' + idx);
+    card.classList.add('judged');
+    stamp.textContent = choice === 'fake' ? '⚑ Marked as suspicious' : '✓ Marked as real';
+    stamp.className = 'judged-stamp ' + (choice === 'fake' ? 'marked-fake' : 'marked-real');
+
+    // Update progress
+    const pct = (judged / 4) * 100;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = judged + ' of 4 profiles judged';
+
+    setTimeout(sendHeight, 50);
+
+    if (judged === 4) {
+      setTimeout(showResults, 400);
+    }
+  }
+
+  function showResults() {
+    document.getElementById('game-section').style.display = 'none';
+    document.getElementById('results-section').style.display = 'block';
+
+    let correct = 0;
+    for (let i = 0; i < 4; i++) {
+      if (guesses[i] === TRUTH[i]) correct++;
+    }
+
+    // Score banner
+    const bannerEl = document.getElementById('score-banner-el');
+    document.getElementById('score-num-el').textContent = correct + '/4';
+    if (correct === 4) {
+      bannerEl.className = 'score-banner great';
+      document.getElementById('score-label-el').textContent = 'Perfect — you spotted every signal.';
+      document.getElementById('score-sub-el').textContent = 'Read the annotated breakdown below to see exactly which details gave each profile away.';
+    } else if (correct >= 2) {
+      bannerEl.className = 'score-banner good';
+      document.getElementById('score-label-el').textContent = 'Good instincts — with a few blind spots.';
+      document.getElementById('score-sub-el').textContent = 'The breakdown below shows which signals you caught and which ones attackers are counting on you to miss.';
+    } else {
+      bannerEl.className = 'score-banner low';
+      document.getElementById('score-label-el').textContent = 'The profiles fooled you — as they are designed to.';
+      document.getElementById('score-sub-el').textContent = 'Fake profiles are built to pass a quick visual scan. Read the annotated breakdown to see the patterns that reveal them.';
+    }
+
+    // Per-profile guess labels
+    const guessTexts = [
+      ['You marked this as suspicious — correct.', 'You marked this as real — this profile is fabricated.'],
+      ['You marked this as real — correct.', 'You marked this as suspicious — this is a genuine profile.'],
+      ['You marked this as suspicious — correct.', 'You marked this as real — this profile is fabricated.'],
+      ['You marked this as real — correct.', 'You marked this as suspicious — this is a genuine profile.'],
+    ];
+
+    for (let i = 0; i < 4; i++) {
+      const isCorrect = guesses[i] === TRUTH[i];
+      const label = document.getElementById('guess-label-' + i);
+      const card = document.getElementById('result-' + i);
+      card.classList.add(isCorrect ? 'correct-guess' : 'wrong-guess');
+      label.textContent = isCorrect ? guessTexts[i][0] : guessTexts[i][1];
+      label.className = 'guess-label ' + (isCorrect ? 'correct' : 'wrong');
+    }
+
+    window.scrollTo(0, 0);
+    setTimeout(sendHeight, 100);
+  }
+
+  function restart() {
+    for (let i = 0; i < 4; i++) {
+      guesses[i] = null;
+      const card = document.getElementById('card-' + i);
+      card.className = 'profile-card';
+      const stamp = document.getElementById('stamp-' + i);
+      stamp.className = 'judged-stamp';
+      stamp.textContent = '';
+    }
+    judged = 0;
+    document.getElementById('progress-fill').style.width = '0%';
+    document.getElementById('progress-text').textContent = '0 of 4 profiles judged';
+    document.getElementById('game-section').style.display = 'block';
+    document.getElementById('results-section').style.display = 'none';
+    window.scrollTo(0, 0);
+    setTimeout(sendHeight, 50);
+  }
+
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>
