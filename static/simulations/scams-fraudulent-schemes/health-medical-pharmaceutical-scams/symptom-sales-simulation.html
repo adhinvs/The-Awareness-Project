@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Symptom or Sales Pitch?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      color: #1f2937;
+      background: #f8fafc;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+    body {
+      margin: 0;
+      padding: 24px;
+    }
+    .container {
+      max-width: 840px;
+      margin: 0 auto;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+      padding: 28px;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: 1.85rem;
+      color: #111827;
+    }
+    p.intro {
+      margin-top: 0;
+      color: #4b5563;
+    }
+    .card {
+      background: #f8fafc;
+      border: 1px solid #d1d5db;
+      border-radius: 16px;
+      padding: 22px;
+      margin: 24px 0;
+    }
+    .card h2 {
+      margin: 0 0 16px;
+      font-size: 1.15rem;
+      color: #111827;
+    }
+    .message {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #111827;
+      margin: 0 0 24px;
+    }
+    .choices {
+      display: grid;
+      gap: 14px;
+    }
+    button {
+      appearance: none;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      background: #ffffff;
+      color: #111827;
+      font-size: 1rem;
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+      text-align: left;
+    }
+    button:hover {
+      transform: translateY(-1px);
+      border-color: #94a3b8;
+    }
+    button.selected {
+      border-color: #2563eb;
+      background: #eff6ff;
+    }
+    button.correct {
+      border-color: #16a34a;
+      background: #ecfdf5;
+    }
+    button.wrong {
+      border-color: #dc2626;
+      background: #fee2e2;
+    }
+    .feedback {
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 14px;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      color: #3730a3;
+    }
+    .feedback.error {
+      background: #fee2e2;
+      border-color: #fecaca;
+      color: #991b1b;
+    }
+    .footer {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+    .footer button {
+      border-color: #2563eb;
+      background: #2563eb;
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .footer button.secondary {
+      background: #ffffff;
+      color: #111827;
+    }
+    .results {
+      margin-top: 32px;
+      padding: 22px;
+      border-radius: 18px;
+      background: #faf5ff;
+      border: 1px solid #ddd6fe;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Symptom or Sales Pitch?</h1>
+    <p class="intro">Read each health message as it might appear in daily life. Choose whether it is legitimate medical information or a sales manipulation.</p>
+
+    <div class="card">
+      <h2 id="question-title">Question 1 of 6</h2>
+      <p class="message" id="message-text"></p>
+      <div class="choices">
+        <button id="choice-a" type="button"></button>
+        <button id="choice-b" type="button"></button>
+      </div>
+      <div id="feedback" class="feedback" hidden></div>
+    </div>
+
+    <div class="footer">
+      <button id="next-btn" type="button" disabled>Next</button>
+      <button id="restart-btn" type="button" class="secondary">Restart</button>
+    </div>
+
+    <div id="results" class="results" hidden></div>
+  </div>
+
+  <script>
+    const items = [
+      {
+        text: "Doctors don't want you to know this! One spoon of this natural remedy can reverse diabetes in 14 days.",
+        correct: "B",
+        tactic: "Miracle Claim",
+        explanation: "The message promises an unrealistic outcome and presents itself as hidden knowledge."
+      },
+      {
+        text: "Adults over 40 should have their blood pressure checked regularly. Consult a qualified healthcare professional if readings remain elevated.",
+        correct: "A",
+        tactic: "None",
+        explanation: "The statement encourages professional medical consultation and makes no extraordinary promises."
+      },
+      {
+        text: "Your policy verification expires tonight. Click here immediately or your health insurance may be suspended.",
+        correct: "B",
+        tactic: "False Urgency",
+        explanation: "The goal is to make you act before you have time to think or verify."
+      },
+      {
+        text: "Vaccinations help reduce the risk of several infectious diseases. Speak with your physician about recommended schedules.",
+        correct: "A",
+        tactic: "None",
+        explanation: "The message provides general guidance and directs users toward professional advice."
+      },
+      {
+        text: "This revolutionary device is approved by top specialists worldwide and can diagnose over 200 diseases from your fingertip in seconds.",
+        correct: "B",
+        tactic: "Fake Authority",
+        explanation: "The claim relies on vague references to experts without evidence."
+      },
+      {
+        text: "Millions are already using this supplement. Supplies are running out. Order today before your health gets worse.",
+        correct: "B",
+        tactic: "Fear Appeal and Scarcity Pressure",
+        explanation: "The message combines fear and urgency to push immediate purchases."
+      }
+    ];
+
+    const messageText = document.getElementById('message-text');
+    const title = document.getElementById('question-title');
+    const choiceA = document.getElementById('choice-a');
+    const choiceB = document.getElementById('choice-b');
+    const feedback = document.getElementById('feedback');
+    const nextBtn = document.getElementById('next-btn');
+    const restartBtn = document.getElementById('restart-btn');
+    const results = document.getElementById('results');
+
+    const optionA = 'A. Legitimate Medical Information';
+    const optionB = 'B. Sales Manipulation';
+
+    let index = 0;
+    let score = 0;
+    let answered = false;
+
+    const sendHeight = () => {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ iframeHeight: document.body.scrollHeight }, '*');
+      }
+    };
+
+    const renderQuestion = () => {
+      const item = items[index];
+      title.textContent = `Question ${index + 1} of ${items.length}`;
+      messageText.textContent = item.text;
+      choiceA.textContent = optionA;
+      choiceB.textContent = optionB;
+      [choiceA, choiceB].forEach(btn => {
+        btn.disabled = false;
+        btn.className = '';
+      });
+      feedback.hidden = true;
+      nextBtn.disabled = true;
+      // Update button label based on position
+      nextBtn.textContent = index === items.length - 1 ? 'Results' : 'Next';
+      answered = false;
+      results.hidden = true;
+      sendHeight();
+    };
+
+    const showFeedback = (selected) => {
+      const item = items[index];
+      const isCorrect = selected === item.correct;
+      if (isCorrect) {
+        score += 1;
+      }
+      feedback.hidden = false;
+      feedback.className = isCorrect ? 'feedback' : 'feedback error';
+      feedback.innerHTML = `
+        <strong>${isCorrect ? 'Correct' : 'Not quite'}</strong><br>
+        ${item.explanation}<br><br>
+        <strong>Psychological tactic:</strong> ${item.tactic}
+      `;
+      nextBtn.disabled = false;
+      sendHeight();
+    };
+
+    const handleSelection = (choice) => {
+      if (answered) return;
+      answered = true;
+      const button = choice === 'A' ? choiceA : choiceB;
+      const item = items[index];
+      button.classList.add(choice === item.correct ? 'correct' : 'wrong');
+      const other = choice === 'A' ? choiceB : choiceA;
+      if (choice !== item.correct) other.classList.add('selected');
+      showFeedback(choice);
+      [choiceA, choiceB].forEach(btn => btn.disabled = true);
+    };
+
+    const showResults = () => {
+      results.hidden = false;
+      results.innerHTML = `
+        <h3 style="margin-top:0;">Simulation complete</h3>
+        <p>You identified <strong>${score} of ${items.length}</strong> messages correctly.</p>
+        <p>Real health information is often calm, clear, and focused on professional care. Manipulative messages use pressure, miracle claims, or vague authority.</p>
+      `;
+      sendHeight();
+    };
+
+    choiceA.addEventListener('click', () => handleSelection('A'));
+    choiceB.addEventListener('click', () => handleSelection('B'));
+
+    nextBtn.addEventListener('click', () => {
+      if (index + 1 >= items.length) {
+        showResults();
+        nextBtn.disabled = true;
+        return;
+      }
+      index += 1;
+      renderQuestion();
+    });
+
+    restartBtn.addEventListener('click', () => {
+      index = 0;
+      score = 0;
+      renderQuestion();
+    });
+
+    renderQuestion();
+    window.addEventListener('resize', sendHeight);
+  </script>
+</body>
+</html>
