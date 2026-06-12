@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surveillance Exposure Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #FFFFFF; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --green: #16A34A; --green-bg: #F0FDF4;
+      --red: #DC2626; --red-bg: #FEF2F2;
+      --amber: #D97706; --amber-bg: #FFFBEB;
+      --font: 'Poppins', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 20px 48px; max-width: 600px; margin: 0 auto; }
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; background: #1E293B; color: #fff; }
+    h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .question-card { border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin: 16px 0; background: var(--bg-2); }
+    .q-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-3); margin-bottom: 8px; }
+    .q-text { font-size: 0.95rem; font-weight: 600; color: var(--text-1); margin-bottom: 14px; }
+    .progress-bar { height: 6px; background: var(--border); border-radius: 3px; margin-bottom: 4px; }
+    .progress-fill { height: 100%; background: var(--blue); border-radius: 3px; transition: width 0.4s; }
+    .progress-label { font-size: 0.75rem; color: var(--text-3); margin-bottom: 16px; }
+
+    .opt-btn { display: block; width: 100%; padding: 12px 14px; background: #fff; border: 1.5px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 0.85rem; cursor: pointer; margin-bottom: 8px; text-align: left; transition: border-color 0.15s; }
+    .opt-btn:hover { border-color: var(--blue); background: var(--blue-faint); }
+
+    .rating-row { display: flex; gap: 8px; margin-bottom: 8px; }
+    .rating-chip { flex: 1; padding: 8px; border-radius: 8px; text-align: center; font-size: 0.75rem; font-weight: 600; cursor: pointer; border: 2px solid transparent; }
+    .rating-chip.green { background: var(--green-bg); color: var(--green); }
+    .rating-chip.amber { background: var(--amber-bg); color: var(--amber); }
+    .rating-chip.red { background: var(--red-bg); color: var(--red); }
+    .rating-chip.selected { border-color: currentColor; }
+
+    .result-card { border-radius: 12px; padding: 20px; margin-bottom: 12px; }
+    .result-card.green { background: var(--green-bg); border-left: 4px solid var(--green); }
+    .result-card.amber { background: var(--amber-bg); border-left: 4px solid var(--amber); }
+    .result-card.red { background: var(--red-bg); border-left: 4px solid var(--red); }
+    .result-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .result-label.green { color: var(--green); }
+    .result-label.amber { color: var(--amber); }
+    .result-label.red { color: var(--red); }
+    .result-text { font-size: 0.85rem; color: var(--text-2); }
+
+    .score-circle { width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; margin: 0 auto 16px; }
+    .score-circle.high { background: var(--green-bg); border: 3px solid var(--green); }
+    .score-circle.mid { background: var(--amber-bg); border: 3px solid var(--amber); }
+    .score-circle.low { background: var(--red-bg); border: 3px solid var(--red); }
+    .score-num { font-size: 2rem; font-weight: 700; }
+    .score-num.high { color: var(--green); }
+    .score-num.mid { color: var(--amber); }
+    .score-num.low { color: var(--red); }
+    .score-sub { font-size: 0.65rem; color: var(--text-3); }
+
+    .action-item { display: flex; gap: 10px; padding: 12px; background: var(--bg-2); border-radius: 8px; margin-bottom: 8px; }
+    .action-num { width: 24px; height: 24px; background: var(--blue); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; }
+    .action-text { font-size: 0.83rem; color: var(--text-2); line-height: 1.5; }
+
+    .btn-primary { width: 100%; padding: 13px; background: var(--blue); color: #fff; border: none; border-radius: 8px; font-family: var(--font); font-size: 0.9rem; font-weight: 700; cursor: pointer; margin-top: 12px; }
+    .btn-primary:hover { background: #1D4ED8; }
+  </style>
+</head>
+<body>
+
+  <div class="tag">Section 8 - Self-Audit Tool</div>
+  <h2>Your Surveillance Exposure Dashboard</h2>
+  <p>A 10-point self-audit across the six surveillance domains. Takes 3 minutes.</p>
+
+  <!-- Intro screen -->
+  <div class="screen active" id="intro">
+    <div class="question-card">
+      <div class="q-label">How it works</div>
+      <p style="margin-bottom:0;">For each question, rate yourself Green (protected), Amber (partial), or Red (exposed). Your dashboard and priority actions will be generated at the end.</p>
+    </div>
+    <button class="btn-primary" onclick="showQ(1)">Start Audit</button>
+  </div>
+
+  <!-- Q1 -->
+  <div class="screen" id="q1">
+    <div class="progress-bar"><div class="progress-fill" style="width:10%"></div></div>
+    <div class="progress-label">Question 1 of 10</div>
+    <div class="question-card">
+      <div class="q-label">Tracking Technologies</div>
+      <div class="q-text">Do you use a browser that blocks third-party trackers by default (Firefox, Brave) or have a tracker-blocking extension installed?</div>
+      <div class="rating-row">
+        <div class="rating-chip green" onclick="rate(1,'green')">Yes, always</div>
+        <div class="rating-chip amber" onclick="rate(1,'amber')">Sometimes</div>
+        <div class="rating-chip red" onclick="rate(1,'red')">No / unsure</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="screen" id="q2">
+    <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+    <div class="progress-label">Question 2 of 10</div>
+    <div class="question-card">
+      <div class="q-label">Tracking Technologies</div>
+      <div class="q-text">Have you reviewed location permissions for apps on your phone in the last 6 months?</div>
+      <div class="rating-row">
+        <div class="rating-chip green" onclick="rate(2,'green')">Yes, reviewed</div>
+        <div class="rating-chip amber" onclick="rate(2,'amber')">Some apps only</div>
+        <div class="rating-chip red" onclick="rate(2,'red')">No / never</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="screen" id="q3">
+    <div class="progress-bar"><div class="progress-fill" style="width:30%"></div></div>
+    <div class="progress-label">Question 3 of 10</div>
+    <div class="question-card">
+      <div class="q-label">Behavioural Profiling</div>
+      <div class="q-text">Have you ever checked your ad profile on Google or Meta to see what data they hold about you?</div>
+      <div class="rating-row">
+        <div class="rating-chip green" onclick="rate(3,'green')">Yes and adjusted</div>
+        <div class="rating-chip amber" onclick="rate(3,'amber')">Checked, not changed</div>
+        <div class="rating-chip red" onclick="rate(3,'red')">Never checked</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="screen" id="q4">
+    <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+    <div class="progress-label">Question 4 of 10</div>
+    <div class="question-card">
+      <div class="q-label">Behavioural Profiling</div>
+      <div class="q-text">Do you use loyalty cards or store apps that track your purchase history?</div>
+      <div class="rating-row">
+        <div class="rating-chip green" onclick="rate(4,'green')">No loyalty cards</div>
+        <div class="rating-chip amber" onclick="rate(4,'amber')">1-2 only</div>
+        <div class="rating-chip red" onclick="rate(4,'red')">Several / regularly</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="screen" id="q5">
+    <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+    <div class="progress-label">Question 5 of 10</div>
+    <div class="question-card">
+      <div class="q-label">Social Media Data</div>
+      <div class="q-text">Have you reviewed what data your social media platforms have collected about you (via Settings > Your Data)?</div>
+      <div class="rating-row">
+        <div class="rating-chip green" onclick="rate(5,'green')">Yes, reviewed</div>
+        <div class="rating-chip amber" onclick="rate(5,'amber')">One platform only</div>
+        <div class="rating-chip red" onclick="rate(5,'red')">Never</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="screen" id="q6">
+    <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+    <div class="progress-label">Question 6 of 10</div>
+    <div class="question-card">
+      <div class="q-label">Government & Corporate</div>
+      <div class="q-text">Are you aware of what data your telecom or ISP retains about you and for how long?</div>
+      <div class="rating-row">
+        <div class="rating-chip green" onclick="rate(6,'green')">Yes, I know</div>
+        <div class="rating-chip amber" onclick="rate(6,'amber')">Roughly aware</div>
+        <div class="rating-chip red" onclick="rate(6,'red')">No idea</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="screen" id="q7">
+    <div class="progress-bar"><div class="progress-fill" style="width:70%"></div></div>
+    <div class="progress-label">Question 7 of 10</div>
+    <div class="question-card">
+      <div class="q-label">Intimate Surveillance</div>
+      <div class="q-text">Do you know all the accounts, apps, and devices your household members or partners have access to?</div>
+      <div class="rating-row">
+        <div class="rating-chip green" onclick="rate(7,'green')">Yes, fully aware</div>
+        <div class="rating-chip amber" onclick="rate(7,'amber')">Mostly aware</div>
+        <div class="rating-chip red" onclick="rate(7,'red')">Not sure</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="screen" id="q8">
+    <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+    <div class="progress-label">Question 8 of 10</div>
+    <div class="question-card">
+      <div class="q-label">Intimate Surveillance</div>
+      <div class="q-text">Have you checked your devices for unknown apps with administrator-level permissions in the last year?</div>
+      <div class="rating-row">
+        <div class="rating-chip green" onclick="rate(8,'green')">Yes, checked</div>
+        <div class="rating-chip amber" onclick="rate(8,'amber')">Partially</div>
+        <div class="rating-chip red" onclick="rate(8,'red')">Never</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="screen" id="q9">
+    <div class="progress-bar"><div class="progress-fill" style="width:90%"></div></div>
+    <div class="progress-label">Question 9 of 10</div>
+    <div class="question-card">
+      <div class="q-label">Digital Footprint</div>
+      <div class="q-text">Have you ever Googled yourself to see what personal information is publicly available?</div>
+      <div class="rating-row">
+        <div class="rating-chip green" onclick="rate(9,'green')">Yes, recently</div>
+        <div class="rating-chip amber" onclick="rate(9,'amber')">Years ago</div>
+        <div class="rating-chip red" onclick="rate(9,'red')">Never</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="screen" id="q10">
+    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+    <div class="progress-label">Question 10 of 10</div>
+    <div class="question-card">
+      <div class="q-label">Digital Footprint</div>
+      <div class="q-text">Have you checked HaveIBeenPwned (haveibeenpwned.com) to see if your email is in a data breach?</div>
+      <div class="rating-row">
+        <div class="rating-chip green" onclick="rate(10,'green')">Yes, clean</div>
+        <div class="rating-chip amber" onclick="rate(10,'amber')">Yes, found breaches</div>
+        <div class="rating-chip red" onclick="rate(10,'red')">Never checked</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="screen" id="results">
+    <div id="score-display" style="text-align:center; margin-bottom:20px;"></div>
+    <div id="results-list" style="margin-bottom:20px;"></div>
+    <h3 style="font-size:1rem; font-weight:700; margin-bottom:12px;">Your 3 Priority Actions</h3>
+    <div id="actions-list"></div>
+  </div>
+
+  <script>
+    const answers = {};
+    const domains = [
+      { q: 1, domain: 'Tracking Technologies', action: 'Install a tracker-blocking browser extension (uBlock Origin) or switch to Firefox or Brave.' },
+      { q: 2, domain: 'Location Tracking', action: 'Open your phone Settings > Apps > Permissions and set all location access to "Only while using."' },
+      { q: 3, domain: 'Ad Profiling', action: 'Visit Google My Ad Center and Meta Ad Preferences to view and reset your inferred profile.' },
+      { q: 4, domain: 'Loyalty Cards', action: 'Audit your loyalty cards. Use a separate email for retail accounts to limit cross-platform linking.' },
+      { q: 5, domain: 'Social Media Data', action: 'Download your data from Instagram, Facebook, and TikTok (Settings > Your Data). Review what is stored.' },
+      { q: 6, domain: 'Telecom Retention', action: 'Check your telecom provider\'s privacy policy for data retention periods. In the EU, telecoms retain metadata for up to 12 months.' },
+      { q: 7, domain: 'Shared Access', action: 'Audit shared accounts in Google, Apple, Spotify, and streaming services. Remove access you did not explicitly grant.' },
+      { q: 8, domain: 'Device Security', action: 'On Android: Settings > Apps > see all apps > look for Device Admin apps. On iOS: Settings > General > VPN & Device Management.' },
+      { q: 9, domain: 'Public Footprint', action: 'Google your full name + city. Check the first 3 pages. Request removal of any results showing personal address via Google\'s removal tool.' },
+      { q: 10, domain: 'Breach Exposure', action: 'Check haveibeenpwned.com with your email addresses. Change passwords for any breached accounts.' }
+    ];
+
+    function showQ(n) {
+      document.getElementById('intro').classList.remove('active');
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('q' + n).classList.add('active');
+      notifyHeight();
+    }
+
+    function rate(q, color) {
+      answers[q] = color;
+      const chips = document.querySelectorAll('#q' + q + ' .rating-chip');
+      chips.forEach(c => c.classList.remove('selected'));
+      event.target.classList.add('selected');
+      setTimeout(() => {
+        if (q < 10) showQ(q + 1);
+        else showResults();
+      }, 300);
+    }
+
+    function showResults() {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('results').classList.add('active');
+
+      let green = 0, amber = 0, red = 0;
+      for (let i = 1; i <= 10; i++) {
+        if (answers[i] === 'green') green++;
+        else if (answers[i] === 'amber') amber++;
+        else red++;
+      }
+
+      const score = Math.round((green * 10 + amber * 5) / 10);
+      const scoreEl = document.getElementById('score-display');
+      const cls = score >= 7 ? 'high' : score >= 4 ? 'mid' : 'low';
+      const label = score >= 7 ? 'Low Exposure' : score >= 4 ? 'Moderate Exposure' : 'High Exposure';
+      scoreEl.innerHTML = `<div class="score-circle ${cls}"><span class="score-num ${cls}">${score}/10</span><span class="score-sub">Privacy Score</span></div><p style="font-weight:600; text-align:center; margin-bottom:4px;">${label}</p><p style="text-align:center; font-size:0.8rem; color:var(--text-3);">${green} protected &nbsp;|&nbsp; ${amber} partial &nbsp;|&nbsp; ${red} exposed</p>`;
+
+      const list = document.getElementById('results-list');
+      list.innerHTML = '<h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;">Domain Breakdown</h3>';
+      for (let i = 1; i <= 10; i++) {
+        const d = domains[i - 1];
+        const c = answers[i];
+        const label = c === 'green' ? 'Protected' : c === 'amber' ? 'Partial' : 'Exposed';
+        list.innerHTML += `<div class="result-card ${c}"><div class="result-label ${c}">${d.domain} - ${label}</div></div>`;
+      }
+
+      const redItems = domains.filter(d => answers[d.q] === 'red');
+      const amberItems = domains.filter(d => answers[d.q] === 'amber');
+      const priority = [...redItems, ...amberItems].slice(0, 3);
+      const actionsEl = document.getElementById('actions-list');
+      actionsEl.innerHTML = '';
+      priority.forEach((d, i) => {
+        actionsEl.innerHTML += `<div class="action-item"><div class="action-num">${i + 1}</div><div class="action-text"><strong>${d.domain}:</strong> ${d.action}</div></div>`;
+      });
+      if (priority.length === 0) {
+        actionsEl.innerHTML = '<div class="result-card green"><div class="result-label green">Excellent exposure profile</div><div class="result-text">You have strong surveillance hygiene. Review the section modules to maintain your current protections.</div></div>';
+      }
+
+      notifyHeight();
+    }
+
+    function notifyHeight() {
+      setTimeout(() => {
+        window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+      }, 100);
+    }
+    notifyHeight();
+  </script>
+</body>
+</html>

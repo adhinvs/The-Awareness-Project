@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Data Request Map</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #FFFFFF; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --red: #DC2626; --red-bg: #FEF2F2;
+      --amber: #D97706; --amber-bg: #FFFBEB;
+      --green: #16A34A; --green-bg: #F0FDF4;
+      --font: 'Poppins', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 20px 48px; max-width: 600px; margin: 0 auto; }
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; background: #1E293B; color: #fff; }
+    h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+
+    .intro-note { background: var(--bg-2); border-radius: 10px; padding: 14px; margin-bottom: 16px; font-size: 0.82rem; color: var(--text-2); border: 1px solid var(--border); }
+
+    .pathway-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+    .pathway { border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+    .pathway:hover { border-color: #93C5FD; }
+    .pathway.open { border-color: var(--blue); }
+    .pathway-header { padding: 14px 16px; display: flex; align-items: center; gap: 12px; justify-content: space-between; }
+    .pathway-left { display: flex; align-items: center; gap: 12px; }
+    .pathway-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .pathway-name { font-size: 0.9rem; font-weight: 600; }
+    .pathway-authority { font-size: 0.72rem; color: var(--text-3); }
+    .toggle { font-size: 0.75rem; color: var(--text-3); }
+
+    .pathway-detail { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); margin-top: 0; }
+    .pathway.open .pathway-detail { display: block; }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+    .detail-cell { background: var(--bg-2); border-radius: 8px; padding: 10px; }
+    .detail-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-3); margin-bottom: 4px; }
+    .detail-val { font-size: 0.8rem; color: var(--text-1); font-weight: 500; }
+    .notified-yes { color: var(--green); }
+    .notified-no { color: var(--red); }
+    .notified-rarely { color: var(--amber); }
+    .likelihood-bar { height: 6px; background: var(--border); border-radius: 3px; margin-top: 6px; }
+    .likelihood-fill { height: 100%; border-radius: 3px; }
+    .likelihood-fill.low { background: var(--green); width: 20%; }
+    .likelihood-fill.mid { background: var(--amber); width: 50%; }
+    .likelihood-fill.high { background: var(--red); width: 85%; }
+
+    .stats-row { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .stat-chip { flex: 1; min-width: 130px; padding: 12px; border-radius: 10px; background: var(--bg-2); border: 1px solid var(--border); text-align: center; }
+    .stat-num { font-size: 1.5rem; font-weight: 700; color: var(--blue); }
+    .stat-label { font-size: 0.7rem; color: var(--text-3); margin-top: 2px; }
+  </style>
+</head>
+<body>
+
+  <div class="tag">Module 61 - Visualisation</div>
+  <h2>The Data Request Map</h2>
+  <p>Every legal pathway through which government or law enforcement can access your personal data. Tap each pathway to expand it.</p>
+
+  <div class="stats-row">
+    <div class="stat-chip"><div class="stat-num">1.1M</div><div class="stat-label">UK govt data requests to telecoms in 2023</div></div>
+    <div class="stat-chip"><div class="stat-num">0%</div><div class="stat-label">of routine requests require you to be notified</div></div>
+    <div class="stat-chip"><div class="stat-num">~70%</div><div class="stat-label">compliance rate from major US platforms</div></div>
+  </div>
+
+  <div class="pathway-grid">
+
+    <div class="pathway" onclick="toggle(this)">
+      <div class="pathway-header">
+        <div class="pathway-left">
+          <div class="pathway-icon" style="background:#EFF6FF;">⚖️</div>
+          <div><div class="pathway-name">Court Order / Production Order</div><div class="pathway-authority">Criminal Procedure Act / PACE / equivalent</div></div>
+        </div>
+        <div class="toggle">▼</div>
+      </div>
+      <div class="pathway-detail">
+        <p style="font-size:0.82rem; color:var(--text-2); margin-top:12px; margin-bottom:8px;">A court compels a platform or service to hand over your messages, files, account data, or login records. Used in criminal investigations. No warrant needed in some jurisdictions for metadata.</p>
+        <div class="detail-grid">
+          <div class="detail-cell"><div class="detail-label">You are notified</div><div class="detail-val notified-rarely">Rarely - often gagged</div></div>
+          <div class="detail-cell"><div class="detail-label">Data covered</div><div class="detail-val">Messages, files, account records</div></div>
+          <div class="detail-cell"><div class="detail-label">Ordinary person likelihood</div><div class="likelihood-bar"><div class="likelihood-fill low"></div></div><div style="font-size:0.7rem;color:var(--text-3);margin-top:4px;">Low - requires active investigation</div></div>
+          <div class="detail-cell"><div class="detail-label">Can you challenge it</div><div class="detail-val">Theoretically yes - rarely practical</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pathway" onclick="toggle(this)">
+      <div class="pathway-header">
+        <div class="pathway-left">
+          <div class="pathway-icon" style="background:#FFF7ED;">📡</div>
+          <div><div class="pathway-name">Telecom Metadata Retention</div><div class="pathway-authority">IPA 2016 (UK) / Data Retention Directive (EU)</div></div>
+        </div>
+        <div class="toggle">▼</div>
+      </div>
+      <div class="pathway-detail">
+        <p style="font-size:0.82rem; color:var(--text-2); margin-top:12px; margin-bottom:8px;">Your telecom retains records of every call made, SMS sent, and IP address used - who, when, and for how long. In the UK, this data is held for 12 months and accessible to 600+ public bodies without a warrant.</p>
+        <div class="detail-grid">
+          <div class="detail-cell"><div class="detail-label">You are notified</div><div class="detail-val notified-no">Never</div></div>
+          <div class="detail-cell"><div class="detail-label">Data covered</div><div class="detail-val">Call records, SMS metadata, IP logs</div></div>
+          <div class="detail-cell"><div class="detail-label">Ordinary person likelihood</div><div class="likelihood-bar"><div class="likelihood-fill high"></div></div><div style="font-size:0.7rem;color:var(--text-3);margin-top:4px;">High - routine, mass collection</div></div>
+          <div class="detail-cell"><div class="detail-label">Content included</div><div class="detail-val">Metadata only (who/when, not what)</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pathway" onclick="toggle(this)">
+      <div class="pathway-header">
+        <div class="pathway-left">
+          <div class="pathway-icon" style="background:#F0FDF4;">📷</div>
+          <div><div class="pathway-name">CCTV & Facial Recognition</div><div class="pathway-authority">Various police powers / no specific UK warrant required</div></div>
+        </div>
+        <div class="toggle">▼</div>
+      </div>
+      <div class="pathway-detail">
+        <p style="font-size:0.82rem; color:var(--text-2); margin-top:12px; margin-bottom:8px;">The UK has an estimated 7 million CCTV cameras - one per 9 people. Metropolitan Police and South Wales Police have deployed live facial recognition at public events. No specific law governs its use.</p>
+        <div class="detail-grid">
+          <div class="detail-cell"><div class="detail-label">You are notified</div><div class="detail-val notified-no">Never</div></div>
+          <div class="detail-cell"><div class="detail-label">Data covered</div><div class="detail-val">Physical movement, attendance at locations</div></div>
+          <div class="detail-cell"><div class="detail-label">Ordinary person likelihood</div><div class="likelihood-bar"><div class="likelihood-fill high"></div></div><div style="font-size:0.7rem;color:var(--text-3);margin-top:4px;">High in urban areas</div></div>
+          <div class="detail-cell"><div class="detail-label">Legal challenge</div><div class="detail-val">Active - ruled unlawful in some UK courts</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pathway" onclick="toggle(this)">
+      <div class="pathway-header">
+        <div class="pathway-left">
+          <div class="pathway-icon" style="background:#F5F3FF;">🌐</div>
+          <div><div class="pathway-name">Social Media Monitoring</div><div class="pathway-authority">No warrant required for public content</div></div>
+        </div>
+        <div class="toggle">▼</div>
+      </div>
+      <div class="pathway-detail">
+        <p style="font-size:0.82rem; color:var(--text-2); margin-top:12px; margin-bottom:8px;">Police and intelligence agencies monitor public posts, comments, and group activity without any legal authorisation. Private content requires a court order, but public content has no protection.</p>
+        <div class="detail-grid">
+          <div class="detail-cell"><div class="detail-label">You are notified</div><div class="detail-val notified-no">Never</div></div>
+          <div class="detail-cell"><div class="detail-label">Data covered</div><div class="detail-val">Posts, likes, group membership, location tags</div></div>
+          <div class="detail-cell"><div class="detail-label">Ordinary person likelihood</div><div class="likelihood-bar"><div class="likelihood-fill mid"></div></div><div style="font-size:0.7rem;color:var(--text-3);margin-top:4px;">Moderate - keywords and events trigger</div></div>
+          <div class="detail-cell"><div class="detail-label">Protection</div><div class="detail-val">Private accounts reduce exposure</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pathway" onclick="toggle(this)">
+      <div class="pathway-header">
+        <div class="pathway-left">
+          <div class="pathway-icon" style="background:#FEF2F2;">🏦</div>
+          <div><div class="pathway-name">Financial Transaction Access</div><div class="pathway-authority">POCA 2002 / AML / HMRC powers</div></div>
+        </div>
+        <div class="toggle">▼</div>
+      </div>
+      <div class="pathway-detail">
+        <p style="font-size:0.82rem; color:var(--text-2); margin-top:12px; margin-bottom:8px;">HMRC, NCA, and police can access bank transaction records under multiple legal powers. Banks are legally required to file Suspicious Activity Reports (SARs) without alerting the account holder.</p>
+        <div class="detail-grid">
+          <div class="detail-cell"><div class="detail-label">You are notified</div><div class="detail-val notified-no">Never - tipping off is illegal</div></div>
+          <div class="detail-cell"><div class="detail-label">Data covered</div><div class="detail-val">All transactions, account history, beneficiaries</div></div>
+          <div class="detail-cell"><div class="detail-label">Ordinary person likelihood</div><div class="likelihood-bar"><div class="likelihood-fill low"></div></div><div style="font-size:0.7rem;color:var(--text-3);margin-top:4px;">Low unless flagged by algorithm</div></div>
+          <div class="detail-cell"><div class="detail-label">Trigger</div><div class="detail-val">Bank's own AI flags patterns</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="intro-note">Sources: Investigatory Powers Act 2016, Home Office Surveillance Camera Code, ICO transparency data, Liberty human rights reports, Meta/Google government transparency reports 2024.</div>
+
+  <script>
+    function toggle(el) {
+      const isOpen = el.classList.contains('open');
+      document.querySelectorAll('.pathway').forEach(p => { p.classList.remove('open'); p.querySelector('.toggle').textContent = '▼'; });
+      if (!isOpen) { el.classList.add('open'); el.querySelector('.toggle').textContent = '▲'; }
+      setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'), 100);
+    }
+    setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'), 200);
+  </script>
+</body>
+</html>

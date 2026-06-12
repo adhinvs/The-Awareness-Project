@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Dark Pattern Gauntlet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563EB; --blue-dark: #1D4ED8; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #FFFFFF; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --green: #16A34A; --green-bg: #F0FDF4;
+      --red: #DC2626; --red-bg: #FEF2F2;
+      --amber: #D97706; --amber-bg: #FFFBEB;
+      --font: 'Poppins', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 0; }
+    .container { max-width: 640px; margin: 0 auto; padding: 24px 20px 48px; }
+
+    .progress-bar { height: 6px; background: var(--border); border-radius: 3px; margin-bottom: 8px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--blue); border-radius: 3px; transition: width 0.4s ease; }
+    .progress-label { font-size: 12px; color: var(--text-3); margin-bottom: 20px; }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .tag-dark { background: #1E293B; color: #fff; }
+    .tag-reveal { background: #DC2626; color: #fff; }
+
+    h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 0.9rem; color: var(--text-2); line-height: 1.6; margin-bottom: 12px; }
+
+    .mock-ui { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 20px 0; }
+    .mock-header { background: var(--blue); color: #fff; padding: 14px 18px; font-weight: 600; font-size: 0.9rem; }
+    .mock-body { padding: 20px; background: var(--bg-2); }
+
+    .btn { padding: 11px 20px; border-radius: 8px; font-family: var(--font); font-size: 0.875rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; }
+    .btn-primary { background: var(--blue); color: #fff; width: 100%; margin-bottom: 10px; }
+    .btn-primary:hover { background: var(--blue-dark); }
+    .btn-ghost { background: transparent; color: var(--text-3); font-size: 0.75rem; font-weight: 400; display: block; margin: 0 auto; text-decoration: underline; }
+    .btn-ghost:hover { color: var(--text-1); }
+
+    .checkbox-row { display: flex; align-items: flex-start; gap: 10px; padding: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; }
+    .checkbox-row input[type="checkbox"] { margin-top: 2px; flex-shrink: 0; }
+    .checkbox-label { font-size: 0.8rem; color: var(--text-2); line-height: 1.4; }
+
+    .price-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 0.85rem; border-bottom: 1px solid var(--border); }
+    .price-row:last-child { border-bottom: none; font-weight: 700; }
+    .strikethrough { text-decoration: line-through; color: var(--text-3); }
+
+    .reveal-box { background: #FEF3C7; border: 1px solid #F59E0B; border-radius: 8px; padding: 14px 16px; margin-top: 12px; }
+    .reveal-title { font-size: 0.8rem; font-weight: 700; color: #92400E; margin-bottom: 4px; text-transform: uppercase; }
+    .reveal-text { font-size: 0.8rem; color: #78350F; line-height: 1.5; }
+
+    .summary-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
+    .summary-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px; }
+    .summary-num { width: 24px; height: 24px; border-radius: 50%; background: var(--red); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .summary-text { font-size: 0.82rem; color: var(--text-2); line-height: 1.5; }
+    .summary-text strong { color: var(--text-1); }
+
+    .timer-box { background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px; padding: 14px 16px; text-align: center; margin: 12px 0; }
+    .timer-countdown { font-size: 2rem; font-weight: 700; color: var(--red); }
+    .timer-label { font-size: 0.75rem; color: #991B1B; }
+
+    .fake-confirm { background: var(--bg); border: 2px solid var(--border); border-radius: 8px; padding: 16px; margin: 12px 0; }
+    .confirm-question { font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; }
+    .confirm-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .confirm-yes { background: #DC2626; color: #fff; padding: 10px; border: none; border-radius: 6px; font-family: var(--font); font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+    .confirm-no { background: var(--bg-2); color: var(--text-1); padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-family: var(--font); font-size: 0.75rem; cursor: pointer; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+  <div class="progress-label" id="progress-label">Step 1 of 7 - Sign Up</div>
+
+  <!-- SCREEN 1: Cookie Banner -->
+  <div class="screen active" id="screen-1">
+    <span class="tag tag-dark">Dark Pattern #1</span>
+    <h2>Welcome to FlowLearn</h2>
+    <p>Before you continue, we need your consent to personalise your experience.</p>
+    <div class="mock-ui">
+      <div class="mock-header">Cookie Preferences</div>
+      <div class="mock-body">
+        <button class="btn btn-primary" onclick="advance(2, 'You accepted all cookies - including advertising and behavioural tracking. The reject option was buried in a submenu labelled \'Manage Preferences\'.')">Accept All Cookies</button>
+        <p style="font-size:0.72rem; color:var(--text-3); text-align:center;">By clicking Accept, you agree to our <u>Privacy Policy</u>. To opt out, visit Settings > Privacy > Cookie Preferences > Manage > Advertising > Opt Out.</p>
+      </div>
+    </div>
+    <div class="reveal-box">
+      <div class="reveal-title">Pattern: Asymmetric Consent Design</div>
+      <div class="reveal-text">Accept is one click. Reject requires navigating 4 menus. <strong>75% of users accept because rejection is deliberately too hard.</strong></div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: Pre-ticked boxes -->
+  <div class="screen" id="screen-2">
+    <span class="tag tag-dark">Dark Pattern #2</span>
+    <h2>Personalise Your Plan</h2>
+    <p>Select your preferences to get started:</p>
+    <div class="mock-ui">
+      <div class="mock-body">
+        <div class="checkbox-row"><input type="checkbox" checked><span class="checkbox-label">Send me weekly progress updates and personalised recommendations</span></div>
+        <div class="checkbox-row"><input type="checkbox" checked><span class="checkbox-label">Share my learning data with FlowLearn's trusted partner network for improved experience</span></div>
+        <div class="checkbox-row"><input type="checkbox" checked><span class="checkbox-label">I agree to receive promotional offers from FlowLearn and selected third parties</span></div>
+        <div class="checkbox-row"><input type="checkbox"><span class="checkbox-label">I <em>do not</em> want my data used for targeted advertising</span></div>
+        <button class="btn btn-primary" style="margin-top:14px" onclick="advance(3, 'Three boxes were pre-ticked: data sharing, marketing, and third-party access. The opt-OUT box was left unticked. Most users scroll past without reading.')">Continue</button>
+      </div>
+    </div>
+    <div class="reveal-box">
+      <div class="reveal-title">Pattern: Pre-checked Opt-ins + Trick Question</div>
+      <div class="reveal-text">The three pre-ticked boxes share your data. The opt-out box uses double negative language ("I do not want") to confuse. <strong>Illegal under GDPR, but used by 57% of websites.</strong></div>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: Hidden pricing -->
+  <div class="screen" id="screen-3">
+    <span class="tag tag-dark">Dark Pattern #3</span>
+    <h2>Your Free Trial is Ready!</h2>
+    <p>Start learning for free today. Cancel anytime.</p>
+    <div class="mock-ui">
+      <div class="mock-body">
+        <div class="price-row"><span>FlowLearn Premium Trial</span><span>FREE</span></div>
+        <div class="price-row"><span>Trial period</span><span>7 days</span></div>
+        <button class="btn btn-primary" style="margin-top:14px" onclick="showHiddenPrice()">Start Free Trial</button>
+      </div>
+    </div>
+    <div id="hidden-price-reveal" style="display:none;">
+      <div class="mock-ui" style="margin-top:12px;">
+        <div class="mock-body">
+          <div class="price-row"><span>FlowLearn Premium (monthly)</span><span>£11.99</span></div>
+          <div class="price-row"><span>Platform fee</span><span>£1.00</span></div>
+          <div class="price-row"><span>Service fee</span><span>£0.99</span></div>
+          <div class="price-row"><span style="font-weight:700;">Total from Day 8</span><span style="font-weight:700; color:var(--red)">£13.98/mo</span></div>
+          <button class="btn btn-primary" style="margin-top:14px; background:#16A34A;" onclick="advance(4, 'The real price (£13.98/mo) only appeared at checkout - not when you signed up. This is drip pricing: show a low price early, reveal charges only at the last moment.')">Confirm and Start</button>
+        </div>
+      </div>
+      <div class="reveal-box">
+        <div class="reveal-title">Pattern: Drip Pricing</div>
+        <div class="reveal-text">Fees only appear at the final step. By then you are committed. <strong>Drip pricing increases conversion by 14% compared to showing the full price upfront.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: Urgency timer -->
+  <div class="screen" id="screen-4">
+    <span class="tag tag-dark">Dark Pattern #4</span>
+    <h2>Special Offer - Act Fast!</h2>
+    <div class="mock-ui">
+      <div class="mock-body">
+        <div class="timer-box">
+          <div class="timer-countdown" id="countdown">04:59</div>
+          <div class="timer-label">Offer expires in</div>
+        </div>
+        <p style="font-size:0.82rem; text-align:center; font-weight:600;">Upgrade to Annual Plan - Save 40%!</p>
+        <p style="font-size:0.78rem; text-align:center; color:var(--text-3);">Only 3 spots left at this price. 12 people viewing this offer.</p>
+        <button class="btn btn-primary" onclick="advance(5, 'This timer resets on every page visit. There are no limited spots. It\'s fabricated JavaScript. But it works - urgency timers increase conversions by 8-10%.')">Upgrade for £83.88/yr</button>
+        <button class="btn btn-ghost" onclick="advance(5, 'You declined the urgency offer. The timer had no server connection and reset on every page visit.')">No thanks, continue with monthly</button>
+      </div>
+    </div>
+    <div class="reveal-box">
+      <div class="reveal-title">Pattern: Manufactured Urgency</div>
+      <div class="reveal-text">The countdown timer resets on every page reload. "12 people viewing" is a random number. <strong>Neither the timer nor the scarcity claim is real.</strong></div>
+    </div>
+  </div>
+
+  <!-- SCREEN 5: Confirm shaming cancel -->
+  <div class="screen" id="screen-5">
+    <span class="tag tag-dark">Dark Pattern #5</span>
+    <h2>Ready to cancel?</h2>
+    <p>After 6 days, you want to cancel before the trial ends. You found the cancel option after clicking Settings > Billing > Manage Plan > Cancel.</p>
+    <div class="mock-ui">
+      <div class="mock-body">
+        <div class="fake-confirm">
+          <div class="confirm-question">Are you sure you want to give up on your learning journey?</div>
+          <p style="font-size:0.78rem; color:var(--text-3); margin-bottom:12px;">You've completed 3 lessons. Your progress will be paused and you may fall behind.</p>
+          <div class="confirm-btns">
+            <button class="confirm-yes" onclick="advanceCancel()">Yes, I want to give up</button>
+            <button class="confirm-no" onclick="advance(6, 'You resisted confirm-shaming. The cancel button was labelled \'I want to give up\' while the keep button said \'Continue my journey\'.')">Continue my journey</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal-box">
+      <div class="reveal-title">Pattern: Confirm-Shaming</div>
+      <div class="reveal-text">The cancel button is labelled to make you feel bad. "I want to give up" triggers loss aversion and shame. <strong>60% of users abandon cancellation when confirm-shame language is used.</strong></div>
+    </div>
+  </div>
+
+  <!-- SCREEN 6: Roach motel retention -->
+  <div class="screen" id="screen-6">
+    <span class="tag tag-dark">Dark Pattern #6</span>
+    <h2>Wait - a special offer just for you</h2>
+    <div class="mock-ui">
+      <div class="mock-body">
+        <p style="font-size:0.85rem; font-weight:600;">Don't go! Get 3 months for the price of 1.</p>
+        <p style="font-size:0.8rem; color:var(--text-2);">This offer is only available right now and cannot be applied later.</p>
+        <button class="btn btn-primary" onclick="advance(7, 'You accepted the retention offer. This is a planned step in the cancellation flow - the company expects it and profits from the extended subscription.')">Accept offer - keep my account</button>
+        <button class="btn btn-ghost" onclick="advance(7, 'You found the final cancellation confirmation. It required clicking through 7 screens total.')">No thanks, find the cancel link</button>
+      </div>
+    </div>
+    <div class="reveal-box">
+      <div class="reveal-title">Pattern: Roach Motel + Retention Trap</div>
+      <div class="reveal-text">Sign-up took 2 clicks. Cancellation takes 7 screens. The retention offer was planned from day one. <strong>Roach motel design reduces cancellations by up to 40%.</strong></div>
+    </div>
+  </div>
+
+  <!-- SCREEN 7: Summary -->
+  <div class="screen" id="screen-7">
+    <span class="tag tag-reveal">Gauntlet Complete</span>
+    <h2>Six dark patterns. One sign-up flow.</h2>
+    <p>Every pattern you just encountered is from a real product. They are designed to be invisible in the moment.</p>
+    <ul class="summary-list">
+      <li class="summary-item"><div class="summary-num">1</div><div class="summary-text"><strong>Asymmetric consent design</strong> - Accept is one click; reject requires 4 menus</div></li>
+      <li class="summary-item"><div class="summary-num">2</div><div class="summary-text"><strong>Pre-checked opt-ins + trick question</strong> - You agreed to data sharing without reading</div></li>
+      <li class="summary-item"><div class="summary-num">3</div><div class="summary-text"><strong>Drip pricing</strong> - The real cost only appeared at the final screen</div></li>
+      <li class="summary-item"><div class="summary-num">4</div><div class="summary-text"><strong>Manufactured urgency</strong> - The countdown timer reset on every page load</div></li>
+      <li class="summary-item"><div class="summary-num">5</div><div class="summary-text"><strong>Confirm-shaming</strong> - Cancelling meant pressing "I want to give up"</div></li>
+      <li class="summary-item"><div class="summary-num">6</div><div class="summary-text"><strong>Roach motel</strong> - Sign up took 2 clicks, cancel took 7 screens</div></li>
+    </ul>
+    <p style="font-size:0.82rem; font-style:italic; color:var(--text-3);">You just spent 3 minutes. A real user would have spent more - and most would not have made it out.</p>
+  </div>
+
+</div>
+
+<script>
+  let timerInterval;
+
+  function advance(next, reveal) {
+    clearInterval(timerInterval);
+    const current = document.querySelector('.screen.active');
+    current.classList.remove('active');
+
+    if (reveal) {
+      const box = document.createElement('div');
+      box.style.cssText = 'background:#F0FDF4;border:1px solid #86EFAC;border-radius:8px;padding:14px 16px;margin-bottom:16px;font-size:0.8rem;color:#166534;line-height:1.5;';
+      box.innerHTML = '<strong>What happened:</strong> ' + reveal;
+    }
+
+    const nextScreen = document.getElementById('screen-' + next);
+    if (nextScreen) {
+      nextScreen.classList.add('active');
+      const total = 7;
+      const pct = ((next - 1) / total) * 100;
+      document.getElementById('progress').style.width = pct + '%';
+      document.getElementById('progress-label').textContent = 'Step ' + next + ' of ' + total;
+      if (next === 4) startTimer();
+      if (next === 7) {
+        document.getElementById('progress').style.width = '100%';
+        document.getElementById('progress-label').textContent = 'Complete';
+      }
+      sendHeight();
+    }
+  }
+
+  function showHiddenPrice() {
+    document.getElementById('hidden-price-reveal').style.display = 'block';
+    sendHeight();
+  }
+
+  function advanceCancel() {
+    advance(6, 'You pressed "I want to give up" to cancel. The shame language was intentional.');
+  }
+
+  function startTimer() {
+    let seconds = 299;
+    timerInterval = setInterval(() => {
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      const el = document.getElementById('countdown');
+      if (el) el.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+      if (seconds > 0) seconds--;
+    }, 1000);
+  }
+
+  function sendHeight() {
+    setTimeout(() => {
+      window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+    }, 100);
+  }
+
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>

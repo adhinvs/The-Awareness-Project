@@ -2,13 +2,194 @@
 sidebar_position: 2
 title: "Subscription Traps & Hidden Charges"
 sidebar_label: "Subscription Traps & Hidden Charges"
+description: "How free trials, roach motel cancellation flows, and billing language are designed to charge you more than you intended to pay."
+tags: [dark-patterns, subscription-traps, hidden-charges, free-trial, roach-motel, cancellation, drip-pricing, billing-deception]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Subscription Traps & Hidden Charges
 
-## Sub-topics
+The free trial was not designed for you to try the product. It was designed to get your card details before you had decided to pay.
 
-- Free trial with automatic billing on expiry
-- Roach motel — easy to sign up, nearly impossible to cancel
-- Unexpected charges from third-party partnerships
-- Billing language designed to obscure the real cost
+---
+
+## The Eleven-Click Cancel
+
+James signed up for a 7-day free trial of a project management tool. He set a phone reminder for day 6 to cancel.
+
+On day 6, he opened the cancellation page. It did not have a cancel button. It had an "Upgrade Plan" button.
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/dark-patterns-manipulative-design/subscription-traps-hidden-charges/subscription-trap.webp"
+    alt="A person trying to cancel a subscription, facing multiple confusing screens and retention popups."
+  />
+</figure>
+
+He found the cancel option under Settings, then Billing, then Manage Plan - where it appeared as a small grey text link below the upgrade button. He clicked it. A popup appeared offering 3 months free. He declined. Another screen listed everything he would lose. He clicked through. A final screen asked him to confirm by clicking "Yes, I want to cancel my account and lose all my data."
+
+By this point, it was midnight. The trial had expired. He was charged £12.99.
+
+**He completed 11 screens to cancel a free trial. Signing up had taken 2 clicks.**
+
+---
+
+## What Is Actually Happening
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>$47</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>the average monthly gap between what people actually spend on subscriptions vs. what they think they spend.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Subscription traps are designed to stay invisible in your bank statement until they add up.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: C+R Research Subscription Service Report, 2022</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Roach Motel</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>40% Fewer Cancellations</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Adding friction to cancellation flows reduces cancellations by up to <b>40%.</b> This is a documented, studied business strategy. Every extra screen is placed there knowing the conversion rate it produces.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: SaaS Retention Benchmarks Report, 2023</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Free Trials</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>77% Forget to Cancel</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}><b>77% of free trial subscribers</b> who did not intend to pay are charged at least once before they cancel. The trial ending at midnight, not midday, is also not accidental.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: West Monroe Partners Consumer Subscription Study, 2022</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #3B82F6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#3B82F6', fontWeight: 'bold' }}>Regulatory Action</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>CMA vs. Amazon Prime</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>The UK's Competition and Markets Authority opened formal proceedings against Amazon in 2023 for <b>roach motel cancellation design.</b> Amazon subsequently simplified its cancellation flow under regulatory pressure.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: UK CMA, Amazon Prime Investigation, 2023</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Hidden Charges</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>3rd-Party Billing Traps</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Some platforms charge through third-party partners whose names appear differently in bank statements. <b>Charges from unfamiliar company names</b> are often subscriptions enrolled via a parent platform's checkout.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: FTC Negative Option Rule, 2023</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## The Patterns, Named
+
+### Free trial with automatic billing
+The card is required before the trial. Billing starts automatically the moment the trial ends - often at midnight, not a convenient daytime hour. No reminder is sent.
+
+### Roach motel
+Easy to enter, deliberately hard to exit. Cancel is not in Settings - it is in Settings, then Billing, then Manage Plan. Each step requires a decision that could interrupt the process.
+
+### Drip pricing
+The advertised price is shown at sign-up. Fees, taxes, and "service charges" appear only at the final checkout screen. By that point, most users complete the purchase rather than start over.
+
+### Retention popups and pause offers
+Before confirming cancellation, users are shown: a discount offer, a pause option, a loss list, and a confirm-shame button. Each step is designed to intercept intent. The retention offer was prepared before you even clicked cancel.
+
+### Billing language obscuring cost
+"Just £1.29/day" sounds different from "£470/year." Some subscriptions display per-day costs while billing annually. The number is accurate. The framing is designed to minimise perceived cost.
+
+---
+
+## Try It: Cancel If You Can
+
+Try to cancel a fictional streaming subscription. Count your steps.
+
+<iframe
+  id="cancel-iframe"
+  src="/simulations/dark-patterns-manipulative-design/subscription-traps-hidden-charges/cancel-if-you-can.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Cancel If You Can"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('cancel-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._cancelHandler);
+    window._cancelHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. The cancel option was not in the obvious place.**
+It was not in Settings. It was not labelled "Cancel." It was inside Billing, inside Manage Plan, as a small text link beneath two more prominent options.
+
+**2. Pause was offered before cancel was reachable.**
+Pause keeps you subscribed. It is placed prominently precisely to intercept users who want to leave. If you paused instead of cancelled, you stayed subscribed.
+
+**3. Every retention screen was planned.**
+The 2-month offer, the loss list, the confirm-shame button - all were ready before you clicked cancel. Companies test and optimise these screens for maximum retention rate.
+
+**4. Sign-up took 2 clicks. Cancel took 7-11 steps.**
+That ratio is the dark pattern. It is a business decision measured by its outcome - and the outcome is fewer cancellations.
+
+---
+
+## Three Things Worth Doing
+
+**1. Never give card details for a free trial unless you are prepared to pay.**
+Assume you will be charged. If the trial requires a card, set a calendar reminder for 2 days before expiry - not the day of.
+
+**2. Review recurring charges monthly.**
+Set 10 minutes each month to scan your bank statement for recurring charges. Subscription creep - small amounts from forgotten services - accumulates faster than most people expect.
+
+**3. Use virtual card numbers for free trials.**
+Many banks and apps (Revolut, privacy.com, Monzo) allow one-time or merchant-locked virtual cards. A virtual card that cannot be recharged stops automatic billing before it starts.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="James set a reminder to cancel on day 6 of his 7-day trial, but was still charged. What design feature most likely caused this?"
+  options={[
+    {
+      label: "He forgot to complete the final confirmation screen.",
+      correct: false,
+      explanation: "The story indicates he ran out of time, not that he forgot. The trial expired at midnight on day 7 while he was navigating the multi-screen cancellation flow. A single-click cancellation would have succeeded within his available time."
+    },
+    {
+      label: "The multi-screen cancellation flow took long enough that his trial expired before he completed it - a deliberate design outcome.",
+      correct: true,
+      explanation: "Correct. Roach motel cancellation design exploits the gap between when a user intends to cancel and when they successfully complete the process. Every extra screen is an opportunity for the trial to expire, for a retention offer to succeed, or for the user to abandon. This is a predictable, designed outcome - not a UX accident."
+    },
+    {
+      label: "He should have cancelled on day 1 to be safe.",
+      correct: false,
+      explanation: "While earlier cancellation is safer, it should not be necessary. The design problem is that a 7-day trial with a multi-screen cancellation flow requires users to start the process days in advance to have a reasonable chance of completing it. That is a consumer protection failure, not a user failure."
+    },
+    {
+      label: "Free trials always charge if you use the service - he should have known.",
+      correct: false,
+      explanation: "This framing places the responsibility on the user for a design failure. Free trials that auto-charge without a reminder, with a midnight expiry and a multi-screen cancellation flow, are regulated consumer protection concerns in many jurisdictions. The FTC's 2023 Negative Option Rule specifically addresses these practices."
+    }
+  ]}
+/>

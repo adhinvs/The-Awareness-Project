@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Loop Diagram</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #FFFFFF; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --purple: #7C3AED; --purple-faint: #F5F3FF;
+      --red: #DC2626; --amber: #D97706; --green: #16A34A;
+      --font: 'Poppins', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 20px 48px; max-width: 640px; margin: 0 auto; }
+
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; background: #1E293B; color: #fff; }
+    h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+
+    .instruction { font-size: 0.82rem; color: var(--purple); background: var(--purple-faint); padding: 10px 14px; border-radius: 8px; margin-bottom: 20px; }
+
+    .loop-node { border: 2px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 4px; cursor: pointer; transition: all 0.2s; position: relative; }
+    .loop-node:hover { border-color: var(--purple); background: var(--purple-faint); }
+    .loop-node.active { border-color: var(--purple); background: var(--purple-faint); }
+    .node-num { position: absolute; top: -12px; left: 16px; width: 24px; height: 24px; border-radius: 50%; background: var(--purple); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .node-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; padding-top: 4px; }
+    .node-subtitle { font-size: 0.78rem; color: var(--text-3); }
+
+    .arrow { text-align: center; font-size: 1.2rem; color: var(--purple); margin: 2px 0; }
+
+    .explain-panel { display: none; background: #1E293B; color: #F1F5F9; border-radius: 10px; padding: 14px 16px; margin: 8px 0; font-size: 0.82rem; line-height: 1.6; }
+    .explain-panel.show { display: block; }
+    .explain-title { font-weight: 700; color: #C4B5FD; margin-bottom: 6px; font-size: 0.78rem; text-transform: uppercase; }
+
+    .design-tag { display: inline-block; font-size: 0.7rem; background: var(--purple); color: #fff; padding: 2px 8px; border-radius: 4px; margin-top: 8px; }
+    .neuro-tag { display: inline-block; font-size: 0.7rem; background: #DC2626; color: #fff; padding: 2px 8px; border-radius: 4px; margin-top: 4px; }
+
+    .loop-complete { background: #F5F3FF; border: 1px solid #C4B5FD; border-radius: 10px; padding: 16px; margin-top: 16px; display: none; }
+    .loop-complete.show { display: block; }
+    .loop-complete-title { font-size: 0.9rem; font-weight: 700; color: var(--purple); margin-bottom: 8px; }
+    .loop-complete-text { font-size: 0.82rem; color: #4C1D95; line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+  <div class="tag">Module 43 - Visualisation</div>
+  <h2>The Compulsion Loop</h2>
+  <p>Every popular app is built around this cycle. Tap each node to see the neuroscience and the design choice behind it.</p>
+  <div class="instruction">Tap each step in the loop to reveal how it works.</div>
+
+  <div class="loop-node" id="n1" onclick="toggle(1)">
+    <div class="node-num">1</div>
+    <div class="node-title">Action</div>
+    <div class="node-subtitle">User completes a lesson, post, or check-in</div>
+  </div>
+  <div id="e1" class="explain-panel">
+    <div class="explain-title">The Entry Point</div>
+    The action is designed to be easy and fast - a 5-minute lesson, a single swipe, a quick post. Low friction lowers the activation energy needed to begin. The simpler the action, the more often it happens.
+    <br><span class="design-tag">Design: Low-friction micro-task</span>
+    <span class="neuro-tag">Neuroscience: Dopamine anticipation</span>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <div class="loop-node" id="n2" onclick="toggle(2)">
+    <div class="node-num">2</div>
+    <div class="node-title">Variable Reward</div>
+    <div class="node-subtitle">Sometimes: XP, a badge, a streak bonus. Sometimes: nothing.</div>
+  </div>
+  <div id="e2" class="explain-panel">
+    <div class="explain-title">The Slot Machine Mechanic</div>
+    Unpredictable rewards produce stronger compulsive behaviour than fixed ones — the same mechanism that makes gambling addictive. Apps deliberately randomise reward size so you keep returning to find out.
+    <br><span class="design-tag">Design: Variable ratio reward schedule</span>
+    <span class="neuro-tag">Neuroscience: Dopamine spike on uncertainty</span>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <div class="loop-node" id="n3" onclick="toggle(3)">
+    <div class="node-num">3</div>
+    <div class="node-title">Streak Counter</div>
+    <div class="node-subtitle">Day 47. Don't break it.</div>
+  </div>
+  <div id="e3" class="explain-panel">
+    <div class="explain-title">Loss Aversion as Retention</div>
+    Streaks reframe engagement as accumulated value - value you will lose if you stop. Loss aversion (the pain of losing is twice as powerful as the pleasure of gaining) makes breaking a streak feel significantly worse than the benefit of a single day felt good.
+    <br><span class="design-tag">Design: Progress artifact + loss framing</span>
+    <span class="neuro-tag">Neuroscience: Loss aversion (Kahneman)</span>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <div class="loop-node" id="n4" onclick="toggle(4)">
+    <div class="node-num">4</div>
+    <div class="node-title">Social Comparison</div>
+    <div class="node-subtitle">Your friend is on Day 83. You're 36 days behind.</div>
+  </div>
+  <div id="e4" class="explain-panel">
+    <div class="explain-title">Competitive Status Triggers</div>
+    Seeing a friend ahead does not make you stop — it makes you work harder to catch up. Both users increase engagement simultaneously. The app benefits from the competition it created.
+    <br><span class="design-tag">Design: Visible leaderboard / friend feed</span>
+    <span class="neuro-tag">Neuroscience: Social comparison + status anxiety</span>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <div class="loop-node" id="n5" onclick="toggle(5)">
+    <div class="node-num">5</div>
+    <div class="node-title">Re-engagement Notification</div>
+    <div class="node-subtitle">"You haven't practiced today. Your streak is at risk."</div>
+  </div>
+  <div id="e5" class="explain-panel">
+    <div class="explain-title">The Interrupt</div>
+    Notification timing and wording are A/B tested. "Your streak is at risk" was selected because it produces the highest tap rate — combining loss aversion with guilt in a single sentence.
+    <br><span class="design-tag">Design: Timed push + loss framing</span>
+    <span class="neuro-tag">Neuroscience: Anxiety + obligation response</span>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <div class="loop-node" id="n6" onclick="toggle(6)" style="border-color:#DC2626;">
+    <div class="node-num" style="background:var(--red);">6</div>
+    <div class="node-title">Back to Action</div>
+    <div class="node-subtitle">User opens app to protect their streak. Loop restarts.</div>
+  </div>
+  <div id="e6" class="explain-panel">
+    <div class="explain-title">The Loop Closes</div>
+    The user did not choose to open the app — the notification and the streak made it feel necessary. The cycle repeats daily not because the app is valuable, but because the cost of stopping feels too high.
+    <br><span class="design-tag">Design: Notification-to-session pipeline</span>
+    <span class="neuro-tag">Neuroscience: Compulsive checking behavior</span>
+  </div>
+
+  <div class="loop-complete" id="loop-complete">
+    <div class="loop-complete-title">The loop is now visible.</div>
+    <div class="loop-complete-text">Every step was engineered, tested, and optimised. The goal is not your learning or productivity - it is your daily return. <strong>The streak is not measuring your progress. It is measuring the company's retention.</strong></div>
+  </div>
+
+<script>
+  const revealed = new Set();
+
+  function toggle(n) {
+    revealed.add(n);
+    const panel = document.getElementById('e' + n);
+    const node = document.getElementById('n' + n);
+    panel.classList.toggle('show');
+    node.classList.toggle('active');
+    if (revealed.size === 6) {
+      document.getElementById('loop-complete').classList.add('show');
+    }
+    sendHeight();
+  }
+
+  function sendHeight() {
+    setTimeout(() => {
+      window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+    }, 100);
+  }
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>The Same Voter, Different Message</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --font: 'Outfit', system-ui, sans-serif;
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B; --r: 12px;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); padding: 24px 16px 40px; -webkit-font-smoothing: antialiased; }
+    .header { text-align: center; margin-bottom: 22px; }
+    .header h1 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .header p { font-size: 13px; color: var(--muted); max-width: 480px; margin: 0 auto; }
+    .step { display: none; }
+    .step.active { display: block; }
+
+    /* Step 1: Profile picker */
+    .profiles { max-width: 580px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 440px) { .profiles { grid-template-columns: 1fr; } }
+    .profile-card {
+      background: var(--surface); border: 2px solid var(--border);
+      border-radius: var(--r); padding: 18px 16px; cursor: pointer;
+      transition: all 0.18s; text-align: left;
+    }
+    .profile-card:hover { border-color: #94A3B8; background: #F8FAFC; }
+    .profile-card .icon { font-size: 28px; margin-bottom: 8px; }
+    .profile-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .profile-card p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    /* Step 2: Ads view */
+    .profile-bar {
+      max-width: 580px; margin: 0 auto 18px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 16px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .profile-bar .icon { font-size: 24px; }
+    .profile-bar .info h3 { font-size: 14px; font-weight: 700; }
+    .profile-bar .info p { font-size: 12px; color: var(--muted); }
+    .profile-bar .change-btn {
+      margin-left: auto; padding: 6px 12px; border: 1px solid var(--border);
+      border-radius: 8px; font-family: var(--font); font-size: 12px; font-weight: 600;
+      cursor: pointer; background: var(--bg); transition: all 0.15s;
+    }
+    .profile-bar .change-btn:hover { background: #E2E8F0; }
+    .ads-grid { max-width: 580px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+    .ad-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); overflow: hidden;
+    }
+    .ad-top {
+      padding: 16px 18px; display: flex; gap: 12px; align-items: flex-start;
+    }
+    .party-badge {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 800; flex-shrink: 0;
+      background: #1D4ED8; color: white;
+    }
+    .ad-content h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; line-height: 1.35; }
+    .ad-content p { font-size: 12.5px; color: #475569; line-height: 1.55; }
+    .ad-footer {
+      padding: 10px 18px; background: #F8FAFC;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .target-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+    .lever-tag {
+      font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px;
+    }
+    .lever-fear { background: #FEF2F2; color: #991B1B; }
+    .lever-identity { background: #EFF6FF; color: #1D4ED8; }
+    .lever-desire { background: #F5F3FF; color: #5B21B6; }
+    .lever-security { background: #ECFDF5; color: #065F46; }
+    .lever-pride { background: #FFFBEB; color: #92400E; }
+    .insight-box {
+      max-width: 580px; margin: 18px auto 0;
+      background: #FEF3C7; border: 1px solid #FDE68A;
+      border-radius: var(--r); padding: 16px 18px;
+    }
+    .insight-box h4 { font-size: 13px; font-weight: 700; color: #78350F; margin-bottom: 6px; }
+    .insight-box p { font-size: 12.5px; color: #92400E; line-height: 1.6; }
+    .visible-note {
+      max-width: 580px; margin: 12px auto 0;
+      padding: 12px 16px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; font-size: 12px; color: var(--muted); line-height: 1.55;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>The Same Voter, Different Message</h1>
+  <p>Select a voter profile. See the three ads the same fictional party has targeted at that segment. None of these are visible to other voters.</p>
+</div>
+
+<!-- Step 1 -->
+<div class="step active" id="step1">
+  <div class="profiles" id="profile-grid"></div>
+</div>
+
+<!-- Step 2 -->
+<div class="step" id="step2">
+  <div class="profile-bar" id="profile-bar"></div>
+  <div class="ads-grid" id="ads-grid"></div>
+  <div class="insight-box" id="insight-box"></div>
+  <div class="visible-note">
+    <strong>None of these ads are public.</strong> They appear only to the targeted segment and leave no searchable record. Other voters - including journalists and researchers - cannot see what message you received.
+  </div>
+</div>
+
+<script>
+const profiles = [
+  {
+    icon: "👩‍🏫", name: "Young Urban Professional", id: "urban",
+    desc: "28, renting, works in tech. Concerned about housing costs and climate.",
+    insight: "This voter is shown messages about housing and climate - fears that correlate with their data profile. They see nothing about immigration or tax policy, which the same party addresses very differently in other segments.",
+    ads: [
+      { headline: "You cannot afford to rent. We will change that.", body: "A generation priced out of homeownership. Our plan caps rent increases and builds 500,000 affordable homes in 5 years.", lever: "fear", leverLabel: "Fear - housing anxiety" },
+      { headline: "Climate action cannot wait. Neither can we.", body: "We are the only party with a legally binding net-zero commitment. Your vote locks it in.", lever: "identity", leverLabel: "Identity - values alignment" },
+      { headline: "Your skills built this economy. We will invest back in you.", body: "Expanding tech sector grants, training credits, and digital infrastructure - because the future is people like you.", lever: "desire", leverLabel: "Desire - aspiration" }
+    ]
+  },
+  {
+    icon: "👴", name: "Rural Retiree", id: "rural",
+    desc: "67, homeowner, retired. Worried about pension security and NHS access.",
+    insight: "This voter sees nothing about housing or climate. The same party addresses them on pension protection and NHS - fears that data signals identify as central to this segment. The party's position appears completely different from what the urban professional sees.",
+    ads: [
+      { headline: "Your pension is a promise. We will keep it.", body: "No changes to the triple lock. Guaranteed annual increases. Because you earned it.", lever: "security", leverLabel: "Security - loss aversion" },
+      { headline: "The NHS is not for sale. Our commitment is total.", body: "Protecting NHS funding and cutting waiting lists. Because when you need it, it has to be there.", lever: "fear", leverLabel: "Fear - health anxiety" },
+      { headline: "Britain first. Community first. Always.", body: "Strong borders, local investment, and values that built this country. We stand for what you stand for.", lever: "identity", leverLabel: "Identity - national pride" }
+    ]
+  },
+  {
+    icon: "👪", name: "Suburban Parent", id: "parent",
+    desc: "41, mortgaged, two kids in school. Worried about education and cost of living.",
+    insight: "The same party speaks to this voter entirely through school quality and household costs. The climate and immigration messages this party uses elsewhere never appear here - because data shows this segment deprioritises them.",
+    ads: [
+      { headline: "Your children's school is underfunded. We will fix it.", body: "20,000 new teachers, smaller class sizes, and free school meals for all primary children. Starting year one.", lever: "fear", leverLabel: "Fear - parental anxiety" },
+      { headline: "The weekly shop should not cost this much.", body: "We will cut VAT on essentials, cap energy bills, and give families real breathing room.", lever: "security", leverLabel: "Security - cost of living" },
+      { headline: "A safe neighbourhood. Good schools. A future for your kids.", body: "We are the party that invests in the places families actually live - not just city centres.", lever: "pride", leverLabel: "Pride - community" }
+    ]
+  },
+  {
+    icon: "🗳️", name: "First-Time Voter", id: "firsttime",
+    desc: "19, student, politically uncertain. Looking for a reason to engage.",
+    insight: "First-time voters are shown aspirational and identity-based messages - not the policy-heavy content older segments receive. The goal is emotional engagement and turnout, not persuasion on specific issues.",
+    ads: [
+      { headline: "Your vote has never mattered more. Use it.", body: "First-time voters will decide this election. We are ready to represent a generation that refuses to be ignored.", lever: "identity", leverLabel: "Identity - generational" },
+      { headline: "Free university tuition. It is possible. We will do it.", body: "No graduate debt. No compromise. Because starting life in debt is not a fair deal.", lever: "desire", leverLabel: "Desire - aspiration" },
+      { headline: "They ignored you for 10 years. We will not.", body: "We are the party that put youth unemployment, mental health, and housing on the agenda. Because you put us there.", lever: "fear", leverLabel: "Fear - being overlooked" }
+    ]
+  }
+];
+
+let selectedProfile = null;
+
+function renderProfiles() {
+  document.getElementById('profile-grid').innerHTML = profiles.map(p => `
+    <div class="profile-card" onclick="selectProfile('${p.id}')">
+      <div class="icon">${p.icon}</div>
+      <h3>${p.name}</h3>
+      <p>${p.desc}</p>
+    </div>`).join('');
+}
+
+function selectProfile(id) {
+  selectedProfile = profiles.find(p => p.id === id);
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step2').classList.add('active');
+
+  document.getElementById('profile-bar').innerHTML = `
+    <div class="icon">${selectedProfile.icon}</div>
+    <div class="info"><h3>${selectedProfile.name}</h3><p>${selectedProfile.desc}</p></div>
+    <button class="change-btn" onclick="changeProfile()">Change profile</button>`;
+
+  document.getElementById('ads-grid').innerHTML = selectedProfile.ads.map((ad, i) => `
+    <div class="ad-card">
+      <div class="ad-top">
+        <div class="party-badge">P</div>
+        <div class="ad-content">
+          <h3>${ad.headline}</h3>
+          <p>${ad.body}</p>
+        </div>
+      </div>
+      <div class="ad-footer">
+        <span class="target-label">Targeted at: ${selectedProfile.name}</span>
+        <span class="lever-tag lever-${ad.lever}">${ad.leverLabel}</span>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('insight-box').innerHTML = `
+    <h4>What is happening here</h4>
+    <p>${selectedProfile.insight}</p>`;
+
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function changeProfile() {
+  document.getElementById('step2').classList.remove('active');
+  document.getElementById('step1').classList.add('active');
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+renderProfiles();
+window.addEventListener('load', () => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'));
+</script>
+</body>
+</html>

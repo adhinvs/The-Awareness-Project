@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cancel If You Can</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #FFFFFF; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --green: #16A34A; --green-bg: #F0FDF4;
+      --red: #DC2626; --amber: #D97706;
+      --font: 'Poppins', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 20px 48px; max-width: 600px; margin: 0 auto; }
+
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; background: #1E293B; color: #fff; }
+    h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+
+    .step-indicator { font-size: 0.78rem; color: var(--text-3); margin-bottom: 16px; }
+    .step-indicator strong { color: var(--red); }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .ui-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 16px 0; }
+    .ui-header { background: var(--bg-2); padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+    .ui-logo { width: 28px; height: 28px; border-radius: 6px; background: #7C3AED; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; }
+    .ui-name { font-weight: 600; font-size: 0.9rem; }
+    .ui-body { padding: 20px; }
+
+    .btn-primary { width: 100%; padding: 13px; background: var(--blue); color: #fff; border: none; border-radius: 8px; font-family: var(--font); font-size: 0.9rem; font-weight: 700; cursor: pointer; margin-bottom: 10px; transition: background 0.15s; }
+    .btn-primary:hover { background: #1D4ED8; }
+    .btn-secondary { display: block; width: 100%; padding: 10px 14px; background: var(--bg-2); color: var(--text-2); border: 1px solid var(--border); border-radius: 6px; font-family: var(--font); font-size: 0.82rem; cursor: pointer; margin-bottom: 8px; text-align: left; transition: all 0.15s; }
+    .btn-secondary:hover { border-color: var(--blue); }
+    .btn-ghost { display: block; font-size: 0.7rem; color: var(--text-3); text-decoration: underline; cursor: pointer; margin-top: 8px; background: none; border: none; font-family: var(--font); }
+
+    .offer-box { background: #F0FDF4; border: 1px solid #86EFAC; border-radius: 8px; padding: 16px; margin-bottom: 14px; }
+    .offer-title { font-size: 0.95rem; font-weight: 700; color: var(--green); margin-bottom: 6px; }
+    .offer-text { font-size: 0.82rem; color: #166534; }
+
+    .reveal-box { background: #FFFBEB; border: 1px solid #FCD34D; border-radius: 8px; padding: 14px 16px; margin: 16px 0; }
+    .reveal-title { font-size: 0.78rem; font-weight: 700; color: #92400E; margin-bottom: 4px; text-transform: uppercase; }
+    .reveal-text { font-size: 0.8rem; color: #78350F; line-height: 1.5; }
+
+    .tiny-link { font-size: 0.7rem; color: var(--text-3); text-align: right; display: block; cursor: pointer; text-decoration: underline; margin-top: 6px; }
+    .tiny-link:hover { color: var(--red); }
+
+    .success-box { background: var(--green-bg); border: 1px solid #86EFAC; border-radius: 12px; padding: 20px; text-align: center; margin: 16px 0; }
+    .step-count { font-size: 2.5rem; font-weight: 700; color: var(--green); }
+  </style>
+</head>
+<body>
+
+  <div class="tag">Module 41 - Simulation</div>
+  <h2>Cancel If You Can</h2>
+  <p>You want to cancel your StreamVault subscription before the trial ends. Find the way out.</p>
+  <div class="step-indicator">Steps taken: <strong id="steps">0</strong></div>
+
+  <!-- Step 1: Settings -->
+  <div class="screen active" id="s1">
+    <div class="ui-card">
+      <div class="ui-header"><div class="ui-logo">SV</div><div class="ui-name">StreamVault - Account Settings</div></div>
+      <div class="ui-body">
+        <button class="btn-secondary" onclick="next(2)">Profile & Personal Info</button>
+        <button class="btn-secondary" onclick="next(2)">Notifications</button>
+        <button class="btn-secondary" onclick="next(2)">Playback Settings</button>
+        <button class="btn-secondary" onclick="next(2)">Parental Controls</button>
+        <button class="btn-secondary" onclick="next(2)">Device Management</button>
+        <button class="btn-secondary" onclick="next(2)">Privacy</button>
+        <button class="btn-secondary" onclick="next(3)">Billing & Subscription</button>
+        <button class="btn-secondary" onclick="next(2)">Help & Support</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Hidden in plain sight</div><div class="reveal-text">"Cancel" is not listed. It's inside "Billing & Subscription" - not obviously labelled.</div></div>
+  </div>
+
+  <!-- Step 2: Wrong section dead end -->
+  <div class="screen" id="s2">
+    <div class="ui-card">
+      <div class="ui-header"><div class="ui-logo">SV</div><div class="ui-name">StreamVault - Settings</div></div>
+      <div class="ui-body">
+        <p style="font-size:0.82rem; color:var(--text-3);">This section doesn't include subscription options.</p>
+        <button class="btn-secondary" onclick="next(1)">Back to Settings</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Wrong turn</div><div class="reveal-text">Cancellation is not where you'd expect it. Back to settings to find Billing.</div></div>
+  </div>
+
+  <!-- Step 3: Billing page -->
+  <div class="screen" id="s3">
+    <div class="ui-card">
+      <div class="ui-header"><div class="ui-logo">SV</div><div class="ui-name">Billing & Subscription</div></div>
+      <div class="ui-body">
+        <p style="font-size:0.82rem; margin-bottom:14px;">Current plan: <strong>StreamVault Premium</strong> - £13.99/month. Next charge: in 2 days.</p>
+        <button class="btn-primary">Upgrade to Family Plan</button>
+        <button class="btn-secondary" onclick="next(4)">Manage Plan</button>
+        <button class="btn-secondary">Payment Methods</button>
+        <button class="btn-secondary">Billing History</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Upgrade is prominent, cancel is buried</div><div class="reveal-text">The page leads with an upgrade option. Cancel is inside "Manage Plan", not a direct link.</div></div>
+  </div>
+
+  <!-- Step 4: Manage plan -->
+  <div class="screen" id="s4">
+    <div class="ui-card">
+      <div class="ui-header"><div class="ui-logo">SV</div><div class="ui-name">Manage Your Plan</div></div>
+      <div class="ui-body">
+        <button class="btn-primary">Switch to Annual Plan (Save 17%)</button>
+        <button class="btn-secondary" onclick="next(5)">Pause Subscription</button>
+        <button class="btn-secondary" onclick="next(6)">Change Plan</button>
+        <button class="btn-secondary">Share with Family</button>
+        <button class="btn-ghost" onclick="next(7)">Cancel Subscription</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Cancel is the ghost button</div><div class="reveal-text">The most valuable action for you is the least prominent on screen. "Pause" is a button. "Cancel" is a tiny text link.</div></div>
+  </div>
+
+  <!-- Step 5: Pause offer -->
+  <div class="screen" id="s5">
+    <div class="ui-card">
+      <div class="ui-header"><div class="ui-logo">SV</div><div class="ui-name">Pause Your Subscription</div></div>
+      <div class="ui-body">
+        <div class="offer-box">
+          <div class="offer-title">Pause for up to 3 months</div>
+          <div class="offer-text">Keep your watchlist and history. Resume anytime. No charge while paused.</div>
+        </div>
+        <button class="btn-primary">Pause for 1 Month</button>
+        <button class="btn-secondary" onclick="next(4)">Back</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Pause before cancel</div><div class="reveal-text">Pause was prominently placed to intercept cancellation intent. If you click it, you stay subscribed.</div></div>
+  </div>
+
+  <!-- Step 6: Change plan dead end -->
+  <div class="screen" id="s6">
+    <div class="ui-card">
+      <div class="ui-header"><div class="ui-logo">SV</div><div class="ui-name">Change Plan</div></div>
+      <div class="ui-body">
+        <p style="font-size:0.82rem; margin-bottom:12px;">Available plans:</p>
+        <button class="btn-secondary">Basic - £6.99/month</button>
+        <button class="btn-secondary" style="border-color:var(--blue);">Premium - £13.99/month (current)</button>
+        <button class="btn-secondary">Premium + - £17.99/month</button>
+        <button class="btn-secondary" onclick="next(4)">Back</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Cancel not here either</div><div class="reveal-text">Downgrade is presented as an alternative to cancellation. No cancel option from this screen.</div></div>
+  </div>
+
+  <!-- Step 7: Retention offer -->
+  <div class="screen" id="s7">
+    <div class="ui-card">
+      <div class="ui-header"><div class="ui-logo">SV</div><div class="ui-name">Before You Go...</div></div>
+      <div class="ui-body">
+        <div class="offer-box">
+          <div class="offer-title">Special offer: 2 months free</div>
+          <div class="offer-text">Stay and get your next 2 months at no charge. Offer valid for the next 10 minutes only.</div>
+        </div>
+        <button class="btn-primary">Accept Offer - Keep Streaming</button>
+        <button class="btn-secondary" onclick="next(8)">No thanks, continue cancelling</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Planned retention popup</div><div class="reveal-text">This offer was prepared in advance. It's shown to every user who reaches the cancel screen. The "10 minutes" timer is fake.</div></div>
+  </div>
+
+  <!-- Step 8: Final confirmation - obfuscated -->
+  <div class="screen" id="s8">
+    <div class="ui-card">
+      <div class="ui-header"><div class="ui-logo">SV</div><div class="ui-name">Cancel Subscription</div></div>
+      <div class="ui-body">
+        <p style="font-size:0.82rem; margin-bottom:10px;">You will lose access to:</p>
+        <ul style="font-size:0.78rem; color:var(--text-2); padding-left:20px; margin-bottom:14px; line-height:2;">
+          <li>Unlimited streaming on all devices</li>
+          <li>Your watchlist and viewing history</li>
+          <li>Offline downloads</li>
+          <li>Ad-free experience</li>
+        </ul>
+        <button class="btn-primary" onclick="next(9)">Keep My Subscription</button>
+        <p style="font-size:0.7rem; color:var(--text-3); line-height:1.5; margin-top:10px;">Your cancellation will take effect at the end of your current billing period. To confirm, scroll to the bottom of this page and click the confirmation link.</p>
+        <span class="tiny-link" onclick="next(10)">Yes, I understand. Confirm cancellation.</span>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Final obfuscation</div><div class="reveal-text">The confirmation link is tiny, below a wall of loss language, with the "Keep" button prominently above it.</div></div>
+  </div>
+
+  <!-- Step 9: Kept subscription -->
+  <div class="screen" id="s9">
+    <div style="background:#FEF2F2; border:1px solid #FECACA; border-radius:12px; padding:20px; text-align:center; margin:16px 0;">
+      <div style="font-size:1.1rem; font-weight:700; color:var(--red); margin-bottom:8px;">You kept the subscription</div>
+      <p style="font-size:0.82rem; color:#991B1B;">You were charged £13.99. You took <strong id="kept-steps">0</strong> steps and did not cancel.</p>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">This is the intended outcome</div><div class="reveal-text">The cancellation flow is designed to exhaust you. Each step introduces friction until you give up or accept a retention offer.</div></div>
+    <button class="btn-primary" style="margin-top:12px; background:#374151;" onclick="restart()">Try Again</button>
+  </div>
+
+  <!-- Step 10: Successfully cancelled -->
+  <div class="screen" id="s10">
+    <div class="success-box">
+      <div style="font-size:1rem; font-weight:700; color:var(--green); margin-bottom:6px;">Subscription Cancelled</div>
+      <div class="step-count" id="final-steps">0</div>
+      <div style="font-size:0.82rem; color:#166534; margin-top:4px;">steps to cancel. Sign-up took 2.</div>
+    </div>
+    <div class="reveal-box" style="margin-top:0;">
+      <div class="reveal-title">What you just experienced</div>
+      <div class="reveal-text">This flow is based on documented cancellation paths for major streaming services. <strong>UK's CMA opened investigations into Amazon Prime, Apple, and others for roach motel cancellation design in 2023.</strong> Easy to enter, deliberately hard to exit.</div>
+    </div>
+    <button class="btn-primary" style="margin-top:12px; background:#374151;" onclick="restart()">Restart</button>
+  </div>
+
+<script>
+  let stepCount = 0;
+
+  function next(n) {
+    stepCount++;
+    document.getElementById('steps').textContent = stepCount;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    if (n === 9) document.getElementById('kept-steps').textContent = stepCount;
+    if (n === 10) document.getElementById('final-steps').textContent = stepCount;
+    document.getElementById('s' + n).classList.add('active');
+    sendHeight();
+  }
+
+  function restart() {
+    stepCount = 0;
+    document.getElementById('steps').textContent = 0;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('s1').classList.add('active');
+    sendHeight();
+  }
+
+  function sendHeight() {
+    setTimeout(() => {
+      window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+    }, 100);
+  }
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>

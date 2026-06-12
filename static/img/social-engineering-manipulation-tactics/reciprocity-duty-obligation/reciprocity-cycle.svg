@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360">
+  <rect width="800" height="360" fill="#f6f5f3" rx="16"/>
+
+  <!-- Title -->
+  <text x="400" y="38" font-family="system-ui,sans-serif" font-size="15" fill="#1a1a18" text-anchor="middle" font-weight="600">The Give-Ask-Comply Trap</text>
+  <text x="400" y="58" font-family="system-ui,sans-serif" font-size="12" fill="#888780" text-anchor="middle">How an unsolicited gift becomes a psychological debt</text>
+
+  <!-- Step 1: Gift -->
+  <rect x="40" y="88" width="200" height="180" rx="14" fill="#ffffff" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="40" y="88" width="200" height="40" rx="14" fill="#EEF7E8"/>
+  <rect x="40" y="116" width="200" height="12" rx="0" fill="#EEF7E8"/>
+  <text x="140" y="114" font-family="system-ui,sans-serif" font-size="12" fill="#16a34a" text-anchor="middle" font-weight="700">Step 1</text>
+  <text x="140" y="152" font-family="system-ui,sans-serif" font-size="28" fill="#16a34a" text-anchor="middle">🎁</text>
+  <text x="140" y="186" font-family="system-ui,sans-serif" font-size="13" fill="#1a1a18" text-anchor="middle" font-weight="600">Unsolicited Gift</text>
+  <text x="140" y="206" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">Free report, insider tip,</text>
+  <text x="140" y="222" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">warm praise, or access</text>
+  <text x="140" y="250" font-family="system-ui,sans-serif" font-size="10.5" fill="#16a34a" text-anchor="middle" font-style="italic">You didn't ask for it.</text>
+
+  <!-- Arrow 1 to 2 -->
+  <path d="M 248 178 L 290 178" stroke="#94A3B8" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <text x="269" y="167" font-family="system-ui,sans-serif" font-size="10" fill="#888780" text-anchor="middle">creates</text>
+
+  <!-- Step 2: Debt -->
+  <rect x="298" y="88" width="200" height="180" rx="14" fill="#ffffff" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="298" y="88" width="200" height="40" rx="14" fill="#FEF3C7"/>
+  <rect x="298" y="116" width="200" height="12" rx="0" fill="#FEF3C7"/>
+  <text x="398" y="114" font-family="system-ui,sans-serif" font-size="12" fill="#D97706" text-anchor="middle" font-weight="700">Step 2</text>
+  <text x="398" y="152" font-family="system-ui,sans-serif" font-size="28" fill="#D97706" text-anchor="middle">⚖️</text>
+  <text x="398" y="186" font-family="system-ui,sans-serif" font-size="13" fill="#1a1a18" text-anchor="middle" font-weight="600">Psychological Debt</text>
+  <text x="398" y="206" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">"I owe them something."</text>
+  <text x="398" y="222" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">Discomfort grows with time.</text>
+  <text x="398" y="250" font-family="system-ui,sans-serif" font-size="10.5" fill="#D97706" text-anchor="middle" font-style="italic">You feel it without knowing why.</text>
+
+  <!-- Arrow 2 to 3 -->
+  <path d="M 506 178 L 548 178" stroke="#94A3B8" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <text x="527" y="167" font-family="system-ui,sans-serif" font-size="10" fill="#888780" text-anchor="middle">drives</text>
+
+  <!-- Step 3: Compliance -->
+  <rect x="556" y="88" width="200" height="180" rx="14" fill="#ffffff" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="556" y="88" width="200" height="40" rx="14" fill="#FEE2E2"/>
+  <rect x="556" y="116" width="200" height="12" rx="0" fill="#FEE2E2"/>
+  <text x="656" y="114" font-family="system-ui,sans-serif" font-size="12" fill="#DC2626" text-anchor="middle" font-weight="700">Step 3</text>
+  <text x="656" y="152" font-family="system-ui,sans-serif" font-size="28" fill="#DC2626" text-anchor="middle">🪤</text>
+  <text x="656" y="186" font-family="system-ui,sans-serif" font-size="13" fill="#1a1a18" text-anchor="middle" font-weight="600">Concession Request</text>
+  <text x="656" y="206" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">Big ask refused. Small ask</text>
+  <text x="656" y="222" font-family="system-ui,sans-serif" font-size="11" fill="#5f5e5a" text-anchor="middle">follows. Guilt closes the gap.</text>
+  <text x="656" y="250" font-family="system-ui,sans-serif" font-size="10.5" fill="#DC2626" text-anchor="middle" font-style="italic">The "small" ask was always the trap.</text>
+
+  <!-- Bottom note -->
+  <rect x="160" y="298" width="480" height="38" rx="10" fill="#ffffff" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="400" y="315" font-family="system-ui,sans-serif" font-size="11.5" fill="#1a1a18" text-anchor="middle" font-weight="600">The gift was not generosity. It was an investment in your compliance.</text>
+  <text x="400" y="330" font-family="system-ui,sans-serif" font-size="10.5" fill="#888780" text-anchor="middle">Compliance rates are 60% higher after receiving an unsolicited favour.</text>
+
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#94A3B8"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,15 +1,194 @@
 ---
 sidebar_position: 6
 title: "Defensive OSINT: Auditing Your Own Digital Footprint"
-sidebar_label: "Defensive OSINT: Auditing Your Own Digital Footprint"
+sidebar_label: "Defensive OSINT: Auditing Your Own Footprint"
+description: "How to see your publicly available information the way a stranger with bad intent would - and what to do about each exposure you find."
+tags: [osint, digital-footprint, data-brokers, haveibeenpwned, privacy, breach-check, public-records, personal-data-removal]
 ---
 
-# Defensive OSINT — Auditing Your Own Digital Footprint
+import Quiz from '@site/src/components/Quiz';
 
-## Sub-topics
+# Defensive OSINT: Auditing Your Own Digital Footprint
 
-- What information is publicly available about you
-- Using HaveIBeenPwned to check breach exposure
-- Checking property records and public databases
-- Tools and methods for personal OSINT
-- Taking down leaked information and knowing what is exposed
+Before you can reduce your exposure, you need to know what is exposed.
+
+---
+
+## What the Scammer Already Knew
+
+The call came at 9am. The caller knew Kevin's full name, his home address, the last four digits of his credit card, and the name of his bank.
+
+Kevin assumed a breach. But there was no breach. All of it was assembled from public sources in under 15 minutes: his address from a public electoral register lookup, his bank from a LinkedIn post mentioning a payment dispute, the card digits from a leaked prize draw database, and his phone number from an old forum post in 2018.
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/surveillance-privacy-theft/defensive-osint-auditing-your-own-digital-footprint/osint-footprint.webp"
+    alt="A person's public digital footprint assembled from multiple sources into a profile visible to anyone."
+  />
+</figure>
+
+The scammer did not need to hack anything. **They just knew where to look.**
+
+---
+
+## What Is Actually Happening
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>15 min</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>is all an experienced OSINT investigator needs to build a basic profile of most ordinary people.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>All from freely available public sources. No hacking required.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: SANS OSINT Summit; Trace Labs OSINT research, 2024</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Breach Data</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>14B+ Compromised Records</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>HaveIBeenPwned tracks **over 14 billion compromised accounts** from known data breaches. The average person's email appears in 4-5 breaches. Most people have never checked.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: HaveIBeenPwned.com, June 2025</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Data Brokers</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Your Address Is for Sale</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Sites like Spokeo, Whitepages, and BeenVerified **aggregate your address, phone, relatives, and financial estimates** from public records and purchased data. Anyone can pay a few dollars to access it.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: FTC Data Broker Report, 2024; Privacy Rights Clearinghouse</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Google Yourself</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Most People Never Do</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>In surveys, **fewer than 20% of adults** report having Googled themselves in the past year. Old forum accounts, comment histories, and archived profiles are often still indexed and publicly accessible.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Pew Research Center Digital Privacy Survey, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #06B6D4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>Removal</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Possible but Must Be Repeated</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Data broker opt-outs are real but **data is re-collected periodically**. Removal requests need to be repeated every 6-12 months. Paid services (DeleteMe, Kanary) automate this process for a subscription fee.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Consumer Reports Privacy Guide, 2025</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## What OSINT Actually Reveals About You
+
+### Search engine results
+Your name + city in Google surfaces old profiles, forum comments, news mentions, and employer directories. Most people are surprised by how much is indexed from accounts they created years ago.
+
+### HaveIBeenPwned
+A breach check shows which services have exposed your email in a known data leak. Each breach entry tells you what was exposed: passwords, physical address, phone number, or payment data.
+
+### Reverse image search
+Uploading your profile photo to Google Images or TinEye reveals every site where your image appears - including ones you never posted to, where it was scraped without your knowledge.
+
+### Data broker listings
+Spokeo, Whitepages, BeenVerified, FastPeopleSearch, and Intelius aggregate your address, phone, relatives, estimated income, and public records. These are accessible without a login.
+
+### Public records and property databases
+UK Land Registry (search by name for property ownership), electoral register, Companies House (director listings), and court records are all publicly searchable. In many countries, property ownership records are available to anyone who pays a small fee. These are common starting points in targeted fraud research.
+
+### OSINT tools used against you
+The same tools used by security researchers are used by fraudsters: Google dorking ("site:linkedin.com [your name]"), Shodan (connected devices), PimEyes (facial search), and Maltego (relationship mapping). You do not need to use these tools yourself - but knowing they exist explains how quickly a stranger can build a picture of you.
+
+### Social media public view
+Log out of your accounts and search your name. What a stranger sees on your public profile is what a scammer or social engineer sees first.
+
+---
+
+## Try It: Personal Footprint Audit
+
+Work through 5 checks and see where your information is exposed. Each finding comes with a specific action step.
+
+<iframe
+  id="footprint-iframe"
+  src="/simulations/surveillance-privacy-theft/defensive-osint-auditing-your-own-digital-footprint/personal-footprint-audit.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Personal Footprint Audit"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('footprint-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._footprintHandler);
+    window._footprintHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. Exposure accumulates over years.**
+Old accounts, old emails, and old forum handles are still indexed. Most people's highest-exposure content was created when they were least aware of privacy.
+
+**2. Removal is possible - but requires repetition.**
+Every removal step is real and effective. But data brokers re-collect data from public records. Opt-outs need to be repeated annually.
+
+**3. The most urgent risk is usually breach exposure.**
+A breached password from 2016 is still being used in credential stuffing attacks today. If your email has been in a breach, that specific password - wherever else you used it - is compromised.
+
+---
+
+## Three Things Worth Doing
+
+**1. Check haveibeenpwned.com today.**
+Enter every email address you use. Change the password for every service that appears. Use a unique password for each one (password manager makes this practical).
+
+**2. Google yourself in a private window.**
+Search your full name + city. Note everything on the first 3 pages. Request removal of personal details from search results using Google's Results About You tool.
+
+**3. Submit opt-out requests to the four largest data brokers.**
+Acxiom, LexisNexis, Spokeo, and Whitepages all have free opt-out processes. The full opt-out guide at privacyrights.org covers 200+ brokers with direct links.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="You deleted a forum account from 2014. Does this mean the posts are no longer publicly accessible?"
+  options={[
+    {
+      label: "Yes - deleting an account removes all associated content from public view.",
+      correct: false,
+      explanation: "This depends on the platform and whether the content was archived before deletion. Most platforms do not retroactively delete content from external caches, Google's index, or archive services like the Wayback Machine. Content can remain accessible for years after the account is deleted."
+    },
+    {
+      label: "Not necessarily - archived copies on services like the Wayback Machine, Google Cache, and external scrapes may persist indefinitely.",
+      correct: true,
+      explanation: "Correct. Deleting an account removes the content from the live site, but external services including the Internet Archive (archive.org), Google Cache, and data broker databases may hold copies. You can request removal separately from each service - Google has a removal request tool, and archive.org accepts removal requests for sensitive content."
+    },
+    {
+      label: "Yes - GDPR's right to erasure requires platforms to delete all data including archived copies.",
+      correct: false,
+      explanation: "GDPR's right to erasure applies to the data controller (the platform you deleted your account from). It does not automatically compel third parties who scraped the content - such as the Wayback Machine or data brokers - to remove their copies. You need to make separate requests to each third party."
+    },
+    {
+      label: "Only if the posts contained personal information - generic content is not subject to removal requests.",
+      correct: false,
+      explanation: "GDPR erasure rights apply to any personal data, not just obviously sensitive information. A username linked to your real identity in a post context qualifies as personal data. The right to erasure is broad - what limits it is the practical ability to enforce it against every entity that holds a copy."
+    }
+  ]}
+/>

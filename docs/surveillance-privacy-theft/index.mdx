@@ -1,14 +1,164 @@
 ---
-sidebar_position: 0
 title: "Surveillance & Privacy Theft"
 sidebar_label: "Section Overview"
+description: "How your data, behaviour, and location are tracked, profiled, and sold without your meaningful consent."
+tags: [surveillance, privacy, tracking, data-brokers, stalkerware, osint, digital-footprint, facial-recognition]
 ---
 
 import DocCardList from '@theme/DocCardList';
+import Quiz from '@site/src/components/Quiz';
 
 # Surveillance & Privacy Theft
 
-How your data, behaviour, and location are tracked, profiled, and exploited without your knowledge
+Surveillance does not begin when someone decides to watch you. It begins the moment you load a webpage.
+
+---
+
+## The Morning That Was Already Logged
+
+Priya woke at 7:14am. Her phone registered the time she unlocked it.
+
+She checked the weather. A free app pinged her GPS coordinates to 47 advertising partners. She opened Instagram. Her dwell time on each post was recorded. She drove to work. Her mobile network logged every cell tower she passed. She bought coffee with her loyalty card. Her purchase - oat milk, no sugar - joined a health interest profile held by a data broker she has never heard of.
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/surveillance-privacy-theft/section-hero.webp"
+    alt="A person going about a normal morning routine while data signals radiate from their phone, loyalty card, and surroundings."
+  />
+</figure>
+
+By 9am, before she had done anything unusual, **at least 200 organisations had received data about her morning.**
+
+None of them asked. Most of them did not need to.
+
+---
+
+## What Is Actually Happening
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>$272B</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>the estimated value of the global data broker industry in 2025.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Your data is not a byproduct. It is the product.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: Statista, Data Broker Market Report, 2025</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Trackers</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>~3,000 Trackers Per Day</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>The average internet user encounters **around 3,000 tracking attempts per day** across browsing, apps, and connected services - most of them invisible and automatic.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Ghostery Tracker Trends Report, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Data Brokers</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>3,000+ Attributes Per Person</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Acxiom, one of the world's largest data brokers, claims to hold **up to 3,000 data points per person** across 2.5 billion people globally. You are not their customer. You are their inventory.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Acxiom corporate disclosures; FTC Data Broker Report, 2024</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Stalkerware</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>+186% Since 2019</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Stalkerware detections increased **186% between 2019 and 2024**. In 70% of cases it is installed by an intimate partner. The victim typically has no idea it is running.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Kaspersky Stalkerware Report, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #06B6D4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>Government Access</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>1.1M Telecom Requests (UK, 2023)</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>The UK government made **over 1.1 million data requests to telecoms** in 2023 alone - without requiring individual warrants in most cases. You were not notified of any of them.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Home Office Transparency Report, 2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## Six Ways You Are Watched
+
+**Passive tracking** - Cookies, pixels, and fingerprinting scripts activate the moment a page loads, before you click anything.
+
+**Behavioural profiling** - Your purchases, searches, and browsing habits are assembled into a psychological profile. That profile is sold.
+
+**Social media surveillance** - Every scroll, pause, and interaction tells the platform something about you. That signal shapes what you see next.
+
+**Government and corporate surveillance** - Legal pathways give authorities access to your call records, location history, and financial transactions - often without your knowledge.
+
+**Intimate surveillance** - Monitoring apps installed by partners, parents, or abusers run invisibly on your device and transmit your messages, location, and calls.
+
+**Passive exposure** - Information about you is publicly available through old profiles, data broker databases, and public records. Anyone can find it.
+
+---
+
+## Audit Yourself First
+
+Work through a 10-point self-audit across all six surveillance domains. Generates a priority action list at the end.
+
+<iframe
+  id="dashboard-iframe"
+  src="/simulations/surveillance-privacy-theft/section/surveillance-exposure-dashboard.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Surveillance Exposure Dashboard"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('dashboard-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._dashboardHandler);
+    window._dashboardHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Priya did not consent to her data being collected during her morning routine. What legal basis do most tracking companies use to justify collecting her data?"
+  options={[
+    {
+      label: "She implicitly consented by using free services - the data is the payment.",
+      correct: false,
+      explanation: "Implicit consent is not valid consent under GDPR and most modern privacy law. Consent must be freely given, specific, informed, and unambiguous. Using a free service does not constitute valid consent to have your data sold to hundreds of third parties."
+    },
+    {
+      label: "Legitimate interest - companies can process data without consent if they claim a legitimate business reason, and regulators rarely challenge individual cases.",
+      correct: true,
+      explanation: "Correct. 'Legitimate interest' is the most widely used legal basis for tracking that bypasses consent requirements. Under GDPR, it requires a balancing test, but enforcement is slow and companies routinely invoke it for mass commercial surveillance. The ICO and EU data authorities are increasingly challenging this, but most individual data subjects have no practical recourse."
+    },
+    {
+      label: "Public interest - tracking serves the public by enabling free content.",
+      correct: false,
+      explanation: "Public interest is a narrow legal basis used for research, journalism, and public health. Commercial advertising tracking does not qualify. This framing is sometimes used in marketing but has no legal standing as a GDPR basis for commercial data collection."
+    },
+    {
+      label: "She consented when she accepted cookie banners.",
+      correct: false,
+      explanation: "Most tracking begins before or without a cookie banner - through device fingerprinting, server-side tracking, and pre-loaded scripts. Cookie consent also does not cover data brokers, loyalty card data sales, telecom metadata retention, or app location tracking. The cookie banner is a small subset of the full surveillance picture."
+    }
+  ]}
+/>
 
 ---
 

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>The Revenue Model Map</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --font: 'Outfit', system-ui, sans-serif;
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B; --r: 12px;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); padding: 28px 16px 40px; -webkit-font-smoothing: antialiased; }
+    .header { text-align: center; margin-bottom: 6px; }
+    .header h1 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .header p { font-size: 13px; color: var(--muted); max-width: 500px; margin: 0 auto 22px; }
+
+    /* Chain diagram */
+    .chain { max-width: 600px; margin: 0 auto; }
+    .chain-node {
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: var(--r); padding: 16px 18px;
+      display: flex; align-items: flex-start; gap: 14px; cursor: pointer;
+      transition: border-color 0.18s, box-shadow 0.18s; margin-bottom: 0;
+    }
+    .chain-node:hover { border-color: #94A3B8; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    .chain-node.active { border-color: var(--node-color, #2563EB); box-shadow: 0 0 0 3px var(--node-glow, #DBEAFE); }
+    .node-icon {
+      width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 22px;
+    }
+    .node-text { flex: 1; }
+    .node-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 3px; }
+    .node-title { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+    .node-sub { font-size: 12px; color: var(--muted); }
+    .node-value {
+      font-size: 13px; font-weight: 700; text-align: right; flex-shrink: 0;
+      padding: 4px 10px; border-radius: 20px; align-self: center;
+    }
+
+    .connector {
+      display: flex; align-items: center; gap: 0;
+      margin: 0; padding: 0 0 0 20px; position: relative;
+    }
+    .connector-line {
+      width: 2px; background: var(--border); height: 36px; margin-left: 21px;
+    }
+    .connector-arrow {
+      position: absolute; left: 33px; top: 50%; transform: translateY(-50%);
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 600; color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* Detail panel */
+    .detail-panel {
+      max-width: 600px; margin: 18px auto 0;
+      border-radius: var(--r); padding: 18px 20px;
+      transition: all 0.25s; display: none;
+    }
+    .detail-panel.visible { display: block; }
+    .detail-panel h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .detail-panel p { font-size: 13px; line-height: 1.65; color: #334155; margin-bottom: 10px; }
+    .detail-panel .stat-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+    .stat-chip {
+      padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700;
+    }
+
+    /* Platform comparison */
+    .compare-title { max-width: 600px; margin: 22px auto 10px; font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .compare-grid { max-width: 600px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    @media (max-width: 440px) { .compare-grid { grid-template-columns: 1fr; } }
+    .platform-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px; text-align: center;
+    }
+    .platform-card .p-icon { font-size: 24px; margin-bottom: 6px; }
+    .platform-card .p-name { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+    .platform-card .p-arpu { font-size: 20px; font-weight: 800; color: #2563EB; }
+    .platform-card .p-label { font-size: 10px; color: var(--muted); }
+    .takeaway {
+      max-width: 600px; margin: 18px auto 0;
+      background: #F1F5F9; border-radius: var(--r); padding: 16px 18px;
+      font-size: 13px; line-height: 1.65; color: #334155;
+    }
+    .takeaway strong { display: block; font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+
+    /* Node colours */
+    .n-you { --node-color: #0891B2; --node-glow: #E0F2FE; }
+    .n-you .node-icon { background: #E0F2FE; }
+    .n-you .node-label { color: #0891B2; }
+    .n-you .node-value { background: #E0F2FE; color: #0C4A6E; }
+    .n-you.detail-panel { background: #E0F2FE; border: 1px solid #BAE6FD; }
+
+    .n-platform { --node-color: #7C3AED; --node-glow: #F5F3FF; }
+    .n-platform .node-icon { background: #F5F3FF; }
+    .n-platform .node-label { color: #7C3AED; }
+    .n-platform .node-value { background: #F5F3FF; color: #4C1D95; }
+    .n-platform.detail-panel { background: #F5F3FF; border: 1px solid #DDD6FE; }
+
+    .n-advertiser { --node-color: #B45309; --node-glow: #FFFBEB; }
+    .n-advertiser .node-icon { background: #FFFBEB; }
+    .n-advertiser .node-label { color: #B45309; }
+    .n-advertiser .node-value { background: #FFFBEB; color: #78350F; }
+    .n-advertiser.detail-panel { background: #FFFBEB; border: 1px solid #FDE68A; }
+
+    .n-change { --node-color: #DC2626; --node-glow: #FEF2F2; }
+    .n-change .node-icon { background: #FEF2F2; }
+    .n-change .node-label { color: #DC2626; }
+    .n-change .node-value { background: #FEF2F2; color: #7F1D1D; }
+    .n-change.detail-panel { background: #FEF2F2; border: 1px solid #FECACA; }
+
+    .n-loop { --node-color: #059669; --node-glow: #ECFDF5; }
+    .n-loop .node-icon { background: #ECFDF5; }
+    .n-loop .node-label { color: #059669; }
+    .n-loop .node-value { background: #ECFDF5; color: #064E3B; }
+    .n-loop.detail-panel { background: #ECFDF5; border: 1px solid #6EE7B7; }
+
+    .stat-chip.blue { background: #DBEAFE; color: #1E40AF; }
+    .stat-chip.purple { background: #EDE9FE; color: #5B21B6; }
+    .stat-chip.amber { background: #FEF3C7; color: #92400E; }
+    .stat-chip.red { background: #FEE2E2; color: #991B1B; }
+    .stat-chip.green { background: #D1FAE5; color: #065F46; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>The Revenue Model Map</h1>
+  <p>Click each node to see how a free social platform turns your attention into money - and what that costs you.</p>
+</div>
+
+<div class="chain">
+  <div class="chain-node n-you" onclick="showDetail('you')">
+    <div class="node-icon">🧑</div>
+    <div class="node-text">
+      <div class="node-label">You</div>
+      <div class="node-title">Attention + Behaviour + Data</div>
+      <div class="node-sub">You use the platform. You provide the raw material.</div>
+    </div>
+    <div class="node-value">Free</div>
+  </div>
+
+  <div class="connector">
+    <div class="connector-line"></div>
+    <div class="connector-arrow">provides attention to</div>
+  </div>
+
+  <div class="chain-node n-platform" onclick="showDetail('platform')">
+    <div class="node-icon">📱</div>
+    <div class="node-text">
+      <div class="node-label">The Platform</div>
+      <div class="node-title">Attention Broker</div>
+      <div class="node-sub">Packages your behaviour into targetable segments and sells access.</div>
+    </div>
+    <div class="node-value">~$227/yr per user</div>
+  </div>
+
+  <div class="connector">
+    <div class="connector-line"></div>
+    <div class="connector-arrow">sells reach to</div>
+  </div>
+
+  <div class="chain-node n-advertiser" onclick="showDetail('advertiser')">
+    <div class="node-icon">🏢</div>
+    <div class="node-text">
+      <div class="node-label">Advertisers</div>
+      <div class="node-title">Behaviour Change Buyers</div>
+      <div class="node-sub">Pay per impression, click, or conversion. Goal: change what you do.</div>
+    </div>
+    <div class="node-value">$740B industry</div>
+  </div>
+
+  <div class="connector">
+    <div class="connector-line"></div>
+    <div class="connector-arrow">change your behaviour, generating</div>
+  </div>
+
+  <div class="chain-node n-change" onclick="showDetail('change')">
+    <div class="node-icon">🔄</div>
+    <div class="node-text">
+      <div class="node-label">Changed Behaviour</div>
+      <div class="node-title">More Data + More Engagement</div>
+      <div class="node-sub">Your responses to ads generate new behavioural signals that improve targeting.</div>
+    </div>
+    <div class="node-value">More valuable profile</div>
+  </div>
+
+  <div class="connector">
+    <div class="connector-line"></div>
+    <div class="connector-arrow">feeds back into</div>
+  </div>
+
+  <div class="chain-node n-loop" onclick="showDetail('loop')">
+    <div class="node-icon">♾️</div>
+    <div class="node-text">
+      <div class="node-label">The Loop</div>
+      <div class="node-title">Better Targeting = Higher Ad Prices</div>
+      <div class="node-sub">More precise profiles command higher CPM. Revenue grows. Investment in keeping you on-platform grows.</div>
+    </div>
+    <div class="node-value">Self-reinforcing</div>
+  </div>
+</div>
+
+<!-- Detail panel -->
+<div class="detail-panel" id="detail-panel"></div>
+
+<!-- Platform ARPU comparison -->
+<div class="compare-title">Annual advertising revenue per user (2024)</div>
+<div class="compare-grid">
+  <div class="platform-card">
+    <div class="p-icon">📘</div>
+    <div class="p-name">Meta</div>
+    <div class="p-arpu">$227</div>
+    <div class="p-label">per user per year</div>
+  </div>
+  <div class="platform-card">
+    <div class="p-icon">🔍</div>
+    <div class="p-name">Google</div>
+    <div class="p-arpu">$168</div>
+    <div class="p-label">per user per year</div>
+  </div>
+  <div class="platform-card">
+    <div class="p-icon">🎵</div>
+    <div class="p-name">TikTok</div>
+    <div class="p-arpu">$73</div>
+    <div class="p-label">per user per year</div>
+  </div>
+</div>
+
+<div class="takeaway">
+  <strong>What you are worth - and what that means</strong>
+  These figures represent what advertisers pay to reach you. The platform's incentive is to maximise that number - which means maximising your time on the platform, maximising the data signals you generate, and maximising the precision of targeting. Your wellbeing is not in that equation.
+</div>
+
+<script>
+const details = {
+  you: {
+    cls: 'n-you',
+    title: 'You provide the raw material',
+    body: 'Every scroll, pause, like, and purchase is a data signal - captured automatically whether you are logged in or not.',
+    stats: [
+      { label: '6h 40m avg daily screen time (2024)', cls: 'blue' },
+      { label: 'You are not the customer', cls: 'blue' },
+      { label: 'You are the product', cls: 'blue' }
+    ]
+  },
+  platform: {
+    cls: 'n-platform',
+    title: 'The platform packages and sells you',
+    body: 'Your signals become an ad profile - segmented by income, interests, politics, and emotional state - then auctioned to advertisers thousands of times per day.',
+    stats: [
+      { label: 'Meta earns $227/user/year (2024)', cls: 'purple' },
+      { label: 'Auction completes in 200ms', cls: 'purple' },
+      { label: 'Profile never shown to you', cls: 'purple' }
+    ]
+  },
+  advertiser: {
+    cls: 'n-advertiser',
+    title: 'Advertisers buy access to your attention',
+    body: 'Not your data - the right to reach you at the exact moment you are most likely to act. Goal: change what you buy, vote for, or believe.',
+    stats: [
+      { label: '$740B global digital ad spend (2025)', cls: 'amber' },
+      { label: 'Political ads use same system', cls: 'amber' },
+      { label: 'No platform vets ad intent', cls: 'amber' }
+    ]
+  },
+  change: {
+    cls: 'n-change',
+    title: 'Your responses train the system',
+    body: 'Every click, purchase, or scroll-past refines your profile. More precise profiles command higher ad prices.',
+    stats: [
+      { label: 'Click = confirmed interest signal', cls: 'red' },
+      { label: 'Ignore = negative training signal', cls: 'red' },
+      { label: 'Purchase = highest-value signal', cls: 'red' }
+    ]
+  },
+  loop: {
+    cls: 'n-loop',
+    title: 'The loop has no ceiling',
+    body: 'Better data improves targeting. Better targeting raises ad prices. Higher revenue funds features that keep you on the platform longer. Repeat.',
+    stats: [
+      { label: 'Your engagement = platform revenue', cls: 'green' },
+      { label: 'Wellbeing is not in the equation', cls: 'green' },
+      { label: 'No financial incentive to limit use', cls: 'green' }
+    ]
+  }
+};
+
+let activeNode = null;
+
+function showDetail(id) {
+  const d = details[id];
+  const panel = document.getElementById('detail-panel');
+
+  if (activeNode === id) {
+    panel.classList.remove('visible');
+    document.querySelectorAll('.chain-node').forEach(n => n.classList.remove('active'));
+    activeNode = null;
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+    return;
+  }
+
+  document.querySelectorAll('.chain-node').forEach(n => n.classList.remove('active'));
+  const nodes = { you: 0, platform: 1, advertiser: 2, change: 3, loop: 4 };
+  document.querySelectorAll('.chain-node')[nodes[id]].classList.add('active');
+  activeNode = id;
+
+  panel.className = 'detail-panel visible ' + d.cls;
+  panel.innerHTML = `
+    <h3>${d.title}</h3>
+    <p>${d.body}</p>
+    <div class="stat-row">
+      ${d.stats.map(s => `<span class="stat-chip ${s.cls}">${s.label}</span>`).join('')}
+    </div>`;
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+window.addEventListener('load', () => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'));
+</script>
+</body>
+</html>

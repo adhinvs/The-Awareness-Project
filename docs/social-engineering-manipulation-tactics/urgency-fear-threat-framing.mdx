@@ -10,25 +10,88 @@ import Quiz from '@site/src/components/Quiz';
 
 # Urgency, Fear & Threat Framing
 
-A calm message can get ignored. A message that says your account is frozen, your family is in danger, or the police are on their way? That triggers a reaction - and that is exactly the point.
+A calm message can be ignored. A message that says your account is frozen, your family is in danger, or the police are on their way? That triggers a reaction - and that is exactly the point.
+
+---
+
+## The Two-Hour Window
+
+Ananya was a school principal in Pune. On a Thursday afternoon, an SMS arrived from what appeared to be TRAI.
+
+> *"Your mobile number will be permanently deactivated in 2 hours due to KYC non-compliance. Verify immediately: [link]"*
+
+She clicked. The page looked official. She entered her mobile number and Aadhaar details to "verify her identity."
+
+Within 40 minutes, her number had been used to register for a fraudulent loan in her name. The KYC was never pending. The message was fabricated. **The deadline was the attack.**
+
+---
+
+## What Is Actually Happening: Manufactured Pressure
+
+Scammers cannot survive verification. So they eliminate the time required for it.
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>9 in 10</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>phishing victims who acted on an urgent message did so within the first 10 minutes - before verifying the sender.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>The manufactured deadline does not need to be believable. It only needs to be shorter than the time required for rational evaluation.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: Proofpoint State of the Phish Report, 2025</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Verification Collapse</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Deadlines Disable Checking</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Messages with a deadline under 2 hours are <b>3x more likely</b> to result in the victim acting without verifying the sender, compared to messages with no time pressure at all.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Behavioural Cybersecurity Research, 2024 (latest available)</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #DC2626', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#DC2626', fontWeight: 'bold' }}>Digital Arrest</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Rs 1,776 Crore Lost in 2024</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Digital arrest scams - where callers impersonate police or CBI and keep victims on the line for hours - were the <b>largest single category</b> of cybercrime financial loss in India in 2024, with over 92,000 reported cases.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: I4C Annual Cybercrime Report, Ministry of Home Affairs, published 2025 (latest available)</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>FOMO Exploitation</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>"Closing Today" Trap</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}><b>42% of investment fraud victims</b> cited a "closing today" or "limited slots remaining" message as the primary reason they did not verify the opportunity before investing.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: SEBI Investor Awareness Survey, 2024 (latest available)</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Tech Support Scams</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>$1 Billion Lost in a Single Year</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>In 2024, tech support fraud crossed <b>$1 billion in reported consumer losses</b> in the US for the first time — making it the top impersonation scam category reported to the FTC, driven almost entirely by fake pop-up alerts demanding an immediate call.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: FTC Consumer Sentinel Network Data Book, published February 2025</span>
+    </div>
+  </div>
+</div>
 
 ---
 
 ## How Manufactured Urgency Collapses the Verification Window
 
-Every time you receive a message, you have a choice: act, or verify first.
+Every scam message gives you a choice: act, or verify first. Verification takes minutes. A manufactured deadline makes those minutes feel impossible.
 
-**Verification takes time.** It means pausing, checking the sender, calling the real organisation, or asking someone you trust. Scammers cannot survive verification. So they eliminate it.
+> *"Your account will be suspended in 2 hours."* &nbsp; *"You have 10 minutes before the case is filed."* &nbsp; *"This offer expires at midnight."*
 
-They do this by **shrinking your decision window to almost zero.**
-
-> *"Your account will be suspended in 2 hours."*
-> *"You have 10 minutes to respond before the case is filed."*
-> *"This offer expires at midnight tonight."*
-
-These deadlines are invented. No real bank, government office, or court operates on a 2-hour response window for account matters. **Real institutions send written notices with days or weeks to respond.**
-
-The manufactured deadline serves one purpose: to force you to act before your rational mind can catch up with what is happening.
+These deadlines are invented. No real bank, government agency, or court operates on a 2-hour response window. **Real institutions send written notices with days or weeks to respond.** The deadline exists for one reason: to force action before rational thinking catches up.
 
 <figure style={{ margin: '32px 0', textAlign: 'center' }}>
   <img src="/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/verification-window.svg" alt="How scammers shrink your verification window compared to how real institutions operate." />
@@ -36,124 +99,63 @@ The manufactured deadline serves one purpose: to force you to act before your ra
 
 ---
 
-## Fear-Based Manipulation - Account Suspension, Arrest, Legal Threats
+## Fear-Based Manipulation: Account Suspension, Arrest, Legal Threats
 
-Fear is the most reliable tool in a scammer's kit. It bypasses logic and goes directly to instinct.
+Fear bypasses logic and goes straight to instinct. Scammers use three categories:
 
-Three categories of fear dominate these attacks.
+**Financial fear:** *"Your SBI account has been flagged. Verify now or it will be permanently closed."* Losing bank access feels catastrophic - and that feeling is the mechanism.
 
-### Financial fear - account and asset threats
+**Freedom fear (digital arrest):** *"A non-bailable warrant has been issued in your name."* The caller impersonates police or CBI, isolates the victim from family, and demands staged transfers. **There is no such thing as a digital arrest under Indian law.** No agency conducts arrests over a call.
 
-> *"Your SBI account has been flagged for suspicious activity. Verify now or your account will be permanently closed."*
+**Reputational fear:** *"We have evidence of illegal activity. Pay now or we notify your employer."* The threat is always fabricated. No legitimate agency operates this way.
 
-**Financial fear is the most common trigger in India-based scams.** Losing access to your bank account feels catastrophic - rent, groceries, family support, everything stops. Scammers know this. They frame the threat as immediate and irreversible.
+---
 
-### Freedom fear - arrest and legal threats
+## FOMO: Fear of Missing Out as a Manipulation Trigger
 
-> *"A non-bailable warrant has been issued in your name. You will be arrested unless you cooperate immediately."*
+Urgency is not always about punishment. Sometimes it is about reward disappearing.
 
-This is the **digital arrest scam**, which caused losses of over Rs 1,776 crore across India in 2024. The caller impersonates a police officer, CBI agent, or customs official. They keep you on the line for hours, isolated from family, transferring money in stages.
+> *"Only 3 seats left at this price."* &nbsp; *"Your KBC prize of Rs 25 lakh expires in 48 hours."* &nbsp; *"This investment window closes tonight."*
 
-**There is no such thing as a digital arrest under Indian law.** No agency conducts arrests over a phone call or video call.
-
-### Reputational fear - shame and exposure threats
-
-> *"We have evidence of illegal activity on your device. Pay now or we will notify your family and employer."*
-
-This variant targets embarrassment. The victim fears public exposure more than financial loss. **The threat is always fabricated.** No legitimate agency operates this way.
+The mechanism is identical to fear - the brain perceives a closing window and shifts into reactive mode. **A real opportunity does not disappear if you take 10 minutes to verify it.** That single test exposes every FOMO trap.
 
 <figure style={{ margin: '32px 0', textAlign: 'center' }}>
-  <img src="/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/fear-categories.svg" alt="The three categories of fear-based manipulation: financial, freedom, and reputational." />
+  <img src="/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/fomo-vs-fear.svg" alt="FOMO and fear-based urgency trigger the same brain response - only the emotion differs." />
 </figure>
 
 ---
 
-## FOMO - Fear of Missing Out as a Manipulation Trigger
+## Amygdala Hijack: Why Fear Makes People Act Before Thinking
 
-Urgency is not always about punishment. Sometimes it is about reward.
+The amygdala processes emotional responses - especially fear. When it detects danger, it signals the body to react immediately, **before the prefrontal cortex has time to evaluate what is actually happening.**
 
-**FOMO - fear of missing out - is a positive-urgency trap.** Instead of threatening loss, it promises gain that is about to disappear.
+Psychologist Daniel Goleman called this an "amygdala hijack" - the emotional brain overriding the thinking brain. The result is predictable: heart rate rises, attention narrows, the urge to act becomes overwhelming, and complex reasoning becomes difficult.
 
-> *"Only 3 seats left at this price. Book in the next 15 minutes."*
-> *"You have been selected for an exclusive investment opportunity. This offer closes tonight."*
-> *"Your KBC lottery prize of Rs 25 lakh will expire if unclaimed in 48 hours."*
-
-The mechanism is the same as fear-based urgency. The brain perceives the approaching deadline and shifts into reactive mode. **The desire to not miss out overrides the instinct to question whether the opportunity is real.**
-
-FOMO-based manipulation is common in:
-
-- Fake lottery and prize notifications
-- Investment and crypto "limited window" schemes
-- Flash sale scams impersonating Flipkart or Amazon
-- Fake job offers with "respond by today" deadlines
-
-The tell is always the same: **a real opportunity does not disappear if you take 10 minutes to verify it.**
+Scammers engineer this state deliberately. A message that triggers an amygdala hijack does not feel like a scam. It feels like a genuine emergency. **This is not a failure of intelligence. It is the brain working exactly as designed - exploited by someone who studied that design.**
 
 <figure style={{ margin: '32px 0', textAlign: 'center' }}>
-  <img src="/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/fomo-vs-fear.svg" alt="FOMO and fear-based urgency trigger the same brain response, only the emotion differs." />
+  <img src="/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/amygdala-hijack-flow.svg" alt="The amygdala hijack: how a threat message triggers a reaction before rational thinking can catch up." />
 </figure>
 
 ---
 
-## Amygdala Hijack - Why Fear Makes People Act Before Thinking
+## Tech Support Scams and Fake Device Warnings
 
-Understanding why urgency and fear work so well requires understanding one part of the brain: the **amygdala**.
+A full-screen pop-up appears in the browser mimicking a Windows Defender or Apple Security alert. An alarm plays. The window cannot be easily closed.
 
-The amygdala is a small, almond-shaped region that processes emotional responses - especially fear and threat. When it detects danger, it sends an immediate signal to the body: react now.
+> *"CRITICAL ALERT: Your device is infected. Call Microsoft Support immediately: 1800-XXX-XXXX. Do not close this window."*
 
-**This reaction happens before the prefrontal cortex - the part responsible for rational decision-making - has time to process what is happening.** Psychologist Daniel Goleman called this an "amygdala hijack": a moment when the emotional brain overrides the thinking brain.
+The pop-up is a webpage, not a system message. **Real operating systems never display a phone number and ask you to call for virus removal.** The number connects to a scam call centre that will ask for remote access, show you fabricated "evidence" of infection using normal system tools, and charge Rs 5,000-50,000 for fake removal software.
 
-The result is predictable:
-
-- Heart rate increases
-- Attention narrows to the threat
-- The instinct to act immediately becomes overwhelming
-- Complex reasoning becomes difficult
-
-Scammers engineer this state deliberately. **A message that triggers an amygdala hijack does not feel like a scam. It feels like a genuine emergency.** The physical sensation of fear makes the threat feel real, regardless of whether it is.
-
-This is why intelligent, educated people fall for these attacks. It is not a failure of intelligence. It is the brain working exactly as it was designed to - just exploited by someone who studied that design.
+**What to do:** Force-close the browser. On Windows: Ctrl + Shift + Esc. On Mac: Cmd + Option + Esc. The pop-up disappears the moment the browser closes.
 
 <figure style={{ margin: '32px 0', textAlign: 'center' }}>
-  <img src="/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/amygdala-hijack-flow.svg" alt="The amygdala hijack flow: how a threat message triggers a reaction before rational thinking can catch up." />
-</figure>
-
----
-
-## Tech Support Scams and Fake Device Warning Tactics
-
-Tech support scams are a specific category that combines all three tactics with a visual trigger: the fake alert.
-
-### How a tech support scam works
-
-A full-screen pop-up appears in the browser. It mimics a system security warning - Windows Defender, Microsoft, Apple, or a generic "Security Alert". An alarm sound plays. The pop-up cannot easily be closed.
-
-> *"CRITICAL ALERT: Your device has been infected with 5 viruses. Your personal data is at risk. Call Microsoft Support immediately: 1800-XXX-XXXX. Do not close this window."*
-
-The message creates all three conditions at once. **Urgency** comes from the immediate threat. **Fear** comes from the risk of data theft or device damage. **Threat framing** comes from the official-looking Microsoft branding and security terminology.
-
-### What is actually happening
-
-The pop-up is a webpage, not a system message. **Real operating systems never display a phone number and ask you to call for virus removal.** The number connects to a scam call centre where an agent will:
-
-1. Ask for remote access to your device
-2. Show you "evidence" of infection using normal system tools that look alarming to a non-technical user
-3. Charge Rs 5,000 to Rs 50,000 for fake "removal software"
-4. Sometimes install actual malware while pretending to fix it
-
-### What to do if you see one
-
-**Force-close the browser.** On Windows, use Task Manager (Ctrl + Shift + Esc). On Mac, use Force Quit (Cmd + Option + Esc). Do not call the number. Do not click anything inside the pop-up. The pop-up disappears the moment the browser closes.
-
-<figure style={{ margin: '32px 0', textAlign: 'center' }}>
-  <img src="/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/fake-vs-real-alert.svg" alt="Side-by-side comparison of a scam pop-up and a real OS security notice, showing what tells them apart." />
+  <img src="/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/fake-vs-real-alert.svg" alt="Side-by-side: what a scam pop-up looks like vs. a real OS security notice." />
 </figure>
 
 ---
 
 ## Try It: Beat the Clock
-
-The simulation below recreates an urgent bank alert with a live countdown. Make a choice - then see exactly what was powering that deadline and why it was never real.
 
 <iframe
   id="urgency-simulator-iframe"
@@ -177,64 +179,49 @@ The simulation below recreates an urgent bank alert with a live countdown. Make 
 
 ---
 
-## The Pause-and-Verify Rule - Breaking the Urgency Trap
+## What That Just Showed You
 
-Every tactic covered in this module has one vulnerability: **it stops working the moment you pause.**
+**1. The deadline is the weapon, not the threat.**
+The account suspension, the arrest warrant, the expiring offer - none of these exist. The countdown is the attack. Remove the deadline and the scam has no leverage.
 
-The amygdala hijack lasts seconds to minutes. Once the initial spike passes, rational thinking returns. Scammers know this, which is why they layer urgency on top of fear - to keep the hijack going long enough for you to act.
+**2. The link in the message is the trap.**
+In every urgency scam, the message contains both the threat and the solution. That combination is the red flag. Real institutions do not resolve problems through links they send you.
 
-**The pause-and-verify rule is simple:** when a message or call makes you feel urgency or fear, treat that feeling as a signal to slow down, not speed up.
+**3. The amygdala spike lasts minutes - not hours.**
+Manufactured urgency depends on you acting before the initial fear response passes. If you outlast it, rational thinking returns automatically. Scammers layer the urgency precisely to prevent this.
 
-### How to apply it
+**4. Force-closing is always safe.**
+No browser pop-up can damage your device or lock your account. Whatever the warning says, closing the browser window ends it completely.
 
-1. **Stop.** Do not click, call, or transfer anything. Put the phone down if you need to.
+---
 
-2. **Name the tactic.** Say it out loud: "This message is trying to make me feel rushed." Naming the manipulation reduces its power.
+## The Pause-and-Verify Rule
 
-3. **Verify independently.** Find the official number for the organisation yourself - from their website, your bank card, or a previous statement. Call that number, not any number in the message.
+Every urgency tactic has one vulnerability: it stops working the moment you pause.
 
-4. **Tell someone.** A trusted person in the room breaks the isolation scammers depend on. Saying "I got a strange call" out loud is often enough to restore clarity.
+1. **Stop.** Put the phone down. Do not click, call, or transfer anything.
+2. **Name the tactic.** Say it out loud: "This is trying to make me feel rushed." Naming it reduces its power.
+3. **Verify independently.** Find the real organisation's number from their official website, your card, or a previous statement. Call that — not any number in the message.
+4. **Tell someone.** A trusted person in the room breaks the isolation these scams depend on.
+5. **Report it.** File at [cybercrime.gov.in](https://cybercrime.gov.in) or call **1930**.
 
-5. **Check the source.** Hover over email sender addresses. Look at the actual URL, not the display text. Check that SMS sender IDs match the official format.
-
-6. **Report it.** If it was a scam, report it at [cybercrime.gov.in](https://cybercrime.gov.in) or call **1930**. Reporting helps protect others.
-
-<figure style={{ margin: '32px 0', textAlign: 'center' }}>
-  <img src="/img/social-engineering-manipulation-tactics/urgency-fear-threat-framing/pause-and-verify-steps.svg" alt="The six steps of the pause-and-verify rule." />
-</figure>
-
-:::tip 
-
-The rule in one sentence
-If a message makes you feel scared or rushed - that is not a reason to act fast. That is a reason to pause.
-
-Real emergencies give you time to verify. Manufactured ones do not.
+:::tip
+If a message makes you feel scared or rushed — that is not a reason to act fast. That is a reason to pause. Real emergencies give you time to verify. Manufactured ones do not.
 :::
 
 ---
 
-## Red Flags Reference
+## Red Flag Reference
 
 | Signal | What it means |
 |---|---|
 | Deadline under 24 hours | Designed to prevent verification |
-| Threat of arrest, suspension, or legal action | Fear framing - verify before reacting |
-| "Do not tell anyone" or "Do not hang up" | Isolation tactic - always a red flag |
-| Link or attachment to "verify" | Likely a credential-stealing fake page |
+| Threat of arrest, suspension, or legal action | Fear framing — verify before reacting |
+| "Do not tell anyone" or "Do not hang up" | Isolation tactic — always a red flag |
+| Link or attachment to "verify" | Likely a credential-harvesting page |
 | Payment by gift card, crypto, or UPI to a stranger | No legitimate authority uses these |
-| Official branding in a pop-up with a phone number | Tech support scam - force-close the browser |
-| Prize or reward expiring today | FOMO trap - real prizes do not expire in hours |
-
----
-
-## Key Takeaways
-
-- **Manufactured urgency shrinks the verification window** so you act before you can think
-- **Fear targets what you care about most** - money, freedom, family, reputation
-- **FOMO is urgency disguised as opportunity** - the same brain response, a different emotion
-- **The amygdala hijack is a physical response** - it is not a failure of intelligence
-- **Tech support scams use fake browser pop-ups** - force-close the browser, never call the number
-- **The pause-and-verify rule breaks every urgency trap** - slow down when you feel rushed
+| Official branding in a browser pop-up with a phone number | Tech support scam — force-close |
+| Prize or reward expiring today | FOMO trap — real prizes do not expire in hours |
 
 ---
 
@@ -246,7 +233,7 @@ Real emergencies give you time to verify. Manufactured ones do not.
     {
       label: "Click the link in the message immediately to verify before the deadline.",
       correct: false,
-      explanation: "Clicking the link is exactly what the attacker needs. The deadline is invented. Clicking takes you to a fake page designed to capture your credentials."
+      explanation: "Clicking the link is exactly what the attacker needs. The deadline is invented. The link leads to a fake page designed to capture your credentials."
     },
     {
       label: "Call the number provided in the message to speak to an agent.",

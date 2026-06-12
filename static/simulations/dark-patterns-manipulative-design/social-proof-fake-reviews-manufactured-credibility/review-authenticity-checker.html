@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review Authenticity Checker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #FFFFFF; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --green: #16A34A; --green-bg: #F0FDF4;
+      --red: #DC2626; --red-bg: #FEF2F2;
+      --amber: #D97706; --amber-bg: #FFFBEB;
+      --font: 'Poppins', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 20px 48px; max-width: 640px; margin: 0 auto; }
+
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; background: #1E293B; color: #fff; }
+    h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+
+    .product-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0; }
+    .product-btn { padding: 12px; border: 2px solid var(--border); border-radius: 10px; cursor: pointer; background: var(--bg); transition: all 0.15s; text-align: center; font-family: var(--font); }
+    .product-btn:hover { border-color: var(--blue); background: var(--blue-faint); }
+    .product-btn.selected { border-color: var(--blue); background: var(--blue-faint); }
+    .product-emoji { font-size: 1.8rem; display: block; margin-bottom: 4px; }
+    .product-name { font-size: 0.78rem; font-weight: 600; display: block; }
+    .product-rating { font-size: 0.7rem; color: var(--text-3); }
+
+    .check-panel { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 16px 0; display: none; }
+    .check-panel.show { display: block; }
+    .check-header { background: var(--bg-2); padding: 14px 18px; border-bottom: 1px solid var(--border); font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
+
+    .signal-row { padding: 12px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 12px; cursor: pointer; transition: background 0.1s; }
+    .signal-row:hover { background: var(--bg-2); }
+    .signal-row:last-child { border-bottom: none; }
+    .signal-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .signal-content { flex: 1; }
+    .signal-title { font-size: 0.85rem; font-weight: 600; margin-bottom: 2px; }
+    .signal-detail { font-size: 0.78rem; color: var(--text-3); }
+    .signal-badge { font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; flex-shrink: 0; margin-top: 2px; }
+    .flag { background: var(--red-bg); color: var(--red); }
+    .ok { background: var(--green-bg); color: var(--green); }
+    .warn { background: var(--amber-bg); color: var(--amber); }
+
+    .explain { display: none; background: #F8FAFC; border-top: 1px solid var(--border); padding: 12px 18px; font-size: 0.8rem; color: var(--text-2); line-height: 1.5; }
+    .explain.show { display: block; }
+
+    .verdict { border-radius: 10px; padding: 16px 18px; margin: 16px 0; display: none; }
+    .verdict.show { display: block; }
+    .verdict-title { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .verdict-text { font-size: 0.82rem; line-height: 1.5; }
+    .verdict.suspicious { background: var(--red-bg); border: 1px solid #FECACA; }
+    .verdict.suspicious .verdict-title { color: var(--red); }
+    .verdict.caution { background: var(--amber-bg); border: 1px solid #FCD34D; }
+    .verdict.caution .verdict-title { color: var(--amber); }
+    .verdict.clean { background: var(--green-bg); border: 1px solid #86EFAC; }
+    .verdict.clean .verdict-title { color: var(--green); }
+
+    .reset-btn { display: block; width: 100%; padding: 12px; background: var(--bg-2); color: var(--text-2); border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 0.85rem; cursor: pointer; margin-top: 12px; }
+  </style>
+</head>
+<body>
+
+  <div class="tag">Module 47 - Tool</div>
+  <h2>Review Authenticity Checker</h2>
+  <p>Select a product to analyse its review signals. Tap each signal to see what it means.</p>
+
+  <div class="product-selector">
+    <button class="product-btn" id="btn-a" onclick="analyse('a')">
+      <span class="product-emoji">🎧</span>
+      <span class="product-name">ProSound XR</span>
+      <span class="product-rating">⭐ 4.9 · 3,847 reviews</span>
+    </button>
+    <button class="product-btn" id="btn-b" onclick="analyse('b')">
+      <span class="product-emoji">💊</span>
+      <span class="product-name">VitaMax Tablets</span>
+      <span class="product-rating">⭐ 4.8 · 2,213 reviews</span>
+    </button>
+    <button class="product-btn" id="btn-c" onclick="analyse('c')">
+      <span class="product-emoji">🔧</span>
+      <span class="product-name">WorkPro Toolkit</span>
+      <span class="product-rating">⭐ 4.4 · 789 reviews</span>
+    </button>
+    <button class="product-btn" id="btn-d" onclick="analyse('d')">
+      <span class="product-emoji">🧴</span>
+      <span class="product-name">GlowSkin Serum</span>
+      <span class="product-rating">⭐ 4.7 · 1,102 reviews</span>
+    </button>
+  </div>
+
+  <div class="check-panel" id="check-panel">
+    <div class="check-header">
+      <span id="product-name-display"></span>
+      <span style="font-size:0.75rem; color:var(--text-3); font-weight:400; margin-left:auto;">Tap each signal to learn more</span>
+    </div>
+    <div id="signals-container"></div>
+  </div>
+
+  <div class="verdict" id="verdict">
+    <div class="verdict-title" id="verdict-title"></div>
+    <div class="verdict-text" id="verdict-text"></div>
+  </div>
+
+  <button class="reset-btn" id="reset-btn" style="display:none;" onclick="reset()">Analyse a different product</button>
+
+<script>
+  const products = {
+    a: {
+      name: 'ProSound XR Headphones',
+      verdict: 'suspicious',
+      verdictTitle: 'High suspicion of fake reviews',
+      verdictText: '4 red flags detected. The reviewer age cluster, single-category reviewing pattern, and identical 5-star language are strong indicators of coordinated review manipulation. The rating is likely inflated by 0.5-1.0 stars.',
+      signals: [
+        { icon: '📅', title: 'Review date clustering', detail: '847 reviews posted in a 4-day window', badge: 'flag', explain: 'A spike of 847 reviews in 4 days indicates a coordinated campaign, not organic customers. Amazon removed 200 million fake reviews in 2023 — most were identified by this exact burst pattern.' },
+        { icon: '👤', title: 'Reviewer account age', detail: '68% of 5-star reviewers have accounts under 30 days old', badge: 'flag', explain: 'Accounts created specifically to leave one review are a primary fake review signal. Real customers have purchase histories across multiple product categories over months or years.' },
+        { icon: '🔁', title: 'Single-category reviewing', detail: '71% of reviewers have only reviewed this product type', badge: 'flag', explain: 'Real customers review a variety of products. Reviewers who have only ever reviewed one brand or category are likely incentivised or paid.' },
+        { icon: '📝', title: 'Language uniformity', detail: 'Top 20 reviews share 14 identical phrases', badge: 'flag', explain: 'Organic reviews vary in language and focus. When top reviews share identical phrasing, the reviews were written from a template or brief — not from independent experience.' },
+        { icon: '✅', title: 'Verified purchase flag', detail: '83% are verified purchases', badge: 'ok', explain: 'Verified purchase confirms a transaction occurred, not an independent review. Review farms buy items specifically to generate this label, then return them.' }
+      ]
+    },
+    b: {
+      name: 'VitaMax Tablets',
+      verdict: 'suspicious',
+      verdictTitle: 'High suspicion - health product review manipulation',
+      verdictText: '3 red flags detected. Health and supplement products are among the most heavily review-manipulated categories on all major platforms. The 5-star concentration and language patterns here are consistent with paid review campaigns.',
+      signals: [
+        { icon: '⭐', title: '5-star concentration', detail: '94% of reviews are 5 stars - 3% are 1-2 stars', badge: 'flag', explain: 'Natural review distributions include a meaningful proportion of 3-star and below. A 94% five-star rating with almost no negative reviews suggests positive reviews are manufactured or negative ones suppressed.' },
+        { icon: '🏥', title: 'Medical claim language', detail: 'Reviews contain regulated health claims not in product description', badge: 'flag', explain: 'Sellers sometimes plant reviews with health claims they cannot legally make on the product page itself. "Cured my condition" in a review is often a deliberate workaround for advertising regulations.' },
+        { icon: '📅', title: 'Review age', detail: 'Product launched 6 weeks ago - 2,213 reviews already posted', badge: 'flag', explain: '2,213 reviews in 6 weeks is 52 per day. Organic products average 1–5 reviews per day. This rate is only achievable through a paid campaign.' },
+        { icon: '💬', title: 'Critical review ratio', detail: '3-star and below: 6% - consistent with platform average', badge: 'warn', explain: 'Unusually low critical reviews on a new product suggest suppression, but alone this is not conclusive. Look at it alongside the other signals.' }
+      ]
+    },
+    c: {
+      name: 'WorkPro Toolkit',
+      verdict: 'clean',
+      verdictTitle: 'Review pattern looks authentic',
+      verdictText: 'No significant red flags. The review distribution, account age spread, and language variation are consistent with organic reviews from real customers. A 4.4 rating with meaningful critical reviews is a more reliable signal than a perfect 5.0.',
+      signals: [
+        { icon: '📊', title: 'Review distribution', detail: '5★: 62% · 4★: 18% · 3★: 9% · 2★: 5% · 1★: 6%', badge: 'ok', explain: 'A realistic distribution with meaningful 3-star and below reviews. A 4.4 rating with real negative feedback is often more trustworthy than a 4.9 with almost no criticism.' },
+        { icon: '👤', title: 'Reviewer account age', detail: 'Account ages spread evenly across 6 months to 5 years', badge: 'ok', explain: 'A healthy spread of account ages with varied purchase histories indicates real customers — not accounts created for a single campaign.' },
+        { icon: '📝', title: 'Review content variety', detail: 'Reviews mention specific use cases, failures, and comparisons', badge: 'ok', explain: 'Authentic reviews reference specific details: a part that broke, a comparison to a previous product, a specific task it was used for. Specific mixed feedback is more credible than generic praise.' },
+        { icon: '📅', title: 'Review accumulation rate', detail: 'Product 14 months old - 789 reviews (avg 1.8/day)', badge: 'ok', explain: '1.8 reviews per day over 14 months is consistent with a moderately popular product. No suspicious spikes detected.' }
+      ]
+    },
+    d: {
+      name: 'GlowSkin Serum',
+      verdict: 'caution',
+      verdictTitle: 'Mixed signals - proceed with caution',
+      verdictText: '2 warning signals detected. The review date spike and influencer language pattern suggest some reviews may be incentivised. The product may be good, but the review count is likely inflated.',
+      signals: [
+        { icon: '📅', title: 'Moderate review spike', detail: '180 reviews posted in one week - likely influencer campaign', badge: 'warn', explain: '180 reviews in one week is consistent with an influencer gifting campaign — products sent free in exchange for reviews. These may be genuine experiences, but free-product bias skews them positive.' },
+        { icon: '📸', title: 'Photo review pattern', detail: 'High photo review rate (43%) - unusual for this category', badge: 'warn', explain: 'Incentivised reviewers are often asked to leave photo reviews because they appear more credible. A high proportion of professional-looking photo reviews can indicate a managed campaign.' },
+        { icon: '⭐', title: 'Rating distribution', detail: '5★: 71% · with 12% 1-star reviews', badge: 'ok', explain: 'The presence of 12% one-star reviews suggests negative feedback is not being suppressed — more consistent with a mixed genuine-and-incentivised base than a fully fake set.' },
+        { icon: '✅', title: 'Verified purchase rate', detail: '79% verified purchases', badge: 'ok', explain: 'A high verified purchase rate is a positive signal. Combined with the spike and photo pattern, this product likely has a real customer base alongside an inflated review count.' }
+      ]
+    }
+  };
+
+  function analyse(id) {
+    document.querySelectorAll('.product-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('btn-' + id).classList.add('selected');
+
+    const p = products[id];
+    document.getElementById('product-name-display').textContent = p.name;
+
+    const container = document.getElementById('signals-container');
+    container.innerHTML = '';
+    p.signals.forEach((sig, i) => {
+      const row = document.createElement('div');
+      row.innerHTML = `
+        <div class="signal-row" onclick="toggleExplain('exp-${id}-${i}')">
+          <div class="signal-icon">${sig.icon}</div>
+          <div class="signal-content">
+            <div class="signal-title">${sig.title}</div>
+            <div class="signal-detail">${sig.detail}</div>
+          </div>
+          <span class="signal-badge ${sig.badge}">${sig.badge === 'flag' ? '🚩 Red flag' : sig.badge === 'warn' ? '⚠️ Warning' : '✅ OK'}</span>
+        </div>
+        <div class="explain" id="exp-${id}-${i}">${sig.explain}</div>`;
+      container.appendChild(row);
+    });
+
+    const verdict = document.getElementById('verdict');
+    verdict.className = 'verdict show ' + p.verdict;
+    document.getElementById('verdict-title').textContent = p.verdictTitle;
+    document.getElementById('verdict-text').textContent = p.verdictText;
+
+    document.getElementById('check-panel').classList.add('show');
+    document.getElementById('reset-btn').style.display = 'block';
+    sendHeight();
+  }
+
+  function toggleExplain(id) {
+    document.getElementById(id).classList.toggle('show');
+    sendHeight();
+  }
+
+  function reset() {
+    document.querySelectorAll('.product-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('check-panel').classList.remove('show');
+    document.getElementById('verdict').classList.remove('show');
+    document.getElementById('reset-btn').style.display = 'none';
+    sendHeight();
+  }
+
+  function sendHeight() {
+    setTimeout(() => {
+      window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+    }, 100);
+  }
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>

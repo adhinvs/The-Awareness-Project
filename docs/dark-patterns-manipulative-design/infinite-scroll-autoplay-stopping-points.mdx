@@ -2,14 +2,193 @@
 sidebar_position: 5
 title: "Infinite Scroll, Autoplay & Stopping Points"
 sidebar_label: "Infinite Scroll, Autoplay & Stopping Points"
+description: "How infinite scroll, autoplay, and the removal of time cues are designed to eliminate natural stopping points and maximise time on platform."
+tags: [dark-patterns, infinite-scroll, autoplay, attention-economy, time-on-platform, stopping-points, digital-wellbeing, social-media-design]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Infinite Scroll, Autoplay & Stopping Points
 
-## Sub-topics
+Every book has a last page. Every TV episode ends. These are natural stopping points. The feed was specifically designed to have none.
 
-- Infinite scroll — no natural ending point by design
-- Autoplay preventing intentional pausing
-- Recommendation algorithms that never stop
-- Removal of time indicators — losing track of time
-- Psychological addiction by deliberate design
+---
+
+## The Hour She Did Not Choose to Spend
+
+Leila opened Instagram to check one message. She checked it.
+
+Then she scrolled. A recipe. A holiday photo. A news headline. A funny video that started automatically before she tapped it. Then another video that started the moment the first ended.
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/dark-patterns-manipulative-design/infinite-scroll-autoplay-stopping-points/infinite-scroll.webp"
+    alt="A person looking at a phone screen with a continuous feed of content and no visible end or exit point."
+  />
+</figure>
+
+She looked up. Fifty-three minutes had passed.
+
+She had not decided to spend 53 minutes on Instagram. There was no point at which the interface said "you've seen everything new." There was no natural end. The feed loaded more content every time she reached the bottom. The back button was not where she expected it.
+
+**She had been kept in the feed - not because she wanted to stay, but because leaving required an active decision the interface made as hard as possible.**
+
+---
+
+## What Is Actually Happening
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>300ft</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>of content scrolled per day by the average mobile user - roughly the height of a 30-story building.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>This number exists because the interface was designed to produce it.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: Dscout Mobile Research, 2023</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Autoplay Impact</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>20% Longer Sessions with Autoplay</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Internal YouTube data cited by a former Google engineer found that <b>removing autoplay reduced session time by approximately 20%.</b> The feature was kept specifically because of this effect.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Guillaume Chaslot, YouTube Algorithm Research, 2019</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Design Admission</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Aza Raskin's Regret</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Aza Raskin, who invented infinite scroll, has publicly stated he regrets it. He estimates it causes <b>200,000 additional hours of scrolling globally per day.</b> He did not anticipate the compulsive use it would enable.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Aza Raskin, BBC Interview, 2018</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #3B82F6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#3B82F6', fontWeight: 'bold' }}>Time Perception</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>No Clock = Lost Time</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Most social apps remove or minimise the system clock from their interface. Studies show users significantly <b>underestimate time spent on platforms by 26-40%</b> when no time cue is visible within the app.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Journal of Experimental Psychology: Applied, 2022</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Regulation</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>EU DSA Requires Stopping Points</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>The EU's Digital Services Act (2024) requires major platforms to provide users with options to disable <b>infinite scroll and autoplay</b> - recognising these features as deliberately addictive by design.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: EU Digital Services Act, Article 27, 2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## What Was Removed from the Interface
+
+Natural stopping points exist in almost every other medium. A magazine runs out of pages. A TV episode ends. A newspaper has a back page. These endings give your brain a cue to stop and decide whether to continue.
+
+Social media apps deliberately removed these cues:
+
+**Infinite scroll** loads new content before you reach the bottom. There is never a "you're caught up" moment - or if there is, it is hidden and easy to scroll past.
+
+**Autoplay** removes the gap between videos where you would naturally decide whether to watch another. The next video starts at 95% completion of the current one - before your conscious decision-making can engage.
+
+**Removed time indicators** take the clock off the visible interface. Without time cues, sessions feel shorter than they are.
+
+**Buried exit paths** make the back button hard to find, or suppress the native back gesture inside the app. Leaving requires an active choice that the interface makes as unintuitive as possible.
+
+Each of these is a feature, not a bug. Each was A/B tested. Each survived because it increased time on platform.
+
+---
+
+## Try It: Find the Exit
+
+You opened the app to check one thing. The timer starts now. Find the exit when you are ready.
+
+<iframe
+  id="scroll-iframe"
+  src="/simulations/dark-patterns-manipulative-design/infinite-scroll-autoplay-stopping-points/find-the-exit.html"
+  width="100%"
+  style={{ height: '700px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Find the Exit"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('scroll-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._scrollHandler);
+    window._scrollHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. The exit was not visible immediately.**
+It appeared after 20 seconds - long enough for the feed to begin doing its work. In a real app, you would have continued scrolling while looking for it.
+
+**2. Autoplay started before you chose to watch.**
+The video loaded before you tapped. That removed one decision point - the moment where you consciously choose to continue.
+
+**3. New content loaded before you reached the bottom.**
+The feed never ended. Every time you neared the last visible post, more were added. There was no natural finish line.
+
+**4. The back button was missing.**
+This is a real pattern in mobile apps. Suppressing the native back gesture keeps you inside the app's navigation stack - where every "back" action leads to another screen rather than out.
+
+---
+
+## Three Things Worth Doing
+
+**1. Enable app time limits.**
+Both iOS Screen Time and Android Digital Wellbeing allow per-app time limits with a hard lock. Setting a 20-minute daily limit on feed apps does not require willpower - it removes the decision entirely.
+
+**2. Turn on autoplay controls.**
+YouTube, Netflix, and most video platforms have autoplay settings. Turning autoplay off reintroduces the natural gap between videos where you can decide to stop.
+
+**3. Use the platform's "caught up" feature if it exists.**
+Some platforms now offer "you're all caught up" markers. Treating this as a stopping point - rather than scrolling past it into older content - restores the natural ending that was deliberately removed.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Leila spent 53 minutes on Instagram when she only intended to check one message. Which design feature most directly prevented her from stopping at a natural point?"
+  options={[
+    {
+      label: "She had poor self-control and should have set a timer before opening the app.",
+      correct: false,
+      explanation: "Self-control framing places the responsibility on the user for a designed outcome. Infinite scroll was specifically built to eliminate the natural stopping points that other media provide. Expecting users to manufacture their own stopping points for a medium that removed them is a design problem, not a character flaw."
+    },
+    {
+      label: "Infinite scroll and autoplay removed natural stopping points - every stopping moment required an active decision that the interface made unintuitive.",
+      correct: true,
+      explanation: "Correct. Natural stopping points - the end of a page, the end of an episode, the back of a magazine - give the brain a cue to decide whether to continue. Infinite scroll eliminates the cue. Every exit requires active decision-making against a flow designed to eliminate those moments. The 53 minutes was the designed outcome."
+    },
+    {
+      label: "The content was too interesting to stop - this is a content quality issue, not a design issue.",
+      correct: false,
+      explanation: "Content quality does not explain the pattern. The same type of content in a medium with natural stopping points - a magazine, a TV schedule - produces significantly less unintended consumption. The design, not the content, is what removed the stopping point."
+    },
+    {
+      label: "She should have closed the app after checking her message.",
+      correct: false,
+      explanation: "This is technically true but misses the point. The interface was designed so that the transition from the message to the feed was seamless and immediate - with new content already loaded and visible before she consciously decided to look at it. 'Just close the app' requires overriding a designed flow, not following one."
+    }
+  ]}
+/>

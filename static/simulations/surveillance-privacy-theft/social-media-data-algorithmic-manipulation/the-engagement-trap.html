@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Engagement Trap</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #FFFFFF; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --red: #DC2626; --red-bg: #FEF2F2;
+      --amber: #D97706; --amber-bg: #FFFBEB;
+      --purple: #7C3AED; --purple-bg: #F5F3FF;
+      --font: 'Poppins', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 20px 48px; max-width: 600px; margin: 0 auto; }
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; background: #1E293B; color: #fff; }
+    h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .feed-card { border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; margin: 12px 0; transition: border-color 0.2s; }
+    .feed-card:hover { border-color: #93C5FD; }
+    .feed-header { padding: 12px 14px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .feed-username { font-size: 0.82rem; font-weight: 600; }
+    .feed-time { font-size: 0.7rem; color: var(--text-3); }
+    .feed-body { padding: 14px; }
+    .feed-text { font-size: 0.85rem; color: var(--text-2); line-height: 1.55; margin-bottom: 10px; }
+    .feed-actions { display: flex; gap: 8px; }
+    .act-btn { flex: 1; padding: 7px; border: 1.5px solid var(--border); border-radius: 7px; background: #fff; font-family: var(--font); font-size: 0.75rem; cursor: pointer; transition: all 0.15s; color: var(--text-2); }
+    .act-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .act-btn.skip { color: var(--text-3); }
+    .post-counter { font-size: 0.75rem; color: var(--text-3); margin-bottom: 8px; text-align: right; }
+
+    .signal-flash { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: rgba(0,0,0,0.7); color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 100; }
+    .signal-flash.show { opacity: 1; }
+
+    .inferred-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); gap: 10px; }
+    .inferred-row:last-child { border-bottom: none; }
+    .inf-attr { font-size: 0.82rem; font-weight: 600; flex: 1; }
+    .inf-source { font-size: 0.75rem; color: var(--text-3); flex: 1.5; }
+    .inf-badge { font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 12px; white-space: nowrap; }
+    .inf-badge.high { background: var(--red-bg); color: var(--red); }
+    .inf-badge.mid { background: var(--amber-bg); color: var(--amber); }
+
+    .profile-reveal { border: 1.5px solid #FECACA; border-radius: 12px; padding: 18px; margin-bottom: 16px; background: var(--red-bg); }
+    .profile-title { font-size: 0.85rem; font-weight: 700; color: var(--red); margin-bottom: 12px; }
+
+    .insight-box { background: var(--bg-2); border-left: 3px solid var(--blue); border-radius: 0 8px 8px 0; padding: 12px 14px; margin-bottom: 10px; font-size: 0.82rem; color: var(--text-2); line-height: 1.5; }
+
+    .btn-primary { width: 100%; padding: 12px; background: var(--blue); color: #fff; border: none; border-radius: 8px; font-family: var(--font); font-size: 0.88rem; font-weight: 700; cursor: pointer; margin-top: 8px; }
+    .btn-primary:hover { background: #1D4ED8; }
+  </style>
+</head>
+<body>
+
+  <div class="tag">Module 60 - Simulation</div>
+  <h2>The Engagement Trap</h2>
+  <p>Scroll through 8 posts. Click what interests you. Skip what doesn't. The algorithm is watching.</p>
+
+  <div class="signal-flash" id="signal">Signal recorded</div>
+
+  <!-- Intro -->
+  <div class="screen active" id="intro">
+    <div style="background:var(--bg-2); border-radius:12px; padding:18px; margin:16px 0; border:1px solid var(--border);">
+      <p style="margin:0; font-size:0.88rem; color:var(--text-2);">For each post: <strong>Like</strong> if it interests you, <strong>Pause</strong> if you'd stop to read, or <strong>Skip</strong> to move on. You don't need to be honest - just act naturally. The algorithm doesn't need you to be honest either.</p>
+    </div>
+    <button class="btn-primary" onclick="showPost(0)">Start Scrolling</button>
+  </div>
+
+  <!-- Feed posts -->
+  <div class="screen" id="feed">
+    <div class="post-counter">Post <span id="post-num">1</span> of 8</div>
+    <div id="post-container"></div>
+  </div>
+
+  <!-- Results -->
+  <div class="screen" id="results">
+    <p style="font-weight:600; margin-bottom:4px;">Based on your 8 interactions, here is the algorithm's inferred profile of you.</p>
+    <p style="font-size:0.8rem; color:var(--text-3); margin-bottom:14px;">You interacted with content for <span id="total-time"></span> seconds total.</p>
+
+    <div class="profile-reveal">
+      <div class="profile-title">Algorithm's Inferred Profile</div>
+      <div id="inferred-list"></div>
+    </div>
+
+    <div class="insight-box">You made no purchases. You shared nothing personal. You simply paused, liked, or skipped. That was enough to build this profile - and to begin showing you content designed to deepen each inference.</div>
+    <div class="insight-box">Platforms do not need you to act on content to learn from it. <strong>Dwell time</strong> - how long you pause on a post before scrolling - is one of the strongest signals. Pausing 2 seconds longer than average on a post counts as engagement even if you keep scrolling.</div>
+
+    <button class="btn-primary" onclick="restart()">Try Again</button>
+  </div>
+
+  <script>
+    const posts = [
+      {
+        avatar: '#3B82F6', initials: 'NW',
+        username: 'NationalWatch_UK', time: '2h ago',
+        text: 'BREAKING: Government announces plan to means-test winter fuel payments. Thousands of pensioners could lose support by next winter.',
+        signal: 'Political content engagement',
+        infer: { attr: 'Political interest', source: 'Engaged with government policy news', conf: 'high' }
+      },
+      {
+        avatar: '#10B981', initials: 'FH',
+        username: 'FitnessByHanna', time: '4h ago',
+        text: 'Day 47 of my cut. Down 8kg. Tracking macros religiously. Anyone else finding the last 5kg the hardest? 💪',
+        signal: 'Health/fitness content',
+        infer: { attr: 'Health-conscious', source: 'Engaged with weight loss content', conf: 'mid' }
+      },
+      {
+        avatar: '#F59E0B', initials: 'IC',
+        username: 'InvestingCommunity', time: '5h ago',
+        text: 'The 4% rule is dead. With current inflation and sequence-of-returns risk, most FIRE calculators are wildly optimistic. Thread below.',
+        signal: 'Financial content engagement',
+        infer: { attr: 'Financial anxiety / FIRE interest', source: 'Engaged with investment content', conf: 'high' }
+      },
+      {
+        avatar: '#EF4444', initials: 'TP',
+        username: 'TruthPulse', time: '6h ago',
+        text: 'Why is no one talking about what\'s REALLY happening at the border? Mainstream media won\'t touch this story.',
+        signal: 'Conspiratorial content',
+        infer: { attr: 'Receptive to alternative narratives', source: 'Engaged with fringe media framing', conf: 'high' }
+      },
+      {
+        avatar: '#8B5CF6', initials: 'PD',
+        username: 'ParentingDiaries', time: '7h ago',
+        text: 'School run at -3°C, forgotten PE kit, toddler meltdown in Tesco. This is fine. We\'re fine. ☕',
+        signal: 'Parenting content',
+        infer: { attr: 'Parent / young children', source: 'Engaged with parenting relatable content', conf: 'mid' }
+      },
+      {
+        avatar: '#0D9488', initials: 'MH',
+        username: 'MindfulHabits', time: '9h ago',
+        text: 'A therapist told me: the anxious thought isn\'t the problem. Your relationship with it is. This took me years to understand.',
+        signal: 'Mental health content',
+        infer: { attr: 'Mental health interest / anxiety', source: 'Paused on therapy/anxiety content', conf: 'high' }
+      },
+      {
+        avatar: '#F97316', initials: 'EV',
+        username: 'EVDriversClub', time: '11h ago',
+        text: 'Just hit 100,000 miles on my Model Y. Total fuel saved vs. equivalent diesel: £14,200. Thread on running costs.',
+        signal: 'EV/sustainability interest',
+        infer: { attr: 'EV purchase intent', source: 'Engaged with electric vehicle content', conf: 'mid' }
+      },
+      {
+        avatar: '#64748B', initials: 'SN',
+        username: 'SkepticalNews', time: '12h ago',
+        text: 'Reminder that every "free" service online is monetising your attention. You are the product. You have always been the product.',
+        signal: 'Privacy awareness content',
+        infer: { attr: 'Privacy-conscious', source: 'Engaged with tech criticism content', conf: 'mid' }
+      }
+    ];
+
+    const actions = {};
+    const startTimes = {};
+    let currentPost = 0;
+    let sessionStart;
+
+    function showPost(i) {
+      currentPost = i;
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('feed').classList.add('active');
+      document.getElementById('post-num').textContent = i + 1;
+      startTimes[i] = Date.now();
+
+      const p = posts[i];
+      document.getElementById('post-container').innerHTML = `
+        <div class="feed-card">
+          <div class="feed-header">
+            <div class="avatar" style="background:${p.avatar}">${p.initials}</div>
+            <div><div class="feed-username">${p.username}</div><div class="feed-time">${p.time}</div></div>
+          </div>
+          <div class="feed-body">
+            <div class="feed-text">${p.text}</div>
+            <div class="feed-actions">
+              <button class="act-btn" onclick="recordAction(${i},'like')">👍 Like</button>
+              <button class="act-btn" onclick="recordAction(${i},'pause')">👀 Pause to Read</button>
+              <button class="act-btn skip" onclick="recordAction(${i},'skip')">→ Skip</button>
+            </div>
+          </div>
+        </div>`;
+      if (!sessionStart) sessionStart = Date.now();
+      notifyHeight();
+    }
+
+    function recordAction(i, action) {
+      const dwell = Math.round((Date.now() - startTimes[i]) / 1000);
+      actions[i] = { action, dwell };
+      flashSignal(action === 'skip' ? 'Scroll pattern logged' : posts[i].signal);
+      if (i < posts.length - 1) {
+        setTimeout(() => showPost(i + 1), 400);
+      } else {
+        setTimeout(showResults, 400);
+      }
+    }
+
+    function flashSignal(text) {
+      const el = document.getElementById('signal');
+      el.textContent = text;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 1000);
+    }
+
+    function showResults() {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('results').classList.add('active');
+
+      const totalTime = Math.round((Date.now() - sessionStart) / 1000);
+      document.getElementById('total-time').textContent = totalTime;
+
+      const engaged = Object.entries(actions)
+        .filter(([, v]) => v.action !== 'skip')
+        .map(([i]) => posts[parseInt(i)].infer);
+
+      const skipped = Object.entries(actions)
+        .filter(([, v]) => v.action === 'skip')
+        .map(([i]) => ({ attr: 'Disinterested in: ' + posts[parseInt(i)].username.replace(/_/g,' '), source: 'Skipped without pausing', conf: 'mid' }));
+
+      const all = [...engaged, ...skipped.slice(0,2)];
+      const list = document.getElementById('inferred-list');
+      list.innerHTML = '';
+      all.forEach(inf => {
+        list.innerHTML += `<div class="inferred-row">
+          <div class="inf-attr">${inf.attr}</div>
+          <div class="inf-source">${inf.source}</div>
+          <span class="inf-badge ${inf.conf}">${inf.conf === 'high' ? 'High confidence' : 'Moderate'}</span>
+        </div>`;
+      });
+      notifyHeight();
+    }
+
+    function restart() {
+      Object.keys(actions).forEach(k => delete actions[k]);
+      Object.keys(startTimes).forEach(k => delete startTimes[k]);
+      sessionStart = null;
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('intro').classList.add('active');
+      notifyHeight();
+    }
+
+    function notifyHeight() {
+      setTimeout(() => { window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'); }, 100);
+    }
+    notifyHeight();
+  </script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ask the Confident Liar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --font: 'Poppins', system-ui, sans-serif;
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #fff; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --green: #16A34A; --green-bg: #F0FDF4; --green-border: #BBF7D0;
+      --red: #DC2626; --red-bg: #FEF2F2; --red-border: #FECACA;
+      --amber: #D97706; --amber-bg: #FFFBEB; --amber-border: #FDE68A;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 24px 40px; font-size: 14px; }
+
+    .progress { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 20px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width .4s; }
+
+    .meta-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .cat-pill { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 3px 10px; border-radius: 20px; }
+    .counter { font-size: 12px; font-weight: 600; color: var(--text-3); }
+
+    .prompt { font-size: 12px; font-weight: 600; color: var(--text-3); margin-bottom: 8px; }
+
+    .ai-box { background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; margin-bottom: 18px; }
+    .ai-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .ai-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; }
+    .ai-text { font-size: 13px; color: var(--text-2); line-height: 1.65; }
+
+    .trust-label { font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+    .btn-row { display: flex; gap: 8px; margin-bottom: 16px; }
+    .btn { flex: 1; padding: 11px 6px; border: 2px solid var(--border); border-radius: 10px; background: var(--bg); font-family: var(--font); font-size: 12px; font-weight: 600; color: var(--text-2); cursor: pointer; transition: all .15s; text-align: center; line-height: 1.3; }
+    .btn:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-faint); color: var(--blue); }
+    .btn:disabled { opacity: .35; cursor: not-allowed; }
+
+    .reveal { display: none; border-radius: 12px; overflow: hidden; margin-bottom: 14px; animation: pop .25s ease; }
+    .rv-status { padding: 10px 14px; font-size: 12px; font-weight: 700; }
+    .rv-status.accurate { background: var(--green-bg); color: var(--green); border-bottom: 1px solid var(--green-border); }
+    .rv-status.fabricated { background: var(--red-bg); color: var(--red); border-bottom: 1px solid var(--red-border); }
+    .rv-status.partial { background: var(--amber-bg); color: var(--amber); border-bottom: 1px solid var(--amber-border); }
+    .rv-body { padding: 12px 14px; background: var(--bg-2); border: 1px solid var(--border); border-top: none; }
+    .rv-fact { font-size: 13px; color: var(--text-2); line-height: 1.5; margin-bottom: 6px; }
+    .rv-note { font-size: 12px; color: var(--text-3); line-height: 1.4; }
+
+    .next-btn { width: 100%; padding: 12px; background: var(--blue); color: #fff; border: none; border-radius: 10px; font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; }
+    .next-btn:hover { background: #1D4ED8; }
+
+    /* results */
+    .results { display: none; text-align: center; padding: 16px 0; }
+    .score-big { font-size: 56px; font-weight: 800; color: var(--blue); line-height: 1; }
+    .score-sub { font-size: 13px; color: var(--text-3); margin: 6px 0 24px; }
+    .two-q { background: var(--blue-faint); border: 1px solid #BFDBFE; border-radius: 12px; padding: 18px; text-align: left; margin-bottom: 20px; }
+    .two-q-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--blue); margin-bottom: 10px; }
+    .q-item { font-size: 13px; font-weight: 600; color: #1D4ED8; padding: 6px 0; border-bottom: 1px solid #BFDBFE; line-height: 1.4; }
+    .q-item:last-child { border-bottom: none; }
+    .retry-btn { padding: 11px 28px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 10px; font-family: var(--font); font-size: 13px; font-weight: 600; color: var(--text-2); cursor: pointer; }
+
+    @keyframes pop { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+<div id="quiz">
+  <div class="progress"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+  <div class="meta-row">
+    <span class="cat-pill" id="cat"></span>
+    <span class="counter" id="counter">1 / 5</span>
+  </div>
+  <div class="prompt" id="prompt"></div>
+  <div class="ai-box">
+    <div class="ai-label"><div class="ai-dot"></div>AI response</div>
+    <div class="ai-text" id="ai-text"></div>
+  </div>
+  <div class="trust-label">Would you act on this?</div>
+  <div class="btn-row">
+    <button class="btn" id="b1" onclick="pick('yes')">Yes, I'd act on it</button>
+    <button class="btn" id="b2" onclick="pick('verify')">I'd verify first</button>
+    <button class="btn" id="b3" onclick="pick('no')">I wouldn't trust it</button>
+  </div>
+  <div class="reveal" id="reveal">
+    <div class="rv-status" id="rv-status"></div>
+    <div class="rv-body">
+      <div class="rv-fact" id="rv-fact"></div>
+      <div class="rv-note" id="rv-note"></div>
+    </div>
+  </div>
+  <button class="next-btn" id="next-btn" style="display:none" onclick="next()">Next</button>
+</div>
+
+<div class="results" id="results">
+  <div class="score-big" id="final"></div>
+  <div class="score-sub">out of 5 you chose to verify first</div>
+  <div class="two-q">
+    <div class="two-q-title">Ask this before acting on any AI answer</div>
+    <div class="q-item">Can I verify this from a primary source that is not the AI itself?</div>
+    <div class="q-item">What happens to me if this answer is wrong?</div>
+  </div>
+  <button class="retry-btn" onclick="restart()">Try Again</button>
+</div>
+
+<script>
+const qs = [
+  {
+    cat: "Medical", catColor: "#EF4444",
+    prompt: "You ask: Can I take ibuprofen and paracetamol together?",
+    answer: "Yes - they work through different mechanisms, so combining them is generally safe. Standard doses are 400mg ibuprofen and 500-1000mg paracetamol. Many doctors recommend alternating them every few hours for better pain coverage.",
+    status: "partial", statusLabel: "Partially correct - missing key warnings",
+    fact: "True for healthy adults - but dangerous for people with kidney disease, ulcers, or asthma. The AI didn't ask.",
+    note: "Same confident tone whether safe or not."
+  },
+  {
+    cat: "Legal", catColor: "#8B5CF6",
+    prompt: "You ask: Can my employer in India deduct salary for sick days without a certificate?",
+    answer: "Under the Factories Act 1948, employees are entitled to sick leave with pay. A certificate is required only for absences exceeding 3 consecutive days. Deductions without requesting one may be unlawful under Section 7 of the Payment of Wages Act.",
+    status: "fabricated", statusLabel: "Fabricated - the '3-day rule' does not exist in central law",
+    fact: "The Factories Act applies only to factory workers. The '3 consecutive days' standard is not in any central statute. The AI blended real law names with an invented rule.",
+    note: "Real law names make hallucinated specifics harder to spot."
+  },
+  {
+    cat: "History", catColor: "#F59E0B",
+    prompt: "You ask: What were Gandhi's last words?",
+    answer: "Witnesses at Birla House reported Gandhi's last words as 'Hey Ram' - an invocation of God's name - as he fell after being shot by Nathuram Godse on January 30, 1948. This is corroborated by multiple eyewitnesses and the official inquiry.",
+    status: "accurate", statusLabel: "Accurate - matches documented historical record",
+    fact: "'Hey Ram' is the widely corroborated last utterance of Gandhi, confirmed by eyewitnesses and the official account.",
+    note: "Even accurate AI answers should be verified - the confidence level is the same whether right or wrong."
+  },
+  {
+    cat: "Science", catColor: "#2563EB",
+    prompt: "You ask: Does the Great Wall of China block 5G signals?",
+    answer: "The wall's dense stone construction can attenuate radio signals in its immediate vicinity. Studies by telecommunications researchers in Beijing found 15-30% signal reduction in direct line-of-sight tests. In practice, 5G's beamforming technology routes signals around such obstacles.",
+    status: "fabricated", statusLabel: "Fabricated - the cited studies do not exist",
+    fact: "The core physics is plausible. The 'studies by Beijing researchers' with a '15-30%' figure were invented. No such research exists as described.",
+    note: "Specific percentages and institution names make citations feel real even when they aren't."
+  },
+  {
+    cat: "Financial", catColor: "#10B981",
+    prompt: "You ask: Should I start an NPS account at 28?",
+    answer: "Yes - NPS is one of the most tax-efficient instruments available. You get deductions under 80CCD(1) up to Rs 1.5L and an additional Rs 50K under 80CCD(1B). With 32 years to retirement, compounding works heavily in your favour. Start with the maximum tax benefit contribution.",
+    status: "partial", statusLabel: "Mostly accurate - but missing your specific situation",
+    fact: "The tax figures are correct for 2024-25. But the AI doesn't know your existing PF, liquidity needs, or risk profile. 'Yes' is not the same as 'yes, for you.'",
+    note: "Accurate general information presented as personal advice."
+  }
+];
+
+let cur = 0, verified = 0;
+
+function render() {
+  const q = qs[cur];
+  document.getElementById('cat').textContent = q.cat;
+  document.getElementById('cat').style.background = q.catColor + '18';
+  document.getElementById('cat').style.color = q.catColor;
+  document.getElementById('counter').textContent = `${cur + 1} / 5`;
+  document.getElementById('prog').style.width = (cur / 5 * 100) + '%';
+  document.getElementById('prompt').textContent = q.prompt;
+  document.getElementById('ai-text').textContent = q.answer;
+  document.getElementById('reveal').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+  ['b1','b2','b3'].forEach(id => document.getElementById(id).disabled = false);
+}
+
+function pick(choice) {
+  ['b1','b2','b3'].forEach(id => document.getElementById(id).disabled = true);
+  if (choice !== 'yes') verified++;
+  const q = qs[cur];
+  const rv = document.getElementById('reveal');
+  rv.style.display = 'block';
+  const rs = document.getElementById('rv-status');
+  rs.className = 'rv-status ' + q.status;
+  rs.textContent = q.statusLabel;
+  document.getElementById('rv-fact').textContent = q.fact;
+  document.getElementById('rv-note').textContent = q.note;
+  const nb = document.getElementById('next-btn');
+  nb.style.display = 'block';
+  nb.textContent = cur < 4 ? 'Next' : 'See Results';
+  send();
+}
+
+function next() {
+  cur++;
+  if (cur >= 5) { showResults(); return; }
+  render(); send();
+}
+
+function showResults() {
+  document.getElementById('quiz').style.display = 'none';
+  const r = document.getElementById('results');
+  r.style.display = 'block';
+  document.getElementById('final').textContent = verified;
+  send();
+}
+
+function restart() {
+  cur = 0; verified = 0;
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  render(); send();
+}
+
+function send() {
+  setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 32 }, '*'), 100);
+}
+
+render();
+window.addEventListener('load', send);
+</script>
+</body>
+</html>

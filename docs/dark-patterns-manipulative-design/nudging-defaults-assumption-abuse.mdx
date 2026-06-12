@@ -2,14 +2,193 @@
 sidebar_position: 7
 title: "Nudging, Defaults & Assumption Abuse"
 sidebar_label: "Nudging, Defaults & Assumption Abuse"
+description: "How pre-selected options, opt-out defaults, and third-party data sharing settings are designed to assume your consent without asking for it."
+tags: [dark-patterns, defaults, nudging, opt-out, data-sharing, pre-selected, consent, privacy, assumption-abuse]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Nudging, Defaults & Assumption Abuse
 
-## Sub-topics
+You never agreed. You just did not disagree fast enough.
 
-- Opt-out instead of opt-in — assuming yes by default
-- Pre-selected options you do not notice
-- Default settings that expose your data
-- Defaulting to sharing data with third parties
-- Powerful defaults hidden in plain sight
+---
+
+## The Six "Continue" Buttons
+
+Sam downloaded a free photo editing app. The install flow had six screens.
+
+He tapped "Continue" on each one. They all looked the same - a headline, some small text, a blue button.
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/dark-patterns-manipulative-design/nudging-defaults-assumption-abuse/defaults.webp"
+    alt="A person tapping through a series of identical-looking app setup screens, each with a pre-selected toggle they do not notice."
+  />
+</figure>
+
+He did not read screens 2, 3, or 4. Screen 2 was marketing emails - opted in by default. Screen 3 was location sharing with advertising partners - opted in by default. Screen 4 was contact list upload - opted in by default.
+
+Screen 5 was the app's actual setup. Screen 6 was "You're ready."
+
+**He had shared his location, contacts, and email without deciding to. The app had assumed his consent by making every privacy-costly option the default - and by making all six screens look identical.**
+
+---
+
+## What Is Actually Happening
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>95%</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>of users accept default settings without changing them during app onboarding.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Whoever controls the default controls the outcome for 19 out of 20 users.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: Nielsen Norman Group, Defaults and Decision-Making, 2022</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Opt-Out vs Opt-In</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Opt-Out Drives 10x More Enrolment</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Research on organ donation programmes found opt-out countries achieved participation rates of 85-98%, versus 4-28% for opt-in countries. <b>The default, not the decision, determines the outcome</b> for the overwhelming majority of people.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Johnson & Goldstein, Science, 2003 - applied to digital contexts</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Pre-Selected Options</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Insurance Add-Ons Pre-Ticked at 70%</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>A 2023 EU consumer survey found <b>70% of travel booking sites pre-selected optional insurance add-ons.</b> Pre-ticked checkboxes add revenue automatically from users who do not notice them - and many jurisdictions have banned the practice.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: EU Consumer Affairs, Online Booking Dark Patterns Survey, 2023</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #3B82F6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#3B82F6', fontWeight: 'bold' }}>Third-Party Sharing</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Default = Shared with Hundreds</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Default settings for most major social and shopping apps share data with between 100 and 600 advertising and data partners. <b>The user never selects these partners individually.</b> They are all included in one default "personalisation" toggle that ships switched on.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Norwegian Consumer Council, Out of Control, 2020 (updated findings 2023)</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Hidden Default Power</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Windows Telemetry Case</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>When Windows 10 launched with enhanced telemetry on by default, <b>fewer than 3% of users changed the setting</b> even after media coverage. The default setting continued determining data collection for the other 97%.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Microsoft Privacy Dashboard; Electronic Frontier Foundation Analysis, 2016</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## The Default as a Decision
+
+Defaults are choices. The company made them before you arrived.
+
+### Opt-out instead of opt-in
+When a setting ships switched on, the company assumed your consent. You are enrolled until you actively un-enrol. Most people never do, because they do not know the setting exists.
+
+### Pre-selected options
+A pre-ticked checkbox is a false default. You did not select it - but the interface looks as if you did. Travel insurance, marketing emails, and newsletter subscriptions frequently ship this way. In many countries, pre-ticked consent for data processing is now illegal.
+
+### Default settings that expose your data
+Background location, contact list access, microphone access, and advertising data sharing all ship enabled in many apps. The user accepts them by not changing them - without knowing they were ever set.
+
+### Defaulting to third-party sharing
+A single "personalisation" toggle can represent data-sharing agreements with hundreds of advertising partners. There is no individual list visible. You share with all of them by default.
+
+---
+
+## Try It: The Default Audit
+
+Walk through a fictional app installation and see exactly what you agree to by just tapping Continue.
+
+<iframe
+  id="defaults-iframe"
+  src="/simulations/dark-patterns-manipulative-design/nudging-defaults-assumption-abuse/default-audit.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="The Default Audit"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('defaults-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._defaultsHandler);
+    window._defaultsHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. All six screens looked the same.**
+There was no visual distinction between a screen asking for app permissions and one sharing your data with advertising partners. Uniformity is intentional - it produces uniform tapping behaviour.
+
+**2. Every default was set to maximum sharing.**
+Background location, partner marketing, advertising data, contact upload, ambient microphone. Every single one was enabled. No individual sharing decision was minimal or off.
+
+**3. Opting out required knowing the settings existed.**
+You had to read every screen to find the toggles. Most users do not. Most installs produce the same outcome: full data sharing, zero user awareness.
+
+**4. 95% of users accept this.**
+Not because they want to share their data - but because they are completing a task (installing an app) and the defaults get accepted as part of the flow.
+
+---
+
+## Three Things Worth Doing
+
+**1. Slow down on install screens that have toggles.**
+Any screen during app setup that shows a toggle or checkbox deserves a full read. These are the screens where defaults are most consequential and most likely to be set against your interests.
+
+**2. Review app permissions after installation.**
+Go to your device's Settings > Privacy or Permissions. Review what each recently installed app can access. Most access requests that were defaulted on can be revoked without affecting core app function.
+
+**3. Treat pre-ticked checkboxes as a warning sign.**
+On any checkout or sign-up flow, scroll to the bottom before clicking the final button. Look for pre-ticked boxes below the visible fold. Unchecking them is legal in most jurisdictions - the company knows this, which is why they pre-tick them.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Sam tapped 'Continue' six times and ended up sharing his location, contacts, and email with advertising partners. He did not intend to share any of it. Who made the decision to share?"
+  options={[
+    {
+      label: "Sam did - he tapped Continue on every screen without reading them.",
+      correct: false,
+      explanation: "This framing treats implied consent from a uniform tapping flow as equivalent to informed consent. GDPR and the FTC's Negative Option Rule both reject this interpretation: consent must be specific, informed, and unambiguous. Consenting to app installation via a uniform Continue button is not valid consent to data sharing with hundreds of advertising partners."
+    },
+    {
+      label: "The company did - by setting every data-sharing option to enabled by default, they ensured 95% of users would share data without reviewing the settings.",
+      correct: true,
+      explanation: "Correct. The company made the data-sharing decision when they set the defaults. The uniform install flow was designed to produce maximum data sharing by making every screen look identical and relying on the 95% of users who accept defaults without reviewing them. The default is the decision."
+    },
+    {
+      label: "No one made the decision - this is how all apps work and is standard practice.",
+      correct: false,
+      explanation: "It is common practice - but common is not the same as acceptable or legal. The EU's GDPR (2018), UK Data Protection Act, and FTC guidelines all require clear, specific, informed consent for data sharing. Maximum-sharing defaults in install flows are under increasing regulatory scrutiny."
+    },
+    {
+      label: "The advertising partners did - they requested the data from the app company.",
+      correct: false,
+      explanation: "Advertising partners receive data because the app company agreed to share it. The mechanism is the app's defaults and install flow. The responsibility for whether a user's consent was obtained rests with the data controller - the app company - not with the downstream data recipients."
+    }
+  ]}
+/>

@@ -2,14 +2,190 @@
 sidebar_position: 1
 title: "Tracking Technologies & Data Collection"
 sidebar_label: "Tracking Technologies & Data Collection"
+description: "How cookies, pixels, fingerprinting scripts, and location data harvest your behaviour across every device and website."
+tags: [tracking, cookies, fingerprinting, location-tracking, metadata, surveillance, third-party-trackers, geofencing]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Tracking Technologies & Data Collection
 
-## Sub-topics
+You loaded a page. You did not click anything. Seventeen organisations already know you were there.
 
-- Cookies, pixels, and behavioural tracking
-- Cross-device tracking and fingerprinting
-- Location tracking and geofencing
-- Always-on microphones and listening devices
-- Metadata revealing more than content
+---
+
+## The Page That Watched Back
+
+Marcus opened a news article. He did not log in. He did not click an ad. He read for 4 minutes and closed the tab.
+
+In those 4 minutes: Google recorded his visit. Meta received his IP address via the site's Facebook Pixel. A fingerprinting script catalogued his browser settings, screen resolution, installed fonts, and GPU rendering signature. A geofencing trigger noted his city and sent that to a retargeting platform. Three ad exchanges ran real-time auctions for his next ad impression - all before the article loaded.
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/surveillance-privacy-theft/tracking-technologies-data-collection/trackers-on-page.webp"
+    alt="A webpage with invisible tracking scripts highlighted, showing data flowing to multiple third-party companies."
+  />
+</figure>
+
+Marcus thought he was reading the news. **He was also generating a commodity.**
+
+---
+
+## What Is Actually Happening
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>74</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>the average number of trackers on a top-1000 news website.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Most users believe there are fewer than 5.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: EFF Cover Your Tracks / Ghostery Tracker Trends, 2024</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Fingerprinting</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>99.2% Unique Identification</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Browser fingerprinting can **uniquely identify 99.2% of users** using only browser settings, fonts, and GPU data. It works in private mode. Clearing cookies does not remove it.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: EFF Panopticlick / AmIUnique Research, 2023</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Location Data</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>47 Partners Per App</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>The average free weather app shares your GPS coordinates with **47 advertising partners**. Your home, workplace, place of worship, and medical visits are all inferable from 30 days of location data.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: New York Times Privacy Project, 2023</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Always-On Listening</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Smart Speakers Process Locally</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Amazon, Google, and Apple confirmed their devices send audio clips to human reviewers for quality purposes. In 2023, Apple reached a **$95M settlement** after users reported ads matching private conversations near their devices.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Apple Siri Settlement, US Federal Court, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #06B6D4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>Metadata</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>More Revealing Than Content</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Former NSA Director Michael Hayden: **"We kill people based on metadata."** Who you called, when, for how long, and where you were reveals more about your life than the content of the calls.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Hayden, Johns Hopkins Foreign Affairs Symposium, 2014 - verified by NSA documents</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## The Tracking Methods, Named
+
+### First-party cookies
+Set by the site you visit. Used for login sessions and preferences. Broadly considered legitimate.
+
+### Third-party cookies
+Set by other companies embedded in the site (ad networks, analytics). They follow you across sites. Third-party cookies are being phased out in most browsers - but fingerprinting fills the gap.
+
+### Tracking pixels
+Tiny 1x1 invisible images loaded from an ad server. When your browser loads the image, the server logs your IP, device, and time. Used in emails to record when you open them.
+
+### Browser fingerprinting
+Your browser configuration (fonts, screen size, GPU model, time zone, installed plugins) creates a near-unique signature. No cookie needed. Survives clearing browsing history and private mode.
+
+### Location tracking and geofencing
+Apps request your GPS coordinates. Geofencing triggers actions when you enter a defined area (a competitor's store, a place of worship, a medical clinic). Location data is one of the most sold data types.
+
+### Cross-device tracking
+Ad networks link your phone, laptop, and TV by matching IP addresses, login states, and behavioural patterns. They build a single profile across all your devices.
+
+---
+
+## Try It: Tracker Exposure Scanner
+
+Scan a mock news page to see every tracking technology active on a single visit.
+
+<iframe
+  id="tracker-iframe"
+  src="/simulations/surveillance-privacy-theft/tracking-technologies-data-collection/tracker-exposure-scanner.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Tracker Exposure Scanner"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('tracker-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._trackerHandler);
+    window._trackerHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. Trackers load before you do anything.**
+The scripts that report your visit activate on page load, not on interaction. You do not need to click an ad to be tracked by it.
+
+**2. Private mode does not block fingerprinting.**
+Private browsing prevents your history from being saved locally. It does not prevent fingerprinting scripts from identifying your device to external servers.
+
+**3. You are tracked by companies whose names you do not recognise.**
+Most of the organisations that received your data from a single page visit are not the site you visited. They are ad networks, data brokers, and analytics platforms you have no direct relationship with.
+
+---
+
+## Three Things Worth Doing
+
+**1. Install uBlock Origin.**
+The most effective free tracker blocker. Blocks third-party scripts, pixels, and most fingerprinting attempts. Available for all major browsers.
+
+**2. Audit your phone's location permissions.**
+Settings > Apps > Permissions > Location. Set every app to "Only while using" unless there is a specific reason for always-on access.
+
+**3. Use Firefox or Brave as your default browser.**
+Both block third-party tracking by default. Firefox includes enhanced tracking protection. Brave blocks ads and fingerprinting natively.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="You browse in private/incognito mode. A news site you visit has a canvas fingerprinting script. Are you tracked?"
+  options={[
+    {
+      label: "No - private mode prevents all tracking because your session data is not saved.",
+      correct: false,
+      explanation: "Private mode prevents your browser from saving history, cookies, and session data locally. It does not prevent external servers from receiving your visit. Fingerprinting scripts execute in private mode and send their results to external servers the same way they do in regular browsing."
+    },
+    {
+      label: "Yes - canvas fingerprinting reads your device hardware characteristics, which are the same in private mode as in regular browsing.",
+      correct: true,
+      explanation: "Correct. Canvas fingerprinting uses your GPU and browser settings to generate a unique signature - characteristics that do not change between sessions or modes. Private mode does not mask these values. The script runs, generates your fingerprint, and reports it to the fingerprinting server regardless of your browser mode."
+    },
+    {
+      label: "Partially - the site can fingerprint you, but it cannot link this visit to your previous visits.",
+      correct: false,
+      explanation: "If the fingerprinting service has seen your device before - even in a previous regular session - it can recognise the same fingerprint and link the visits. The fingerprint is consistent across sessions. That is the entire point of fingerprinting as a tracking mechanism."
+    },
+    {
+      label: "Only if you have JavaScript enabled - disabling it prevents fingerprinting.",
+      correct: false,
+      explanation: "Disabling JavaScript does prevent some fingerprinting methods, but it breaks most of the modern web. More importantly, server-side fingerprinting using HTTP headers (user-agent, accept-language, connection type) does not require JavaScript at all. No single setting eliminates fingerprinting entirely."
+    }
+  ]}
+/>

@@ -2,16 +2,200 @@
 sidebar_position: 11
 title: "E-Commerce & Marketplace Deception"
 sidebar_label: "E-Commerce & Marketplace Deception"
+description: "How dynamic pricing, drip pricing, fake discounts, search manipulation, counterfeit listings, returns traps, and flash sale psychology combine to mislead buyers on e-commerce platforms."
+tags: [dark-patterns, e-commerce, dynamic-pricing, drip-pricing, fake-discounts, search-manipulation, counterfeit-products, returns-manipulation, flash-sales, marketplace-deception]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # E-Commerce & Marketplace Deception
 
-## Sub-topics
+The price was "50% off." It had never been sold at the higher price. The discount existed only to make the current price look like a bargain.
 
-- Dynamic pricing — being charged more based on your device, browser, or location
-- Drip pricing — base price shown at the top, fees and charges added only at checkout
-- Fake reference prices and manufactured discounts — the crossed-out price that was never real
-- Search result manipulation — paid placement disguised as organic rankings on shopping platforms
-- Counterfeit products sold through legitimate marketplace platforms
-- Returns and warranty manipulation — policies designed to be difficult to use
-- Flash sale psychology and manufactured scarcity on e-commerce platforms
+---
+
+## The Laptop That Was Always £799
+
+Raj was buying a laptop. He found one showing £799, marked down from £1,599. A 50% saving. "Deal of the Day" badge. Flash sale countdown: 2 hours left.
+
+He checked the price history using a browser extension. The laptop had been listed at £1,599 for 3 days in January - and at £799 for the remaining 11 months of the year.
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/dark-patterns-manipulative-design/e-commerce-marketplace-deception/ecommerce-deception.webp"
+    alt="An e-commerce product listing showing a crossed-out high price, a flash sale badge, and a countdown timer above the actual product."
+  />
+</figure>
+
+He checked it on a different browser without being logged in. The price was £769.
+
+He was being shown a higher price because he was logged in - and his browsing history signalled he was likely to buy.
+
+**The fake reference price inflated the perceived value. The dynamic pricing charged him more because his history suggested he would pay it. Two separate deception mechanisms running simultaneously on the same product page.**
+
+---
+
+## What Is Actually Happening
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>98%</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>of online shoppers say they rely on discounts when making purchase decisions.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>This is exactly why fake reference prices are so widely used - they exploit a near-universal shopping behaviour.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: RetailMeNot Consumer Survey, 2023</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Dynamic Pricing</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Higher Prices for Logged-In Users</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>A 2022 investigation found airline and hotel platforms charged logged-in users <b>up to 15% more than incognito visitors</b> for identical searches. Browsing history, device type, and purchase likelihood all influence the price shown.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Northeast University Dynamic Pricing Study, 2022</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Drip Pricing</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Fees Increase Total by 22% on Average</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>A Princeton study of online ticket and booking platforms found drip pricing - revealing fees only at checkout - <b>increased the final price by an average of 22%</b> above the headline price. Delivery, service, processing, and booking fees are the most common additions.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Princeton Center for Information Technology Policy, Drip Pricing Study, 2022</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #3B82F6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#3B82F6', fontWeight: 'bold' }}>Search Manipulation</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Top Results Are Often Paid Placement</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>On major marketplaces, <b>the first 4-6 results for most product searches are paid sponsored listings.</b> They are often marked with a small "Sponsored" label in a lower-contrast colour. 62% of shoppers cannot identify sponsored results on marketplace platforms.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Bazaarvoice Shopper Experience Index, 2023</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Counterfeit</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Counterfeit Goods = 2.5% of World Trade</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>The OECD estimates counterfeit goods account for <b>2.5% of world trade.</b> Major marketplace platforms host third-party sellers whose products mix authentic and counterfeit listings. Reviews and seller ratings are not reliable counterfeit detection signals.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: OECD, Trade in Counterfeit and Pirated Goods, 2023</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## The E-Commerce Deception Stack
+
+### Dynamic pricing
+Prices vary based on your location, device, logged-in status, purchase history, and browsing behaviour. The same product can legitimately show different prices to different users at the same moment. The higher-propensity buyer is charged more.
+
+### Drip pricing
+The advertised price is the cheapest possible version - before service fees, booking fees, delivery charges, and platform fees are added at checkout. By that point, most buyers complete the purchase rather than abandon the cart.
+
+### Fake reference prices
+The crossed-out price was either never charged, charged only briefly at a non-standard time, or inflated specifically to set an anchor. UK and EU regulations require that a reference price reflect a genuine previous selling price held for a meaningful period.
+
+### Search result manipulation
+Paid sponsored listings appear first. Organic ranking algorithms are not neutral - they reflect which sellers pay for visibility. "Best seller" placement can be purchased or gamed with review volume.
+
+### Counterfeit products
+Third-party marketplace sellers mix authentic and counterfeit products. Commingled inventory (where products from multiple sellers are stored and shipped together in fulfilment centres) makes the origin of a physical product untraceable.
+
+### Returns manipulation
+Complex returns policies, short return windows, buyer-pays-return-shipping terms, and "return to overseas warehouse" requirements are designed to deter returns rather than facilitate them. The policy may be technically legal but practically unusable.
+
+### Flash sale psychology
+Flash sales combining countdown timers, low-stock claims, and large displayed discounts recreate urgency even when the discount is not real or the product is available indefinitely.
+
+---
+
+## Try It: Price Manipulation Detector
+
+Examine four product listings for signs of dynamic pricing, fake discounts, search manipulation, and returns traps.
+
+<iframe
+  id="ecommerce-iframe"
+  src="/simulations/dark-patterns-manipulative-design/e-commerce-marketplace-deception/price-manipulation-detector.html"
+  width="100%"
+  style={{ height: '700px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Price Manipulation Detector"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('ecommerce-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._ecommerceHandler);
+    window._ecommerceHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. Price history reveals fake discounts immediately.**
+A price that was "high" for 3 days and "discounted" for 11 months is not a discounted product. It is a product with a false reference price. Price history tools make this visible in seconds.
+
+**2. Dynamic pricing is active on most major platforms.**
+Checking the same product in an incognito window - or on a different device - is the simplest test. A price difference between logged-in and logged-out views confirms dynamic pricing is in effect.
+
+**3. The first search results are often paid, not best.**
+The "Sponsored" label on marketplace search results is frequently in lower contrast than the product information. Most shoppers do not notice it. The top result is the one that paid the most, not the one best matched to your search.
+
+**4. Legitimate products show verifiable characteristics.**
+Consistent price over time, seller account age, explicit returns policy with domestic return address, and no price difference between logged-in and incognito views - these are signals of legitimacy.
+
+---
+
+## Three Things Worth Doing
+
+**1. Use a price history extension before any significant purchase.**
+CamelCamelCamel (Amazon), Keepa, or browser extensions like Honey track real price histories. A product that has "always" been on sale was never actually discounted.
+
+**2. Check the price in an incognito window before buying.**
+Open the same product page in an incognito or private browsing window, without being logged in. If the price is lower, you are being dynamically priced. Use the lower price window, or use a guest checkout.
+
+**3. Read the full returns policy before checkout.**
+Look specifically for: return window duration, who pays return shipping, whether the return address is domestic, and whether you need original packaging. A restrictive returns policy is a signal that the seller does not expect buyers to be satisfied.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Raj found a laptop shown at '50% off' from £1,599 to £799. A price history tool showed it had sold at £799 for 11 months and at £1,599 for only 3 days. He also found it priced at £769 in an incognito window. Which two deception mechanisms were active simultaneously?"
+  options={[
+    {
+      label: "Flash sale psychology and counterfeit product risk.",
+      correct: false,
+      explanation: "Flash sale psychology is a related dark pattern, but the story does not describe countdown timers or flash sale framing for the £1,599 to £799 drop. Counterfeit risk is a separate concern not indicated in the laptop scenario. The two mechanisms clearly active are the false reference price and dynamic pricing."
+    },
+    {
+      label: "Fake reference price (the £1,599 that was barely ever charged) and dynamic pricing (a higher price shown to the logged-in user than to the anonymous visitor).",
+      correct: true,
+      explanation: "Correct. The crossed-out £1,599 is a fake reference price - it was charged briefly at a non-representative time to set an anchor. The £30 price difference between the logged-in (£799) and incognito (£769) views is dynamic pricing - the logged-in user's purchase history indicated higher purchase likelihood and the price was adjusted accordingly."
+    },
+    {
+      label: "Drip pricing and search manipulation.",
+      correct: false,
+      explanation: "Drip pricing involves fees added at checkout, not a false reference price. Search manipulation relates to paid placement in search results. Neither was described in the scenario. The reference price history and the logged-in vs incognito price difference are the two specific mechanisms present."
+    },
+    {
+      label: "This is legal because discounts can be set at the seller's discretion.",
+      correct: false,
+      explanation: "In the UK and EU, a discount reference price must reflect a genuine previous selling price held for a meaningful period. A price held for 3 days that is then used as the reference price for an 11-month 'discount' is specifically addressed in the UK's Consumer Protection from Unfair Trading Regulations and the EU Omnibus Directive (2022). This practice is illegal in these jurisdictions."
+    }
+  ]}
+/>

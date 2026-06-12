@@ -2,14 +2,195 @@
 sidebar_position: 2
 title: "Algorithmic Bias & Invisible Discrimination"
 sidebar_label: "Algorithmic Bias & Invisible Discrimination"
+description: "How AI systems in hiring, lending, and insurance reproduce discrimination through proxy variables - and why you often cannot see it happening."
+tags: [algorithmic-bias, invisible-discrimination, ai-hiring, lending-bias, training-data, opacity, proxy-discrimination, fairness]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Algorithmic Bias & Invisible Discrimination
 
-## Sub-topics
+An AI system can discriminate against you without ever asking your name, your gender, or where you are from. It only needs data that correlates with those things.
 
-- Bias in AI hiring, lending, and insurance decisions
-- Training data bias creating unfair outcomes
-- Opacity — you do not know why you were rejected
-- Who gets shown what content and why
-- Fighting algorithmic discrimination
+---
+
+## The Rejection Nobody Explained
+
+David and his university friend Anjali applied to the same batch of technology companies over three months. Same degree, same grades, same years of experience.
+
+David got two callbacks. Anjali got eleven.
+
+They compared notes. Different companies, different roles, different outcomes. No pattern they could identify. No feedback they could act on.
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/ai-bias-algorithmic-influence/algorithmic-bias-invisible-discrimination/algorithmic-bias.webp"
+    alt="Two identical job application forms side by side, with one moving forward and one stopped at a barrier that is not visible."
+  />
+</figure>
+
+Neither knew that several of the companies they applied to used applicant tracking systems that scored CVs before human review. Neither knew that the scoring models weighted certain university names differently, flagged employment gaps as risk signals, or used factors neither had been asked to provide.
+
+**David could not contest a decision he did not know had been made. He could not correct a variable he did not know had been used.**
+
+---
+
+## What Is Actually Happening
+
+Bias in AI is not always intentional. It is often inherited from the data the model was trained on.
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>72%</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>of hiring managers now use AI screening tools that filter CVs before human review.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>The candidate usually does not know. The company often does not know what variables the model is using.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: LinkedIn Future of Recruiting Report, 2024</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Hiring Bias</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Amazon scrapped its model</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Amazon built and then <b>scrapped an AI hiring tool in 2018</b> after discovering it systematically downgraded CVs containing the word "women's" and penalised graduates of all-women's colleges - trained on 10 years of male-dominated hiring history.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Reuters, 2018</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Lending Bias</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Zip code as a proxy</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>A UC Berkeley study found that <b>algorithmic lenders charged Black and Latino borrowers 5.3% more in interest</b> on identical risk profiles - attributed to geographic proxy variables in the model.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Bartlett et al., Review of Financial Studies, 2021</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Healthcare Bias</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Lower care scores for same illness</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>A widely-used US healthcare algorithm was found to <b>assign lower risk scores to Black patients than equally sick white patients</b>, directing less care toward them. It used healthcare spending as a proxy for health need.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Obermeyer et al., Science, 2019</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #06B6D4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>Ad Delivery Bias</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Who gets shown which jobs</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Ad delivery algorithms show job ads to different demographic groups without targeting instructions. A 2019 study found <b>delivery algorithms showed janitorial ads to Black users and taxi driver ads to men at higher rates</b> with no explicit instruction given.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Lambrecht & Tucker, Management Science, 2019</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## How Training Data Bias Becomes Model Bias
+
+A model trained on historical hiring decisions inherits historical hiring biases. If the company historically hired fewer women into technical roles, the model learns that fewer women is the correct output.
+
+The model does not decide to discriminate. It identifies patterns in past approved candidates and replicates them. The discrimination is structural, not intentional. The outcome is the same.
+
+**Training data reflects the world as it was. The model reproduces the world as it was.**
+
+---
+
+## Opacity: The Part You Cannot See
+
+In most algorithmic decisions, you receive a result but not a reason. "Does not meet our current criteria" is legally sufficient in most jurisdictions.
+
+You do not know whether an AI was involved, which variables were used, what weight each variable carried, or what score would have produced a different outcome. You cannot contest what you cannot see. This is not a technical limitation. In many cases, it is a design choice.
+
+---
+
+## See It: The Decision You Didn't Make
+
+Two identical loan applications. Same income, same credit score, same employment. The AI approves one and rejects the other - using variables neither applicant was told existed.
+
+<iframe
+  id="decision-iframe"
+  src="/simulations/ai-bias-algorithmic-influence/algorithmic-bias-invisible-discrimination/decision-you-didnt-make.html"
+  width="100%"
+  style={{ height: '700px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="The Decision You Didn't Make"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('decision-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._decisionHandler);
+    window._decisionHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. Proxy discrimination does not require discriminatory intent.**
+A model that uses ZIP code, device type, and application time can produce outcomes that track demographic lines - without encoding race, gender, or religion explicitly.
+
+**2. The feedback loop compounds the problem.**
+If biased data trains a biased model, and the model's decisions generate new data that reflects its biases, the next model is trained on compounded bias. The cycle does not self-correct.
+
+**3. Opacity protects the system, not the individual.**
+When you cannot see the variables used, you cannot challenge them. Opacity is frequently a design preference, not a technical necessity.
+
+**4. Fighting algorithmic discrimination requires knowing it happened.**
+The first step is asking whether an automated decision was involved in any outcome that significantly affects you.
+
+---
+
+## Three Things Worth Doing
+
+**1. Ask directly whether an automated system was involved.**
+When rejected for a job, loan, or service, ask. In the EU under GDPR, you have a right to know when a solely automated decision was made about you and to request human review.
+
+**2. Document your application details before submitting.**
+Keep copies of exactly what you submitted, when, and to whom. If a pattern of rejections emerges, documentation is the basis for a complaint.
+
+**3. Report suspected algorithmic discrimination.**
+In India, complaints can be filed with sector regulators - RBI for lending, SEBI for financial services. In the EU, data protection authorities handle GDPR-related algorithmic decision complaints.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="The Amazon hiring tool discriminated against women without being explicitly instructed to do so. How did this happen?"
+  options={[
+    {
+      label: "The engineers who built it deliberately programmed it to prefer male candidates.",
+      correct: false,
+      explanation: "This was not deliberate programming. The model was trained on historical hiring data. Because Amazon had historically hired more men in technical roles, the model learned to associate male-associated signals with successful candidates and reproduced that pattern."
+    },
+    {
+      label: "The model was trained on historical hiring data that reflected past male-dominated outcomes, so it learned to reproduce those outcomes as the definition of a good candidate.",
+      correct: true,
+      explanation: "Correct. The model did not decide to discriminate. It identified patterns in past approved candidates and learned what a successful hire looked like - based on data from a period when women were systematically underrepresented. Training data bias became model bias."
+    },
+    {
+      label: "The model could not read CVs accurately and made random errors that happened to affect women more.",
+      correct: false,
+      explanation: "The model read CVs accurately. It specifically downgraded words like 'women's' and penalised graduates of women's colleges - a systematic pattern, not random error. That pattern came from training data associations."
+    },
+    {
+      label: "It only affected low-quality candidates and would not have impacted qualified women.",
+      correct: false,
+      explanation: "The bias affected all CVs containing the relevant signals, regardless of the candidate's qualifications. Amazon scrapped the tool precisely because it was producing systematically biased scores across qualified candidates."
+    }
+  ]}
+/>

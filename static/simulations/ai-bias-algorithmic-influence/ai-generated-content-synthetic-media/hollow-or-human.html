@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hollow or Human</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --font: 'Poppins', system-ui, sans-serif;
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #fff; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --green: #16A34A; --green-bg: #F0FDF4; --green-border: #BBF7D0;
+      --red: #DC2626; --red-bg: #FEF2F2; --red-border: #FECACA;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 24px 40px; font-size: 14px; }
+
+    .tag-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .cat-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; background: var(--bg-2); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; color: var(--text-3); }
+    .counter { font-size: 12px; font-weight: 600; color: var(--text-3); }
+
+    .progress { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 20px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width .4s ease; }
+
+    .sample-box { background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; padding: 20px; font-size: 14px; line-height: 1.7; color: var(--text-2); margin-bottom: 20px; min-height: 90px; }
+
+    .question { font-size: 13px; font-weight: 600; color: var(--text-3); margin-bottom: 12px; }
+    .btn-row { display: flex; gap: 10px; margin-bottom: 16px; }
+    .btn { flex: 1; padding: 13px; border: 2px solid var(--border); border-radius: 10px; background: var(--bg); font-family: var(--font); font-size: 13px; font-weight: 600; color: var(--text-2); cursor: pointer; transition: all .15s; text-align: center; }
+    .btn:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-faint); color: var(--blue); }
+    .btn:disabled { opacity: .35; cursor: not-allowed; }
+
+    .reveal { display: none; border-radius: 12px; padding: 16px 18px; margin-bottom: 16px; animation: pop .25s ease; }
+    .reveal.correct { background: var(--green-bg); border: 1px solid var(--green-border); }
+    .reveal.wrong { background: var(--red-bg); border: 1px solid var(--red-border); }
+    .reveal-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .reveal.correct .reveal-title { color: var(--green); }
+    .reveal.wrong .reveal-title { color: var(--red); }
+    .reveal-tell { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+    .reveal-tell strong { color: var(--text-1); }
+
+    .next-btn { width: 100%; padding: 12px; background: var(--blue); color: #fff; border: none; border-radius: 10px; font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 4px; }
+    .next-btn:hover { background: #1D4ED8; }
+
+    /* results */
+    .results { display: none; text-align: center; padding: 12px 0; }
+    .score-big { font-size: 56px; font-weight: 800; color: var(--blue); line-height: 1; }
+    .score-label { font-size: 13px; color: var(--text-3); margin: 6px 0 20px; }
+    .tells-list { text-align: left; background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; margin-bottom: 20px; }
+    .tells-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--text-3); margin-bottom: 10px; }
+    .tell-item { display: flex; gap: 10px; font-size: 13px; color: var(--text-2); padding: 6px 0; border-bottom: 1px solid var(--border); line-height: 1.4; }
+    .tell-item:last-child { border-bottom: none; }
+    .tell-item::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex-shrink: 0; margin-top: 6px; }
+    .retry-btn { padding: 11px 28px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 10px; font-family: var(--font); font-size: 13px; font-weight: 600; color: var(--text-2); cursor: pointer; }
+
+    @keyframes pop { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+<div id="quiz">
+  <div class="progress"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+  <div class="tag-row">
+    <span class="cat-tag" id="cat"></span>
+    <span class="counter" id="counter">1 / 6</span>
+  </div>
+  <div class="sample-box" id="sample"></div>
+  <div class="question">Human writing or AI generated?</div>
+  <div class="btn-row">
+    <button class="btn" id="btn-h" onclick="pick('human')">Human</button>
+    <button class="btn" id="btn-a" onclick="pick('ai')">AI Generated</button>
+  </div>
+  <div class="reveal" id="reveal">
+    <div class="reveal-title" id="rv-title"></div>
+    <div class="reveal-tell" id="rv-tell"></div>
+  </div>
+  <button class="next-btn" id="next-btn" style="display:none" onclick="next()">Next</button>
+</div>
+
+<div class="results" id="results">
+  <div class="score-big" id="final"></div>
+  <div class="score-label">out of 6 correct</div>
+  <div class="tells-list">
+    <div class="tells-title">Key signals of AI writing</div>
+    <div class="tell-item"><strong>No personal incident.</strong> AI uses categories ("great food, nice people"). Humans mention something specific that happened.</div>
+    <div class="tell-item"><strong>Hedging phrases.</strong> "It is worth noting," "more research is needed" - fillers with no meaning.</div>
+    <div class="tell-item"><strong>Even rhythm.</strong> All sentences similar in length and tone. Humans are choppy and inconsistent.</div>
+    <div class="tell-item"><strong>Resolved endings.</strong> AI wraps up neatly. Humans trail off or contradict themselves.</div>
+  </div>
+  <button class="retry-btn" onclick="restart()">Try Again</button>
+</div>
+
+<script>
+const items = [
+  {
+    cat: "Product Review",
+    text: "I've had this blender three weeks and the lid cracked on the second use. I taped it. Still using it every morning because the motor is strong. The noise is aggressive. My dog leaves the room.",
+    answer: "human",
+    tell: "<strong>Taped lid. Dog leaves the room.</strong> Specific, unpredictable detail that only a real user would mention."
+  },
+  {
+    cat: "News Summary",
+    text: "A new study has found that regular physical activity may have positive effects on mental health. It is worth noting that more research is needed to fully understand this relationship. Overall, health experts recommend incorporating movement into daily routines.",
+    answer: "ai",
+    tell: "<strong>\"It is worth noting... more research is needed... overall.\"</strong> Three hedging phrases in two sentences. Classic AI filler."
+  },
+  {
+    cat: "Travel Post",
+    text: "Just got back from Lisbon. The food was amazing, the culture was rich, the people were incredibly friendly. It is truly a destination that offers something for everyone.",
+    answer: "ai",
+    tell: "<strong>\"Something for everyone\"</strong> - a phrase that means nothing. No specific street, meal, or moment. AI categorises; humans remember."
+  },
+  {
+    cat: "Financial Tip",
+    text: "When markets dropped in 2022 I moved everything to cash. Felt smart for six months. Then missed the entire recovery. My adviser said exactly this would happen. Now I index and look away.",
+    answer: "human",
+    tell: "<strong>Admits being wrong, plainly.</strong> AI softens failure. This person doesn't. That self-deprecating directness is a strong human signal."
+  },
+  {
+    cat: "Health Advice",
+    text: "It is important to stay hydrated throughout the day. Drinking enough water supports various bodily functions and can contribute to overall wellbeing. Most adults are advised to consume approximately 2 litres daily, though individual needs may vary.",
+    answer: "ai",
+    tell: "<strong>\"It is important to... can contribute to... individual needs may vary.\"</strong> Every clause hedges. Zero personal experience. Pure generated template."
+  },
+  {
+    cat: "Personal Story",
+    text: "My mum called to say she'd signed up for a crypto platform. A man on WhatsApp had shown her screenshots of his profits. She's 71. I spent two hours going through the red flags. By the end she wasn't angry at him. She was angry at me.",
+    answer: "human",
+    tell: "<strong>Mother angry at the person trying to help her.</strong> That morally specific, unresolved ending is something AI never produces."
+  }
+];
+
+let cur = 0, score = 0;
+
+function render() {
+  const q = items[cur];
+  document.getElementById('cat').textContent = q.cat;
+  document.getElementById('counter').textContent = `${cur + 1} / 6`;
+  document.getElementById('prog').style.width = (cur / 6 * 100) + '%';
+  document.getElementById('sample').textContent = q.text;
+  document.getElementById('reveal').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('btn-h').disabled = false;
+  document.getElementById('btn-a').disabled = false;
+}
+
+function pick(choice) {
+  document.getElementById('btn-h').disabled = true;
+  document.getElementById('btn-a').disabled = true;
+  const q = items[cur];
+  const ok = choice === q.answer;
+  if (ok) score++;
+
+  const rv = document.getElementById('reveal');
+  rv.className = 'reveal ' + (ok ? 'correct' : 'wrong');
+  rv.style.display = 'block';
+  document.getElementById('rv-title').textContent = ok
+    ? (q.answer === 'human' ? '✓ Human writing' : '✓ AI generated')
+    : (q.answer === 'human' ? '✗ This was human writing' : '✗ This was AI generated');
+  document.getElementById('rv-tell').innerHTML = q.tell;
+  document.getElementById('next-btn').style.display = 'block';
+  document.getElementById('next-btn').textContent = cur < 5 ? 'Next' : 'See Results';
+  send();
+}
+
+function next() {
+  cur++;
+  if (cur >= 6) { showResults(); return; }
+  render();
+  send();
+}
+
+function showResults() {
+  document.getElementById('quiz').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('final').textContent = score;
+  send();
+}
+
+function restart() {
+  cur = 0; score = 0;
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  render(); send();
+}
+
+function send() {
+  setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 32 }, '*'), 100);
+}
+
+render();
+window.addEventListener('load', send);
+</script>
+</body>
+</html>

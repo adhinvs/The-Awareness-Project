@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Invisible Hand Map</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --font: 'Poppins', system-ui, sans-serif;
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #fff; --bg-2: #F9FAFB; --border: #E5E7EB;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 24px 40px; font-size: 14px; }
+
+    .intro { font-size: 13px; color: var(--text-3); margin-bottom: 24px; line-height: 1.5; }
+    .intro strong { color: var(--text-1); }
+
+    .timeline { position: relative; padding-left: 36px; }
+    .timeline::before { content: ''; position: absolute; left: 13px; top: 20px; bottom: 20px; width: 2px; background: linear-gradient(to bottom, #BFDBFE, #2563EB, #7C3AED, #DC2626, #F59E0B); }
+
+    .event { position: relative; margin-bottom: 20px; }
+    .event:last-child { margin-bottom: 0; }
+    .event-dot { position: absolute; left: -28px; top: 18px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 2px currentColor; }
+
+    .event-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .event-head { padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+    .event-icon { font-size: 20px; flex-shrink: 0; }
+    .event-time { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+    .event-scene { font-size: 13px; font-weight: 600; margin-top: 1px; }
+
+    .event-body { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--border); }
+    @media(max-width: 560px) { .event-body { grid-template-columns: 1fr; } }
+    .eb-col { padding: 12px 14px; font-size: 12px; line-height: 1.55; color: var(--text-2); }
+    .eb-col:first-child { border-right: 1px solid var(--border); background: var(--bg-2); }
+    .eb-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 5px; }
+    .module-tag { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; margin-top: 8px; }
+
+    .ev1 .event-dot { color: #3B82F6; } .ev1 .event-head { background: #EFF6FF; } .ev1 .event-time { color: #1D4ED8; } .ev1 .module-tag { background: #DBEAFE; color: #1D4ED8; }
+    .ev2 .event-dot { color: #8B5CF6; } .ev2 .event-head { background: #F5F3FF; } .ev2 .event-time { color: #6D28D9; } .ev2 .module-tag { background: #EDE9FE; color: #6D28D9; }
+    .ev3 .event-dot { color: #10B981; } .ev3 .event-head { background: #F0FDF4; } .ev3 .event-time { color: #065F46; } .ev3 .module-tag { background: #D1FAE5; color: #065F46; }
+    .ev4 .event-dot { color: #EF4444; } .ev4 .event-head { background: #FEF2F2; } .ev4 .event-time { color: #991B1B; } .ev4 .module-tag { background: #FEE2E2; color: #991B1B; }
+    .ev5 .event-dot { color: #F59E0B; } .ev5 .event-head { background: #FFFBEB; } .ev5 .event-time { color: #92400E; } .ev5 .module-tag { background: #FEF3C7; color: #92400E; }
+
+    .question-card { background: var(--blue-faint); border: 1px solid #BFDBFE; border-radius: 12px; padding: 20px; margin-top: 24px; text-align: center; }
+    .q-text { font-size: 15px; font-weight: 700; color: #1D4ED8; line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+<div class="intro"><strong>One ordinary day. Five AI systems making decisions about you.</strong> Each touchpoint is annotated with what is actually happening - that you cannot see.</div>
+
+<div class="timeline">
+
+  <div class="event ev1">
+    <div class="event-dot"></div>
+    <div class="event-card">
+      <div class="event-head">
+        <span class="event-icon">📱</span>
+        <div>
+          <div class="event-time">7:15 AM - Morning feed</div>
+          <div class="event-scene">You read the news on your phone.</div>
+        </div>
+      </div>
+      <div class="event-body">
+        <div class="eb-col">
+          <div class="eb-label">What you see</div>
+          An AI-summarised headline you find easy to read and confidently written.
+          <span class="module-tag">Module 35 - AI-Generated Content</span>
+        </div>
+        <div class="eb-col">
+          <div class="eb-label">What is happening</div>
+          The summary may contain a hallucinated date or statistic not present in the source article.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="event ev2">
+    <div class="event-dot"></div>
+    <div class="event-card">
+      <div class="event-head">
+        <span class="event-icon">💼</span>
+        <div>
+          <div class="event-time">9:30 AM - Job application</div>
+          <div class="event-scene">You submit a CV to a company online.</div>
+        </div>
+      </div>
+      <div class="event-body">
+        <div class="eb-col">
+          <div class="eb-label">What you see</div>
+          A confirmation email: "We have received your application and will be in touch."
+          <span class="module-tag">Module 36 - Algorithmic Bias</span>
+        </div>
+        <div class="eb-col">
+          <div class="eb-label">What is happening</div>
+          A model has already ranked you using your postcode, graduation year, and device type. No human has read your CV.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="event ev3">
+    <div class="event-dot"></div>
+    <div class="event-card">
+      <div class="event-head">
+        <span class="event-icon">🌐</span>
+        <div>
+          <div class="event-time">12:45 PM - Social scroll</div>
+          <div class="event-scene">You browse a social platform during lunch.</div>
+        </div>
+      </div>
+      <div class="event-body">
+        <div class="eb-col">
+          <div class="eb-label">What you see</div>
+          Content that feels exactly relevant to things you've been thinking about lately.
+          <span class="module-tag">Module 37 - Filter Bubbles</span>
+        </div>
+        <div class="eb-col">
+          <div class="eb-label">What is happening</div>
+          Someone with different engagement history on the same topic is seeing a completely different feed right now.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="event ev4">
+    <div class="event-dot"></div>
+    <div class="event-card">
+      <div class="event-head">
+        <span class="event-icon">📢</span>
+        <div>
+          <div class="event-time">3:20 PM - Ad appears</div>
+          <div class="event-scene">An ad addresses a concern you were thinking about this morning.</div>
+        </div>
+      </div>
+      <div class="event-body">
+        <div class="eb-col">
+          <div class="eb-label">What you see</div>
+          A financial product advertised with messaging that feels helpful, not intrusive.
+          <span class="module-tag">Module 38 - AI Persuasion</span>
+        </div>
+        <div class="eb-col">
+          <div class="eb-label">What is happening</div>
+          An ad system selected both the product and the emotional framing based on which lever is most likely to convert you specifically.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="event ev5">
+    <div class="event-dot"></div>
+    <div class="event-card">
+      <div class="event-head">
+        <span class="event-icon">🤖</span>
+        <div>
+          <div class="event-time">8:00 PM - AI chatbot query</div>
+          <div class="event-scene">You ask an AI about a health symptom you've noticed.</div>
+        </div>
+      </div>
+      <div class="event-body">
+        <div class="eb-col">
+          <div class="eb-label">What you see</div>
+          A confident answer with study citations, dosage figures, and specific recommendations.
+          <span class="module-tag">Module 39 - AI Hallucinations</span>
+        </div>
+        <div class="eb-col">
+          <div class="eb-label">What is happening</div>
+          The cited studies may not exist as described. The AI's confidence is the same whether the answer is correct or fabricated.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="question-card">
+  <div class="q-text">Five AI systems operated on you today before 9 PM. None asked for consent. None are required to explain their reasoning.</div>
+</div>
+
+<script>
+window.addEventListener('load', () => {
+  setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 32 }, '*'), 150);
+});
+</script>
+</body>
+</html>

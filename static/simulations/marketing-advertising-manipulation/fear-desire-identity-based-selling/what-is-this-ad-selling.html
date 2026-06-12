@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>What Is This Ad Actually Selling?</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --font: 'Outfit', system-ui, sans-serif;
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B;
+      --r: 12px;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); padding: 28px 16px 40px; -webkit-font-smoothing: antialiased; }
+    .header { text-align: center; margin-bottom: 24px; }
+    .header h1 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .header p { font-size: 13px; color: var(--muted); max-width: 460px; margin: 0 auto; }
+    .progress-row { max-width: 560px; margin: 0 auto 20px; display: flex; align-items: center; gap: 12px; }
+    .pip { flex: 1; height: 5px; border-radius: 4px; background: #E2E8F0; transition: background 0.3s; }
+    .pip.done { background: #2563EB; }
+    .pip.active { background: #93C5FD; }
+    .ad-card {
+      max-width: 560px; margin: 0 auto 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .ad-banner {
+      padding: 32px 24px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; gap: 10px; min-height: 160px;
+    }
+    .ad-banner .icon { font-size: 44px; }
+    .ad-banner .headline { font-size: 18px; font-weight: 800; line-height: 1.3; }
+    .ad-banner .subline { font-size: 13px; color: #475569; line-height: 1.5; max-width: 340px; }
+    .ad-banner .cta {
+      margin-top: 4px; padding: 8px 20px; border-radius: 8px;
+      font-size: 13px; font-weight: 700; border: none; cursor: default;
+    }
+    .ad-body { padding: 14px 20px; border-top: 1px solid var(--border); }
+    .ad-body p { font-size: 12.5px; color: var(--muted); margin-bottom: 10px; }
+    .lever-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    @media (max-width: 400px) { .lever-row { grid-template-columns: 1fr; } }
+    .lever-btn {
+      padding: 10px 12px; border: 1.5px solid var(--border);
+      border-radius: 9px; font-family: var(--font); font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: all 0.15s; background: var(--bg); text-align: left;
+    }
+    .lever-btn:hover { border-color: #94A3B8; background: #F1F5F9; }
+    .lever-btn.selected-fear { border-color: #EF4444; background: #FEF2F2; color: #991B1B; }
+    .lever-btn.selected-desire { border-color: #8B5CF6; background: #F5F3FF; color: #5B21B6; }
+    .lever-btn.selected-identity { border-color: #2563EB; background: #EFF6FF; color: #1D4ED8; }
+    .lever-btn.selected-shame { border-color: #F59E0B; background: #FFFBEB; color: #92400E; }
+    .lever-btn.correct { border-color: #059669 !important; background: #ECFDF5 !important; color: #064E3B !important; }
+    .lever-btn.wrong { border-color: #DC2626 !important; background: #FEF2F2 !important; color: #7F1D1D !important; opacity: 0.7; }
+    .reveal-panel {
+      display: none; margin-top: 12px;
+      padding: 14px; border-radius: 9px;
+      background: #F0FDF4; border: 1px solid #6EE7B7;
+      font-size: 13px; line-height: 1.6; color: #064E3B;
+    }
+    .reveal-panel strong { display: block; font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .next-btn {
+      display: none; width: 100%; margin-top: 12px; padding: 11px;
+      background: #0F172A; color: white; border: none; border-radius: 9px;
+      font-family: var(--font); font-size: 14px; font-weight: 700; cursor: pointer;
+    }
+    .next-btn:hover { background: #1E293B; }
+    .done-card {
+      display: none; max-width: 560px; margin: 0 auto;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 28px; text-align: center;
+    }
+    .done-card .score { font-size: 44px; font-weight: 800; color: #2563EB; }
+    .done-card h3 { font-size: 17px; font-weight: 700; margin: 10px 0 8px; }
+    .done-card p { font-size: 13px; color: var(--muted); line-height: 1.6; max-width: 380px; margin: 0 auto; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>What Is This Ad Actually Selling?</h1>
+  <p>Five real-style ads. For each, pick the primary emotional lever being used.</p>
+</div>
+
+<div class="progress-row" id="pips"></div>
+<div id="ad-area"></div>
+<div class="done-card" id="done-card"></div>
+
+<script>
+const ads = [
+  {
+    bg: "#FFF1F2", icon: "🔒", headline: "Your family's data was just exposed.",
+    subline: "Most people find out too late. Check your breach report now - before someone uses it against you.",
+    cta: "Check My Exposure Free", ctaBg: "#DC2626", ctaColor: "#fff",
+    label: "Home Security App",
+    answer: "fear",
+    breakdown: "Passive voice ('was just exposed') creates panic with no evidence. Free check is the hook. Classic fear-to-relief structure."
+  },
+  {
+    bg: "#F5F3FF", icon: "✨", headline: "You deserve mornings that feel like this.",
+    subline: "Premium linen. Slow Sunday energy. Made for people who prioritise the right things.",
+    cta: "Shop the Collection", ctaBg: "#7C3AED", ctaColor: "#fff",
+    label: "Lifestyle Brand",
+    answer: "identity",
+    breakdown: "No product features. No price. The ad sells a tribe membership. 'People who prioritise the right things' is the identity being sold - the product just signals it."
+  },
+  {
+    bg: "#FFFBEB", icon: "📸", headline: "Look 10 years younger in 4 weeks. Guaranteed.",
+    subline: "Our collagen blend is trusted by 40,000 women who refused to settle. Before and after results speak for themselves.",
+    cta: "Claim My Discount", ctaBg: "#B45309", ctaColor: "#fff",
+    label: "Supplement Brand",
+    answer: "shame",
+    breakdown: "Accepting aging means 'settling.' The before/after format implies clinical proof with no evidence. The product is relief from the inadequacy the ad just created."
+  },
+  {
+    bg: "#EFF6FF", icon: "🏎️", headline: "Not everyone drives like this. But you could.",
+    subline: "0-100 in 3.8 seconds. Every detail built for the driver who refuses to compromise.",
+    cta: "Book a Test Drive", ctaBg: "#1D4ED8", ctaColor: "#fff",
+    label: "Automotive Brand",
+    answer: "desire",
+    breakdown: "'Not everyone' creates exclusivity. The ad sells a character you want to be - not a vehicle. Desire advertising does not sell the product; it sells a version of you."
+  },
+  {
+    bg: "#ECFDF5", icon: "💪", headline: "Still making excuses? Your future self is watching.",
+    subline: "The people who started 6 months ago are already there. You could be too. Start for free today.",
+    cta: "Start My Journey", ctaBg: "#059669", ctaColor: "#fff",
+    label: "Fitness App",
+    answer: "shame",
+    breakdown: "'Still making excuses' triggers shame directly. Peer comparison adds inadequacy. 'Your future self is watching' is a guilt mechanism - the product is the escape."
+  }
+];
+
+const leverLabels = {
+  fear: "Fear", desire: "Desire / Aspiration", identity: "Identity", shame: "Shame / Inadequacy"
+};
+const leverClass = { fear: "selected-fear", desire: "selected-desire", identity: "selected-identity", shame: "selected-shame" };
+
+let current = 0;
+let score = 0;
+let answered = false;
+
+function renderPips() {
+  const row = document.getElementById('pips');
+  row.innerHTML = ads.map((_, i) => `<div class="pip ${i < current ? 'done' : i === current ? 'active' : ''}"></div>`).join('');
+}
+
+function renderAd() {
+  if (current >= ads.length) { showDone(); return; }
+  const a = ads[current];
+  answered = false;
+  renderPips();
+  document.getElementById('ad-area').innerHTML = `
+    <div class="ad-card">
+      <div class="ad-banner" style="background:${a.bg}">
+        <div class="icon">${a.icon}</div>
+        <div class="headline">${a.headline}</div>
+        <div class="subline">${a.subline}</div>
+        <button class="cta" style="background:${a.ctaBg};color:${a.ctaColor}">${a.cta}</button>
+      </div>
+      <div class="ad-body">
+        <p>Category: <strong>${a.label}</strong>. What is this ad primarily selling?</p>
+        <div class="lever-row">
+          ${Object.entries(leverLabels).map(([k,v]) => `<button class="lever-btn" id="btn-${k}" onclick="pick('${k}')">${v}</button>`).join('')}
+        </div>
+        <div class="reveal-panel" id="reveal"></div>
+        <button class="next-btn" id="next-btn" onclick="next()">${current < ads.length - 1 ? 'Next Ad' : 'See Results'}</button>
+      </div>
+    </div>`;
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function pick(lever) {
+  if (answered) return;
+  answered = true;
+  const a = ads[current];
+  const correct = lever === a.answer;
+  if (correct) score++;
+  Object.keys(leverLabels).forEach(k => {
+    const btn = document.getElementById('btn-' + k);
+    if (k === a.answer) btn.classList.add('correct');
+    else if (k === lever && !correct) btn.classList.add('wrong');
+    btn.disabled = true;
+  });
+  const rev = document.getElementById('reveal');
+  rev.style.display = 'block';
+  rev.innerHTML = `<strong>${correct ? 'Correct.' : 'Not quite.'} Primary lever: ${leverLabels[a.answer]}</strong>${a.breakdown}`;
+  document.getElementById('next-btn').style.display = 'block';
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function next() {
+  current++;
+  renderAd();
+}
+
+function showDone() {
+  document.getElementById('ad-area').innerHTML = '';
+  document.getElementById('pips').innerHTML = ads.map(() => `<div class="pip done"></div>`).join('');
+  const card = document.getElementById('done-card');
+  card.style.display = 'block';
+  card.innerHTML = `
+    <div class="score">${score}/${ads.length}</div>
+    <h3>${score >= 4 ? 'Sharp eye' : score >= 2 ? 'Decent instincts' : 'Worth reflecting on'}</h3>
+    <p>Ads rarely sell what they appear to sell. Fear, shame, desire, and identity are the real products. The item is just the delivery mechanism. Once you can name the lever, you can choose whether to let it work.</p>`;
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+renderAd();
+window.addEventListener('load', () => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'));
+</script>
+</body>
+</html>

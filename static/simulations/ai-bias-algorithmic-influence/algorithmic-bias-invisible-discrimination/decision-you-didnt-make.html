@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Decision You Didn't Make</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --font: 'Poppins', system-ui, sans-serif;
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #fff; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --green: #16A34A; --green-bg: #F0FDF4; --green-border: #BBF7D0;
+      --red: #DC2626; --red-bg: #FEF2F2; --red-border: #FECACA;
+      --amber: #D97706;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 24px 40px; font-size: 14px; }
+
+    .intro { font-size: 13px; color: var(--text-3); margin-bottom: 20px; line-height: 1.5; }
+    .intro strong { color: var(--text-1); }
+
+    /* applicant cards */
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    @media (max-width: 560px) { .split { grid-template-columns: 1fr; } }
+    .app { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .app-head { padding: 10px 14px; font-size: 12px; font-weight: 700; }
+    .app-a .app-head { background: #EFF6FF; color: #1D4ED8; border-bottom: 1px solid #BFDBFE; }
+    .app-b .app-head { background: #F0FDF4; color: #15803D; border-bottom: 1px solid var(--green-border); }
+    .field { display: flex; justify-content: space-between; padding: 8px 14px; border-bottom: 1px solid var(--border); font-size: 12px; }
+    .field:last-child { border-bottom: none; }
+    .f-label { color: var(--text-3); }
+    .f-value { font-weight: 600; text-align: right; }
+    .same { font-size: 10px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 20px; padding: 1px 6px; color: var(--text-3); margin-left: 4px; }
+    .diff { font-size: 10px; background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 20px; padding: 1px 6px; color: var(--amber); margin-left: 4px; }
+
+    /* step reveal */
+    .steps-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); margin-bottom: 10px; }
+    .steps { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+    .step { display: flex; gap: 12px; align-items: flex-start; background: var(--bg-2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; opacity: 0; transform: translateY(8px); transition: opacity .4s, transform .4s; }
+    .step.visible { opacity: 1; transform: none; }
+    .step-num { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); white-space: nowrap; padding-top: 1px; min-width: 48px; }
+    .step-text { font-size: 13px; color: var(--text-2); line-height: 1.45; }
+    .step-text strong { color: var(--text-1); }
+    .step.bias { border-color: #FED7AA; background: #FFF7ED; }
+    .step.bias .step-num { color: var(--amber); }
+
+    /* outcome */
+    .outcomes { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; opacity: 0; transition: opacity .5s .2s; }
+    .outcomes.visible { opacity: 1; }
+    @media (max-width: 560px) { .outcomes { grid-template-columns: 1fr; } }
+    .outcome { border-radius: 12px; padding: 16px; text-align: center; }
+    .oc-a { background: var(--green-bg); border: 2px solid var(--green-border); }
+    .oc-b { background: var(--red-bg); border: 2px solid var(--red-border); }
+    .oc-name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+    .oc-a .oc-name { color: var(--green); }
+    .oc-b .oc-name { color: var(--red); }
+    .oc-result { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+    .oc-a .oc-result { color: var(--green); }
+    .oc-b .oc-result { color: var(--red); }
+    .oc-note { font-size: 12px; color: var(--text-3); line-height: 1.4; }
+
+    /* question */
+    .question { background: var(--blue-faint); border: 1px solid #BFDBFE; border-radius: 12px; padding: 16px 18px; text-align: center; opacity: 0; transition: opacity .5s .4s; }
+    .question.visible { opacity: 1; }
+    .q-text { font-size: 14px; font-weight: 700; color: #1D4ED8; line-height: 1.5; }
+
+    .reveal-btn { width: 100%; padding: 12px; background: var(--blue); color: #fff; border: none; border-radius: 10px; font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; margin-bottom: 16px; }
+    .reveal-btn:hover { background: #1D4ED8; }
+    .reveal-btn:disabled { background: var(--border); color: var(--text-3); cursor: not-allowed; }
+  </style>
+</head>
+<body>
+
+<div class="intro"><strong>Same application. Different outcome.</strong> Two people apply for the same loan with identical income, credit score, and employment. The AI approves one and rejects the other.</div>
+
+<div class="split">
+  <div class="app app-a">
+    <div class="app-head">Applicant A - Michael</div>
+    <div class="field"><span class="f-label">Annual income</span><span class="f-value">Rs 8,40,000 <span class="same">same</span></span></div>
+    <div class="field"><span class="f-label">Credit score</span><span class="f-value">724 <span class="same">same</span></span></div>
+    <div class="field"><span class="f-label">Employment</span><span class="f-value">4 yrs, stable <span class="same">same</span></span></div>
+    <div class="field"><span class="f-label">Loan requested</span><span class="f-value">Rs 3,00,000 <span class="same">same</span></span></div>
+    <div class="field"><span class="f-label">PIN code</span><span class="f-value">400 052 <span class="diff">differs</span></span></div>
+    <div class="field"><span class="f-label">Device</span><span class="f-value">iPhone 15 <span class="diff">differs</span></span></div>
+    <div class="field"><span class="f-label">Applied at</span><span class="f-value">11:30 AM <span class="diff">differs</span></span></div>
+  </div>
+  <div class="app app-b">
+    <div class="app-head">Applicant B - Rahul</div>
+    <div class="field"><span class="f-label">Annual income</span><span class="f-value">Rs 8,40,000 <span class="same">same</span></span></div>
+    <div class="field"><span class="f-label">Credit score</span><span class="f-value">724 <span class="same">same</span></span></div>
+    <div class="field"><span class="f-label">Employment</span><span class="f-value">4 yrs, stable <span class="same">same</span></span></div>
+    <div class="field"><span class="f-label">Loan requested</span><span class="f-value">Rs 3,00,000 <span class="same">same</span></span></div>
+    <div class="field"><span class="f-label">PIN code</span><span class="f-value">400 017 <span class="diff">differs</span></span></div>
+    <div class="field"><span class="f-label">Device</span><span class="f-value">Android (older) <span class="diff">differs</span></span></div>
+    <div class="field"><span class="f-label">Applied at</span><span class="f-value">9:45 PM <span class="diff">differs</span></span></div>
+  </div>
+</div>
+
+<button class="reveal-btn" id="reveal-btn" onclick="reveal()">See how the AI scored each application</button>
+
+<div class="steps-label" id="steps-label" style="display:none">What the model actually used</div>
+<div class="steps" id="steps">
+  <div class="step" id="s1">
+    <span class="step-num">Step 1</span>
+    <span class="step-text"><strong>Credit and income: pass.</strong> Both applicants score identically. The model moves to secondary signals.</span>
+  </div>
+  <div class="step bias" id="s2">
+    <span class="step-num">Step 2</span>
+    <span class="step-text"><strong>PIN code 400 017 flagged.</strong> Training data associates this area with higher historical defaults. Rahul's score is downgraded. He is not told this variable exists.</span>
+  </div>
+  <div class="step bias" id="s3">
+    <span class="step-num">Step 3</span>
+    <span class="step-text"><strong>Older Android = risk proxy.</strong> Device age correlated with repayment in training data. Another downgrade.</span>
+  </div>
+  <div class="step bias" id="s4">
+    <span class="step-num">Step 4</span>
+    <span class="step-text"><strong>9 PM application flagged.</strong> Late-night applications correlate with distress-borrowing. Rahul applied then because it was his free time.</span>
+  </div>
+</div>
+
+<div class="outcomes" id="outcomes">
+  <div class="outcome oc-a">
+    <div class="oc-name">Michael</div>
+    <div class="oc-result">Approved</div>
+    <div class="oc-note">11.2% interest. He assumes his credit score was the reason.</div>
+  </div>
+  <div class="outcome oc-b">
+    <div class="oc-name">Rahul</div>
+    <div class="oc-result">Rejected</div>
+    <div class="oc-note">"Does not meet our current lending criteria." No reason. No appeal. Reapply in 6 months.</div>
+  </div>
+</div>
+
+<div class="question" id="question">
+  <div class="q-text">Rahul cannot contest the PIN code signal. He was never told it existed. How would you know if an AI decision about you was biased?</div>
+</div>
+
+<script>
+let revealed = false;
+
+function reveal() {
+  if (revealed) return;
+  revealed = true;
+  document.getElementById('reveal-btn').disabled = true;
+  document.getElementById('reveal-btn').textContent = 'Revealed';
+  document.getElementById('steps-label').style.display = 'block';
+
+  const steps = ['s1','s2','s3','s4'];
+  steps.forEach((id, i) => {
+    setTimeout(() => {
+      document.getElementById(id).classList.add('visible');
+      send();
+    }, i * 350);
+  });
+
+  setTimeout(() => {
+    document.getElementById('outcomes').classList.add('visible');
+    send();
+  }, steps.length * 350 + 200);
+
+  setTimeout(() => {
+    document.getElementById('question').classList.add('visible');
+    send();
+  }, steps.length * 350 + 500);
+}
+
+function send() {
+  setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 32 }, '*'), 150);
+}
+
+window.addEventListener('load', send);
+</script>
+</body>
+</html>

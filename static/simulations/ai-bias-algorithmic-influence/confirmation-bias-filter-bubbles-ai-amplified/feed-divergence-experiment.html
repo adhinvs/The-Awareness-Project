@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feed Divergence Experiment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --font: 'Poppins', system-ui, sans-serif;
+      --blue: #2563EB; --blue-dark: #1D4ED8; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #fff; --bg-2: #F9FAFB; --border: #E5E7EB;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 24px 40px; font-size: 14px; }
+
+    .intro { font-size: 13px; color: var(--text-3); margin-bottom: 20px; line-height: 1.5; }
+    .intro strong { color: var(--text-1); }
+
+    .topic-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); margin-bottom: 10px; }
+    .topic-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
+    @media(max-width: 540px) { .topic-grid { grid-template-columns: repeat(2, 1fr); } }
+    .topic-btn { padding: 11px 8px; border: 2px solid var(--border); border-radius: 10px; background: var(--bg); cursor: pointer; font-family: var(--font); font-size: 12px; font-weight: 600; color: var(--text-2); text-align: center; transition: all .15s; }
+    .topic-btn:hover { border-color: var(--blue); background: var(--blue-faint); color: var(--blue); }
+    .topic-btn.active { border-color: var(--blue); background: var(--blue-faint); color: var(--blue); }
+    .topic-icon { font-size: 18px; display: block; margin-bottom: 3px; }
+
+    .day-row { display: flex; gap: 8px; margin-bottom: 16px; }
+    .day-btn { flex: 1; padding: 9px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); cursor: pointer; font-family: var(--font); font-size: 12px; font-weight: 600; color: var(--text-3); text-align: center; transition: all .15s; }
+    .day-btn.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .day-btn:hover:not(.active) { background: var(--bg-2); }
+
+    .meter { background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+    .meter-row { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: 8px; }
+    .meter-label { color: var(--text-3); }
+    .meter-pct { color: var(--blue); }
+    .meter-track { height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; margin-bottom: 8px; }
+    .meter-fill { height: 100%; background: linear-gradient(90deg, #2563EB, #DC2626); border-radius: 5px; transition: width .5s ease; }
+    .meter-note { font-size: 12px; color: var(--text-3); line-height: 1.45; }
+
+    .feeds-split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+    @media(max-width: 580px) { .feeds-split { grid-template-columns: 1fr; } }
+    .feed-col { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .feed-col-head { padding: 10px 14px; font-size: 11px; font-weight: 700; border-bottom: 1px solid var(--border); }
+    .feed-a .feed-col-head { background: #EFF6FF; color: #1D4ED8; }
+    .feed-b .feed-col-head { background: #FFF7ED; color: #C2410C; }
+    .feed-items { padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+    .feed-item { background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+    .item-source { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--text-3); margin-bottom: 4px; }
+    .item-headline { font-size: 12px; font-weight: 600; color: var(--text-1); line-height: 1.4; }
+
+    .takeaway { background: var(--blue-faint); border: 1px solid #BFDBFE; border-radius: 12px; padding: 14px 16px; font-size: 13px; color: #1D4ED8; font-weight: 600; line-height: 1.5; }
+
+    .placeholder { text-align: center; padding: 40px 20px; color: var(--text-3); font-size: 13px; }
+    .placeholder-icon { font-size: 28px; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+
+<div class="intro"><strong>Same topic. Same platform. Different reality.</strong> Pick a topic and see how two people's feeds diverge over 30 days - purely from the algorithm learning what each person engages with.</div>
+
+<div class="topic-label">Choose a topic</div>
+<div class="topic-grid">
+  <button class="topic-btn" onclick="selectTopic(this,'health')"><span class="topic-icon">🌿</span>Health</button>
+  <button class="topic-btn" onclick="selectTopic(this,'finance')"><span class="topic-icon">📊</span>Finance</button>
+  <button class="topic-btn" onclick="selectTopic(this,'climate')"><span class="topic-icon">🌍</span>Climate</button>
+  <button class="topic-btn" onclick="selectTopic(this,'tech')"><span class="topic-icon">💻</span>Technology</button>
+</div>
+
+<div id="area">
+  <div class="placeholder"><div class="placeholder-icon">↑</div>Select a topic to start</div>
+</div>
+
+<script>
+const data = {
+  health: {
+    7:  { div: 30, note: "Both feeds cover similar topics. User B's sources are beginning to frame the same findings as suspect.",
+          a: [["Medical News Today","Ultra-processed food linked to 30% higher risk of early death"],["NHS","Updated sleep guidance: why 7-9 hours matters for heart health"],["Stanford Medicine","Zone 2 cardio confirmed beneficial for metabolic health"]],
+          b: [["Wellness Truth Network","What Big Pharma doesn't want you to know about processed food"],["Natural Healing Today","The 8-hour sleep rule was invented to sell medication"],["Root Cause Docs","Exercise science is corrupted - here's what athletes actually do"]] },
+    14: { div: 58, note: "Mainstream sources have disappeared from Feed B. The algorithm learned what keeps User B engaged.",
+          a: [["The Lancet","GLP-1 drugs reduce cardiovascular events by 20% in trial"],["WHO","Global sugar limit reduced to 5% of daily calories"],["Harvard Health","What we now know about gut health and immune function"]],
+          b: [["FreedomMD","GLP-1 drugs are a trillion-dollar con - obesity was manufactured"],["NaturalImmunity.org","WHO sugar rules prove they work for food industry lobbyists"],["Gut Truth Podcast","Your microbiome is being destroyed by medication"]] },
+    30: { div: 88, note: "Feed B now operates in a separate information ecosystem. The same health topic. No shared sources.",
+          a: [["NEJM","Statins reduce stroke risk in low-risk patients, trial confirms"],["CDC","Get vaccinated before October for optimal flu protection"],["BMJ","AI screening detects early pancreatic cancer with 93% accuracy"]],
+          b: [["UnJabbed Network","Statin deaths underreported: whistleblower breaks silence"],["VAERS Warriors","This year's flu shot contains a new adjuvant never tested on humans"],["Cancer Truth Docs","Big Pharma is suppressing the AI cancer cure"]] }
+  },
+  finance: {
+    7:  { div: 35, note: "The same financial events. Two opposing interpretations. The divergence direction is already set.",
+          a: [["Financial Times","RBI holds rates steady as inflation falls within target"],["Morningstar","Index funds vs active management: the data after 20 years"],["Economic Times","SIP inflows hit record high - retail investors drive 40% of equity volume"]],
+          b: [["CryptoTruth Daily","RBI decision reveals the fiat system is collapsing"],["FinancialFreedomNow","Index funds are a trap designed to keep you dependent on the system"],["Rupee Reality","SIP inflows are a sign of retail panic - smart money is moving out"]] },
+    14: { div: 62, note: "Every mainstream financial signal is now framed as evidence of a hidden conspiracy in Feed B.",
+          a: [["Bloomberg","Gold stabilises after Fed signals no further rate increases"],["SEBI","New ESG disclosure requirements for listed companies from April"],["Mint","Why the 4% withdrawal rule needs updating for Indian retirees"]],
+          b: [["GoldBug Underground","Fed 'stability' is cover for imminent dollar collapse - buy physical now"],["ShadowRegulator","SEBI ESG rules are surveillance infrastructure for asset seizure"],["IndependentWealth101","The 4% retirement rule was invented to keep you working"]] },
+    30: { div: 91, note: "User A and User B now interpret the same economic data in opposite ways. Neither has seen the other's feed.",
+          a: [["RBI Annual Report","India's forex reserves reach record high - 11 months of import cover"],["Vanguard Research","Diversification reduces portfolio volatility by 31% over 10-year periods"],["JP Morgan","India leads emerging market growth projections for 2026"]],
+          b: [["CollapseWatch India","Record forex reserves are fake - real number after hidden liabilities is negative"],["TrueWealthPodcast","Diversification keeps you exposed when everything crashes simultaneously"],["ExitStrategy2025","JP Morgan's India forecast is designed to trap retail investors"]] }
+  },
+  climate: {
+    7:  { div: 42, note: "User B's feed has started serving contrarian interpretations of the same underlying science.",
+          a: [["Nature Climate Change","2024 confirmed hottest year on record - 1.5°C above pre-industrial baseline"],["IPCC","Coastal flooding threatens 1 billion people by 2050 under current trajectory"],["CleanTechnica","Solar plus storage now cheaper than new coal in 95% of global markets"]],
+          b: [["ClimateRealityCheck","1.5°C claim relies on manipulated surface temperature data"],["CoastalMyths.net","IPCC flooding models have been wrong every decade"],["EnergyTruth Daily","Solar cost figures include subsidies that won't exist in 5 years"]] },
+    14: { div: 66, note: "Feed B now questions the data behind every climate finding. Scientific institutions are framed as unreliable.",
+          a: [["NASA","Arctic sea ice minimum for 2024 is second lowest in recorded history"],["IEA","Renewable energy now supplies 30% of global electricity - first time ever"],["WMO","Extreme heat events now 5x more likely due to human-caused warming"]],
+          b: [["ArcticDataWatch","NASA sea ice measurements exclude data that contradicts the narrative"],["RealEnergyNumbers","IEA 30% figure counts Chinese hydro - actual new renewables are 9%"],["HeatWaveHoax","Heat attribution studies share the same authors - this is circular science"]] },
+    30: { div: 93, note: "A conversation between User A and User B about climate would begin from incompatible premises about what the facts are.",
+          a: [["Science","Carbon capture breakthrough: new material absorbs CO2 at 40x efficiency"],["Guardian","Insurance industry leaving high-risk coastal areas - what it means for housing"],["UNEP","150 countries commit to 30% methane reduction by 2030"]],
+          b: [["CarbonScam Network","Carbon capture funding is a wealth transfer - the technology doesn't scale"],["InsuranceTruth","Insurers aren't leaving because of climate - it's regulatory overreach"],["ParisExitNow","Methane pledge signatories have no enforcement - it's theater"]] }
+  },
+  tech: {
+    7:  { div: 28, note: "User B's feed has started introducing skeptical framings. Small divergence. Clear direction.",
+          a: [["MIT Technology Review","GPT-5 still produces harmful outputs in 7% of safety benchmark tests"],["The Verge","EU AI Act enforcement begins - companies have 6 months to audit systems"],["Wired","Autonomous vehicle safety: 2024 was the safest year yet, edge cases remain"]],
+          b: [["AIControl Watch","GPT-5 safety tests are designed by OpenAI - the 7% is almost certainly higher"],["DigitalSovereignty","EU AI Act is regulatory capture designed to lock out competitors"],["SelfDrivingLies","Tesla safety stats exclude incidents where Autopilot was disengaged before crash"]] },
+    14: { div: 55, note: "Feed B now follows a consistent pattern: every mainstream tech claim is followed by a source calling it exaggerated.",
+          a: [["Nature","AI protein folding models predict drug interactions with 89% accuracy in trials"],["FT Tech","TSMC completes third Arizona fab ahead of schedule - chip shortage ends"],["IEEE Spectrum","1,000-qubit quantum system achieves commercial error-correction threshold"]],
+          b: [["PharmaAI Exposed","AI drug interaction claims use cherry-picked data - real accuracy far lower"],["ChipWar Truth","TSMC Arizona timeline is PR - actual production is years behind"],["QuantumHype","Quantum computing is 10 years away and always will be"]] },
+    30: { div: 86, note: "User A sees accelerating progress. User B sees an industry of hype. Same events. Neither has seen the other's feed.",
+          a: [["OpenAI Research","Claude 4 and GPT-5 complete MMLU benchmark at 97% - human expert level"],["Bloomberg Tech","India semiconductor policy attracts $14B from five major manufacturers"],["Science Robotics","Humanoid robot completes 200-hour uninterrupted warehouse task - first in history"]],
+          b: [["BenchmarkFraud.net","AI benchmark scores are gamed - here's how every major lab cheats MMLU"],["IndiaChipSkeptic","Semiconductor investment announcements have a 70% dropout rate"],["RoboticsReality","That 200-hour robot video is edited - the actual trial failure rate was 34%"]] }
+  }
+};
+
+let topic = null, day = 30;
+
+function selectTopic(el, t) {
+  topic = t;
+  document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+function selectDay(d) {
+  day = d;
+  document.querySelectorAll('.day-btn').forEach(b => b.classList.toggle('active', b.dataset.day == d));
+  renderFeeds();
+}
+
+function render() {
+  day = 30;
+  document.getElementById('area').innerHTML = `
+    <div class="day-row">
+      <button class="day-btn" data-day="7" onclick="selectDay(7)">Day 7</button>
+      <button class="day-btn" data-day="14" onclick="selectDay(14)">Day 14</button>
+      <button class="day-btn active" data-day="30" onclick="selectDay(30)">Day 30</button>
+    </div>
+    <div id="meter-box"></div>
+    <div id="feeds-box"></div>
+    <div id="takeaway-box"></div>
+  `;
+  renderFeeds();
+}
+
+function renderFeeds() {
+  if (!topic) return;
+  const d = data[topic][day];
+  const makeItems = items => items.map(([src, hl]) =>
+    `<div class="feed-item"><div class="item-source">${src}</div><div class="item-headline">${hl}</div></div>`
+  ).join('');
+
+  document.getElementById('meter-box').innerHTML = `
+    <div class="meter">
+      <div class="meter-row"><span class="meter-label">Feed divergence</span><span class="meter-pct">${d.div}%</span></div>
+      <div class="meter-track"><div class="meter-fill" style="width:${d.div}%"></div></div>
+      <div class="meter-note">${d.note}</div>
+    </div>
+  `;
+
+  document.getElementById('feeds-box').innerHTML = `
+    <div class="feeds-split">
+      <div class="feed-col feed-a">
+        <div class="feed-col-head">Feed A - mainstream sources</div>
+        <div class="feed-items">${makeItems(d.a)}</div>
+      </div>
+      <div class="feed-col feed-b">
+        <div class="feed-col-head">Feed B - alternative sources</div>
+        <div class="feed-items">${makeItems(d.b)}</div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('takeaway-box').innerHTML = `
+    <div class="takeaway">Neither user was shown the other's feed. The algorithm built this separation by showing each person more of what they engaged with.</div>
+  `;
+
+  send();
+}
+
+function send() {
+  setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 32 }, '*'), 100);
+}
+
+window.addEventListener('load', send);
+</script>
+</body>
+</html>

@@ -1,15 +1,192 @@
 ---
 sidebar_position: 3
 title: "Confirmation Bias & Filter Bubbles (AI-Amplified)"
-sidebar_label: "Confirmation Bias & Filter Bubbles (AI-Amplified)"
+sidebar_label: "Confirmation Bias & Filter Bubbles"
+description: "How algorithms amplify confirmation bias by showing you only what you already agree with - and how to recognise when your information environment has been narrowed."
+tags: [confirmation-bias, filter-bubbles, algorithmic-amplification, polarisation, echo-chambers, social-media, recommendation-algorithms, media-literacy]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Confirmation Bias & Filter Bubbles (AI-Amplified)
 
-## Sub-topics
+You do not notice when information stops arriving. The algorithm removes it quietly - and replaces it with more of what you already believe.
 
-- Algorithms showing you what agrees with you
-- Filter bubbles isolating you in belief communities
-- Political and social polarisation by algorithmic design
-- Missing contrary information entirely
-- Breaking out of algorithmic bubbles
+---
+
+## The Same Event, Different Worlds
+
+Kavita and her brother Rajan grew up in the same house. During a public health debate in 2023, they discovered they had been reading completely different things for two years - not different opinions, but different reported facts, different cited studies, different named experts.
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/ai-bias-algorithmic-influence/confirmation-bias-filter-bubbles-ai-amplified/filter-bubbles.webp"
+    alt="Two identical smartphone screens side by side showing completely different news feeds on the same topic."
+  />
+</figure>
+
+When they compared feeds, neither had seen any of the content the other had been reading for months. They had been arguing about the same events from inside separate information environments, each convinced the other was ignoring obvious evidence.
+
+**The algorithm had not lied to either of them. It had simply shown each of them more of what they had engaged with - and less of everything else. Over time, "less" became "none."**
+
+---
+
+## What Is Actually Happening
+
+Confirmation bias is human. Algorithms make it structural.
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>70%</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>of what people watch on major video platforms is chosen by the recommendation algorithm - not by the user.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>The platform decides what is relevant. The user experiences it as their own choice.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: YouTube, cited in MIT Technology Review, 2023</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Radicalisation Path</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>64% started with recommendations</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>In research on people who held extreme views online, <b>64% reported that algorithmic recommendations</b> first brought them into contact with that content - not active searching for it.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Mozilla Foundation / CCDH Research, 2021</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Emotional Amplification</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>False news travels 6x faster</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>False news spreads <b>6 times faster than accurate news on social platforms</b>, partly because false stories generate higher emotional engagement. Algorithms amplify whatever generates engagement.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Vosoughi, Roy & Aral, Science, 2018</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Narrow Source Exposure</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>80% of feed from 12-20 accounts</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>For heavy social media users, <b>over 80% of feed content comes from a consistent cluster of 12-20 accounts</b> - a tiny fraction of who they follow. The rest have been algorithmically deprioritised.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Social Media Feed Analysis Studies, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #10B981', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#10B981', fontWeight: 'bold' }}>Platform Research</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Polarisation was known and allowed</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Facebook's own internal research found its algorithm was <b>a significant driver of political polarisation</b>. The company identified fixes and chose not to implement them because they would reduce engagement.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Wall Street Journal, The Facebook Files, 2021</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## How the Bubble Forms
+
+You engage with content that agrees with your existing view. The algorithm records the engagement and serves more similar content. Over weeks, the algorithm has mapped your pattern. Content that disagrees generates less engagement - so the algorithm gradually reduces it.
+
+You do not notice a removal. You notice a feed that feels increasingly relevant and satisfying. **The satisfaction is the signal that the bubble has formed.**
+
+---
+
+## Missing Contrary Information Entirely
+
+The filter bubble problem is not primarily that you see false information. It is that you stop seeing accurate information that contradicts what you believe.
+
+A person inside a bubble does not think they are misinformed. They think they are well-informed. The most accurate opposing evidence has been algorithmically suppressed before they could encounter it.
+
+**This is what makes the bubble dangerous - not what you see, but what you no longer know you are not seeing.**
+
+---
+
+## Try It: The Feed Divergence Experiment
+
+Select a topic. See what two people's feeds look like after 30 days of the algorithm learning what each of them engages with.
+
+<iframe
+  id="feed-divergence-iframe"
+  src="/simulations/ai-bias-algorithmic-influence/confirmation-bias-filter-bubbles-ai-amplified/feed-divergence-experiment.html"
+  width="100%"
+  style={{ height: '700px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="The Feed Divergence Experiment"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('feed-divergence-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._feedDivergenceHandler);
+    window._feedDivergenceHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. The same platform, the same topic, two entirely different realities.**
+The divergence is the predictable output of an engagement-optimised algorithm applied consistently over time.
+
+**2. The algorithm is not biased - it is doing its job.**
+Divergence is a feature, not a bug. The algorithm is successfully maximising the metric it was designed to maximise: engagement.
+
+**3. You cannot see the content being withheld.**
+You see what the algorithm shows you. You do not see the gap - the accurate, contrary, important content that stopped appearing months ago.
+
+**4. Breaking the bubble requires a deliberate act.**
+The algorithm will not self-correct. You have to go looking for the strongest version of the opposite view.
+
+---
+
+## Three Things Worth Doing
+
+**1. Search for the opposing view directly on any important topic.**
+Do not rely on the platform to surface it. Search for the strongest, most evidence-based argument against your current position. You do not have to agree with it.
+
+**2. Follow evidence-based sources on the opposite side of any topic that matters to you.**
+This ensures the algorithm receives engagement signals from across a wider information space.
+
+**3. Before sharing, ask who might interpret this content differently.**
+If the answer is "nobody would disagree with this," that is a filter bubble signal, not a fact about the content.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Kavita and Rajan had access to the same platform and topic, but ended up in completely different information environments. What specifically caused this?"
+  options={[
+    {
+      label: "They chose to follow different sources and deliberately avoided each other's content.",
+      correct: false,
+      explanation: "There is no evidence they made deliberate choices to exclude certain sources. The divergence happened through accumulated engagement signals over time - not through a single conscious decision to filter."
+    },
+    {
+      label: "Each person's engagement history trained the algorithm to show more of what they already agreed with and less of everything else, until their feeds no longer overlapped.",
+      correct: true,
+      explanation: "Correct. The algorithm optimises for engagement. Each engagement signal trained it to narrow the content space toward what that user responded to. Over months, 'less' became 'none.' Neither had to make any deliberate choice for this to happen."
+    },
+    {
+      label: "The platform deliberately separated them because they live in different cities.",
+      correct: false,
+      explanation: "Location is a factor in some content delivery, but it is not the mechanism described here. The divergence came from engagement patterns, not geographic targeting."
+    },
+    {
+      label: "One of them must have been consuming false content, which the algorithm then amplified.",
+      correct: false,
+      explanation: "Neither feed needed to contain false content for the divergence to produce real-world conflict. Each feed could contain accurate information while still presenting an incomplete picture of the total information landscape - which is what makes filter bubbles particularly difficult to recognise."
+    }
+  ]}
+/>

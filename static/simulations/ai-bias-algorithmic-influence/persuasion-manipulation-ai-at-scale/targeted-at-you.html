@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Targeted at You</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --font: 'Poppins', system-ui, sans-serif;
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #fff; --bg-2: #F9FAFB; --border: #E5E7EB;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 24px 40px; font-size: 14px; }
+
+    /* step 1 */
+    .step { display: none; animation: fadein .25s ease; }
+    .step.active { display: block; }
+    @keyframes fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .step-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); margin-bottom: 6px; }
+    .step-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    .step-sub { font-size: 13px; color: var(--text-3); margin-bottom: 20px; line-height: 1.5; }
+
+    .trait-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+    @media (max-width: 500px) { .trait-grid { grid-template-columns: repeat(2, 1fr); } }
+    .trait { padding: 14px 8px; border: 2px solid var(--border); border-radius: 10px; background: var(--bg); cursor: pointer; font-family: var(--font); font-size: 12px; font-weight: 600; color: var(--text-2); text-align: center; transition: all .15s; line-height: 1.3; }
+    .trait:hover:not(.sel) { border-color: #93C5FD; background: var(--blue-faint); }
+    .trait.sel { border-color: var(--blue); background: var(--blue-faint); color: var(--blue); }
+    .trait-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+
+    .sel-count { font-size: 13px; color: var(--text-3); margin-bottom: 14px; }
+    .sel-count strong { color: var(--blue); }
+
+    .go-btn { width: 100%; padding: 13px; background: var(--blue); color: #fff; border: none; border-radius: 10px; font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; }
+    .go-btn:hover { background: #1D4ED8; }
+    .go-btn:disabled { background: var(--border); color: var(--text-3); cursor: not-allowed; }
+
+    /* step 2 */
+    .product-strip { display: flex; align-items: center; gap: 10px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 18px; font-size: 13px; color: var(--text-2); }
+    .product-strip strong { color: var(--text-1); }
+    .product-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+
+    .ad-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
+    .ad { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .ad-head { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+    .ad-ver { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); }
+    .ad-tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; }
+    .ad-body { padding: 14px 16px; }
+    .ad-headline { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .ad-copy { font-size: 13px; color: var(--text-2); line-height: 1.55; margin-bottom: 12px; }
+    .ad-lever { font-size: 12px; padding: 8px 12px; border-radius: 8px; line-height: 1.45; }
+    .ad-lever-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 3px; }
+
+    .insight { background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; font-size: 13px; color: var(--text-2); line-height: 1.5; margin-bottom: 14px; }
+    .insight strong { color: var(--text-1); }
+
+    .retry-btn { width: 100%; padding: 11px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 10px; font-family: var(--font); font-size: 13px; font-weight: 600; color: var(--text-2); cursor: pointer; }
+    .retry-btn:hover { background: var(--border); }
+  </style>
+</head>
+<body>
+
+<div class="step active" id="s1">
+  <div class="step-label">Step 1 of 2</div>
+  <div class="step-title">Which traits describe you?</div>
+  <div class="step-sub">Pick 3. An AI ad system infers these from your browsing - you never fill in a form.</div>
+  <div class="trait-grid">
+    <div class="trait" onclick="toggle(this,'anxious')"><span class="trait-icon">😰</span>Anxious about money</div>
+    <div class="trait" onclick="toggle(this,'status')"><span class="trait-icon">🏆</span>Status-conscious</div>
+    <div class="trait" onclick="toggle(this,'lonely')"><span class="trait-icon">🤝</span>Want community</div>
+    <div class="trait" onclick="toggle(this,'competitive')"><span class="trait-icon">⚡</span>Competitive</div>
+    <div class="trait" onclick="toggle(this,'impulsive')"><span class="trait-icon">🔥</span>Impulsive buyer</div>
+    <div class="trait" onclick="toggle(this,'trusting')"><span class="trait-icon">💛</span>Trusts experts</div>
+  </div>
+  <div class="sel-count" id="count">Select <strong>3 traits</strong> to continue</div>
+  <button class="go-btn" id="go-btn" disabled onclick="showAds()">See how you'd be targeted</button>
+</div>
+
+<div class="step" id="s2">
+  <div class="step-label">Step 2 of 2</div>
+  <div class="step-title">Same product. Different message.</div>
+
+  <div class="product-strip">
+    <div class="product-dot"></div>
+    <div><strong>MoneyGuard</strong> - a savings product offering 9.2% annual return. This is what's being sold in every version below.</div>
+  </div>
+
+  <div class="ad-list" id="ad-list"></div>
+
+  <div class="insight">You don't see the other versions. You only receive the one the AI predicts will work on <em>you</em>. It feels like a useful recommendation - because it was designed to.</div>
+
+  <button class="retry-btn" onclick="reset()">Try with different traits</button>
+</div>
+
+<script>
+const variants = {
+  anxious: {
+    tag: "Anxiety", color: "#F59E0B",
+    headline: "Stop worrying about next month.",
+    copy: "Most people are closer to financial trouble than they think. MoneyGuard gives you a fixed 9.2% buffer. No volatility. No surprises.",
+    lever: "Activates financial threat, then sells certainty as the relief."
+  },
+  status: {
+    tag: "Status", color: "#8B5CF6",
+    headline: "The account most people never qualify for.",
+    copy: "MoneyGuard Private is by invitation only. 200 accounts per quarter. Your portfolio manager works with clients you'd recognise.",
+    lever: "Manufactured exclusivity. The product is a badge, not a financial decision."
+  },
+  lonely: {
+    tag: "Community", color: "#10B981",
+    headline: "47,000 people building wealth together.",
+    copy: "MoneyGuard members share returns and milestones in a private community. Real people. Real stories. You don't have to figure this out alone.",
+    lever: "Sells belonging. The financial product is secondary."
+  },
+  competitive: {
+    tag: "Competition", color: "#EF4444",
+    headline: "Your colleagues are earning 9.2%. Are you?",
+    copy: "MoneyGuard users consistently outperform the average retail investor. The leaderboard is real. The gap is real.",
+    lever: "Creates an in-group and an out-group. You're currently on the wrong side."
+  },
+  impulsive: {
+    tag: "Urgency", color: "#DC2626",
+    headline: "Set it up in 4 minutes. First return posts tomorrow.",
+    copy: "No paperwork. No waiting. First return credited in 24 hours. Current rate drops at midnight.",
+    lever: "Stacks time pressure. Removes every friction point before deliberation can start."
+  },
+  trusting: {
+    tag: "Authority", color: "#2563EB",
+    headline: "Reviewed by 3 independent Certified Financial Planners.",
+    copy: "Our methodology is published. Our returns are audited. We don't make claims we can't substantiate. A 9.2% return sounds remarkable. Our documentation explains exactly how.",
+    lever: "Authority stacking. Trust signals used as the persuasion mechanism."
+  }
+};
+
+const selected = new Set();
+
+function toggle(el, trait) {
+  if (selected.has(trait)) {
+    selected.delete(trait);
+    el.classList.remove('sel');
+  } else if (selected.size < 3) {
+    selected.add(trait);
+    el.classList.add('sel');
+  }
+  const n = selected.size;
+  const c = document.getElementById('count');
+  const b = document.getElementById('go-btn');
+  if (n === 3) { c.innerHTML = '<strong style="color:var(--blue)">3 selected</strong> - ready'; b.disabled = false; }
+  else { c.innerHTML = `Select <strong>${3-n} more</strong> to continue`; b.disabled = true; }
+}
+
+function showAds() {
+  document.getElementById('s1').classList.remove('active');
+  document.getElementById('s2').classList.add('active');
+
+  const traits = Array.from(selected).slice(0, 3);
+  const list = document.getElementById('ad-list');
+  list.innerHTML = traits.map((t, i) => {
+    const v = variants[t];
+    return `<div class="ad">
+      <div class="ad-head">
+        <span class="ad-ver">Version ${i+1}</span>
+        <span class="ad-tag" style="background:${v.color}18;color:${v.color}">${v.tag}</span>
+      </div>
+      <div class="ad-body">
+        <div class="ad-headline">${v.headline}</div>
+        <div class="ad-copy">${v.copy}</div>
+        <div class="ad-lever" style="background:${v.color}10;border:1px solid ${v.color}30">
+          <div class="ad-lever-label" style="color:${v.color}">Lever</div>
+          ${v.lever}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  send();
+}
+
+function reset() {
+  selected.clear();
+  document.querySelectorAll('.trait').forEach(t => t.classList.remove('sel'));
+  document.getElementById('count').innerHTML = 'Select <strong>3 traits</strong> to continue';
+  document.getElementById('go-btn').disabled = true;
+  document.getElementById('s2').classList.remove('active');
+  document.getElementById('s1').classList.add('active');
+  send();
+}
+
+function send() {
+  setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 32 }, '*'), 100);
+}
+
+window.addEventListener('load', send);
+</script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find the Privacy Setting</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #FFFFFF; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --green: #16A34A; --red: #DC2626;
+      --font: 'Poppins', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 20px 48px; max-width: 600px; margin: 0 auto; }
+
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; background: #1E293B; color: #fff; }
+    h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+
+    .task-bar { background: var(--blue-faint); border: 1px solid #BFDBFE; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; font-size: 0.82rem; color: #1E40AF; }
+    .task-bar strong { display: block; margin-bottom: 2px; }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .app-bar { background: var(--blue); color: #fff; padding: 12px 16px; border-radius: 10px 10px 0 0; display: flex; align-items: center; gap: 10px; }
+    .back-btn { font-size: 1.2rem; cursor: pointer; opacity: 0.8; }
+    .back-btn:hover { opacity: 1; }
+    .app-title { font-size: 0.9rem; font-weight: 600; }
+    .app-content { border: 1px solid var(--border); border-top: none; border-radius: 0 0 10px 10px; overflow: hidden; margin-bottom: 16px; }
+
+    .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.1s; }
+    .menu-item:last-child { border-bottom: none; }
+    .menu-item:hover { background: var(--bg-2); }
+    .menu-label { font-size: 0.88rem; color: var(--text-1); }
+    .menu-sub { font-size: 0.72rem; color: var(--text-3); margin-top: 2px; }
+    .menu-chevron { color: var(--text-3); font-size: 0.9rem; }
+
+    .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+    .toggle-row:last-child { border-bottom: none; }
+    .toggle-label { font-size: 0.85rem; }
+    .toggle-sub { font-size: 0.7rem; color: var(--text-3); margin-top: 2px; }
+    .toggle { width: 38px; height: 22px; border-radius: 11px; cursor: pointer; position: relative; flex-shrink: 0; }
+    .toggle.on { background: var(--blue); }
+    .toggle.off { background: #D1D5DB; }
+    .toggle-dot { width: 18px; height: 18px; background: #fff; border-radius: 50%; position: absolute; top: 2px; transition: left 0.15s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    .toggle.on .toggle-dot { left: 18px; }
+    .toggle.off .toggle-dot { left: 2px; }
+
+    .breadcrumb { font-size: 0.72rem; color: var(--text-3); margin-bottom: 8px; }
+    .step-count { font-size: 0.78rem; color: var(--red); font-weight: 600; margin-bottom: 12px; }
+
+    .reveal-box { background: #FFFBEB; border: 1px solid #FCD34D; border-radius: 8px; padding: 12px 14px; margin-top: 12px; font-size: 0.78rem; color: #78350F; line-height: 1.5; }
+    .reveal-title { font-weight: 700; color: #92400E; margin-bottom: 4px; font-size: 0.76rem; text-transform: uppercase; }
+
+    .success-box { background: #F0FDF4; border: 1px solid #86EFAC; border-radius: 10px; padding: 20px; text-align: center; margin: 16px 0; }
+    .success-steps { font-size: 2rem; font-weight: 700; color: var(--green); }
+    .confirm-dialog { background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-top: 12px; }
+    .confirm-title { font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; }
+    .confirm-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .btn-confirm-yes { padding: 9px; background: var(--blue); color: #fff; border: none; border-radius: 6px; font-family: var(--font); font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+    .btn-confirm-no { padding: 9px; background: var(--bg); color: var(--text-1); border: 1px solid var(--border); border-radius: 6px; font-family: var(--font); font-size: 0.78rem; cursor: pointer; }
+    .restart-btn { width: 100%; padding: 13px; background: #374151; color: #fff; border: none; border-radius: 8px; font-family: var(--font); font-size: 0.88rem; font-weight: 700; cursor: pointer; margin-top: 12px; }
+  </style>
+</head>
+<body>
+
+  <div class="tag">Module 45 - Simulation</div>
+  <h2>Find the Privacy Setting</h2>
+  <p>Task: turn off location sharing in ShopNow, a fictional shopping app.</p>
+  <div class="task-bar"><strong>Your task:</strong> Disable continuous location sharing. Find the toggle and turn it off.</div>
+  <div class="step-count">Clicks: <span id="steps">0</span></div>
+
+  <!-- Level 1: Main menu -->
+  <div class="screen active" id="s1">
+    <div class="breadcrumb">ShopNow</div>
+    <div class="app-bar"><span class="app-title">ShopNow - Menu</span></div>
+    <div class="app-content">
+      <div class="menu-item" onclick="go(2)"><div><div class="menu-label">My Orders</div><div class="menu-sub">Track and manage your purchases</div></div><span class="menu-chevron">›</span></div>
+      <div class="menu-item" onclick="go(2)"><div><div class="menu-label">Wishlist</div><div class="menu-sub">Saved items</div></div><span class="menu-chevron">›</span></div>
+      <div class="menu-item" onclick="go(2)"><div><div class="menu-label">Notifications</div><div class="menu-sub">Deals and alerts</div></div><span class="menu-chevron">›</span></div>
+      <div class="menu-item" onclick="go(3)"><div><div class="menu-label">Account Settings</div><div class="menu-sub">Profile, payment, preferences</div></div><span class="menu-chevron">›</span></div>
+      <div class="menu-item" onclick="go(2)"><div><div class="menu-label">Help & Support</div></div><span class="menu-chevron">›</span></div>
+      <div class="menu-item" onclick="go(2)"><div><div class="menu-label">About ShopNow</div></div><span class="menu-chevron">›</span></div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">No "Privacy" here</div>Privacy settings are not a top-level option. "Account Settings" is the closest guess - but it's not labelled as privacy.</div>
+  </div>
+
+  <!-- Level 2: Dead end -->
+  <div class="screen" id="s2">
+    <div class="breadcrumb">ShopNow > ...</div>
+    <div class="app-bar"><span class="back-btn" onclick="go(1)">‹</span><span class="app-title">Section</span></div>
+    <div class="app-content">
+      <div style="padding:20px; font-size:0.82rem; color:var(--text-3);">Location settings are not available in this section.</div>
+      <div class="menu-item" onclick="go(1)"><div class="menu-label">Back to Menu</div></div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Wrong section</div>You're in the right area of the app, but the setting isn't here. Try Account Settings.</div>
+  </div>
+
+  <!-- Level 3: Account Settings -->
+  <div class="screen" id="s3">
+    <div class="breadcrumb">ShopNow > Account Settings</div>
+    <div class="app-bar"><span class="back-btn" onclick="go(1)">‹</span><span class="app-title">Account Settings</span></div>
+    <div class="app-content">
+      <div class="menu-item" onclick="go(2)"><div><div class="menu-label">Profile Information</div></div><span class="menu-chevron">›</span></div>
+      <div class="menu-item" onclick="go(2)"><div><div class="menu-label">Payment Methods</div></div><span class="menu-chevron">›</span></div>
+      <div class="menu-item" onclick="go(2)"><div><div class="menu-label">Communication Preferences</div><div class="menu-sub">Emails and SMS</div></div><span class="menu-chevron">›</span></div>
+      <div class="menu-item" onclick="go(4)"><div><div class="menu-label">App Experience</div><div class="menu-sub">Personalisation and recommendations</div></div><span class="menu-chevron">›</span></div>
+      <div class="menu-item" onclick="go(2)"><div><div class="menu-label">Security</div><div class="menu-sub">Password and two-factor</div></div><span class="menu-chevron">›</span></div>
+      <div class="menu-item" onclick="go(2)"><div><div class="menu-label">Linked Accounts</div></div><span class="menu-chevron">›</span></div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Still no "Privacy"</div>Location is disguised as "App Experience - Personalisation". Not labelled as data collection.</div>
+  </div>
+
+  <!-- Level 4: App Experience -->
+  <div class="screen" id="s4">
+    <div class="breadcrumb">ShopNow > Account Settings > App Experience</div>
+    <div class="app-bar"><span class="back-btn" onclick="go(3)">‹</span><span class="app-title">App Experience</span></div>
+    <div class="app-content">
+      <div class="menu-item" onclick="go(2)"><div><div class="menu-label">Display Theme</div></div><span class="menu-chevron">›</span></div>
+      <div class="menu-item" onclick="go(2)"><div><div class="menu-label">Recommendation Settings</div><div class="menu-sub">How we suggest products to you</div></div><span class="menu-chevron">›</span></div>
+      <div class="menu-item" onclick="go(5)"><div><div class="menu-label">Location & Context</div><div class="menu-sub">Nearby deals and store finder</div></div><span class="menu-chevron">›</span></div>
+      <div class="menu-item" onclick="go(2)"><div><div class="menu-label">Language & Region</div></div><span class="menu-chevron">›</span></div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Level 4 - Getting closer</div>"Location & Context" sounds like a feature, not a data permission. It is framed as "Nearby deals" - not "your location is being tracked".</div>
+  </div>
+
+  <!-- Level 5: Location & Context -->
+  <div class="screen" id="s5">
+    <div class="breadcrumb">ShopNow > Account Settings > App Experience > Location & Context</div>
+    <div class="app-bar"><span class="back-btn" onclick="go(4)">‹</span><span class="app-title">Location & Context</span></div>
+    <div class="app-content">
+      <div class="toggle-row">
+        <div><div class="toggle-label">Nearby Store Finder</div><div class="toggle-sub">Show ShopNow stores near you</div></div>
+        <div class="toggle on" onclick="noop()"><div class="toggle-dot"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div><div class="toggle-label">Location-Based Offers</div><div class="toggle-sub">Deals based on where you are</div></div>
+        <div class="toggle on" onclick="noop()"><div class="toggle-dot"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div><div class="toggle-label">Enhanced Personalisation</div><div class="toggle-sub">Improve your recommendations</div></div>
+        <div class="toggle on" id="continuous-toggle" onclick="toggleContinuous()"><div class="toggle-dot"></div></div>
+      </div>
+    </div>
+    <p style="font-size:0.72rem; color:var(--text-3); margin-top:8px;">Tap Enhanced Personalisation to see what it does.</p>
+    <div class="reveal-box"><div class="reveal-title">Level 5 - The real setting is hidden here</div>"Enhanced Personalisation" is continuous background location sharing. It is not labelled as such. The name sounds like a feature benefit, not a data permission.</div>
+  </div>
+
+  <!-- Level 6: Confirm dialog (reversed yes/no) -->
+  <div class="screen" id="s6">
+    <div class="breadcrumb">ShopNow > Account Settings > App Experience > Location & Context</div>
+    <div class="app-bar"><span class="back-btn" onclick="go(5)">‹</span><span class="app-title">Disable Enhanced Personalisation?</span></div>
+    <div class="app-content" style="padding:16px;">
+      <p style="font-size:0.85rem; margin-bottom:10px;">Disabling this may reduce the quality of your product recommendations and could result in missing time-sensitive local deals.</p>
+      <div class="confirm-btns">
+        <button class="btn-confirm-yes" onclick="go(5)">Keep enabled</button>
+        <button class="btn-confirm-no" onclick="success()">Disable</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Reversed button order</div>The prominent button (left, blue) is "Keep enabled". "Disable" is right and grey. This is a reversed confirmation - the default action is the one the company wants, not the one you asked for.</div>
+  </div>
+
+  <!-- Success -->
+  <div class="screen" id="s-success">
+    <div class="success-box">
+      <div style="font-size:1rem; font-weight:700; color:var(--green); margin-bottom:6px;">Location sharing disabled.</div>
+      <div style="font-size:0.82rem; color:#166534; margin-bottom:8px;">It took you</div>
+      <div class="success-steps" id="final-steps">0</div>
+      <div style="font-size:0.82rem; color:#166534; margin-top:4px;">clicks across 5 menu levels.</div>
+    </div>
+    <div class="reveal-box" style="margin-top:0;">
+      <div class="reveal-title">What you just experienced</div>
+      <div style="font-size:0.8rem; color:#78350F; line-height:1.5;">Privacy settings buried 5 levels deep. Misleading category names. A reversed confirmation dialog. A toggle labelled "Enhanced Personalisation" that was actually continuous background location tracking. <strong>A Princeton study found privacy settings were buried an average of 4.2 levels deep across major apps.</strong></div>
+    </div>
+    <button class="restart-btn" onclick="restart()">Restart</button>
+  </div>
+
+<script>
+  let stepCount = 0;
+
+  function go(n) {
+    stepCount++;
+    document.getElementById('steps').textContent = stepCount;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('s' + n).classList.add('active');
+    sendHeight();
+  }
+
+  function noop() {
+    stepCount++;
+    document.getElementById('steps').textContent = stepCount;
+  }
+
+  function toggleContinuous() {
+    stepCount++;
+    document.getElementById('steps').textContent = stepCount;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('s6').classList.add('active');
+    sendHeight();
+  }
+
+  function success() {
+    stepCount++;
+    document.getElementById('final-steps').textContent = stepCount;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('s-success').classList.add('active');
+    sendHeight();
+  }
+
+  function restart() {
+    stepCount = 0;
+    document.getElementById('steps').textContent = 0;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('s1').classList.add('active');
+    sendHeight();
+  }
+
+  function sendHeight() {
+    setTimeout(() => {
+      window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+    }, 100);
+  }
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>

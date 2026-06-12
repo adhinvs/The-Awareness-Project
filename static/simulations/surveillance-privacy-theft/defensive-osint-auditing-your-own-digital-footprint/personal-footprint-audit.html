@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Footprint Audit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #FFFFFF; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --red: #DC2626; --red-bg: #FEF2F2;
+      --amber: #D97706; --amber-bg: #FFFBEB;
+      --green: #16A34A; --green-bg: #F0FDF4;
+      --font: 'Poppins', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 20px 48px; max-width: 600px; margin: 0 auto; }
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; background: #1E293B; color: #fff; }
+    h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .framing-note { background: var(--bg-2); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; font-size: 0.82rem; color: var(--text-2); border: 1px solid var(--border); line-height: 1.55; }
+
+    .step-card { border: 1.5px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+    .step-header { background: var(--bg-2); padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+    .step-num { width: 28px; height: 28px; background: var(--blue); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 700; flex-shrink: 0; }
+    .step-num.done { background: var(--green); }
+    .step-title { font-size: 0.9rem; font-weight: 600; }
+    .step-body { padding: 16px; }
+    .step-desc { font-size: 0.83rem; color: var(--text-2); margin-bottom: 10px; line-height: 1.5; }
+    .step-action { font-size: 0.8rem; color: var(--blue); font-weight: 600; margin-bottom: 12px; }
+
+    .finding-options { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+    .find-btn { padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 8px; background: #fff; font-family: var(--font); font-size: 0.82rem; cursor: pointer; text-align: left; transition: all 0.15s; color: var(--text-2); }
+    .find-btn:hover { border-color: var(--blue); background: var(--blue-faint); }
+    .find-btn.selected-green { background: var(--green-bg); border-color: var(--green); color: #166534; }
+    .find-btn.selected-amber { background: var(--amber-bg); border-color: var(--amber); color: #92400E; }
+    .find-btn.selected-red { background: var(--red-bg); border-color: var(--red); color: #7F1D1D; }
+
+    .action-box { display: none; border-radius: 8px; padding: 12px 14px; margin-top: 8px; font-size: 0.8rem; line-height: 1.5; }
+    .action-box.green { background: var(--green-bg); color: #166534; }
+    .action-box.amber { background: var(--amber-bg); color: #92400E; }
+    .action-box.red { background: var(--red-bg); color: #7F1D1D; }
+
+    .progress-track { display: flex; gap: 6px; margin-bottom: 16px; }
+    .progress-dot { flex: 1; height: 6px; border-radius: 3px; background: var(--border); transition: background 0.3s; }
+    .progress-dot.done { background: var(--green); }
+    .progress-dot.active { background: var(--blue); }
+
+    .summary-card { border-radius: 12px; padding: 18px; margin-bottom: 12px; }
+    .summary-card.clean { background: var(--green-bg); border: 1.5px solid #86EFAC; }
+    .summary-card.partial { background: var(--amber-bg); border: 1.5px solid #FCD34D; }
+    .summary-card.exposed { background: var(--red-bg); border: 1.5px solid #FECACA; }
+    .summary-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 8px; }
+    .summary-title.clean { color: var(--green); }
+    .summary-title.partial { color: var(--amber); }
+    .summary-title.exposed { color: var(--red); }
+    .summary-text { font-size: 0.82rem; line-height: 1.55; }
+
+    .action-list { margin-top: 14px; }
+    .action-item { display: flex; gap: 10px; padding: 10px 12px; background: var(--bg-2); border-radius: 8px; margin-bottom: 8px; font-size: 0.82rem; color: var(--text-2); line-height: 1.5; }
+    .action-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex-shrink: 0; margin-top: 6px; }
+
+    .btn-primary { width: 100%; padding: 12px; background: var(--blue); color: #fff; border: none; border-radius: 8px; font-family: var(--font); font-size: 0.88rem; font-weight: 700; cursor: pointer; margin-top: 12px; }
+    .btn-primary:hover { background: #1D4ED8; }
+  </style>
+</head>
+<body>
+
+  <div class="tag">Module 63 - Tool</div>
+  <h2>Personal Footprint Audit</h2>
+  <p>See yourself the way a stranger with bad intent would. Work through each check and record what you find.</p>
+
+  <div class="framing-note">This is a self-audit, not a test. The goal is to map your current exposure - not to judge it. Every finding comes with a specific action step.</div>
+
+  <div class="progress-track">
+    <div class="progress-dot active" id="dot1"></div>
+    <div class="progress-dot" id="dot2"></div>
+    <div class="progress-dot" id="dot3"></div>
+    <div class="progress-dot" id="dot4"></div>
+    <div class="progress-dot" id="dot5"></div>
+  </div>
+
+  <!-- Step 1: Google yourself -->
+  <div class="screen active" id="s1">
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-num" id="num1">1</div>
+        <div class="step-title">Search your own name on Google</div>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Open a private browsing window and search: <em>"[Your Full Name]" [Your City]</em>. Check the first 3 pages of results.</div>
+        <div class="step-action">What do you find?</div>
+        <div class="finding-options">
+          <button class="find-btn" onclick="record(1,'green', this)">Nothing personal or it's all professional/expected content</button>
+          <button class="find-btn" onclick="record(1,'amber', this)">Some old profiles or minor personal details visible</button>
+          <button class="find-btn" onclick="record(1,'red', this)">Address, phone number, or personal details clearly visible</button>
+        </div>
+        <div class="action-box green" id="a1-green">Good exposure profile on search. Revisit every 6 months - results change as you create new accounts or data brokers refresh.</div>
+        <div class="action-box amber" id="a1-amber">Old profiles accumulate. Go through each one: deactivate dormant accounts, update privacy settings on active ones. Old forum posts and comment history are often the source.</div>
+        <div class="action-box red" id="a1-red"><strong>Action:</strong> Use Google's "Results About You" tool (google.com/results-about-you) to request removal of results containing personal info. For UK residents, contact the ICO if a site refuses a removal request.</div>
+      </div>
+    </div>
+    <button class="btn-primary" id="btn1" style="display:none" onclick="advance(2)">Next Check</button>
+  </div>
+
+  <!-- Step 2: Breach check -->
+  <div class="screen" id="s2">
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-num" id="num2">2</div>
+        <div class="step-title">Check HaveIBeenPwned for your email</div>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Go to <strong>haveibeenpwned.com</strong> and enter every email address you use. This checks your address against 14+ billion compromised accounts from known breaches.</div>
+        <div class="step-action">What does it show?</div>
+        <div class="finding-options">
+          <button class="find-btn" onclick="record(2,'green', this)">No breaches found</button>
+          <button class="find-btn" onclick="record(2,'amber', this)">1-2 old breaches (Adobe, LinkedIn, etc.)</button>
+          <button class="find-btn" onclick="record(2,'red', this)">Multiple breaches, including recent ones</button>
+        </div>
+        <div class="action-box green" id="a2-green">No known breaches for your email. Check again every few months - new breach databases are added regularly.</div>
+        <div class="action-box amber" id="a2-amber">Change the password for every breached service - even if you no longer use it, the credentials may be reused elsewhere. Enable 2FA on all accounts that support it.</div>
+        <div class="action-box red" id="a2-red"><strong>Priority action:</strong> Your credentials are in active circulation. Use a password manager to generate unique passwords for every account. Change your most important accounts (email, banking) first. Enable 2FA everywhere possible.</div>
+      </div>
+    </div>
+    <button class="btn-primary" id="btn2" style="display:none" onclick="advance(3)">Next Check</button>
+  </div>
+
+  <!-- Step 3: Reverse image search -->
+  <div class="screen" id="s3">
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-num" id="num3">3</div>
+        <div class="step-title">Reverse image search your profile photo</div>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Save your main profile photo, then upload it to <strong>images.google.com</strong> or <strong>tineye.com</strong>. This shows every site where your image appears - including ones you didn't post to.</div>
+        <div class="step-action">What do you find?</div>
+        <div class="finding-options">
+          <button class="find-btn" onclick="record(3,'green', this)">Only my own accounts</button>
+          <button class="find-btn" onclick="record(3,'amber', this)">Old profiles I forgot about</button>
+          <button class="find-btn" onclick="record(3,'red', this)">Sites I don't recognise or didn't post to</button>
+        </div>
+        <div class="action-box green" id="a3-green">Your image is only on accounts you control. Consider using different profile photos across platforms to make cross-platform tracking harder.</div>
+        <div class="action-box amber" id="a3-amber">Old accounts are a common leak point. Deactivate or delete them. If you can't log in, most platforms have a removal request process.</div>
+        <div class="action-box red" id="a3-red"><strong>Action:</strong> If your image is on sites without your consent, submit a removal request to the site and to Google's image removal tool. For UK residents, this may be actionable under GDPR data subject rights.</div>
+      </div>
+    </div>
+    <button class="btn-primary" id="btn3" style="display:none" onclick="advance(4)">Next Check</button>
+  </div>
+
+  <!-- Step 4: Data broker opt-out -->
+  <div class="screen" id="s4">
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-num" id="num4">4</div>
+        <div class="step-title">Check data broker listings</div>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Search your name on <strong>Spokeo, Whitepages, BeenVerified, and FastPeopleSearch</strong>. These aggregate your address, phone, relatives, and estimated income from public records and purchased data.</div>
+        <div class="step-action">What do you find?</div>
+        <div class="finding-options">
+          <button class="find-btn" onclick="record(4,'green', this)">No results or minimal information</button>
+          <button class="find-btn" onclick="record(4,'amber', this)">Name and general location only</button>
+          <button class="find-btn" onclick="record(4,'red', this)">Full address, phone, relatives, or more</button>
+        </div>
+        <div class="action-box green" id="a4-green">Low broker exposure. Use services like DeleteMe (paid) or free opt-out guides to maintain this over time - brokers re-collect data periodically.</div>
+        <div class="action-box amber" id="a4-amber">Submit opt-out requests to each broker directly. Most have a removal page. Expect 30-90 days for removal. They will re-collect - plan to repeat this annually.</div>
+        <div class="action-box red" id="a4-red"><strong>Action:</strong> Your profile is fully built and purchasable. Use the free opt-out guide at privacyrights.org or a paid removal service (DeleteMe, Kanary). UK residents can use Article 17 GDPR right-to-erasure requests for EU-based brokers.</div>
+      </div>
+    </div>
+    <button class="btn-primary" id="btn4" style="display:none" onclick="advance(5)">Next Check</button>
+  </div>
+
+  <!-- Step 5: Social media public view -->
+  <div class="screen" id="s5">
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-num" id="num5">5</div>
+        <div class="step-title">View your social media profiles as a stranger</div>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Log out of your accounts (or open a private window) and search your name on Instagram, Facebook, and LinkedIn. Note what a stranger can see without following you.</div>
+        <div class="step-action">What can a stranger see?</div>
+        <div class="finding-options">
+          <button class="find-btn" onclick="record(5,'green', this)">Profiles are private or show very little</button>
+          <button class="find-btn" onclick="record(5,'amber', this)">Bio, location, and some posts visible</button>
+          <button class="find-btn" onclick="record(5,'red', this)">Years of posts, check-ins, family, or location data visible</button>
+        </div>
+        <div class="action-box green" id="a5-green">Good privacy settings. Review them after each major app update - platforms sometimes reset privacy settings during updates.</div>
+        <div class="action-box amber" id="a5-amber">Remove location from your bio if present. Audit what your most recent 20 posts reveal. Consider moving to Friends Only for post visibility.</div>
+        <div class="action-box red" id="a5-red"><strong>Action:</strong> Set all posts to Friends Only or equivalent. Remove check-ins and location tags from historical posts. Remove workplace, school, and relationship details from your bio. This information is valuable to social engineers and targeted scammers.</div>
+      </div>
+    </div>
+    <button class="btn-primary" id="btn5" style="display:none" onclick="showSummary()">See My Footprint Summary</button>
+  </div>
+
+  <!-- Summary -->
+  <div class="screen" id="summary">
+    <h3 style="font-size:1rem; font-weight:700; margin-bottom:12px;">Your Footprint Summary</h3>
+    <div id="summary-content"></div>
+    <div class="action-list" id="priority-actions"></div>
+    <button class="btn-primary" onclick="restart()">Start Again</button>
+  </div>
+
+  <script>
+    const findings = {};
+
+    function record(step, level, btn) {
+      findings[step] = level;
+      const card = document.getElementById('s' + step);
+      card.querySelectorAll('.find-btn').forEach(b => b.className = 'find-btn');
+      btn.classList.add('selected-' + level);
+      ['green','amber','red'].forEach(l => {
+        const box = document.getElementById('a' + step + '-' + l);
+        if (box) box.style.display = l === level ? 'block' : 'none';
+      });
+      document.getElementById('btn' + step).style.display = 'block';
+      notifyHeight();
+    }
+
+    function advance(n) {
+      document.getElementById('s' + (n-1)).classList.remove('active');
+      document.getElementById('s' + n).classList.add('active');
+      document.getElementById('num' + (n-1)).classList.add('done');
+      for (let i = 1; i <= 5; i++) {
+        const dot = document.getElementById('dot' + i);
+        if (i < n) dot.className = 'progress-dot done';
+        else if (i === n) dot.className = 'progress-dot active';
+        else dot.className = 'progress-dot';
+      }
+      notifyHeight();
+    }
+
+    function showSummary() {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('summary').classList.add('active');
+      for (let i = 1; i <= 5; i++) document.getElementById('dot' + i).className = 'progress-dot done';
+
+      const reds = Object.entries(findings).filter(([,v]) => v === 'red').length;
+      const ambers = Object.entries(findings).filter(([,v]) => v === 'amber').length;
+
+      const content = document.getElementById('summary-content');
+      let level, cls, title, text;
+      if (reds >= 2) { level = 'exposed'; cls = 'exposed'; title = 'High exposure'; text = 'Multiple areas of your footprint are fully visible to anyone who searches for you. Prioritise the red-flagged actions below.'; }
+      else if (reds === 1 || ambers >= 2) { level = 'partial'; cls = 'partial'; title = 'Moderate exposure'; text = 'Some personal information is publicly accessible. The actions below will reduce your exposure significantly.'; }
+      else { level = 'clean'; cls = 'clean'; title = 'Low exposure'; text = 'Your footprint is relatively contained. Continue to audit annually and after any major data breach news.'; }
+      content.innerHTML = `<div class="summary-card ${level}"><div class="summary-title ${cls}">${title}</div><div class="summary-text">${text}</div></div>`;
+
+      const steps = ['Google search', 'Breach check', 'Image search', 'Data brokers', 'Social media'];
+      const actions = [
+        'Request removal via google.com/results-about-you for personal details in search results.',
+        'Change passwords for all breached accounts and enable 2FA. Use a password manager.',
+        'Request removal from sites showing your image without consent.',
+        'Submit opt-out requests to Spokeo, Whitepages, BeenVerified, and FastPeopleSearch.',
+        'Set all posts to Friends Only. Remove location, workplace, and relationship data from bios.'
+      ];
+
+      const priorityEl = document.getElementById('priority-actions');
+      priorityEl.innerHTML = '<h3 style="font-size:0.9rem;font-weight:700;margin-bottom:10px;">Priority Actions</h3>';
+      Object.entries(findings).filter(([,v]) => v === 'red' || v === 'amber')
+        .sort(([,a],[,b]) => (a === 'red' ? -1 : 1) - (b === 'red' ? -1 : 1))
+        .forEach(([step]) => {
+          priorityEl.innerHTML += `<div class="action-item"><div class="action-dot"></div>${steps[step-1]}: ${actions[step-1]}</div>`;
+        });
+      if (!priorityEl.querySelector('.action-item')) {
+        priorityEl.innerHTML += '<div class="action-item"><div class="action-dot" style="background:var(--green)"></div>No urgent actions. Review again in 6 months.</div>';
+      }
+      notifyHeight();
+    }
+
+    function restart() {
+      Object.keys(findings).forEach(k => delete findings[k]);
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('s1').classList.add('active');
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById('dot' + i).className = i === 1 ? 'progress-dot active' : 'progress-dot';
+        document.getElementById('num' + i).classList.remove('done');
+        const btn = document.getElementById('btn' + i);
+        if (btn) btn.style.display = 'none';
+        ['green','amber','red'].forEach(l => {
+          const box = document.getElementById('a' + i + '-' + l);
+          if (box) box.style.display = 'none';
+        });
+        const card = document.getElementById('s' + i);
+        if (card) card.querySelectorAll('.find-btn').forEach(b => b.className = 'find-btn');
+      }
+      notifyHeight();
+    }
+
+    function notifyHeight() {
+      setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'), 100);
+    }
+    notifyHeight();
+  </script>
+</body>
+</html>

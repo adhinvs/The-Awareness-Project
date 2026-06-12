@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Scarcity Toolkit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #FFFFFF; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --green: #16A34A; --red: #DC2626; --amber: #D97706;
+      --font: 'Poppins', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 20px 48px; max-width: 640px; margin: 0 auto; }
+
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; background: #1E293B; color: #fff; }
+    h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+
+    .instruction { font-size: 0.82rem; color: var(--blue); background: var(--blue-faint); padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; }
+
+    .product-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 16px 0; }
+    .product-img { background: linear-gradient(135deg, #E0E7FF, #F0FDF4); height: 160px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; border-bottom: 1px solid var(--border); position: relative; }
+
+    .badge { position: absolute; top: 12px; left: 12px; background: var(--red); color: #fff; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 4px; cursor: pointer; }
+    .badge:hover { opacity: 0.85; }
+
+    .product-body { padding: 16px; }
+    .product-name { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .price-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .price-now { font-size: 1.4rem; font-weight: 700; color: var(--red); }
+    .price-was { font-size: 0.9rem; color: var(--text-3); text-decoration: line-through; }
+    .discount-badge { font-size: 0.72rem; font-weight: 700; background: #FEF2F2; color: var(--red); padding: 3px 8px; border-radius: 4px; }
+
+    .signal { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: 8px; margin-bottom: 8px; cursor: pointer; border: 1px solid transparent; transition: all 0.15s; }
+    .signal:hover { border-color: var(--blue); background: var(--blue-faint); }
+    .signal-icon { font-size: 18px; flex-shrink: 0; }
+    .signal-text { font-size: 0.82rem; color: var(--text-2); line-height: 1.4; }
+    .signal-text strong { color: var(--text-1); }
+
+    .red-signal { background: #FEF2F2; border-color: #FECACA !important; }
+    .amber-signal { background: #FFFBEB; border-color: #FCD34D !important; }
+
+    .explain-panel { display: none; background: #1E293B; color: #F1F5F9; border-radius: 10px; padding: 16px; margin-top: 8px; font-size: 0.82rem; line-height: 1.6; }
+    .explain-panel.show { display: block; }
+    .explain-title { font-weight: 700; color: #FCD34D; margin-bottom: 6px; font-size: 0.8rem; text-transform: uppercase; }
+
+    .countdown-row { display: flex; gap: 8px; margin-bottom: 10px; }
+    .countdown-unit { text-align: center; background: var(--bg-2); border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; flex: 1; }
+    .countdown-num { font-size: 1.4rem; font-weight: 700; color: var(--red); display: block; }
+    .countdown-label { font-size: 0.62rem; color: var(--text-3); text-transform: uppercase; }
+
+    .progress { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 6px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--red); width: 15%; border-radius: 2px; }
+
+    .all-revealed { background: #F0FDF4; border: 1px solid #86EFAC; border-radius: 10px; padding: 16px; margin-top: 16px; display: none; }
+    .all-revealed.show { display: block; }
+  </style>
+</head>
+<body>
+
+  <div class="tag">Module 42 - Visualisation</div>
+  <h2>The Scarcity Toolkit</h2>
+  <p>Every element below is a manufactured urgency or scarcity signal. Tap each one to see how it works.</p>
+  <div class="instruction">Tap any highlighted element to reveal the technique behind it.</div>
+
+  <div class="product-card">
+    <div class="product-img">
+      🎧
+      <div class="badge" onclick="reveal('badge')">BESTSELLER</div>
+    </div>
+    <div id="explain-badge" class="explain-panel">
+      <div class="explain-title">Fake Badge: "Bestseller"</div>
+      Bestseller badges on many platforms are self-assigned or purchased. Amazon's "Best Seller" badge is updated hourly and can reflect a single hour of high sales, not sustained performance. Clicking the badge rarely links to any verifiable ranking.
+    </div>
+
+    <div class="product-body">
+      <div class="product-name">ProSound XR Headphones</div>
+
+      <div class="price-row">
+        <span class="price-now" onclick="reveal('price')" style="cursor:pointer;">£89.99</span>
+        <span class="price-was" onclick="reveal('price')" style="cursor:pointer;">£179.99</span>
+        <span class="discount-badge" onclick="reveal('price')" style="cursor:pointer;">50% OFF</span>
+      </div>
+      <div id="explain-price" class="explain-panel">
+        <div class="explain-title">Fake Reference Price: "Was £179.99"</div>
+        Research by the UK's ASA found <strong>87% of crossed-out prices on Amazon were deceptive</strong> - the product was never sold at the higher price for any meaningful period. The discount is manufactured. The "original" price is an anchor set specifically to make the current price feel like a deal.
+      </div>
+
+      <div class="countdown-row" onclick="reveal('countdown')" style="cursor:pointer;">
+        <div class="countdown-unit"><span class="countdown-num" id="h">03</span><span class="countdown-label">Hours</span></div>
+        <div class="countdown-unit"><span class="countdown-num" id="m">47</span><span class="countdown-label">Mins</span></div>
+        <div class="countdown-unit"><span class="countdown-num" id="s">22</span><span class="countdown-num-s">Secs</span><span class="countdown-label">Secs</span></div>
+      </div>
+      <div id="explain-countdown" class="explain-panel">
+        <div class="explain-title">Fake Countdown Timer</div>
+        Most e-commerce countdown timers are reset by JavaScript when you reload the page - the deadline is not real. Try refreshing this page: the timer restarts. The "deal" price is often the permanent price with a countdown layered on top to manufacture urgency.
+      </div>
+
+      <div class="signal red-signal" onclick="reveal('stock')">
+        <span class="signal-icon">🔴</span>
+        <div class="signal-text"><strong>Only 3 left in stock!</strong> Order soon.</div>
+      </div>
+      <div id="explain-stock" class="explain-panel">
+        <div class="explain-title">Fake Stock Warning</div>
+        "Only X left" warnings are often not connected to real inventory. A Which? investigation (2023) found stock warnings on major UK retail sites refreshed randomly and did not reflect real warehouse counts. Some platforms show this message for items with thousands of units available.
+      </div>
+
+      <div class="signal amber-signal" onclick="reveal('viewing')">
+        <span class="signal-icon">👁️</span>
+        <div class="signal-text"><strong>14 people are viewing this right now.</strong></div>
+      </div>
+      <div id="explain-viewing" class="explain-panel">
+        <div class="explain-title">"X People Viewing" - Social Urgency</div>
+        This number is typically generated randomly or based on historic session data, not live concurrent viewers. Booking.com was fined by Dutch and Italian regulators for using fabricated viewer counts. The goal is to trigger competitive instinct - if others want it, it must be worth having.
+      </div>
+
+      <div class="progress"></div>
+      <div style="font-size:0.75rem; color:var(--red); cursor:pointer;" onclick="reveal('popular')">
+        🔥 <strong>12 sold in the last 24 hours</strong>
+      </div>
+      <div id="explain-popular" class="explain-panel">
+        <div class="explain-title">"X Sold Recently" - Manufactured Social Proof</div>
+        Sales counters are often accumulated over longer periods and reset daily to look impressive. The progress bar above has no real referent - it just looks nearly full to imply demand. Combined with the viewer count, this creates a pressure to act before someone else does.
+      </div>
+
+    </div>
+  </div>
+
+  <div id="all-revealed" class="all-revealed">
+    <p style="font-size:0.85rem; font-weight:700; color:var(--green); margin-bottom:6px;">You've revealed all 6 techniques.</p>
+    <p style="font-size:0.8rem; color:#166534; margin:0; line-height:1.5;">None of these signals are reliable. Every one is either fabricated or misleading by design. Real scarcity does not need 6 reinforcing signals on one product page.</p>
+  </div>
+
+<script>
+  const all = ['badge','price','countdown','stock','viewing','popular'];
+  const revealed = new Set();
+  let timerSecs = 3*3600 + 47*60 + 22;
+
+  function reveal(id) {
+    revealed.add(id);
+    document.getElementById('explain-' + id).classList.add('show');
+    if (revealed.size === all.length) {
+      document.getElementById('all-revealed').classList.add('show');
+    }
+    sendHeight();
+  }
+
+  setInterval(() => {
+    if (timerSecs > 0) timerSecs--;
+    const h = Math.floor(timerSecs / 3600);
+    const m = Math.floor((timerSecs % 3600) / 60);
+    const s = timerSecs % 60;
+    document.getElementById('h').textContent = String(h).padStart(2,'0');
+    document.getElementById('m').textContent = String(m).padStart(2,'0');
+    document.getElementById('s').textContent = String(s).padStart(2,'0');
+  }, 1000);
+
+  function sendHeight() {
+    setTimeout(() => {
+      window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+    }, 100);
+  }
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>

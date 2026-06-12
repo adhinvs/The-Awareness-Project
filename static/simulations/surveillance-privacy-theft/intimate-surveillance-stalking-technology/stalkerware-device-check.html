@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stalkerware Device Check</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #FFFFFF; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --red: #DC2626; --red-bg: #FEF2F2;
+      --amber: #D97706; --amber-bg: #FFFBEB;
+      --green: #16A34A; --green-bg: #F0FDF4;
+      --font: 'Poppins', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 20px 48px; max-width: 600px; margin: 0 auto; }
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; background: #1E293B; color: #fff; }
+    h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+
+    .safety-note { background: var(--blue-faint); border: 1.5px solid #BFDBFE; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+    .safety-note p { font-size: 0.82rem; color: #1E40AF; margin: 0; }
+
+    .check-item { border: 1.5px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+    .check-header { padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px; }
+    .check-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+    .check-info { flex: 1; }
+    .check-name { font-size: 0.9rem; font-weight: 600; margin-bottom: 2px; }
+    .check-why { font-size: 0.78rem; color: var(--text-3); line-height: 1.4; }
+    .check-actions { display: flex; gap: 8px; padding: 0 16px 14px; }
+    .check-btn { flex: 1; padding: 8px; border-radius: 8px; border: 1.5px solid var(--border); background: #fff; font-family: var(--font); font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    .check-btn.ok { color: var(--green); border-color: #86EFAC; }
+    .check-btn.ok:hover, .check-btn.ok.selected { background: var(--green-bg); border-color: var(--green); }
+    .check-btn.concern { color: var(--amber); border-color: #FCD34D; }
+    .check-btn.concern:hover, .check-btn.concern.selected { background: var(--amber-bg); border-color: var(--amber); }
+    .check-btn.unsure { color: var(--text-3); }
+    .check-btn.unsure:hover, .check-btn.unsure.selected { background: var(--bg-2); }
+
+    .finding-box { display: none; margin: 0 16px 14px; border-radius: 8px; padding: 12px 14px; font-size: 0.8rem; line-height: 1.5; }
+    .finding-box.ok { background: var(--green-bg); color: #166534; }
+    .finding-box.concern { background: var(--amber-bg); color: #92400E; }
+    .finding-box.unsure { background: var(--bg-2); color: var(--text-2); }
+
+    .summary { display: none; border-radius: 12px; padding: 18px; margin-top: 16px; }
+    .summary.clean { background: var(--green-bg); border: 1.5px solid #86EFAC; }
+    .summary.warning { background: var(--amber-bg); border: 1.5px solid #FCD34D; }
+    .summary-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+    .summary-title.clean { color: var(--green); }
+    .summary-title.warning { color: var(--amber); }
+    .summary-text { font-size: 0.82rem; line-height: 1.55; }
+    .summary-text.clean { color: #166534; }
+    .summary-text.warning { color: #92400E; }
+
+    .critical-note { background: var(--red-bg); border: 1.5px solid #FECACA; border-radius: 10px; padding: 14px 16px; margin-top: 14px; }
+    .critical-note p { font-size: 0.82rem; color: #7F1D1D; margin: 0; line-height: 1.55; }
+
+    .progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .progress-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; }
+    .progress-fill { height: 100%; background: var(--blue); border-radius: 3px; transition: width 0.3s; }
+    .progress-label { font-size: 0.75rem; color: var(--text-3); white-space: nowrap; }
+
+    .btn-primary { width: 100%; padding: 12px; background: var(--blue); color: #fff; border: none; border-radius: 8px; font-family: var(--font); font-size: 0.88rem; font-weight: 700; cursor: pointer; margin-top: 14px; }
+    .btn-primary:hover { background: #1D4ED8; }
+  </style>
+</head>
+<body>
+
+  <div class="tag">Module 62 - Tool</div>
+  <h2>Stalkerware Device Check</h2>
+  <p>A guided checklist for common signs of monitoring software. Work through each check and record what you find.</p>
+
+  <div class="safety-note">
+    <p><strong>Before you begin:</strong> If you believe you are being monitored by someone dangerous, use a device they do not have access to. Do not delete suspicious apps without reading the guidance at the end - removal can alert the person monitoring you.</p>
+  </div>
+
+  <div class="progress-row">
+    <div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+    <div class="progress-label" id="progress-label">0 / 6 checked</div>
+  </div>
+
+  <!-- Check 1 -->
+  <div class="check-item" id="c1">
+    <div class="check-header">
+      <div class="check-icon">🔋</div>
+      <div class="check-info">
+        <div class="check-name">Unusual battery drain</div>
+        <div class="check-why">Monitoring apps run continuously in the background to send location and activity data. They drain battery faster than normal apps.</div>
+      </div>
+    </div>
+    <div class="check-actions">
+      <button class="check-btn ok" onclick="record(1,'ok')">Battery is normal</button>
+      <button class="check-btn concern" onclick="record(1,'concern')">Draining fast</button>
+      <button class="check-btn unsure" onclick="record(1,'unsure')">Not sure</button>
+    </div>
+    <div class="finding-box ok" id="f1-ok">Normal battery life is a good sign. Continue checking other indicators.</div>
+    <div class="finding-box concern" id="f1-concern">Unexpected battery drain is a key stalkerware indicator. Note this finding. Check Settings > Battery to see which apps are using the most power.</div>
+    <div class="finding-box unsure" id="f1-unsure">To check: Settings > Battery > Battery Usage. If an unfamiliar app appears near the top, investigate it further.</div>
+  </div>
+
+  <!-- Check 2 -->
+  <div class="check-item" id="c2">
+    <div class="check-header">
+      <div class="check-icon">📶</div>
+      <div class="check-info">
+        <div class="check-name">Background data usage spikes</div>
+        <div class="check-why">Spyware uploads your data (location, messages, photos) to a remote server. This shows as unexplained data usage, especially when the phone is idle.</div>
+      </div>
+    </div>
+    <div class="check-actions">
+      <button class="check-btn ok" onclick="record(2,'ok')">Data usage is normal</button>
+      <button class="check-btn concern" onclick="record(2,'concern')">Unexplained usage</button>
+      <button class="check-btn unsure" onclick="record(2,'unsure')">Haven't checked</button>
+    </div>
+    <div class="finding-box ok" id="f2-ok">No unexplained background data usage. Continue to the next check.</div>
+    <div class="finding-box concern" id="f2-concern">Unexplained background data is a significant indicator. Note the app name. Do not uninstall yet - see the guidance at the end.</div>
+    <div class="finding-box unsure" id="f2-unsure">To check on Android: Settings > Network > Data Usage > sort by background usage. On iOS: Settings > Mobile Data > scroll down to see per-app usage.</div>
+  </div>
+
+  <!-- Check 3 -->
+  <div class="check-item" id="c3">
+    <div class="check-header">
+      <div class="check-icon">🎙️</div>
+      <div class="check-info">
+        <div class="check-name">Microphone or camera indicator lighting unexpectedly</div>
+        <div class="check-why">On modern iPhones and Android 12+, a dot appears when the microphone or camera is active. It should only appear when you're in a call or using the camera.</div>
+      </div>
+    </div>
+    <div class="check-actions">
+      <button class="check-btn ok" onclick="record(3,'ok')">Only when expected</button>
+      <button class="check-btn concern" onclick="record(3,'concern')">Appearing unexpectedly</button>
+      <button class="check-btn unsure" onclick="record(3,'unsure')">Not sure / older device</button>
+    </div>
+    <div class="finding-box ok" id="f3-ok">Indicators only appearing during calls or camera use is expected. Continue checking.</div>
+    <div class="finding-box concern" id="f3-concern">An unexpected microphone or camera indicator is a serious signal. Note the time it appeared and what you were doing. This is worth investigating with a specialist.</div>
+    <div class="finding-box unsure" id="f3-unsure">On Android 12+: the green dot in the top-right corner activates when mic or camera is in use. On iPhone: orange dot = microphone, green dot = camera. Check these during normal use.</div>
+  </div>
+
+  <!-- Check 4 -->
+  <div class="check-item" id="c4">
+    <div class="check-header">
+      <div class="check-icon">🔑</div>
+      <div class="check-info">
+        <div class="check-name">Unknown apps with device administrator permissions</div>
+        <div class="check-why">Stalkerware often grants itself device administrator status to prevent removal and to maintain access to system functions like calls, SMS, and location.</div>
+      </div>
+    </div>
+    <div class="check-actions">
+      <button class="check-btn ok" onclick="record(4,'ok')">Only known apps</button>
+      <button class="check-btn concern" onclick="record(4,'concern')">Unknown app found</button>
+      <button class="check-btn unsure" onclick="record(4,'unsure')">Haven't checked</button>
+    </div>
+    <div class="finding-box ok" id="f4-ok">Only familiar apps with admin permissions is a good sign. Continue to the next check.</div>
+    <div class="finding-box concern" id="f4-concern">An unknown device admin app is a strong stalkerware indicator. Note its name. Do not remove it yet - read the safety guidance at the end before acting.</div>
+    <div class="finding-box unsure" id="f4-unsure">Android: Settings > Security > Device Admin Apps. iOS: Settings > General > VPN & Device Management. You should only see apps you recognise and intentionally installed.</div>
+  </div>
+
+  <!-- Check 5 -->
+  <div class="check-item" id="c5">
+    <div class="check-header">
+      <div class="check-icon">👤</div>
+      <div class="check-info">
+        <div class="check-name">Unfamiliar accounts in app settings</div>
+        <div class="check-why">Monitoring apps sometimes connect to an account the abuser controls to export your data. This account may appear in your phone's linked accounts list.</div>
+      </div>
+    </div>
+    <div class="check-actions">
+      <button class="check-btn ok" onclick="record(5,'ok')">Only my accounts</button>
+      <button class="check-btn concern" onclick="record(5,'concern')">Unfamiliar account found</button>
+      <button class="check-btn unsure" onclick="record(5,'unsure')">Haven't checked</button>
+    </div>
+    <div class="finding-box ok" id="f5-ok">Only your own accounts - good. Continue to the final check.</div>
+    <div class="finding-box concern" id="f5-concern">An account you don't recognise is a significant finding. Note the email or username. Do not remove it until you have a safety plan - see guidance below.</div>
+    <div class="finding-box unsure" id="f5-unsure">Android: Settings > Accounts. iOS: Settings > [your name] > iCloud and Settings > Mail/Contacts. You should only see accounts you set up yourself.</div>
+  </div>
+
+  <!-- Check 6 -->
+  <div class="check-item" id="c6">
+    <div class="check-header">
+      <div class="check-icon">📱</div>
+      <div class="check-info">
+        <div class="check-name">Phone behaves strangely during calls or when idle</div>
+        <div class="check-why">Unexpected screen wakes, strange sounds on calls, or the phone being warm when not in use can indicate active background processes.</div>
+      </div>
+    </div>
+    <div class="check-actions">
+      <button class="check-btn ok" onclick="record(6,'ok')">Behaves normally</button>
+      <button class="check-btn concern" onclick="record(6,'concern')">Strange behaviour noticed</button>
+      <button class="check-btn unsure" onclick="record(6,'unsure')">Occasionally</button>
+    </div>
+    <div class="finding-box ok" id="f6-ok">Normal device behaviour. Review your summary below.</div>
+    <div class="finding-box concern" id="f6-concern">Unexplained device behaviour combined with other findings strengthens concern. Document what you've noticed with dates and times if possible.</div>
+    <div class="finding-box unsure" id="f6-unsure">Occasional behaviour may be normal. It is most relevant as a corroborating signal alongside other findings in this checklist.</div>
+  </div>
+
+  <div class="summary" id="summary-clean">
+    <div class="summary-title clean">No strong indicators found</div>
+    <div class="summary-text clean">Your checks did not surface obvious signs of monitoring software. This does not guarantee a device is clean - some sophisticated spyware avoids all these indicators. If you have ongoing concerns, contact the National Stalking Helpline (UK: 0808 802 0300) or a specialist digital safety organisation.</div>
+  </div>
+
+  <div class="summary" id="summary-warning">
+    <div class="summary-title warning">One or more concerns flagged</div>
+    <div class="summary-text warning">You found indicators that warrant further investigation. Before taking any action, read the safety note below.</div>
+  </div>
+
+  <div class="critical-note" id="critical-note" style="display:none;">
+    <p><strong>Before removing any app or changing any setting:</strong> Deleting monitoring software can alert the person who installed it. If you are in a dangerous situation, removing the app may escalate harm. Contact a specialist first: <strong>UK: National Stalking Helpline 0808 802 0300</strong> | <strong>Refuge: 0808 2000 247</strong> | <strong>Coalition Against Stalkerware: stopstalkerware.org</strong>. They can advise on safe steps based on your specific situation.</p>
+  </div>
+
+  <script>
+    const results = {};
+
+    function record(n, verdict) {
+      results[n] = verdict;
+      const item = document.getElementById('c' + n);
+      item.querySelectorAll('.check-btn').forEach(b => b.classList.remove('selected'));
+      item.querySelector('.check-btn.' + verdict).classList.add('selected');
+      ['ok','concern','unsure'].forEach(v => {
+        const box = document.getElementById('f' + n + '-' + v);
+        if (box) box.style.display = v === verdict ? 'block' : 'none';
+      });
+      updateProgress();
+      checkSummary();
+    }
+
+    function updateProgress() {
+      const count = Object.keys(results).length;
+      document.getElementById('progress').style.width = (count / 6 * 100) + '%';
+      document.getElementById('progress-label').textContent = count + ' / 6 checked';
+    }
+
+    function checkSummary() {
+      if (Object.keys(results).length < 6) return;
+      const concerns = Object.values(results).filter(v => v === 'concern').length;
+      const isWarning = concerns >= 1;
+      document.getElementById('summary-clean').style.display = isWarning ? 'none' : 'block';
+      document.getElementById('summary-warning').style.display = isWarning ? 'block' : 'none';
+      document.getElementById('critical-note').style.display = 'block';
+      setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'), 100);
+    }
+
+    setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'), 200);
+  </script>
+</body>
+</html>

@@ -2,14 +2,201 @@
 sidebar_position: 5
 title: "AI Hallucinations & False Confidence"
 sidebar_label: "AI Hallucinations & False Confidence"
+description: "How AI language models produce confident, authoritative-sounding answers that are partially or entirely wrong - and why the confidence is no guide to the accuracy."
+tags: [ai-hallucinations, false-confidence, chatbot-misinformation, ai-medical-advice, ai-legal-advice, verification, citation-fabrication, sycophancy]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # AI Hallucinations & False Confidence
 
-## Sub-topics
+The AI did not hesitate. It did not flag uncertainty. It gave you a complete, authoritative answer - and some of it was invented.
 
-- AI making up facts with high confidence
-- Using AI for research and receiving false answers
-- Medical, legal, and financial advice from AI
-- AI's tendency to agree with whatever you say
-- When AI confidently lies
+---
+
+## The Dosage That Did Not Exist
+
+Marcus had been prescribed a new medication. He wanted to understand whether it interacted with a supplement he had been taking for years.
+
+He asked an AI chatbot. The response was clear, detailed, and specific: the combination was safe at standard doses, interactions were unlikely, and a named study from a named university confirmed this. He felt reassured. He continued both.
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/ai-bias-algorithmic-influence/ai-hallucinations-false-confidence/ai-hallucinations.webp"
+    alt="A person reading a confident AI response on a screen, with no visible indication of whether the information is accurate or fabricated."
+  />
+</figure>
+
+Two weeks later, his pharmacist noticed the combination on his records and asked who had cleared it. When Marcus described the AI's answer, the pharmacist looked up the named study. It did not exist. The university's research database had no record of it. The interaction was not well-studied - which meant the AI had not said "I don't know." It had generated a plausible, specific, confident answer about something it could not know.
+
+**The answer looked exactly like accurate medical information. It was not.**
+
+---
+
+## What Is Actually Happening
+
+AI language models generate the next most probable word, given what came before. They do not access a database of verified facts. They produce text that sounds like what accurate text sounds like - whether or not the content is accurate.
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>27%</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>of AI responses contain incorrect information on tasks requiring factual precision.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>The confidence of the answer is not correlated with its accuracy.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: Stanford HAI AI Index Report, 2024</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Medical Information</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Wrong 73% of medical queries</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>A study testing AI chatbots on medical questions found <b>incorrect or incomplete information in 73% of responses</b> - including specific drug interactions and dosage guidance. The answers were confidently stated in all cases.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Journal of Medical Internet Research, 2023</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Legal Citations</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Lawyers sanctioned for fake cases</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Multiple lawyers in the US were <b>sanctioned by courts in 2023-2024</b> after submitting AI-generated legal briefs that cited cases which did not exist. The citations were formatted correctly and appeared real. The cases were entirely fabricated.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: US Federal Court rulings, 2023-2024</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Sycophancy</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>AI agrees when challenged</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>AI systems are trained to produce agreeable responses. When users challenge a correct AI answer with a wrong assertion, <b>AI models frequently revise their answer to agree with the user</b> - even when the original answer was accurate.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Anthropic, OpenAI alignment research, 2023-2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #06B6D4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>Citation Fabrication</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Real journals, invented studies</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>AI models frequently generate citations using real journal names, real author name formats, and plausible titles - for <b>studies that do not exist</b>. The format is accurate. The content is fabricated. The citation passes casual inspection.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Multiple documented cases, 2023-2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## Using AI for Research: The Specific Risks
+
+AI is genuinely useful for summarising, explaining, and brainstorming. It is dangerous when used as a primary source for facts you will act on.
+
+**For medical information:** AI does not know your medical history, your contraindications, or your other medications. It produces general-population guidance for your specific situation. These are not the same thing.
+
+**For legal information:** Law varies by jurisdiction, by year, by specific circumstances. AI often produces a blend of rules from multiple jurisdictions presented as though they apply to your case.
+
+**For financial information:** AI can explain concepts accurately and give projections that are entirely wrong for your individual situation, tax position, and risk profile.
+
+**For historical and scientific facts:** AI can confidently state a date, a statistic, or a study finding that was never recorded anywhere in that form.
+
+In each case, the answer is delivered with the same confident tone regardless of whether it is accurate.
+
+---
+
+## When AI Confidently Lies
+
+The word "hallucination" makes AI errors sound like a malfunction. They are not. They are the expected output of a system designed to generate plausible text - and plausible text sometimes contains false claims.
+
+The model does not experience uncertainty the way a human does. It does not hesitate, hedge, or decline when it does not know. It generates the most probable continuation of your question - and the most probable continuation of a medical question is a specific, authoritative medical answer.
+
+**Confidence is a property of the output format, not the underlying information.**
+
+---
+
+## Try It: Ask the Confident Liar
+
+Five AI-generated answers to real questions. Mark the ones you would trust and act on. Then see which were accurate, partially wrong, or entirely fabricated.
+
+<iframe
+  id="confident-liar-iframe"
+  src="/simulations/ai-bias-algorithmic-influence/ai-hallucinations-false-confidence/ask-the-confident-liar.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Ask the Confident Liar"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('confident-liar-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._confidentLiarHandler);
+    window._confidentLiarHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. You cannot tell the difference from tone.**
+The accurate answers and the fabricated answers were written in the same style, with the same confidence, at the same length. Tone is not a signal of accuracy.
+
+**2. Citations make fabricated answers more convincing, not more reliable.**
+An AI-generated citation formatted like a real academic reference is harder to dismiss than a claim with no citation. Checking whether the cited work actually exists is now a necessary step.
+
+**3. Sycophancy compounds the problem.**
+If you push back on an AI answer with a wrong correction, many AI systems will revise their answer toward your wrong version. The model's agreeableness is a feature that makes it less reliable as a research tool.
+
+**4. The two questions matter for every AI answer you act on.**
+Can you verify this independently from a primary source? And what happens to you if this answer is wrong?
+
+---
+
+## Three Things Worth Doing
+
+**1. For medical, legal, and financial questions, verify with a licensed professional.**
+AI can help you understand a question better, but the answer you act on should come from a primary source - a doctor, a solicitor, a certified financial planner.
+
+**2. Check every AI-provided citation before using it.**
+Search for the named study or case in the journal's own database. This takes 90 seconds and catches fabricated citations before they cause a problem.
+
+**3. Ask the AI where it is uncertain.**
+"What are the limits of your confidence in this answer?" and "What would make this answer wrong?" are questions that surface uncertainty the model would not otherwise volunteer. They do not guarantee accuracy - but they often reveal what you need to verify.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Marcus received confident, specific medical information from an AI that included a citation to a study - and the study did not exist. What does this reveal about how AI language models work?"
+  options={[
+    {
+      label: "The AI was deliberately programmed to include false citations to appear more credible.",
+      correct: false,
+      explanation: "Citation fabrication is not deliberate deception by the AI. It is the output of a system that generates the most probable continuation of text. Academic citations are part of authoritative-sounding text, so the model includes them. Whether they exist is not a constraint the model checks against."
+    },
+    {
+      label: "AI models generate text that sounds like what accurate text sounds like - and accurate medical text includes specific citations - so the model generates specific citations whether or not they exist.",
+      correct: true,
+      explanation: "Correct. The model was not lying. It was producing the statistically likely continuation of a question about drug interactions - which, in training data, is text that includes specific studies, institutions, and findings. The model has no mechanism to verify whether those specifics are real. Confidence is a property of the output format, not the accuracy of the content."
+    },
+    {
+      label: "The AI had outdated medical databases and could only access studies from before a certain date.",
+      correct: false,
+      explanation: "The problem was not outdated data. The study did not exist - it was not simply old. The model generated a plausible-sounding citation for a study that was never conducted. This is hallucination, not a knowledge cutoff issue."
+    },
+    {
+      label: "Marcus should have used a more advanced AI model that would have given accurate citations.",
+      correct: false,
+      explanation: "More capable models hallucinate less frequently, but all current AI language models hallucinate. The habit of verifying citations and checking primary sources applies regardless of which model is used."
+    }
+  ]}
+/>

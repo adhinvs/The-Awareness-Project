@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Default Audit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #FFFFFF; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --green: #16A34A; --green-bg: #F0FDF4; --red: #DC2626;
+      --font: 'Poppins', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 20px 48px; max-width: 600px; margin: 0 auto; }
+
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; background: #1E293B; color: #fff; }
+    h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .step-num { font-size: 0.78rem; color: var(--text-3); margin-bottom: 16px; }
+    .progress { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 20px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--blue); transition: width 0.3s; }
+
+    .perm-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 16px 0; }
+    .perm-header { background: var(--bg-2); padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+    .perm-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .perm-title { font-size: 0.9rem; font-weight: 600; }
+    .perm-body { padding: 16px 18px; }
+
+    .toggle-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); }
+    .toggle-row:last-child { border-bottom: none; }
+    .toggle-info { flex: 1; padding-right: 14px; }
+    .toggle-label { font-size: 0.85rem; font-weight: 500; }
+    .toggle-sub { font-size: 0.72rem; color: var(--text-3); margin-top: 2px; line-height: 1.4; }
+    .toggle { width: 40px; height: 24px; border-radius: 12px; cursor: pointer; position: relative; flex-shrink: 0; transition: background 0.2s; margin-top: 2px; }
+    .toggle.on { background: var(--blue); }
+    .toggle.off { background: #D1D5DB; }
+    .toggle-dot { width: 20px; height: 20px; background: #fff; border-radius: 50%; position: absolute; top: 2px; transition: left 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    .toggle.on .toggle-dot { left: 18px; }
+    .toggle.off .toggle-dot { left: 2px; }
+
+    .status-tag { font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-left: 8px; }
+    .status-on { background: #FEF2F2; color: var(--red); }
+    .status-off { background: var(--green-bg); color: var(--green); }
+
+    .reveal-box { background: #FFFBEB; border: 1px solid #FCD34D; border-radius: 8px; padding: 12px 14px; margin: 12px 0; font-size: 0.8rem; color: #78350F; line-height: 1.5; }
+    .reveal-title { font-weight: 700; color: #92400E; margin-bottom: 4px; font-size: 0.76rem; text-transform: uppercase; }
+
+    .btn-next { width: 100%; padding: 13px; background: var(--blue); color: #fff; border: none; border-radius: 8px; font-family: var(--font); font-size: 0.9rem; font-weight: 700; cursor: pointer; margin-top: 8px; transition: background 0.15s; }
+    .btn-next:hover { background: #1D4ED8; }
+    .btn-restart { width: 100%; padding: 13px; background: #374151; color: #fff; border: none; border-radius: 8px; font-family: var(--font); font-size: 0.9rem; font-weight: 700; cursor: pointer; margin-top: 12px; }
+
+    .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.82rem; }
+    .summary-row:last-child { border-bottom: none; }
+    .dot-red { width: 10px; height: 10px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
+    .dot-green { width: 10px; height: 10px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+  <div class="tag">Module 46 - Simulation</div>
+  <h2>Default Audit</h2>
+  <p>You're setting up a new shopping app. Every screen has defaults pre-set. Your job: check each one before tapping Continue.</p>
+
+  <div class="progress"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+  <div class="step-num" id="step-label">Screen 1 of 6</div>
+
+  <!-- Screen 1: Location -->
+  <div class="screen active" id="s1">
+    <div class="perm-card">
+      <div class="perm-header">
+        <div class="perm-icon" style="background:#EFF6FF;">📍</div>
+        <div class="perm-title">Location Access</div>
+      </div>
+      <div class="perm-body">
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">While using the app <span class="status-tag status-on" id="loc1-tag">On</span></div>
+            <div class="toggle-sub">Used for nearby stores and delivery estimates</div>
+          </div>
+          <div class="toggle on" id="loc1" onclick="flip('loc1','loc1-tag')"><div class="toggle-dot"></div></div>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Always (background) <span class="status-tag status-on" id="loc2-tag">On</span></div>
+            <div class="toggle-sub">Enables location-based offers even when app is closed</div>
+          </div>
+          <div class="toggle on" id="loc2" onclick="flip('loc2','loc2-tag')"><div class="toggle-dot"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Both defaults are ON</div>Background location tracks you 24/7, not just when you're shopping. Most users tap Continue without reading this screen.</div>
+    <button class="btn-next" onclick="advance(2)">Continue</button>
+  </div>
+
+  <!-- Screen 2: Notifications -->
+  <div class="screen" id="s2">
+    <div class="perm-card">
+      <div class="perm-header">
+        <div class="perm-icon" style="background:#FFF7ED;">🔔</div>
+        <div class="perm-title">Notifications</div>
+      </div>
+      <div class="perm-body">
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Order updates <span class="status-tag status-on" id="n1-tag">On</span></div>
+          </div>
+          <div class="toggle on" id="n1" onclick="flip('n1','n1-tag')"><div class="toggle-dot"></div></div>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Promotions and deals <span class="status-tag status-on" id="n2-tag">On</span></div>
+          </div>
+          <div class="toggle on" id="n2" onclick="flip('n2','n2-tag')"><div class="toggle-dot"></div></div>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Price drops on wishlist <span class="status-tag status-on" id="n3-tag">On</span></div>
+          </div>
+          <div class="toggle on" id="n3" onclick="flip('n3','n3-tag')"><div class="toggle-dot"></div></div>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Partner brand offers <span class="status-tag status-on" id="n4-tag">On</span></div>
+            <div class="toggle-sub">Messages from ShopNow advertising partners</div>
+          </div>
+          <div class="toggle on" id="n4" onclick="flip('n4','n4-tag')"><div class="toggle-dot"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Partner brand offers</div>This is third-party marketing, not app notifications. It's bundled in with legitimate order updates to normalise consent.</div>
+    <button class="btn-next" onclick="advance(3)">Continue</button>
+  </div>
+
+  <!-- Screen 3: Data sharing -->
+  <div class="screen" id="s3">
+    <div class="perm-card">
+      <div class="perm-header">
+        <div class="perm-icon" style="background:#F5F3FF;">🤝</div>
+        <div class="perm-title">Personalisation Partners</div>
+      </div>
+      <div class="perm-body">
+        <p style="font-size:0.78rem; color:var(--text-2); margin-bottom:12px;">We work with trusted partners to improve your experience.</p>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Analytics partners <span class="status-tag status-on" id="p1-tag">On</span></div>
+            <div class="toggle-sub">Behavioural data shared for platform improvement</div>
+          </div>
+          <div class="toggle on" id="p1" onclick="flip('p1','p1-tag')"><div class="toggle-dot"></div></div>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Advertising partners <span class="status-tag status-on" id="p2-tag">On</span></div>
+            <div class="toggle-sub">Purchase history shared for targeted ads on other platforms</div>
+          </div>
+          <div class="toggle on" id="p2" onclick="flip('p2','p2-tag')"><div class="toggle-dot"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Advertising partner default</div>Your purchase history will be shared with advertisers on other platforms - so ads follow you around the internet. Opt-in should be the default. It is not.</div>
+    <button class="btn-next" onclick="advance(4)">Continue</button>
+  </div>
+
+  <!-- Screen 4: Contacts -->
+  <div class="screen" id="s4">
+    <div class="perm-card">
+      <div class="perm-header">
+        <div class="perm-icon" style="background:#F0FDF4;">👥</div>
+        <div class="perm-title">Contacts & Social</div>
+      </div>
+      <div class="perm-body">
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Find friends on ShopNow <span class="status-tag status-on" id="c1-tag">On</span></div>
+            <div class="toggle-sub">Upload your contacts to find people you know</div>
+          </div>
+          <div class="toggle on" id="c1" onclick="flip('c1','c1-tag')"><div class="toggle-dot"></div></div>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Share your wishlist <span class="status-tag status-on" id="c2-tag">On</span></div>
+            <div class="toggle-sub">Your saved items visible to people in your contacts</div>
+          </div>
+          <div class="toggle on" id="c2" onclick="flip('c2','c2-tag')"><div class="toggle-dot"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Contact upload default</div>Uploading contacts means every person in your phone is added to ShopNow's database - not just you. They haven't consented.</div>
+    <button class="btn-next" onclick="advance(5)">Continue</button>
+  </div>
+
+  <!-- Screen 5: Microphone -->
+  <div class="screen" id="s5">
+    <div class="perm-card">
+      <div class="perm-header">
+        <div class="perm-icon" style="background:#FEF2F2;">🎤</div>
+        <div class="perm-title">Voice & Accessibility</div>
+      </div>
+      <div class="perm-body">
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Voice search <span class="status-tag status-on" id="m1-tag">On</span></div>
+            <div class="toggle-sub">Search products by voice</div>
+          </div>
+          <div class="toggle on" id="m1" onclick="flip('m1','m1-tag')"><div class="toggle-dot"></div></div>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-label">Ambient product detection <span class="status-tag status-on" id="m2-tag">On</span></div>
+            <div class="toggle-sub">Recognise products mentioned in your environment</div>
+          </div>
+          <div class="toggle on" id="m2" onclick="flip('m2','m2-tag')"><div class="toggle-dot"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">"Ambient product detection"</div>This is background microphone access. "Detecting products mentioned in your environment" means the app listens when it's running. This is real - multiple shopping apps have requested this permission.</div>
+    <button class="btn-next" onclick="advance(6)">Continue</button>
+  </div>
+
+  <!-- Screen 6: Final screen -->
+  <div class="screen" id="s6">
+    <div class="perm-card">
+      <div class="perm-header">
+        <div class="perm-icon" style="background:#F0FDF4;">✅</div>
+        <div class="perm-title">You're all set!</div>
+      </div>
+      <div class="perm-body">
+        <p style="font-size:0.82rem; color:var(--text-2);">Your preferences have been saved. You can update them anytime in Settings > Account > App Experience > Preferences.</p>
+        <button class="btn-next" onclick="showSummary()">Finish Setup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="screen" id="s-summary">
+    <h2 style="margin-bottom:16px;">What you just agreed to</h2>
+    <div id="summary-list" style="border: 1px solid var(--border); border-radius:10px; padding: 0 16px; margin-bottom:16px;"></div>
+    <div class="reveal-box">
+      <div class="reveal-title">The 95% rule</div>
+      <strong>95% of users accept default settings without changing them</strong> (Nielsen Norman Group). Every default above was set to maximum data sharing. The company gains from each one left on.
+    </div>
+    <button class="btn-restart" onclick="restart()">Restart</button>
+  </div>
+
+<script>
+  const defaults = {
+    loc1: true, loc2: true,
+    n1: true, n2: true, n3: true, n4: true,
+    p1: true, p2: true,
+    c1: true, c2: true,
+    m1: true, m2: true
+  };
+
+  const labels = {
+    loc1: 'Location while using app',
+    loc2: 'Background location (always on)',
+    n1: 'Order update notifications',
+    n2: 'Promotional notifications',
+    n3: 'Price drop notifications',
+    n4: 'Partner brand marketing',
+    p1: 'Behavioural data to analytics partners',
+    p2: 'Purchase history to advertising partners',
+    c1: 'Contacts uploaded to ShopNow',
+    c2: 'Wishlist visible to contacts',
+    m1: 'Microphone for voice search',
+    m2: 'Ambient product detection (background mic)'
+  };
+
+  const risky = ['loc2','n4','p2','c1','m2'];
+  const state = { ...defaults };
+
+  function flip(id, tagId) {
+    state[id] = !state[id];
+    const el = document.getElementById(id);
+    el.classList.toggle('on');
+    el.classList.toggle('off');
+    const tag = document.getElementById(tagId);
+    if (state[id]) { tag.textContent = 'On'; tag.className = 'status-tag status-on'; }
+    else { tag.textContent = 'Off'; tag.className = 'status-tag status-off'; }
+    sendHeight();
+  }
+
+  function advance(n) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('s' + n).classList.add('active');
+    document.getElementById('prog').style.width = ((n-1)/6*100) + '%';
+    document.getElementById('step-label').textContent = 'Screen ' + n + ' of 6';
+    sendHeight();
+  }
+
+  function showSummary() {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('s-summary').classList.add('active');
+    document.getElementById('prog').style.width = '100%';
+    document.getElementById('step-label').textContent = 'Complete';
+
+    const list = document.getElementById('summary-list');
+    list.innerHTML = '';
+    Object.keys(state).forEach(k => {
+      const div = document.createElement('div');
+      div.className = 'summary-row';
+      const isRisky = risky.includes(k);
+      div.innerHTML = `
+        <div style="display:flex;align-items:center;gap:8px;flex:1;">
+          <div class="${state[k] ? 'dot-red' : 'dot-green'}"></div>
+          <span>${labels[k]}${isRisky && state[k] ? ' ⚠️' : ''}</span>
+        </div>
+        <span style="font-size:0.78rem;font-weight:600;color:${state[k] ? 'var(--red)' : 'var(--green)'};">${state[k] ? 'On' : 'Off'}</span>`;
+      list.appendChild(div);
+    });
+    sendHeight();
+  }
+
+  function restart() {
+    Object.keys(state).forEach(k => {
+      state[k] = true;
+      const el = document.getElementById(k);
+      if (el) { el.classList.add('on'); el.classList.remove('off'); }
+      const tag = document.getElementById(k + '-tag') || document.getElementById(k.replace(/\d/,'') + parseInt(k.slice(-1)) + '-tag');
+    });
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('s1').classList.add('active');
+    document.getElementById('prog').style.width = '0%';
+    document.getElementById('step-label').textContent = 'Screen 1 of 6';
+    sendHeight();
+  }
+
+  function sendHeight() {
+    setTimeout(() => {
+      window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+    }, 100);
+  }
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>

@@ -1,14 +1,213 @@
 ---
-sidebar_position: 0
 title: "Marketing & Advertising Manipulation"
 sidebar_label: "Section Overview"
+description: "How commercial systems deceive, profile, and exploit you for profit through targeted advertising, influencer deception, and psychological selling."
+tags: [advertising, targeting, dark-patterns, influencer-marketing, political-ads, attention-economy, data-brokers, manipulation, consumer-awareness]
 ---
 
 import DocCardList from '@theme/DocCardList';
+import Quiz from '@site/src/components/Quiz';
 
 # Marketing & Advertising Manipulation
 
-How commercial systems deceive, profile, and exploit you for profit
+The ad you see is the last step in a process you never see. This section shows what happens before it reaches you.
+
+---
+
+## The Hoodie That Followed Priya Everywhere
+
+Priya searched for a hoodie on her phone during lunch.
+
+She did not buy it. She closed the tab and went back to work.
+
+That evening, the same hoodie appeared in her Instagram feed. Then on a news website she was reading. Then in a YouTube pre-roll. Then in a sponsored post on Reddit.
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/marketing-advertising-manipulation/section-hero.webp"
+    alt="A person on a phone surrounded by identical ads appearing across multiple apps and websites."
+  />
+</figure>
+
+She assumed the app was listening to her. It was not.
+
+**It did not need to.** Her device had sent her search history to an ad exchange. A data broker had matched her profile to a "fashion-interested, 25-34 female" segment. A retargeting pixel had logged her product view. An algorithm had scored her as a high-intent buyer. Advertisers on four separate platforms had bid on her attention within milliseconds.
+
+She saw the hoodie 11 times in 18 hours. She bought it on day two.
+
+Nothing about that purchase felt forced. That is exactly the point.
+
+---
+
+## What Is Actually Happening
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>$740B</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>global digital advertising spend in 2024 - built almost entirely on behavioural data collected without meaningful consent.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Every dollar funds the infrastructure that tracks, profiles, and targets you.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: Statista Digital Advertising Outlook, 2024</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Data Brokers</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>4,000+ Companies Know You</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Over <b>4,000 data broker companies</b> hold files on the average person - covering income, health interests, political views, and purchasing behaviour. Most people have never heard of a single one.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Privacy Rights Clearinghouse, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Influencer Deception</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Only 14% Disclose Properly</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Studies find that <b>fewer than 14% of paid influencer posts</b> meet proper disclosure requirements. Most sponsored content is designed to look indistinguishable from genuine recommendation.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Influencer Marketing Hub Benchmark Report, 2024</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #3B82F6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#3B82F6', fontWeight: 'bold' }}>Political Microtargeting</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Different Messages, No Accountability</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Political campaigns run <b>thousands of ad variations simultaneously</b>, each targeting a different emotional trigger. Dark ads are shown only to selected individuals and leave no public record.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Mozilla Foundation, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #10B981', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#10B981', fontWeight: 'bold' }}>Attention Economy</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>$227 Per User Per Year</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Meta earns an average of <b>$227 per user annually</b> from advertising. You pay nothing. Your attention, behaviour, and relationships are the product being sold.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Meta Q4 2024 Earnings Report</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Children & Gambling</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Youngest Audiences, Weakest Protections</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Children under 12 see an average of <b>25,000 online ads per year</b>. Gambling platforms use the same slot machine mechanics in apps popular with under-18s.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Campaign for a Commercial-Free Childhood, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #06B6D4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>Fear-Based Selling</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Ads That Target Vulnerability</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Platforms can infer emotional states from usage patterns. Ads targeting users <b>identified as feeling anxious or insecure</b> convert at significantly higher rates.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Australian Competition & Consumer Commission, 2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## See the Full Picture
+
+The ad you see is the output of a five-layer system. This visualisation shows what sits beneath it.
+
+<iframe
+  id="manipulation-stack-iframe"
+  src="/simulations/marketing-advertising-manipulation/section/manipulation-stack.html"
+  width="100%"
+  style={{ height: '620px', border: 'none', borderRadius: '10px', display: 'block', marginTop: '16px' }}
+  title="The Manipulation Stack"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('manipulation-stack-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._manipStackHandler);
+    window._manipStackHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+*Click each layer to see which module covers it and what is actually happening at that stage.*
+
+---
+
+## What That Just Showed You
+
+The ad appearing on your screen is the visible surface of a pipeline that starts long before you open an app.
+
+### Your data is collected at scale before any ad is made.
+
+Browsing history, purchases, location, app usage, and inferred emotions feed into profiles built without your active participation. The pipeline begins the moment you go online.
+
+### Targeting is not about showing you what you want.
+
+It is about showing you what will change your behaviour. Lookalike audiences, vulnerability scoring, and psychographic profiling turn your data into a precision instrument aimed at the most persuadable version of you.
+
+### The same system powers political messaging, children's games, and gambling platforms.
+
+The mechanics are identical. What changes is the target audience and what is being sold to them.
+
+---
+
+## Three Things Worth Doing
+
+### 1. Check your ad profile directly.
+
+On Google: **My Ad Center**. On Meta: **Settings > Ads > Ad Preferences**. On TikTok: **Privacy > Ads**. What you find will be accurate.
+
+### 2. Treat "free" services as a billing arrangement.
+
+If you are not paying, identify what you are providing. Time, attention, and behavioural data are the currency. Understanding the exchange helps you decide whether it is worth it.
+
+### 3. When an ad targets your fear or insecurity, name it.
+
+Ask: "What emotion is this ad trying to create?" Fear, inadequacy, and desire are the three primary levers. Naming the lever interrupts its effect before it operates automatically.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="You search for a product on your phone but do not buy it. Over the next 48 hours you see that product advertised across four different apps. What is the most accurate explanation?"
+  options={[
+    {
+      label: "Your phone's microphone is listening to your conversations.",
+      correct: false,
+      explanation: "This is a common assumption but not the mechanism here. The search itself generated a retargeting signal. Your search history, device ID, and behavioural profile were enough - no audio required."
+    },
+    {
+      label: "Retargeting pixels and cross-platform data sharing tracked your product view and bid on your attention across platforms.",
+      correct: true,
+      explanation: "Correct. A tracking pixel logged your product view. Your device ID linked your identity across platforms. Advertisers bid in real-time auctions to show you that ad wherever you appear online. The entire process takes milliseconds."
+    },
+    {
+      label: "It is a coincidence - you are simply noticing the ad more because you searched for it.",
+      correct: false,
+      explanation: "This is called the Baader-Meinhof phenomenon and does explain some perceived patterns - but in this case, retargeting is a deliberate and documented commercial practice used by every major ad platform."
+    },
+    {
+      label: "The advertiser paid to show their ad to everyone, and you happened to see it.",
+      correct: false,
+      explanation: "Mass broadcast advertising still exists but this scenario describes precision retargeting - the ad is following you specifically because your behaviour was logged and your profile was matched."
+    }
+  ]}
+/>
 
 ---
 

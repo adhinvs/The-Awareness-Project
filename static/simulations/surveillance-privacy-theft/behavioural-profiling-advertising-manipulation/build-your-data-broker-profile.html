@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Build Your Data Broker Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #FFFFFF; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --red: #DC2626; --red-bg: #FEF2F2;
+      --amber: #D97706; --amber-bg: #FFFBEB;
+      --green: #16A34A; --green-bg: #F0FDF4;
+      --font: 'Poppins', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 20px 48px; max-width: 600px; margin: 0 auto; }
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; background: #1E293B; color: #fff; }
+    h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .action-card { border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; margin: 16px 0; }
+    .action-header { background: var(--bg-2); padding: 14px 18px; border-bottom: 1px solid var(--border); }
+    .action-step { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-3); margin-bottom: 4px; }
+    .action-title { font-size: 0.95rem; font-weight: 700; }
+    .action-body { padding: 18px; }
+    .action-desc { font-size: 0.85rem; color: var(--text-2); margin-bottom: 14px; line-height: 1.5; }
+
+    .profile-card { border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px; background: var(--bg-2); }
+    .profile-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+    .profile-id { font-size: 0.7rem; color: var(--text-3); font-family: monospace; }
+    .profile-tags { display: flex; flex-wrap: wrap; gap: 6px; min-height: 32px; }
+    .profile-tag { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; animation: tagIn 0.3s ease; }
+    @keyframes tagIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+    .tag-income { background: #FEF2F2; color: #DC2626; }
+    .tag-health { background: #FEF9C3; color: #92400E; }
+    .tag-political { background: #F0F9FF; color: #075985; }
+    .tag-intent { background: #F5F3FF; color: #6D28D9; }
+    .tag-relationship { background: #F0FDF4; color: #166534; }
+    .tag-location { background: #FFFBEB; color: #B45309; }
+    .tag-behavior { background: #FFF1F2; color: #9F1239; }
+    .tag-lifestyle { background: #ECFDF5; color: #065F46; }
+
+    .reveal-box { background: var(--amber-bg); border: 1px solid #FCD34D; border-radius: 8px; padding: 12px 14px; margin: 10px 0; }
+    .reveal-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: #92400E; margin-bottom: 4px; }
+    .reveal-text { font-size: 0.8rem; color: #78350F; line-height: 1.5; }
+
+    .btn-primary { width: 100%; padding: 12px; background: var(--blue); color: #fff; border: none; border-radius: 8px; font-family: var(--font); font-size: 0.88rem; font-weight: 700; cursor: pointer; margin-top: 8px; }
+    .btn-primary:hover { background: #1D4ED8; }
+
+    .final-box { background: var(--red-bg); border: 1.5px solid #FECACA; border-radius: 12px; padding: 18px; margin-bottom: 16px; }
+    .final-title { font-size: 0.9rem; font-weight: 700; color: var(--red); margin-bottom: 8px; }
+    .final-text { font-size: 0.82rem; color: #7F1D1D; line-height: 1.55; }
+    .broker-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #FECACA; font-size: 0.78rem; }
+    .broker-row:last-child { border-bottom: none; }
+    .broker-name { color: #7F1D1D; font-weight: 500; }
+    .broker-data { color: var(--red); font-size: 0.72rem; }
+  </style>
+</head>
+<body>
+
+  <div class="tag">Module 59 - Simulation</div>
+  <h2>Build Your Data Broker Profile</h2>
+  <p>Walk through 8 everyday actions. Watch a data broker profile build itself in real time.</p>
+
+  <!-- Profile card - always visible -->
+  <div class="profile-card" id="profile-card">
+    <div class="profile-title">Your Data Broker Profile <span class="profile-id">ID: #4829-XK</span></div>
+    <div class="profile-tags" id="profile-tags">
+      <span style="font-size:0.78rem; color:var(--text-3); align-self:center;">No data collected yet...</span>
+    </div>
+  </div>
+
+  <!-- Step 1 -->
+  <div class="screen active" id="s1">
+    <div class="action-card">
+      <div class="action-header"><div class="action-step">Action 1 of 8</div><div class="action-title">You buy groceries with a loyalty card</div></div>
+      <div class="action-body">
+        <div class="action-desc">You scan your Tesco Clubcard at checkout. You bought paracetamol, nappies, wine, and a pregnancy test.</div>
+        <button class="btn-primary" onclick="addTag('tag-health','Health Interest: Pregnancy'); addTag('tag-income','Income Band: Mid'); next(2)">Continue Shopping</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-label">Data Collected</div><div class="reveal-text">Your purchase basket predicts life stage, health conditions, and disposable income with high accuracy. This data is sold to health insurers and pharmaceutical advertisers.</div></div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="screen" id="s2">
+    <div class="action-card">
+      <div class="action-header"><div class="action-step">Action 2 of 8</div><div class="action-title">You use a free weather app</div></div>
+      <div class="action-body">
+        <div class="action-desc">You check the weather on a free app. Location permission was granted when you installed it.</div>
+        <button class="btn-primary" onclick="addTag('tag-location','Home Address: Confirmed'); addTag('tag-location','Daily Route: Logged'); next(3)">Check the Weather</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-label">Data Collected</div><div class="reveal-text">Free weather apps are among the top location data sellers - some ping your GPS every 3 minutes and sell the feed to 47+ ad partners.</div></div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="screen" id="s3">
+    <div class="action-card">
+      <div class="action-header"><div class="action-step">Action 3 of 8</div><div class="action-title">You browse while still logged into Google</div></div>
+      <div class="action-body">
+        <div class="action-desc">You search for "mortgage calculator," read an article about anxiety, and look at electric cars - all in the same session.</div>
+        <button class="btn-primary" onclick="addTag('tag-intent','Purchase Intent: Property'); addTag('tag-health','Mental Health Interest'); addTag('tag-intent','Purchase Intent: Vehicle'); next(4)">Continue Browsing</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-label">Data Collected</div><div class="reveal-text">Browsing while logged into any Google product means your searches and visits are linked to your real identity. Google's ad profile currently covers over 5 billion people.</div></div>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="screen" id="s4">
+    <div class="action-card">
+      <div class="action-header"><div class="action-step">Action 4 of 8</div><div class="action-title">You click a Facebook Like button on a news site</div></div>
+      <div class="action-body">
+        <div class="action-desc">You click Like on a political opinion article. The button is powered by Meta's social plugin.</div>
+        <button class="btn-primary" onclick="addTag('tag-political','Political Lean: Centre-Left'); addTag('tag-behavior','News Engagement: High'); next(5)">Click Like</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-label">Data Collected</div><div class="reveal-text">The Meta Pixel reports your visit to this page to Meta even if you did not click Like. Clicking it also attaches a political signal to your ad profile. Meta holds political inferences for 74% of active users.</div></div>
+  </div>
+
+  <!-- Step 5 -->
+  <div class="screen" id="s5">
+    <div class="action-card">
+      <div class="action-header"><div class="action-step">Action 5 of 8</div><div class="action-title">You connect to a free cafe Wi-Fi</div></div>
+      <div class="action-body">
+        <div class="action-desc">You accept the terms of a shopping centre's free Wi-Fi to load email faster.</div>
+        <button class="btn-primary" onclick="addTag('tag-location','Footfall Pattern: Mapped'); addTag('tag-lifestyle','Retail Frequenter'); next(6)">Connect to Wi-Fi</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-label">Data Collected</div><div class="reveal-text">Many free Wi-Fi providers are data brokers. The terms you accepted allow them to track your device MAC address across their network and sell your physical movement patterns to retailers and insurers.</div></div>
+  </div>
+
+  <!-- Step 6 -->
+  <div class="screen" id="s6">
+    <div class="action-card">
+      <div class="action-header"><div class="action-step">Action 6 of 8</div><div class="action-title">You enter a prize competition form online</div></div>
+      <div class="action-body">
+        <div class="action-desc">You fill in a form to win a holiday: name, email, phone, date of birth, and home address.</div>
+        <button class="btn-primary" onclick="addTag('tag-relationship','PII: Full Identity'); addTag('tag-income','Household: Confirmed'); next(7)">Enter Competition</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-label">Data Collected</div><div class="reveal-text">Many prize competitions exist solely to collect and sell PII. The "competition" may never award a prize. Your data is the prize. This profile now has your name, DOB, address, email, and phone number.</div></div>
+  </div>
+
+  <!-- Step 7 -->
+  <div class="screen" id="s7">
+    <div class="action-card">
+      <div class="action-header"><div class="action-step">Action 7 of 8</div><div class="action-title">You use a period-tracking app</div></div>
+      <div class="action-body">
+        <div class="action-desc">You log a period in a health tracking app. The app's privacy policy includes a data-sharing clause with "research partners."</div>
+        <button class="btn-primary" onclick="addTag('tag-health','Reproductive Health: Tracked'); addTag('tag-health','Fertility Window: Predicted'); next(8)">Log Entry</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-label">Data Collected</div><div class="reveal-text">Period tracking apps have sold data to brokers including Facebook. Post-Dobbs, US law enforcement used menstrual tracking data in investigations - making this among the most sensitive data you generate.</div></div>
+  </div>
+
+  <!-- Step 8 -->
+  <div class="screen" id="s8">
+    <div class="action-card">
+      <div class="action-header"><div class="action-step">Action 8 of 8</div><div class="action-title">You apply for a store credit card</div></div>
+      <div class="action-body">
+        <div class="action-desc">You apply for a store credit card to get 10% off your purchase. The application includes income and employment details.</div>
+        <button class="btn-primary" onclick="addTag('tag-income','Credit Score: Estimated'); addTag('tag-income','Employer: Logged'); showFinal()">Submit Application</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-label">Data Collected</div><div class="reveal-text">Credit applications generate "soft inquiries" shared across credit reporting networks. Your income and employer are now linked to everything else in this profile.</div></div>
+  </div>
+
+  <!-- Final -->
+  <div class="screen" id="final">
+    <div class="final-box">
+      <div class="final-title">Who holds your profile</div>
+      <div class="broker-row"><span class="broker-name">Acxiom</span><span class="broker-data">3,000+ attributes on you</span></div>
+      <div class="broker-row"><span class="broker-name">LexisNexis</span><span class="broker-data">Location history, PII, financials</span></div>
+      <div class="broker-row"><span class="broker-name">Experian</span><span class="broker-data">Credit, income, household</span></div>
+      <div class="broker-row"><span class="broker-name">Oracle Data Cloud</span><span class="broker-data">Browsing, purchase, health interests</span></div>
+      <div class="broker-row"><span class="broker-name">Equifax</span><span class="broker-data">Financial, employment, identity</span></div>
+      <div style="margin-top:10px; font-size:0.78rem; color:#7F1D1D;">Data broker Acxiom estimates it holds profiles on <strong>2.5 billion people</strong> globally. You did not consent to this database. You were not told it exists. You can request removal - but re-collection starts immediately.</div>
+    </div>
+    <button class="btn-primary" onclick="restart()">Start Again</button>
+  </div>
+
+  <script>
+    function addTag(cls, text) {
+      const container = document.getElementById('profile-tags');
+      const empty = container.querySelector('span');
+      if (empty) empty.remove();
+      const tag = document.createElement('span');
+      tag.className = 'profile-tag ' + cls;
+      tag.textContent = text;
+      container.appendChild(tag);
+      notifyHeight();
+    }
+
+    function next(n) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('s' + n).classList.add('active');
+      notifyHeight();
+    }
+
+    function showFinal() {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('final').classList.add('active');
+      notifyHeight();
+    }
+
+    function restart() {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('s1').classList.add('active');
+      document.getElementById('profile-tags').innerHTML = '<span style="font-size:0.78rem; color:var(--text-3); align-self:center;">No data collected yet...</span>';
+      notifyHeight();
+    }
+
+    function notifyHeight() {
+      setTimeout(() => { window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'); }, 100);
+    }
+    notifyHeight();
+  </script>
+</body>
+</html>

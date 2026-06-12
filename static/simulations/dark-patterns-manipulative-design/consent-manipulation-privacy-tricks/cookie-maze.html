@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Cookie Maze</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #FFFFFF; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --green: #16A34A; --green-bg: #F0FDF4;
+      --red: #DC2626; --amber: #D97706;
+      --font: 'Poppins', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 20px 48px; max-width: 600px; margin: 0 auto; }
+
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; background: #1E293B; color: #fff; }
+
+    h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+
+    .click-counter { font-size: 0.82rem; color: var(--text-3); margin-bottom: 16px; }
+    .click-counter span { font-weight: 700; color: var(--red); }
+
+    /* Cookie banner */
+    .banner { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 16px 0; }
+    .banner-header { background: var(--bg-2); padding: 14px 18px; border-bottom: 1px solid var(--border); font-weight: 600; font-size: 0.9rem; }
+    .banner-body { padding: 20px; }
+
+    .btn-big { width: 100%; padding: 14px; background: var(--blue); color: #fff; border: none; border-radius: 8px; font-family: var(--font); font-size: 0.95rem; font-weight: 700; cursor: pointer; margin-bottom: 8px; transition: background 0.15s; }
+    .btn-big:hover { background: #1D4ED8; }
+    .btn-small { display: block; width: 100%; padding: 9px 14px; background: var(--bg-2); color: var(--text-3); border: 1px solid var(--border); border-radius: 6px; font-family: var(--font); font-size: 0.75rem; cursor: pointer; margin-bottom: 8px; text-align: left; transition: all 0.15s; }
+    .btn-small:hover { border-color: var(--blue); color: var(--text-1); }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .breadcrumb { font-size: 0.72rem; color: var(--text-3); margin-bottom: 10px; }
+    .breadcrumb span { color: var(--blue); }
+
+    .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .toggle-label { font-size: 0.82rem; color: var(--text-2); }
+    .toggle { width: 38px; height: 22px; border-radius: 11px; cursor: pointer; position: relative; transition: background 0.2s; }
+    .toggle.on { background: var(--blue); }
+    .toggle.off { background: var(--border); }
+    .toggle-dot { width: 18px; height: 18px; background: #fff; border-radius: 50%; position: absolute; top: 2px; transition: left 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    .toggle.on .toggle-dot { left: 18px; }
+    .toggle.off .toggle-dot { left: 2px; }
+
+    .reveal-box { background: #FFFBEB; border: 1px solid #FCD34D; border-radius: 8px; padding: 14px 16px; margin: 16px 0; }
+    .reveal-title { font-size: 0.78rem; font-weight: 700; color: #92400E; margin-bottom: 4px; text-transform: uppercase; }
+    .reveal-text { font-size: 0.8rem; color: #78350F; line-height: 1.5; }
+
+    .success-box { background: var(--green-bg); border: 1px solid #86EFAC; border-radius: 8px; padding: 16px; margin: 16px 0; text-align: center; }
+    .success-title { font-size: 1rem; font-weight: 700; color: var(--green); margin-bottom: 6px; }
+    .success-text { font-size: 0.82rem; color: #166534; line-height: 1.5; }
+    .clicks-taken { font-size: 1.4rem; font-weight: 700; color: var(--green); }
+  </style>
+</head>
+<body>
+
+  <div class="tag">Module 40 - Simulation</div>
+  <h2>The Cookie Maze</h2>
+  <p>Find the "Reject All" option. Click count: <span id="click-count">0</span></p>
+
+  <!-- Step 1: Main banner -->
+  <div class="screen active" id="s1">
+    <div class="banner">
+      <div class="banner-header">We value your privacy</div>
+      <div class="banner-body">
+        <p style="font-size:0.82rem; margin-bottom:16px;">We and our 312 partners use cookies to personalise content and ads, provide social media features, and analyse our traffic.</p>
+        <button class="btn-big" onclick="accept()">Accept All</button>
+        <button class="btn-small" onclick="go(2)">Manage Preferences</button>
+        <p style="font-size:0.7rem; color:var(--text-3); text-align:center; margin-top:8px;">By continuing to browse, you accept our use of cookies.</p>
+      </div>
+    </div>
+    <div class="reveal-box">
+      <div class="reveal-title">What you just saw</div>
+      <div class="reveal-text">"Accept All" is large, blue, and primary. Rejection requires finding "Manage Preferences" - a small, low-contrast secondary option.</div>
+    </div>
+  </div>
+
+  <!-- Step 2: Preferences menu -->
+  <div class="screen" id="s2">
+    <div class="breadcrumb">Manage Preferences <span>></span></div>
+    <div class="banner">
+      <div class="banner-header">Cookie Categories</div>
+      <div class="banner-body">
+        <button class="btn-small" onclick="go(3)">Strictly Necessary (always active)</button>
+        <button class="btn-small" onclick="go(4)">Performance &amp; Analytics</button>
+        <button class="btn-small" onclick="go(5)">Functional Cookies</button>
+        <button class="btn-small" onclick="go(6)">Targeting &amp; Advertising</button>
+        <button class="btn-small" onclick="go(7)">Social Media Integrations</button>
+        <button class="btn-small" onclick="go(8)">Partner Network Cookies</button>
+        <button class="btn-big" onclick="accept()">Save and Accept All</button>
+      </div>
+    </div>
+    <div class="reveal-box">
+      <div class="reveal-title">What you see here</div>
+      <div class="reveal-text">Six categories but no "Reject All" button. There's a "Save and Accept All" that's easy to press by mistake. You must visit each category to turn them off individually.</div>
+    </div>
+  </div>
+
+  <!-- Steps 3-7: Dead-end categories -->
+  <div class="screen" id="s3">
+    <div class="breadcrumb">Manage Preferences <span>></span> Strictly Necessary</div>
+    <div class="banner">
+      <div class="banner-header">Strictly Necessary Cookies</div>
+      <div class="banner-body">
+        <div class="toggle-row"><span class="toggle-label">Required for site to function</span><div class="toggle on" style="pointer-events:none;"><div class="toggle-dot"></div></div></div>
+        <p style="font-size:0.75rem; color:var(--text-3); margin-top:10px;">These cookies cannot be disabled as they are essential to the operation of our website.</p>
+        <button class="btn-small" style="margin-top:12px;" onclick="go(2)">Back to Categories</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Dead end</div><div class="reveal-text">You're in the wrong category. This one can't be disabled. Back to try another.</div></div>
+  </div>
+
+  <div class="screen" id="s4">
+    <div class="breadcrumb">Manage Preferences <span>></span> Performance &amp; Analytics</div>
+    <div class="banner">
+      <div class="banner-header">Performance &amp; Analytics</div>
+      <div class="banner-body">
+        <div class="toggle-row"><span class="toggle-label">Google Analytics</span><div class="toggle on" id="t4a" onclick="toggleIt('t4a')"><div class="toggle-dot"></div></div></div>
+        <div class="toggle-row"><span class="toggle-label">Hotjar Session Recording</span><div class="toggle on" id="t4b" onclick="toggleIt('t4b')"><div class="toggle-dot"></div></div></div>
+        <div class="toggle-row"><span class="toggle-label">Segment Event Tracking</span><div class="toggle on" id="t4c" onclick="toggleIt('t4c')"><div class="toggle-dot"></div></div></div>
+        <button class="btn-small" style="margin-top:12px;" onclick="go(2)">Back to Categories</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Still not the reject path</div><div class="reveal-text">You can disable analytics here individually. But there's still no "Reject All" - you must do this for all 6 categories separately.</div></div>
+  </div>
+
+  <div class="screen" id="s5">
+    <div class="breadcrumb">Manage Preferences <span>></span> Functional</div>
+    <div class="banner">
+      <div class="banner-header">Functional Cookies</div>
+      <div class="banner-body">
+        <div class="toggle-row"><span class="toggle-label">Language preferences</span><div class="toggle on" id="t5a" onclick="toggleIt('t5a')"><div class="toggle-dot"></div></div></div>
+        <div class="toggle-row"><span class="toggle-label">Personalised content</span><div class="toggle on" id="t5b" onclick="toggleIt('t5b')"><div class="toggle-dot"></div></div></div>
+        <button class="btn-small" style="margin-top:12px;" onclick="go(2)">Back to Categories</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Still searching</div><div class="reveal-text">Reject All would have handled this in one click. Instead, each category requires a separate visit.</div></div>
+  </div>
+
+  <div class="screen" id="s6">
+    <div class="breadcrumb">Manage Preferences <span>></span> Targeting &amp; Advertising</div>
+    <div class="banner">
+      <div class="banner-header">Targeting &amp; Advertising</div>
+      <div class="banner-body">
+        <div class="toggle-row"><span class="toggle-label">Personalised ads</span><div class="toggle on" id="t6a" onclick="toggleIt('t6a')"><div class="toggle-dot"></div></div></div>
+        <div class="toggle-row"><span class="toggle-label">Retargeting (cross-site tracking)</span><div class="toggle on" id="t6b" onclick="toggleIt('t6b')"><div class="toggle-dot"></div></div></div>
+        <div class="toggle-row"><span class="toggle-label">Lookalike audience building</span><div class="toggle on" id="t6c" onclick="toggleIt('t6c')"><div class="toggle-dot"></div></div></div>
+        <button class="btn-small" style="margin-top:12px;" onclick="go(9)">Apply &amp; Back</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">The most valuable category</div><div class="reveal-text">Advertisers pay most for this data. This is why it's buried deepest and listed last. Users who give up early leave this category on.</div></div>
+  </div>
+
+  <div class="screen" id="s7">
+    <div class="breadcrumb">Manage Preferences <span>></span> Social Media</div>
+    <div class="banner">
+      <div class="banner-header">Social Media Integrations</div>
+      <div class="banner-body">
+        <div class="toggle-row"><span class="toggle-label">Facebook Pixel</span><div class="toggle on" id="t7a" onclick="toggleIt('t7a')"><div class="toggle-dot"></div></div></div>
+        <div class="toggle-row"><span class="toggle-label">LinkedIn Insight Tag</span><div class="toggle on" id="t7b" onclick="toggleIt('t7b')"><div class="toggle-dot"></div></div></div>
+        <button class="btn-small" style="margin-top:12px;" onclick="go(2)">Back to Categories</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="s8">
+    <div class="breadcrumb">Manage Preferences <span>></span> Partner Network</div>
+    <div class="banner">
+      <div class="banner-header">Partner Network Cookies</div>
+      <div class="banner-body">
+        <p style="font-size:0.78rem; color:var(--text-3); margin-bottom:12px;">Our 312 advertising partners. To opt out of each partner individually, click the IAB TCF link below.</p>
+        <button class="btn-small" onclick="go(2)">Back to Categories</button>
+        <button class="btn-small" style="color:var(--text-3);" onclick="go(10)">View 312 partners and opt-out options</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">312 partners</div><div class="reveal-text">To fully reject, you'd need to opt out of each partner individually. This is a deliberately impossible path.</div></div>
+  </div>
+
+  <!-- Step 9: After going back from Targeting -->
+  <div class="screen" id="s9">
+    <div class="breadcrumb">Manage Preferences</div>
+    <div class="banner">
+      <div class="banner-header">Cookie Categories</div>
+      <div class="banner-body">
+        <p style="font-size:0.78rem; color:var(--green); margin-bottom:10px;">Targeting cookies updated.</p>
+        <button class="btn-small" onclick="go(3)">Strictly Necessary</button>
+        <button class="btn-small" onclick="go(4)">Performance &amp; Analytics</button>
+        <button class="btn-small" onclick="go(5)">Functional Cookies</button>
+        <button class="btn-small" style="color:var(--green);" onclick="go(2)">Targeting &amp; Advertising (updated)</button>
+        <button class="btn-small" onclick="go(7)">Social Media Integrations</button>
+        <button class="btn-small" onclick="go(8)">Partner Network Cookies</button>
+        <button class="btn-big" onclick="accept()">Save and Accept All</button>
+        <button class="btn-small" onclick="finish()">Save my preferences</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Almost there</div><div class="reveal-text">"Save my preferences" only appeared after updating one category. It's still small and below "Save and Accept All".</div></div>
+  </div>
+
+  <!-- Step 10: 312 partners dead end -->
+  <div class="screen" id="s10">
+    <div class="breadcrumb">Manage Preferences <span>></span> Partner Network <span>></span> IAB TCF</div>
+    <div class="banner">
+      <div class="banner-header">312 Advertising Partners</div>
+      <div class="banner-body">
+        <p style="font-size:0.78rem; color:var(--text-2); margin-bottom:10px;">Scroll through all partners and toggle each one off to opt out.</p>
+        <p style="font-size:0.72rem; color:var(--text-3);">1. Adform... 2. Adobe Advertising... 3. Amazon Advertising... 4. Amobee... [+308 more]</p>
+        <button class="btn-small" style="margin-top:12px;" onclick="go(8)">Back</button>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Intentionally impossible</div><div class="reveal-text">Most users abandon here and accept everything. This path exists on purpose.</div></div>
+  </div>
+
+  <!-- Accepted screen -->
+  <div class="screen" id="s-accept">
+    <div style="background:#FEF2F2; border:1px solid #FECACA; border-radius:12px; padding:20px; text-align:center;">
+      <div style="font-size:1.1rem; font-weight:700; color:var(--red); margin-bottom:8px;">You accepted all cookies</div>
+      <p style="font-size:0.82rem; color:#991B1B;">You needed <span id="accept-count">0</span> clicks and gave up. 312 companies now have access to your browsing data.</p>
+    </div>
+    <div class="reveal-box" style="margin-top:16px;">
+      <div class="reveal-title">This is by design</div>
+      <div class="reveal-text"><strong>75% of users click Accept All</strong> because rejection is too complex. The design is optimised for acceptance - not for informed consent.</div>
+    </div>
+    <button class="btn-big" style="margin-top:16px; background:#374151;" onclick="restart()">Try Again - Find Reject All</button>
+  </div>
+
+  <!-- Success screen -->
+  <div class="screen" id="s-success">
+    <div class="success-box">
+      <div class="success-title">You rejected all cookies</div>
+      <div class="success-text">It took <span class="clicks-taken" id="success-count">0</span> clicks.<br>Accept All would have taken 1.</div>
+    </div>
+    <div class="reveal-box" style="margin-top:0;">
+      <div class="reveal-title">What just happened</div>
+      <div class="reveal-text">You experienced a real cookie banner pattern. <strong>Accept: 1 click. Reject: 5-8 clicks across multiple menus.</strong> Under GDPR, both options must be equally accessible - but enforcement is inconsistent.</div>
+    </div>
+    <button class="btn-big" style="margin-top:16px; background:#374151;" onclick="restart()">Restart</button>
+  </div>
+
+<script>
+  let clicks = 0;
+
+  function go(n) {
+    clicks++;
+    document.getElementById('click-count').textContent = clicks;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('s' + n).classList.add('active');
+    sendHeight();
+  }
+
+  function toggleIt(id) {
+    clicks++;
+    document.getElementById('click-count').textContent = clicks;
+    const el = document.getElementById(id);
+    el.classList.toggle('on');
+    el.classList.toggle('off');
+    sendHeight();
+  }
+
+  function accept() {
+    clicks++;
+    document.getElementById('accept-count').textContent = clicks;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('s-accept').classList.add('active');
+    sendHeight();
+  }
+
+  function finish() {
+    clicks++;
+    document.getElementById('success-count').textContent = clicks;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('s-success').classList.add('active');
+    sendHeight();
+  }
+
+  function restart() {
+    clicks = 0;
+    document.getElementById('click-count').textContent = 0;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('s1').classList.add('active');
+    sendHeight();
+  }
+
+  function sendHeight() {
+    setTimeout(() => {
+      window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+    }, 100);
+  }
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>

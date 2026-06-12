@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The BNPL Trap</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #FFFFFF; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --green: #16A34A; --red: #DC2626; --amber: #D97706;
+      --font: 'Poppins', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 20px 48px; max-width: 600px; margin: 0 auto; }
+
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; background: #1E293B; color: #fff; }
+    h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .product-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 16px 0; }
+    .product-header { padding: 14px 18px; background: var(--bg-2); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+    .product-emoji { font-size: 2rem; }
+    .product-info { flex: 1; }
+    .product-name { font-size: 0.9rem; font-weight: 600; }
+    .product-price-full { font-size: 0.72rem; color: var(--text-3); }
+    .product-body { padding: 16px 18px; }
+
+    .bnpl-box { background: #F0FDF4; border: 1px solid #86EFAC; border-radius: 8px; padding: 14px 16px; margin-bottom: 12px; }
+    .bnpl-main { font-size: 1.4rem; font-weight: 700; color: var(--green); }
+    .bnpl-sub { font-size: 0.72rem; color: #166534; margin-top: 2px; }
+
+    .or-divider { text-align: center; font-size: 0.75rem; color: var(--text-3); margin: 8px 0; position: relative; }
+    .or-divider::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--border); }
+    .or-divider span { background: #fff; padding: 0 10px; position: relative; }
+
+    .pay-full { font-size: 0.82rem; color: var(--text-3); text-align: center; cursor: pointer; text-decoration: underline; }
+
+    .btn-buy { width: 100%; padding: 13px; background: var(--green); color: #fff; border: none; border-radius: 8px; font-family: var(--font); font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+    .btn-buy:hover { background: #15803D; }
+
+    .hidden-total { background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin: 12px 0; font-size: 0.75rem; color: var(--text-3); text-align: right; display: none; }
+
+    .debt-reveal { background: #FEF2F2; border: 2px solid #FECACA; border-radius: 12px; padding: 20px; margin: 16px 0; text-align: center; display: none; }
+    .debt-reveal.show { display: block; }
+    .debt-amount { font-size: 2.5rem; font-weight: 700; color: var(--red); }
+    .debt-label { font-size: 0.82rem; color: #991B1B; margin-top: 4px; }
+
+    .purchase-log { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 16px 0; }
+    .log-header { background: var(--bg-2); padding: 10px 14px; font-size: 0.78rem; font-weight: 700; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
+    .log-row { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 0.8rem; display: flex; justify-content: space-between; align-items: center; }
+    .log-row:last-child { border-bottom: none; }
+    .log-felt { color: var(--green); font-weight: 600; }
+    .log-real { color: var(--red); font-weight: 600; }
+
+    .breakdown { background: var(--bg-2); border-radius: 10px; padding: 14px 16px; margin: 16px 0; }
+    .breakdown-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.82rem; border-bottom: 1px solid var(--border); }
+    .breakdown-row:last-child { border-bottom: none; font-weight: 700; }
+    .breakdown-warn { color: var(--red); font-weight: 600; }
+
+    .btn-restart { width: 100%; padding: 13px; background: #374151; color: #fff; border: none; border-radius: 8px; font-family: var(--font); font-size: 0.88rem; font-weight: 700; cursor: pointer; margin-top: 12px; }
+    .reveal-box { background: #FFFBEB; border: 1px solid #FCD34D; border-radius: 8px; padding: 12px 14px; margin: 12px 0; font-size: 0.8rem; color: #78350F; line-height: 1.5; }
+    .reveal-title { font-weight: 700; color: #92400E; margin-bottom: 4px; font-size: 0.76rem; text-transform: uppercase; }
+
+    .progress-steps { display: flex; gap: 6px; margin-bottom: 20px; }
+    .step-dot { height: 4px; flex: 1; border-radius: 2px; background: var(--border); transition: background 0.3s; }
+    .step-dot.done { background: var(--green); }
+    .step-dot.active { background: var(--blue); }
+  </style>
+</head>
+<body>
+
+  <div class="tag">Module 49 - Simulation</div>
+  <h2>The BNPL Trap</h2>
+  <p>Make 4 purchases using Buy Now Pay Later. Each time, you only see the instalment amount. A hidden total accumulates off-screen.</p>
+
+  <div class="progress-steps" id="progress-steps">
+    <div class="step-dot active" id="dot-1"></div>
+    <div class="step-dot" id="dot-2"></div>
+    <div class="step-dot" id="dot-3"></div>
+    <div class="step-dot" id="dot-4"></div>
+    <div class="step-dot" id="dot-5"></div>
+  </div>
+
+  <!-- Purchase 1 -->
+  <div class="screen active" id="s1">
+    <div class="product-card">
+      <div class="product-header">
+        <div class="product-emoji">👟</div>
+        <div class="product-info">
+          <div class="product-name">Running Shoes</div>
+          <div class="product-price-full">Total: £120</div>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="bnpl-box">
+          <div class="bnpl-main">4 x £30</div>
+          <div class="bnpl-sub">First payment today, then every 2 weeks. No interest if paid on time.</div>
+        </div>
+        <button class="btn-buy" onclick="buy(1, 120, 30)">Buy Now - Pay £30 today</button>
+        <div class="or-divider"><span>or</span></div>
+        <div class="pay-full" onclick="buy(1, 120, 120)">Pay full price £120</div>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">What you see vs. what you owe</div>£30 feels like the price. £120 is the price. BNPL splits the real number into smaller, less alarming instalments.</div>
+  </div>
+
+  <!-- Purchase 2 -->
+  <div class="screen" id="s2">
+    <div class="product-card">
+      <div class="product-header">
+        <div class="product-emoji">🧴</div>
+        <div class="product-info">
+          <div class="product-name">Skincare Set</div>
+          <div class="product-price-full">Total: £85</div>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="bnpl-box">
+          <div class="bnpl-main">4 x £21.25</div>
+          <div class="bnpl-sub">Split into 4 easy payments. Zero interest.</div>
+        </div>
+        <button class="btn-buy" onclick="buy(2, 85, 21.25)">Buy Now - Pay £21.25 today</button>
+        <div class="or-divider"><span>or</span></div>
+        <div class="pay-full" onclick="buy(2, 85, 85)">Pay full price £85</div>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">A second purchase feels affordable</div>£21 on top of £30 from last week. Your brain anchors to the small number - not the accumulating total.</div>
+  </div>
+
+  <!-- Purchase 3 -->
+  <div class="screen" id="s3">
+    <div class="product-card">
+      <div class="product-header">
+        <div class="product-emoji">🎧</div>
+        <div class="product-info">
+          <div class="product-name">Wireless Earbuds</div>
+          <div class="product-price-full">Total: £149</div>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="bnpl-box">
+          <div class="bnpl-main">4 x £37.25</div>
+          <div class="bnpl-sub">Pay over 6 weeks. No fees with on-time payments.</div>
+        </div>
+        <button class="btn-buy" onclick="buy(3, 149, 37.25)">Buy Now - Pay £37.25 today</button>
+        <div class="or-divider"><span>or</span></div>
+        <div class="pay-full" onclick="buy(3, 149, 149)">Pay full price £149</div>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Each purchase seems independent</div>BNPL providers operate separately. You may have 3 different schedules with 3 different companies - with no single view of your total obligations.</div>
+  </div>
+
+  <!-- Purchase 4 -->
+  <div class="screen" id="s4">
+    <div class="product-card">
+      <div class="product-header">
+        <div class="product-emoji">💻</div>
+        <div class="product-info">
+          <div class="product-name">Laptop Stand + Accessories</div>
+          <div class="product-price-full">Total: £95</div>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="bnpl-box">
+          <div class="bnpl-main">3 x £31.67</div>
+          <div class="bnpl-sub">Pay in 3 with no interest.</div>
+        </div>
+        <button class="btn-buy" onclick="buy(4, 95, 31.67)">Buy Now - Pay £31.67 today</button>
+        <div class="or-divider"><span>or</span></div>
+        <div class="pay-full" onclick="buy(4, 95, 95)">Pay full price £95</div>
+      </div>
+    </div>
+    <div class="reveal-box"><div class="reveal-title">Purchase 4</div>You're about to see the full picture. The fourth purchase unlocks the hidden total.</div>
+  </div>
+
+  <!-- Reveal screen -->
+  <div class="screen" id="s-reveal">
+    <h2 style="margin-bottom:4px;">The full picture.</h2>
+    <p>Here is what you actually owe across all 4 purchases.</p>
+
+    <div class="purchase-log">
+      <div class="log-header"><span>Purchase</span><span>Felt like</span><span>Actually owe</span></div>
+      <div class="log-row"><span>👟 Running Shoes</span><span class="log-felt" id="felt-1">-</span><span class="log-real">£120</span></div>
+      <div class="log-row"><span>🧴 Skincare Set</span><span class="log-felt" id="felt-2">-</span><span class="log-real">£85</span></div>
+      <div class="log-row"><span>🎧 Earbuds</span><span class="log-felt" id="felt-3">-</span><span class="log-real">£149</span></div>
+      <div class="log-row"><span>💻 Accessories</span><span class="log-felt" id="felt-4">-</span><span class="log-real">£95</span></div>
+    </div>
+
+    <div class="breakdown">
+      <div class="breakdown-row"><span>Total actual spend</span><span>£449</span></div>
+      <div class="breakdown-row"><span>Amount paid today</span><span id="paid-today">-</span></div>
+      <div class="breakdown-row"><span>Remaining instalments</span><span id="remaining">-</span></div>
+      <div class="breakdown-row"><span>Late payment fee (1 missed)</span><span class="breakdown-warn">+£24</span></div>
+      <div class="breakdown-row"><span>Minimum monthly payment</span><span id="monthly">-</span></div>
+      <div class="breakdown-row"><span style="color:var(--red);">Outstanding if minimum only</span><span id="outstanding" class="breakdown-warn">-</span></div>
+    </div>
+
+    <div class="reveal-box">
+      <div class="reveal-title">The gap that matters</div>
+      <strong>44% of BNPL users have missed at least one payment</strong> (CFPB, 2025). Late fees begin immediately. Across multiple providers, missed payments are reported to credit bureaus inconsistently — creating invisible credit risk that builds without warning.
+    </div>
+
+    <button class="btn-restart" onclick="restart()">Restart</button>
+  </div>
+
+<script>
+  const purchases = { 1: null, 2: null, 3: null, 4: null };
+  const feltAmounts = {};
+  let paidToday = 0;
+
+  function buy(n, total, instalment) {
+    purchases[n] = total;
+    feltAmounts[n] = instalment;
+    paidToday += instalment;
+
+    const dots = ['dot-1','dot-2','dot-3','dot-4','dot-5'];
+    for (let i = 1; i <= 4; i++) {
+      const d = document.getElementById('dot-' + i);
+      if (i < n + 1) { d.classList.add('done'); d.classList.remove('active'); }
+      else if (i === n + 1) { d.classList.add('active'); d.classList.remove('done'); }
+    }
+
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    if (n < 4) {
+      document.getElementById('s' + (n + 1)).classList.add('active');
+    } else {
+      showReveal();
+    }
+    sendHeight();
+  }
+
+  function showReveal() {
+    document.getElementById('dot-5').classList.add('done');
+    document.getElementById('dot-5').classList.remove('active');
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('s-reveal').classList.add('active');
+
+    for (let i = 1; i <= 4; i++) {
+      document.getElementById('felt-' + i).textContent = '£' + feltAmounts[i].toFixed(2);
+    }
+
+    const remaining = 449 - paidToday;
+    document.getElementById('paid-today').textContent = '£' + paidToday.toFixed(2);
+    document.getElementById('remaining').textContent = '£' + remaining.toFixed(2);
+    document.getElementById('monthly').textContent = '£' + (Math.max(remaining / 6, 25)).toFixed(2);
+    document.getElementById('outstanding').textContent = '£' + (remaining + 24).toFixed(2);
+    sendHeight();
+  }
+
+  function restart() {
+    Object.keys(purchases).forEach(k => purchases[k] = null);
+    Object.keys(feltAmounts).forEach(k => delete feltAmounts[k]);
+    paidToday = 0;
+    document.querySelectorAll('.step-dot').forEach((d, i) => {
+      d.classList.remove('done');
+      d.className = 'step-dot' + (i === 0 ? ' active' : '');
+    });
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('s1').classList.add('active');
+    sendHeight();
+  }
+
+  function sendHeight() {
+    setTimeout(() => {
+      window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+    }, 100);
+  }
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>

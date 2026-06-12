@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>The Pester Power Pipeline</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --font: 'Outfit', system-ui, sans-serif;
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B; --r: 12px;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); padding: 28px 16px 40px; -webkit-font-smoothing: antialiased; }
+    .header { text-align: center; margin-bottom: 6px; }
+    .header h1 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .header p { font-size: 13px; color: var(--muted); max-width: 480px; margin: 0 auto 20px; }
+    .pipeline { max-width: 600px; margin: 0 auto; position: relative; }
+    .stage {
+      display: flex; gap: 14px; align-items: flex-start;
+      margin-bottom: 0; cursor: pointer;
+    }
+    .stage-left { display: flex; flex-direction: column; align-items: center; width: 48px; flex-shrink: 0; }
+    .stage-dot {
+      width: 48px; height: 48px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; border: 2px solid var(--border);
+      background: var(--surface); transition: all 0.2s; flex-shrink: 0;
+    }
+    .stage.active .stage-dot { border-color: currentColor; }
+    .stage-line { width: 2px; flex: 1; min-height: 24px; background: var(--border); margin: 4px 0; }
+    .stage:last-child .stage-line { display: none; }
+    .stage-right { flex: 1; padding-bottom: 20px; }
+    .stage-header { display: flex; align-items: center; gap: 8px; padding: 12px 0 6px; }
+    .stage-num { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; }
+    .stage-title { font-size: 15px; font-weight: 700; }
+    .stage-body {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px 16px;
+      font-size: 13px; line-height: 1.6; color: #334155;
+      display: none;
+    }
+    .stage.open .stage-body { display: block; }
+    .stage-body .mechanic {
+      margin-top: 10px; padding: 10px 12px;
+      border-radius: 8px; font-size: 12px; font-weight: 600;
+    }
+    .stage-body .concept {
+      margin-top: 8px; font-size: 11.5px; color: var(--muted); font-style: italic;
+    }
+    /* Stage colours */
+    .s1 .stage-dot { color: #0891B2; border-color: #BAE6FD; }
+    .s1 .stage-num { color: #0891B2; }
+    .s1 .stage-body .mechanic { background: #E0F2FE; color: #0C4A6E; }
+    .s2 .stage-dot { color: #7C3AED; border-color: #DDD6FE; }
+    .s2 .stage-num { color: #7C3AED; }
+    .s2 .stage-body .mechanic { background: #F5F3FF; color: #4C1D95; }
+    .s3 .stage-dot { color: #D97706; border-color: #FDE68A; }
+    .s3 .stage-num { color: #D97706; }
+    .s3 .stage-body .mechanic { background: #FFFBEB; color: #78350F; }
+    .s4 .stage-dot { color: #DC2626; border-color: #FECACA; }
+    .s4 .stage-num { color: #DC2626; }
+    .s4 .stage-body .mechanic { background: #FEF2F2; color: #7F1D1D; }
+    .s5 .stage-dot { color: #059669; border-color: #6EE7B7; }
+    .s5 .stage-num { color: #059669; }
+    .s5 .stage-body .mechanic { background: #ECFDF5; color: #064E3B; }
+    .s6 .stage-dot { color: #DB2777; border-color: #FBCFE8; }
+    .s6 .stage-num { color: #DB2777; }
+    .s6 .stage-body .mechanic { background: #FDF2F8; color: #831843; }
+    .s7 .stage-dot { color: #4F46E5; border-color: #C7D2FE; }
+    .s7 .stage-num { color: #4F46E5; }
+    .s7 .stage-body .mechanic { background: #EEF2FF; color: #312E81; }
+    .gap-note {
+      max-width: 600px; margin: 8px auto 0;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 14px 18px;
+      font-size: 12.5px; color: var(--muted); line-height: 1.6;
+    }
+    .gap-note strong { color: var(--text); display: block; margin-bottom: 4px; font-size: 13px; }
+    .hint { text-align: center; font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>The Pester Power Pipeline</h1>
+  <p>How a free-to-play game turns a child into a paying customer. Click each stage to see the design mechanic and the psychology behind it.</p>
+</div>
+
+<p class="hint">Click any stage to expand</p>
+
+<div class="pipeline">
+
+  <div class="stage s1" onclick="toggle(this)">
+    <div class="stage-left">
+      <div class="stage-dot">🎮</div>
+      <div class="stage-line"></div>
+    </div>
+    <div class="stage-right">
+      <div class="stage-header">
+        <span class="stage-num">Stage 1</span>
+        <span class="stage-title">The Free Hook</span>
+      </div>
+      <div class="stage-body">
+        <div class="mechanic">Free entry removes parental resistance and creates a large player pool to monetise.</div>
+        <div class="concept">Loss aversion starts immediately - leaving feels like losing something already owned.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage s2" onclick="toggle(this)">
+    <div class="stage-left">
+      <div class="stage-dot">👁️</div>
+      <div class="stage-line"></div>
+    </div>
+    <div class="stage-right">
+      <div class="stage-header">
+        <span class="stage-num">Stage 2</span>
+        <span class="stage-title">Visual Scarcity</span>
+      </div>
+      <div class="stage-body">
+        <div class="mechanic">Premium skins and items are visible everywhere in the game world but locked behind a paywall.</div>
+        <div class="concept">Children want things relative to what peers have, not to what they had before.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage s3" onclick="toggle(this)">
+    <div class="stage-left">
+      <div class="stage-dot">👥</div>
+      <div class="stage-line"></div>
+    </div>
+    <div class="stage-right">
+      <div class="stage-header">
+        <span class="stage-num">Stage 3</span>
+        <span class="stage-title">Peer Visibility</span>
+      </div>
+      <div class="stage-body">
+        <div class="mechanic">Paid items are visible to every other player. Unpaid items signal that parents said no.</div>
+        <div class="concept">Commercial pressure is transferred from advertiser into the child's peer relationships.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage s4" onclick="toggle(this)">
+    <div class="stage-left">
+      <div class="stage-dot">💰</div>
+      <div class="stage-line"></div>
+    </div>
+    <div class="stage-right">
+      <div class="stage-header">
+        <span class="stage-num">Stage 4</span>
+        <span class="stage-title">Currency Obfuscation</span>
+      </div>
+      <div class="stage-body">
+        <div class="mechanic">Real money buys V-Bucks, not items directly. The skin costs "1,400 V-Bucks" - not Rs 1,200.</div>
+        <div class="concept">Abstract currency breaks the link to real-money value. Spending feels less real.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage s5" onclick="toggle(this)">
+    <div class="stage-left">
+      <div class="stage-dot">⏱️</div>
+      <div class="stage-line"></div>
+    </div>
+    <div class="stage-right">
+      <div class="stage-header">
+        <span class="stage-num">Stage 5</span>
+        <span class="stage-title">Time Pressure</span>
+      </div>
+      <div class="stage-body">
+        <div class="mechanic">Item available for 48 hours only. Visible countdown timer. Gone when it expires.</div>
+        <div class="concept">FOMO is stronger in children who have not yet developed the ability to delay gratification.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage s6" onclick="toggle(this)">
+    <div class="stage-left">
+      <div class="stage-dot">📣</div>
+      <div class="stage-line"></div>
+    </div>
+    <div class="stage-right">
+      <div class="stage-header">
+        <span class="stage-num">Stage 6</span>
+        <span class="stage-title">The Pester Moment</span>
+      </div>
+      <div class="stage-body">
+        <div class="mechanic">The child asks repeatedly, backed by peer pressure, time urgency, and emotional investment.</div>
+        <div class="concept">Parents comply most often when tired or distracted. The design anticipates this.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage s7" onclick="toggle(this)">
+    <div class="stage-left">
+      <div class="stage-dot">✅</div>
+      <div class="stage-line"></div>
+    </div>
+    <div class="stage-right">
+      <div class="stage-header">
+        <span class="stage-num">Stage 7</span>
+        <span class="stage-title">First Purchase - and the Next</span>
+      </div>
+      <div class="stage-body">
+        <div class="mechanic">The item is purchased. Relief and reward are felt. The next desirable item appears within days.</div>
+        <div class="concept">Each purchase lowers resistance to the next. Commitment bias makes stopping harder.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="gap-note">
+  <strong>The regulatory gap</strong>
+  In-game purchase design is classified as product design, not advertising - so children's ad regulations largely do not apply. Most consumer protection rules have not caught up.
+</div>
+
+<script>
+  function toggle(el) {
+    el.classList.toggle('open');
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+  }
+  window.addEventListener('load', () => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'));
+</script>
+</body>
+</html>

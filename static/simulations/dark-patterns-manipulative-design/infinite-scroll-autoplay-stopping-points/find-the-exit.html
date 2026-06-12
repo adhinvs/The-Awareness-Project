@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find the Exit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #FFFFFF; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --green: #16A34A; --red: #DC2626; --amber: #D97706;
+      --font: 'Poppins', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 0; max-width: 600px; margin: 0 auto; }
+
+    .intro { padding: 24px 20px 16px; }
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; background: #1E293B; color: #fff; }
+    h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+
+    .timer-bar { position: sticky; top: 0; z-index: 100; background: #fff; border-bottom: 1px solid var(--border); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .timer-label { font-size: 0.78rem; color: var(--text-3); }
+    .timer-value { font-size: 1rem; font-weight: 700; color: var(--red); }
+    .scroll-note { font-size: 0.72rem; color: var(--text-3); }
+
+    .feed { padding: 0; }
+
+    .post { border-bottom: 1px solid var(--border); padding: 16px 20px; }
+    .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .post-user { font-size: 0.85rem; font-weight: 600; }
+    .post-time { font-size: 0.72rem; color: var(--text-3); }
+    .post-content { font-size: 0.85rem; color: var(--text-2); line-height: 1.5; margin-bottom: 10px; }
+    .post-media { height: 120px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+    .post-actions { display: flex; gap: 16px; }
+    .action-btn { font-size: 0.75rem; color: var(--text-3); cursor: pointer; }
+    .action-btn:hover { color: var(--blue); }
+
+    .autoplay-banner { background: #1E293B; color: #fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .autoplay-text { font-size: 0.82rem; }
+    .autoplay-countdown { font-size: 1.1rem; font-weight: 700; color: #FCD34D; }
+
+    .load-more { padding: 20px; text-align: center; background: var(--bg-2); }
+    .loading-spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .back-hint { position: fixed; top: 50px; right: 16px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 0.72rem; color: var(--text-3); box-shadow: 0 2px 8px rgba(0,0,0,0.1); max-width: 160px; text-align: center; display: none; }
+
+    .exit-btn { display: none; position: fixed; top: 50px; right: 16px; background: var(--green); color: #fff; border: none; border-radius: 8px; padding: 10px 16px; font-family: var(--font); font-size: 0.82rem; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+
+    .escaped { padding: 24px 20px 48px; display: none; }
+    .escaped-title { font-size: 1.1rem; font-weight: 700; color: var(--green); margin-bottom: 8px; }
+    .time-spent { font-size: 2.5rem; font-weight: 700; color: var(--red); }
+    .reveal-box { background: #FFFBEB; border: 1px solid #FCD34D; border-radius: 8px; padding: 14px 16px; margin: 16px 0; }
+    .reveal-title { font-size: 0.78rem; font-weight: 700; color: #92400E; margin-bottom: 4px; text-transform: uppercase; }
+    .reveal-text { font-size: 0.8rem; color: #78350F; line-height: 1.5; }
+    .restart-btn { width: 100%; padding: 13px; background: #374151; color: #fff; border: none; border-radius: 8px; font-family: var(--font); font-size: 0.9rem; font-weight: 700; cursor: pointer; margin-top: 12px; }
+  </style>
+</head>
+<body>
+
+  <div id="main-view">
+    <div class="intro">
+      <div class="tag">Module 44 - Simulation</div>
+      <h2>Find the Exit</h2>
+      <p>You opened the app to check one thing. The timer starts now. Find the way out when you're ready - but the exit is not obvious.</p>
+    </div>
+
+    <div class="timer-bar">
+      <div>
+        <div class="timer-label">Time in feed</div>
+        <div class="timer-value" id="timer">0:00</div>
+      </div>
+      <div class="scroll-note">Scroll down to see more</div>
+    </div>
+
+    <div class="feed" id="feed">
+      <div class="post">
+        <div class="post-header">
+          <div class="avatar" style="background:#FEF3C7;">🐾</div>
+          <div><div class="post-user">naturephotography</div><div class="post-time">2 min ago</div></div>
+        </div>
+        <div class="post-content">Morning light through the forest. Nothing beats this. 🌿</div>
+        <div class="post-media" style="background:#F0FDF4;">🌲</div>
+        <div class="post-actions"><span class="action-btn">❤️ 1.4k</span><span class="action-btn">💬 82</span><span class="action-btn">↗️ Share</span></div>
+      </div>
+
+      <div class="autoplay-banner">
+        <div class="autoplay-text">Next video starting in</div>
+        <div class="autoplay-countdown" id="auto-countdown">3</div>
+      </div>
+
+      <div class="post">
+        <div class="post-header">
+          <div class="avatar" style="background:#EFF6FF;">🍳</div>
+          <div><div class="post-user">quick_recipes</div><div class="post-time">15 min ago</div></div>
+        </div>
+        <div class="post-content">5-minute pasta that actually tastes amazing. Saving this for tonight.</div>
+        <div class="post-media" style="background:#FFF7ED;">🍝</div>
+        <div class="post-actions"><span class="action-btn">❤️ 3.2k</span><span class="action-btn">💬 241</span><span class="action-btn">↗️ Share</span></div>
+      </div>
+
+      <div class="post">
+        <div class="post-header">
+          <div class="avatar" style="background:#F5F3FF;">💡</div>
+          <div><div class="post-user">productivity_tips</div><div class="post-time">32 min ago</div></div>
+        </div>
+        <div class="post-content">The one habit that changed everything: 10 minutes of focused work before checking your phone. Thread below 👇</div>
+        <div class="post-actions"><span class="action-btn">❤️ 8.7k</span><span class="action-btn">💬 512</span><span class="action-btn">↗️ Share</span></div>
+      </div>
+
+      <div class="post">
+        <div class="post-header">
+          <div class="avatar" style="background:#FEF2F2;">🏋️</div>
+          <div><div class="post-user">fitlife_daily</div><div class="post-time">1 hr ago</div></div>
+        </div>
+        <div class="post-content">Rest day doesn't mean stop day. Here's what I do instead...</div>
+        <div class="post-media" style="background:#F0FDF4;">🏃</div>
+        <div class="post-actions"><span class="action-btn">❤️ 2.1k</span><span class="action-btn">💬 97</span><span class="action-btn">↗️ Share</span></div>
+      </div>
+
+      <div class="post">
+        <div class="post-header">
+          <div class="avatar" style="background:#F0FDF4;">📚</div>
+          <div><div class="post-user">readinglist</div><div class="post-time">2 hr ago</div></div>
+        </div>
+        <div class="post-content">Just finished this. Honestly one of the best books I've read this year. Full thoughts in comments.</div>
+        <div class="post-media" style="background:#EFF6FF;">📖</div>
+        <div class="post-actions"><span class="action-btn">❤️ 4.5k</span><span class="action-btn">💬 328</span><span class="action-btn">↗️ Share</span></div>
+      </div>
+
+      <div class="load-more" id="loader">
+        <div class="loading-spinner"></div>
+        <div style="font-size:0.72rem; color:var(--text-3); margin-top:8px;">Loading more...</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="exit-btn" id="exit-btn" onclick="escape()">Exit Feed</button>
+  <div class="back-hint" id="back-hint">No back button here. Keep scrolling or find the exit.</div>
+
+  <div class="escaped" id="escaped-view">
+    <div class="escaped-title">You escaped.</div>
+    <p style="font-size:0.88rem;">Time spent in the feed:</p>
+    <div class="time-spent" id="time-spent">0:00</div>
+    <div class="reveal-box" style="margin-top:16px;">
+      <div class="reveal-title">What the feed removed</div>
+      <div class="reveal-text">
+        <strong>No scroll end.</strong> New posts load automatically - the feed never ends.<br><br>
+        <strong>Autoplay.</strong> Video started before you could choose to watch it.<br><br>
+        <strong>No back button.</strong> The native back gesture was suppressed in the app context.<br><br>
+        <strong>Exit buried.</strong> The only way out appeared after 20 seconds - not upfront.<br><br>
+        Each of these design choices increases average session time. <strong>Removing autoplay from YouTube reduced session time by ~20% in internal tests.</strong>
+      </div>
+    </div>
+    <button class="restart-btn" onclick="restart()">Restart</button>
+  </div>
+
+<script>
+  let elapsed = 0;
+  let timerInterval;
+  let exitShown = false;
+  let moreLoaded = 0;
+
+  timerInterval = setInterval(() => {
+    elapsed++;
+    const m = Math.floor(elapsed / 60);
+    const s = elapsed % 60;
+    document.getElementById('timer').textContent = m + ':' + String(s).padStart(2, '0');
+    if (elapsed === 20 && !exitShown) {
+      exitShown = true;
+      document.getElementById('exit-btn').style.display = 'block';
+    }
+    if (elapsed < 20) {
+      document.getElementById('back-hint').style.display = 'block';
+    }
+    sendHeight();
+  }, 1000);
+
+  // Autoplay counter
+  let autoSecs = 3;
+  const autoInterval = setInterval(() => {
+    autoSecs--;
+    const el = document.getElementById('auto-countdown');
+    if (el) {
+      el.textContent = autoSecs > 0 ? autoSecs : '▶ Playing';
+      if (autoSecs <= 0) clearInterval(autoInterval);
+    }
+  }, 1000);
+
+  // Infinite scroll - load more posts
+  const observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting && moreLoaded < 3) {
+      moreLoaded++;
+      setTimeout(() => addMorePosts(), 800);
+    }
+  }, { threshold: 0.5 });
+  observer.observe(document.getElementById('loader'));
+
+  const morePosts = [
+    { icon: '🎨', bg: '#FFF7ED', user: 'designinspo', time: '3 hr ago', text: 'Color palette of the week. Which one speaks to you?' },
+    { icon: '🌍', bg: '#EFF6FF', user: 'travel_moments', time: '4 hr ago', text: 'This little cafe in Lisbon changed my life. No exaggeration.' },
+    { icon: '🎵', bg: '#F5F3FF', user: 'musicdiscovery', time: '5 hr ago', text: 'Obsessed with this artist. You need to hear this right now.' },
+    { icon: '🧘', bg: '#F0FDF4', user: 'mindful_moments', time: '6 hr ago', text: 'Five minutes of stillness. That\'s all it takes to reset.' },
+    { icon: '🐕', bg: '#FEF3C7', user: 'dogs_of_the_day', time: '7 hr ago', text: 'Tuesday mood. Tell me this doesn\'t make your day better.' },
+    { icon: '💻', bg: '#F0F9FF', user: 'tech_updates', time: '8 hr ago', text: 'The feature everyone asked for is finally here. Thread 🧵' },
+  ];
+
+  function addMorePosts() {
+    const feed = document.getElementById('feed');
+    const loader = document.getElementById('loader');
+    const batch = morePosts.splice(0, 2);
+    batch.forEach(post => {
+      const div = document.createElement('div');
+      div.className = 'post';
+      div.innerHTML = `
+        <div class="post-header">
+          <div class="avatar" style="background:${post.bg};">${post.icon}</div>
+          <div><div class="post-user">${post.user}</div><div class="post-time">${post.time}</div></div>
+        </div>
+        <div class="post-content">${post.text}</div>
+        <div class="post-actions"><span class="action-btn">❤️ ${Math.floor(Math.random()*5000+500)}</span><span class="action-btn">💬 ${Math.floor(Math.random()*300+50)}</span><span class="action-btn">↗️ Share</span></div>`;
+      feed.insertBefore(div, loader);
+    });
+    if (morePosts.length === 0) {
+      loader.innerHTML = '<div class="loading-spinner"></div><div style="font-size:0.72rem;color:var(--text-3);margin-top:8px;">Loading more...</div>';
+    }
+    sendHeight();
+  }
+
+  function escape() {
+    clearInterval(timerInterval);
+    const m = Math.floor(elapsed / 60);
+    const s = elapsed % 60;
+    document.getElementById('time-spent').textContent = m + ':' + String(s).padStart(2,'0');
+    document.getElementById('main-view').style.display = 'none';
+    document.getElementById('exit-btn').style.display = 'none';
+    document.getElementById('back-hint').style.display = 'none';
+    document.getElementById('escaped-view').style.display = 'block';
+    sendHeight();
+  }
+
+  function restart() {
+    elapsed = 0;
+    exitShown = false;
+    moreLoaded = 0;
+    document.getElementById('timer').textContent = '0:00';
+    document.getElementById('exit-btn').style.display = 'none';
+    document.getElementById('back-hint').style.display = 'none';
+    document.getElementById('main-view').style.display = 'block';
+    document.getElementById('escaped-view').style.display = 'none';
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      elapsed++;
+      const m = Math.floor(elapsed / 60);
+      const s = elapsed % 60;
+      document.getElementById('timer').textContent = m + ':' + String(s).padStart(2,'0');
+      if (elapsed === 20 && !exitShown) {
+        exitShown = true;
+        document.getElementById('exit-btn').style.display = 'block';
+      }
+      if (elapsed < 20) document.getElementById('back-hint').style.display = 'block';
+    }, 1000);
+    sendHeight();
+  }
+
+  function sendHeight() {
+    setTimeout(() => {
+      window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+    }, 100);
+  }
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>

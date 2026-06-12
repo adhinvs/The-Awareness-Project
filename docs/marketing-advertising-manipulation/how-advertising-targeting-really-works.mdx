@@ -1,16 +1,205 @@
 ---
 sidebar_position: 1
 title: "How Advertising Targeting Really Works"
-sidebar_label: "How Advertising Targeting Really Works"
+sidebar_label: "Advertising Targeting"
+description: "The data pipeline behind every targeted ad you see - from browsing to profile to precision delivery."
+tags: [advertising-targeting, data-brokers, retargeting, lookalike-audiences, ad-profile, behavioural-data, privacy]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # How Advertising Targeting Really Works
 
-## Sub-topics
+Every targeted ad you see is the output of a data pipeline that started long before the ad was made. Understanding it changes how you move online.
 
-- From browsing to ad — the data pipeline behind every targeted ad you see
-- How your ad profile is built: purchase history, location, emotion, and inferred beliefs
-- The data broker-advertiser chain — who buys your profile and what they do with it
-- Lookalike audiences — how your data targets people like you without their knowledge
-- Retargeting — why products follow you across the internet after one search
-- How to see and partially limit your ad profile on major platforms
+---
+
+## The Bid That Happened While You Blinked
+
+Arjun visited a travel site. He searched for flights to Bangkok, browsed two hotels, and closed the tab.
+
+He did not book anything.
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/marketing-advertising-manipulation/how-advertising-targeting-really-works/targeting-pipeline.webp"
+    alt="A diagram showing data flowing from a person's device through ad exchanges to multiple platforms."
+  />
+</figure>
+
+Within **200 milliseconds** - faster than a blink - the following happened:
+
+A tracking pixel sent Arjun's device ID, IP address, and the pages he visited to an ad exchange. His profile was matched against records held by three data brokers. An algorithm scored him as a **"high-intent travel buyer, 25-34, mid-income."** Eight advertisers bid in a real-time auction for his next page impression. The winner paid $0.003 to show him a hotel ad.
+
+He saw the ad before the page had finished loading.
+
+For the next two weeks, Bangkok hotels followed him across every app he opened.
+
+---
+
+## What Is Actually Happening
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>200ms</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>The time it takes for a real-time ad auction to complete after you load a webpage.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Profile matched. Bid placed. Ad delivered. Before you finish reading the headline.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: Internet Advertising Bureau, Programmatic Advertising Guide, 2024</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #3B82F6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#3B82F6', fontWeight: 'bold' }}>Data Signals</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>5,000+ Data Points Per Person</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Major data brokers hold an average of <b>5,000 data points per individual</b> - including purchase history, location patterns, browsing behaviour, health interests, and inferred political views.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Federal Trade Commission Data Broker Report, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Retargeting</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>70% Higher Conversion</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Retargeted ads convert <b>70% more effectively</b> than standard display ads. Products that "follow" you are not a coincidence - they are a deliberate high-ROI commercial strategy.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Criteo Retargeting Performance Report, 2024</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Lookalike Audiences</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Your Data Targets Strangers</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Platforms let advertisers upload a customer list and <b>find millions of similar users</b>. Your behavioural profile can be used to target people you have never met, without your knowledge or consent.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Meta Ads Help Center; documented practice across all major platforms</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Inferred Attributes</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Beliefs Inferred Without Asking</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Ad platforms infer political views, health conditions, pregnancy, and relationship status from <b>browsing patterns alone</b>. No survey. No disclosure. Just algorithmic inference from what you click.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: ProPublica, "Facebook's Secret Ad Categories", 2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## The Pipeline in Four Steps
+
+### Step 1: Collection
+
+Every click, scroll, pause, and purchase generates a signal. Tracking pixels, cookies, app SDKs, and loyalty cards capture behaviour across thousands of sites and services. You do not need to be logged in - device fingerprinting identifies you anyway.
+
+### Step 2: Profile Construction
+
+Data brokers aggregate signals from hundreds of sources into a single profile. They assign segment labels: "new parent," "financially distressed," "health-anxious," "politically right-leaning." These segments are for sale.
+
+### Step 3: Auction
+
+When you visit any ad-supported page, your profile enters a real-time bidding auction. Dozens of advertisers bid within milliseconds for the right to show you one ad. The auction completes before the page finishes loading.
+
+### Step 4: The Ad
+
+The winning ad appears. It looks like a relevant recommendation. It is the output of a multi-layer commercial system built around your behaviour.
+
+---
+
+## Build Your Ad Profile
+
+Answer 10 quick questions about your recent online behaviour to see the inferred profile that gets bought and sold on your behalf.
+
+<iframe
+  id="ad-profile-iframe"
+  src="/simulations/marketing-advertising-manipulation/how-advertising-targeting-really-works/ad-profile-builder.html"
+  width="100%"
+  style={{ height: '620px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Your Ad Profile Builder"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('ad-profile-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._adProfileHandler);
+    window._adProfileHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**Your browsing behaviour is the input. Your inferred identity is the product.**
+
+A few clicks is enough to assign you to segments covering income, health, politics, and emotional state. None of these inferences require your confirmation - they are sold as-is to advertisers who bid for your attention.
+
+**The same data profile is used for commercial ads, political messaging, and insurance pricing.** What segment you fall into affects not just what you see, but what you pay and what opportunities are offered to you.
+
+---
+
+## How to See Your Own Profile
+
+You can view partial versions of your ad profile directly:
+
+- **Google:** [myaccount.google.com/data-and-privacy](https://myaccount.google.com/data-and-privacy) - Ad Center shows your interest categories
+- **Meta:** Settings > Ads > Ad Preferences - shows your interest segments
+- **TikTok:** Settings > Privacy > Ads Preferences
+- **Apple:** Settings > Privacy & Security > Apple Advertising
+
+You cannot see what data brokers hold. You can request deletion from some via opt-out directories, but it is not comprehensive.
+
+---
+
+## Three Things Worth Doing
+
+**1. Use a browser with tracking protection.**
+Firefox with uBlock Origin or Brave blocks most third-party tracking pixels. This reduces the signals entering your profile without requiring you to change your behaviour.
+
+**2. Check your ad settings on platforms you use.**
+Reviewing what Google and Meta believe about you takes under five minutes and often reveals inferences that are surprisingly accurate - or surprisingly wrong.
+
+**3. Use incognito mode for sensitive searches.**
+Health symptoms, financial problems, relationship issues - searching these while logged into a platform links the search to your identity profile. Incognito plus a private DNS reduces this.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="A data broker labels you as 'financially distressed' based on browsing patterns. You never told any platform this. What is the most significant risk of this inference?"
+  options={[
+    {
+      label: "You will see more ads for discount products.",
+      correct: false,
+      explanation: "Discount ads are the minor consequence. The more significant issue is that the 'financially distressed' label can be purchased by payday lenders, high-interest credit providers, and predatory financial services that specifically target vulnerable users."
+    },
+    {
+      label: "Predatory financial services can buy the label and specifically target you with high-risk offers during a vulnerable period.",
+      correct: true,
+      explanation: "Correct. Data broker segments are sold without context or ethics review to any buyer with a credit card. A 'financially distressed' label is commercially attractive to exactly the advertisers whose products cause the most harm to people in that situation."
+    },
+    {
+      label: "The inference is probably wrong and has no real effect.",
+      correct: false,
+      explanation: "Behavioural inference from browsing data is accurate enough to be commercially viable - which is why the data broker industry generates over $200 billion annually. Wrong inferences exist, but the 'financially distressed' label is typically based on multiple converging signals."
+    },
+    {
+      label: "It will be automatically deleted after 30 days under privacy law.",
+      correct: false,
+      explanation: "Data broker retention and deletion obligations vary by jurisdiction and are largely self-regulated. In most countries there is no automatic 30-day deletion. Many brokers hold data for years."
+    }
+  ]}
+/>

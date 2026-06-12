@@ -2,14 +2,187 @@
 sidebar_position: 2
 title: "Behavioural Profiling & Advertising Manipulation"
 sidebar_label: "Behavioural Profiling & Advertising Manipulation"
+description: "How data brokers build psychological profiles from your everyday actions and use them to target your emotions, beliefs, and vulnerabilities."
+tags: [data-brokers, behavioural-profiling, psychographic-targeting, advertising, surveillance, emotional-targeting, privacy]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Behavioural Profiling & Advertising Manipulation
 
-## Sub-topics
+You do not need to fill in a form. Your behaviour is the form.
 
-- Data brokers building profiles of you
-- Psychographic targeting — beliefs, not just interests
-- Emotional targeting based on mood analysis
-- Ad networks following you across the internet
-- Targeted ads after speaking aloud
+---
+
+## The File You Did Not Know Existed
+
+Tom had never heard of Acxiom. He had never signed up to their service.
+
+They knew his home address, his estimated household income, his political lean, his health conditions (inferred from pharmacy purchases), his relationship status, his interest in sports betting (from a loyalty card purchase at a racing event four years ago), and a flag labelled "financially distressed."
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/surveillance-privacy-theft/behavioural-profiling-advertising-manipulation/data-broker-profile.webp"
+    alt="A data broker profile card filled with personal attributes, inferred from everyday actions."
+  />
+</figure>
+
+He found this out when he submitted a Subject Access Request under GDPR. He had 60 days to dispute inaccurate entries. Some inferences were wrong. **Most were not.**
+
+---
+
+## What Is Actually Happening
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>$0.001</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>the price per person that data brokers charge for individual records.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Bought in bulk, your complete profile costs less than a fraction of a penny.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: FTC Data Broker Report, 2024</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Psychographic Targeting</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Beliefs, Not Just Interests</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Modern ad targeting goes beyond demographics to **psychographic profiles** - inferred personality traits, political identity, religious beliefs, and emotional vulnerabilities. These are not declared; they are inferred from behaviour.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Cambridge Analytica whistleblower testimony; Meta ad platform documentation, 2023</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Emotional Targeting</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Mood-Based Ad Delivery</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>In 2017 an internal Facebook document showed the platform could **identify teenagers feeling "insecure," "worthless," and "anxious"** and sell this state to advertisers. Facebook called this an "oversight" after the leak.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: The Australian, leaked Facebook internal document, 2017; confirmed via Meta litigation, 2023</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Voice Targeting</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Ads After Speaking Aloud</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Cox Media Group's 2023 pitch deck explicitly offered **"Active Listening" ad targeting** - delivering ads based on conversations picked up by device microphones. Google and Meta distanced themselves after the leak.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Cox Media Group leaked pitch deck, 404 Media investigation, 2023</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #06B6D4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>Retargeting</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>You Are Followed Across the Web</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Retargeting networks follow you from site to site, serving ads for products you viewed elsewhere. **The shoe you looked at once** will follow you to news sites, recipe apps, and weather tools for weeks.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: IAB Retargeting Standards; Criteo Platform Documentation, 2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## How Your Profile Is Built
+
+### Loyalty cards
+Every purchase is timestamped, geo-located, and categorised. Retailers sell this data to brokers who infer health conditions, life events, and financial state from your basket.
+
+### Free apps
+Apps that cost nothing generate revenue by sharing your data. Location, contacts, browsing behaviour, and app usage are common data points sold to advertising networks.
+
+### Browsing while logged in
+Google, Meta, and Microsoft link your web activity to your real identity when you are logged into any of their products. Their tracking scripts are embedded across most of the web.
+
+### Competition forms
+Many prize draw forms exist solely to collect verified PII (name, address, phone, date of birth). The data is the prize.
+
+### Credit applications
+Financial data is among the highest-value categories for brokers. Loan applications, store credit cards, and insurance quotes all feed into financial profile databases.
+
+---
+
+## Try It: Build Your Data Broker Profile
+
+Walk through 8 everyday actions and watch a data broker profile build itself.
+
+<iframe
+  id="broker-iframe"
+  src="/simulations/surveillance-privacy-theft/behavioural-profiling-advertising-manipulation/build-your-data-broker-profile.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Build Your Data Broker Profile"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('broker-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._brokerHandler);
+    window._brokerHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. Profile building requires no single dramatic breach.**
+Each action was ordinary. The profile is built by aggregating them. No single data point is the problem - the assembly is.
+
+**2. Inferences go far beyond what you shared.**
+You did not tell any broker your political lean or health conditions. These were inferred from purchases and browsing. Inference can be wrong - but it is acted on as fact.
+
+**3. You can request your profile - and opt out.**
+Under GDPR, you have the right to access the data a broker holds and request deletion. Under California's CCPA, you have similar rights. Opt-out is manual and must be repeated.
+
+---
+
+## Three Things Worth Doing
+
+**1. Check your Google and Meta ad profiles.**
+Google: myaccount.google.com/data-and-privacy. Meta: facebook.com/ads/preferences. These show inferences each platform holds. You can reset them.
+
+**2. Use a separate email for retail and competitions.**
+A dedicated address for loyalty cards limits linking of your purchase data to your main identity.
+
+**3. Request deletion from major data brokers.**
+Acxiom, LexisNexis, Experian, and Oracle Data Cloud all have GDPR/CCPA removal processes. The FTC's 2024 data broker report lists opt-out paths for the main players.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="A data broker holds a 'financially distressed' flag inferred from your browsing and purchase history. Under GDPR, can you challenge this?"
+  options={[
+    {
+      label: "No - inferences are not personal data under GDPR, so access and erasure rights do not apply.",
+      correct: false,
+      explanation: "Inferences qualify as personal data under GDPR if they relate to an identifiable individual. The European Data Protection Board has confirmed that inferred data is subject to the same rights as directly collected data, including subject access requests and erasure requests."
+    },
+    {
+      label: "Yes - under GDPR you can submit a Subject Access Request for inferred data and request correction or deletion of inaccurate inferences.",
+      correct: true,
+      explanation: "Correct. GDPR Article 15 gives you the right to access all personal data held about you, including inferences. Article 16 gives you the right to rectification of inaccurate data. Article 17 gives the right to erasure. If a data broker refuses, you can escalate to your national data protection authority (ICO in the UK)."
+    },
+    {
+      label: "Only if the inference caused you financial harm - you need to prove damage to make a claim.",
+      correct: false,
+      explanation: "Under GDPR, you do not need to prove harm to exercise data rights. Access, rectification, and erasure rights are available regardless of whether harm has occurred. Proving harm is only required if you are seeking financial compensation."
+    },
+    {
+      label: "No - the data broker has no legal relationship with you, so the law does not apply.",
+      correct: false,
+      explanation: "Data protection law applies to data processors regardless of whether they have a direct customer relationship with you. If a broker holds identifiable data about you, they are subject to GDPR or equivalent law."
+    }
+  ]}
+/>

@@ -10,42 +10,38 @@ import Quiz from '@site/src/components/Quiz';
 
 # Trust, Familiarity & Social Proof
 
-You do not trust someone because they are trustworthy. You trust them because they feel familiar. Attackers know the difference between those two things - and they exploit it.
+You trust someone because they feel familiar, not because they are trustworthy. Attackers manufacture that feeling deliberately.
 
 ---
 
-## The New Colleague
+## The Setup
 
-Riya had just joined a mid-size logistics company as a finance executive.
-
-On her third day, she received a LinkedIn connection request from someone named "Karan Mehta." His profile showed the same company logo, a job title two levels above hers, and three mutual connections including her direct manager.
+Riya joined a logistics company as a finance executive. On day three, a LinkedIn request arrived: "Karan Mehta," same company logo, senior title, three mutual connections (including her manager).
 
 She accepted.
 
-Over the next two weeks, Karan was consistently helpful. He replied to her questions about internal processes. He tagged her in a useful article about expense reporting. He mentioned, in passing, that he was coordinating an urgent vendor payment that needed to bypass the normal approval queue due to a system migration.
+Over two weeks, Karan helped her navigate internal processes, tagged her in useful articles, and appeared consistently in her feed. Then:
 
-**"I've already cleared it with Priya. Could you just process this one to avoid any delay? I'll send the PO reference separately."**
+> *"I've already cleared it with Priya. Could you just process this vendor payment? System migration issue. I'll send the PO reference separately."*
 
-Riya did not remember meeting Karan in person. But his name had appeared in her feed for two weeks. He had helped her. He knew her manager's name.
+Riya had never met Karan in person. But his name was familiar. He'd helped her. He knew her manager.
 
 She processed the payment.
 
-Karan Mehta did not work at her company. The profile had been created specifically to target her during her onboarding period, when she was most likely to trust unfamiliar names in familiar-looking contexts.
+Karan Mehta wasn't real. The profile was created during her onboarding—when unfamiliar names in familiar contexts feel safe. The mutual connections were fake. The company logo was copied. The "help" was the setup.
 
-The mutual connections were fabricated. The company logo was copied. The "help" over two weeks was setup.
-
-**She had not made a careless mistake. She had been systematically manipulated.**
+**She wasn't careless. She was systematically manipulated.**
 
 ---
 
-## What Is Actually Happening: Manufactured Familiarity
+## What Is Actually Happening
 
-Trust is not a single event. It is a feeling that builds over time through repeated exposure. Attackers understand this and build it deliberately.
+Trust builds through repeated exposure. Attackers manufacture it deliberately.
 
 <div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
   <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>7x</h2>
-  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>more likely to comply with a request from someone you have seen or interacted with before - even if you have never verified who they are.</p>
-  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>The brain treats familiarity as a signal of safety. Attackers manufacture that familiarity deliberately, knowing it bypasses scrutiny you would apply to a stranger.</p>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>more likely to comply with requests from someone you've seen before — even if you haven't verified who they are.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Familiarity feels like safety to the brain. Attackers know this and exploit it.</p>
   <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: Zajonc, R.B., "Attitudinal Effects of Mere Exposure", Journal of Personality and Social Psychology, 1968; confirmed in digital trust studies, 2022-2024</span>
 </div>
 
@@ -54,20 +50,20 @@ Trust is not a single event. It is a feeling that builds over time through repea
     <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
       <div>
         <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Warm-Up Attacks</span>
-        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Rapport Before the Ask</h3>
-        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Modern attackers invest days or weeks building a relationship before making any request. The warm-up period is not friendship. It is preparation. <b>Every interaction is designed to lower your resistance to the request that will follow.</b></p>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Weeks of Setup</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}><b>Every interaction is designed to lower your resistance</b> before the actual ask. The rapport is fake. The goal is familiarization.</p>
       </div>
-      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Social Engineering Attack Pattern Analysis, SANS Institute, 2024</span>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: SANS Institute, 2024</span>
     </div>
   </div>
   <div className="col col--6">
     <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
       <div>
         <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Mutual Connections</span>
-        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>The 2-Connection Effect</h3>
-        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Showing just 2 or 3 mutual connections increases acceptance of LinkedIn connection requests by over <b>70%</b>. Attackers seed fake profiles with carefully chosen mutual contacts to pass this casual check before you even read the bio.</p>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>70% Boost</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Just <b>2-3 mutual connections increases request acceptance by 70%</b>. Attackers seed fake profiles with carefully chosen contacts to pass the casual check.</p>
       </div>
-      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Identity Trust Study, LinkedIn Security Research, 2025</span>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: LinkedIn Security Research, 2025</span>
     </div>
   </div>
 </div>
@@ -76,65 +72,45 @@ Trust is not a single event. It is a feeling that builds over time through repea
   <div className="col col--6">
     <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
       <div>
-        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Social Proof</span>
-        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Manufactured Consensus</h3>
-        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Scam platforms purchase fake reviews, display fabricated testimonials, and show inflated user counts. <b>87% of consumers trust online reviews as much as personal recommendations</b> - making fake reviews one of the cheapest and most effective trust tools available to attackers.</p>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Fake Reviews</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>87% Trust Them</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}><b>87% of people trust online reviews as much as personal recommendations.</b> Attackers purchase fake reviews because they're cheap, effective, and widely trusted.</p>
       </div>
-      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: BrightLocal Consumer Review Survey, 2024</span>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: BrightLocal, 2024</span>
     </div>
   </div>
   <div className="col col--6">
     <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #06B6D4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
       <div>
-        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>Peer Pressure Framing</span>
-        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Everyone Else Has Done It</h3>
-        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Telling someone their colleagues or peers have already taken an action dramatically increases compliance. "Your colleagues have already verified their details" is not information. It is pressure. <b>The herd signal makes non-compliance feel abnormal.</b></p>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>Peer Pressure</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>The Herd Effect</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>"Your colleagues already did this" is pressure, not information. <b>The herd signal makes non-compliance feel abnormal.</b></p>
       </div>
-      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Cialdini, R.B., Influence: The Psychology of Persuasion, 2021</span>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Cialdini, 2021</span>
     </div>
   </div>
 </div>
 
 ---
 
-### How Trust Is Manufactured Through Repeated Exposure
+### The Mere Exposure Effect
 
-The **mere exposure effect** is one of the most replicated findings in psychology. The more often you encounter something, the more positively you evaluate it - even if nothing substantive about it has changed.
+The more you see someone, the more positively you evaluate them — **even if nothing about them has changed**. Attackers exploit this by appearing repeatedly before making their request. They don't need to convince you of anything. They just need to stop being strangers.
 
-In online environments, this plays out rapidly. Someone who comments on your posts, replies to your messages, and appears in your feed feels familiar. Familiar feels safe. Safe feels trustworthy.
-
-**The attacker does not need to convince you of anything. They only need to appear enough times that your brain stops treating them as a stranger.**
-
-This is why warm-up attacks work on experienced professionals. The mechanism does not check whether the familiarity was earned or manufactured.
+This is why warm-up attacks work on experienced professionals. The brain's trust mechanism doesn't verify whether familiarity was earned or faked.
 
 ---
 
-### Social Proof: Fake Reviews, Testimonials, and Endorsements
+### Fake Reviews & Social Proof
 
-When people cannot independently evaluate something, they default to what others think.
+When you can't independently evaluate something, you trust what others say. The problem: **social proof is trivially easy to fake**.
 
-Legitimate social proof - genuine reviews, real recommendations - is a reasonable shortcut. The problem is that social proof is trivially easy to fake.
+Scam platforms display fake profit screenshots. Fake recruitment agencies post testimonials from people who don't exist. Fraud pages use AI-generated endorsements.
 
-Scam investment platforms display screenshots of real-looking profits. Fake recruitment agencies publish testimonials from satisfied candidates who do not exist. Fraud pages use celebrity endorsements from photos taken out of context or generated by AI.
-
-The rule: social proof from a source you cannot independently verify is not evidence of anything. It is decoration.
-
-Before trusting testimonials on an unfamiliar platform:
-- Search the company name with "complaint," "scam," or "review" on independent platforms
-- Check registration with the relevant regulatory body directly
-- Look for reviews on platforms the company does not control
-
----
-
-### Fake Profiles and Impersonated Colleagues
-
-Professional network impersonation targets three things: your familiarity bias, your desire to be helpful to colleagues, and your assumption that someone with the right context must be legitimate.
-
-A fake profile works because it takes seconds to copy a company logo, a job title, and a name. It takes days to build the familiarity that makes someone act on a request from that profile.
-
-Riya's attacker did not send a single suspicious message. Every individual interaction was reasonable. Only the sequence - and the final request - revealed the intent.
-
-Each piece of context the attacker built was a layer of false legitimacy: mutual connections, industry knowledge, a plausible internal task. Together, they created a person who felt real.
+**Before trusting reviews on an unfamiliar platform:**
+- Search the company name + "scam" or "complaint" on independent sites
+- Verify registration with the regulatory body directly  
+- Check for reviews on platforms the company doesn't control
 
 ---
 
@@ -166,41 +142,33 @@ Four LinkedIn-style profiles are shown below - two real, two fabricated. Judge e
 
 ## What That Just Showed You
 
-**1. Familiarity is a feeling, not a fact.**
+**1. Familiarity is a feeling, not verification.** 
+Your brain treats "I've seen this before" as safety. Attackers manufacture that feeling. It tells you nothing about who they actually are.
 
-The brain treats "I have seen this person before" as meaningful information. Attackers produce that feeling deliberately. Familiarity with someone's name, profile, or communications does not tell you who they actually are.
+**2. Fake reviews influence you even when you know they exist.** 
+Awareness helps only if you actively verify independently. Passive knowledge isn't enough.
 
-**2. Social proof is bypassed, not eliminated, by awareness.**
+**3. Context is the weapon.** 
+Karan didn't claim to be CEO. He claimed to be an ordinary colleague with the right internal details. That context is what made the request feel legitimate.
 
-Knowing that fake reviews exist does not stop you from being influenced by them. It only helps if you actively look for independent corroboration before acting. Passive awareness is not enough.
-
-**3. Context is the primary tool of impersonation.**
-
-Riya's attacker did not claim to be someone powerful. They claimed to be someone ordinary - a mid-level colleague with access to the right internal vocabulary. Enough context makes a request feel legitimate regardless of whether the person is real.
-
-**4. The ask comes after the trust, not before.**
-
-A cold request from a stranger triggers scrutiny. The same request from someone you have interacted with several times triggers compliance. This is why the warm-up period is not optional for the attacker - it is the mechanism.
+**4. The ask comes after the trust.** 
+A stranger's request triggers skepticism. The same request from someone familiar triggers compliance. The warm-up period is the entire attack.
 
 ---
 
 ## Four Things Worth Doing
 
-**1. Verify through a separate channel before acting on any request involving access, money, or information.**
+**1. Verify requests through a separate channel.**
+Someone asks for money, access, or data via LinkedIn? Call your HR department or a known colleague. The message is not proof of identity.
 
-When someone you met online asks you to take an action, verify their identity through a completely different channel. If they contacted you on LinkedIn, call your HR team or a known colleague to confirm they exist. The message thread is not evidence of anything.
+**2. Search for independent reviews before trusting them.**
+On unfamiliar platforms, search the company name on Google and independent review sites. Only positive reviews on their own site is a red flag.
 
-**2. Search independent platforms before trusting reviews.**
+**3. Question "everyone else did it."**
+This is pressure, not information. Verify with the specific people mentioned — not with the person making the claim.
 
-Before trusting testimonials or ratings on a platform you are evaluating, search the company name on Google, consumer forums, or the relevant regulatory website. If the only positive reviews are on the company's own site, treat that absence of independent corroboration as a warning.
-
-**3. Question the "everyone else has done it" frame.**
-
-When a message tells you that your colleagues, peers, or friends have already taken an action, treat that claim as pressure rather than information. Verify through direct contact with those specific people before acting.
-
-**4. Check newly connected contacts before acting on their requests.**
-
-If someone connected with you recently and quickly makes a request involving money, information, or access, verify their employment through your company's internal directory or a colleague - not through their profile or any link they provide.
+**4. Verify new connections before complying with requests.**
+Check their employment through your internal directory or a colleague — not through a link they provide.
 
 ---
 

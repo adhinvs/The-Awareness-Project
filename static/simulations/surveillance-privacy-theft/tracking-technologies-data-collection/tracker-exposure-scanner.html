@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tracker Exposure Scanner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #FFFFFF; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --red: #DC2626; --red-bg: #FEF2F2;
+      --amber: #D97706; --amber-bg: #FFFBEB;
+      --purple: #7C3AED; --purple-bg: #F5F3FF;
+      --teal: #0D9488; --teal-bg: #F0FDFA;
+      --font: 'Poppins', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 20px 48px; max-width: 600px; margin: 0 auto; }
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; background: #1E293B; color: #fff; }
+    h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+
+    .mock-browser { border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; margin: 16px 0; }
+    .browser-bar { background: var(--bg-2); padding: 10px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+    .browser-dots { display: flex; gap: 5px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot.red { background: #FCA5A5; }
+    .dot.amber { background: #FCD34D; }
+    .dot.green { background: #86EFAC; }
+    .url-bar { flex: 1; background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 5px 10px; font-size: 0.78rem; color: var(--text-3); }
+    .scan-btn { padding: 6px 14px; background: var(--blue); color: #fff; border: none; border-radius: 6px; font-family: var(--font); font-size: 0.78rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .scan-btn:hover { background: #1D4ED8; }
+    .page-preview { padding: 18px; background: #fff; min-height: 80px; }
+    .page-headline { font-size: 0.85rem; font-weight: 700; color: var(--text-1); margin-bottom: 4px; }
+    .page-sub { font-size: 0.75rem; color: var(--text-3); }
+
+    .scanning { display: none; text-align: center; padding: 20px; }
+    .scan-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; margin: 12px 0; }
+    .scan-fill { height: 100%; background: var(--blue); border-radius: 2px; animation: scan 1.5s ease forwards; }
+    @keyframes scan { from { width: 0%; } to { width: 100%; } }
+    .scan-label { font-size: 0.78rem; color: var(--text-3); }
+
+    .results { display: none; }
+    .summary-row { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .summary-chip { flex: 1; min-width: 100px; padding: 12px 10px; border-radius: 10px; text-align: center; }
+    .summary-chip.red { background: var(--red-bg); }
+    .summary-chip.amber { background: var(--amber-bg); }
+    .summary-chip.purple { background: var(--purple-bg); }
+    .summary-chip.teal { background: var(--teal-bg); }
+    .chip-num { font-size: 1.6rem; font-weight: 700; }
+    .chip-num.red { color: var(--red); }
+    .chip-num.amber { color: var(--amber); }
+    .chip-num.purple { color: var(--purple); }
+    .chip-num.teal { color: var(--teal); }
+    .chip-label { font-size: 0.68rem; color: var(--text-3); }
+
+    .tracker-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .tracker-row { border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .tracker-info { flex: 1; }
+    .tracker-name { font-size: 0.85rem; font-weight: 600; margin-bottom: 2px; }
+    .tracker-owner { font-size: 0.75rem; color: var(--text-3); margin-bottom: 4px; }
+    .tracker-desc { font-size: 0.78rem; color: var(--text-2); }
+    .tracker-badge { font-size: 0.68rem; font-weight: 700; padding: 3px 8px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+    .tracker-badge.advertising { background: var(--red-bg); color: var(--red); }
+    .tracker-badge.analytics { background: var(--amber-bg); color: var(--amber); }
+    .tracker-badge.social { background: var(--purple-bg); color: var(--purple); }
+    .tracker-badge.fingerprinting { background: var(--teal-bg); color: var(--teal); }
+
+    .insight-box { background: var(--bg-2); border-left: 3px solid var(--blue); border-radius: 0 8px 8px 0; padding: 12px 14px; margin-bottom: 8px; font-size: 0.82rem; color: var(--text-2); line-height: 1.5; }
+
+    .btn-primary { width: 100%; padding: 13px; background: var(--blue); color: #fff; border: none; border-radius: 8px; font-family: var(--font); font-size: 0.9rem; font-weight: 700; cursor: pointer; margin-top: 12px; }
+    .btn-primary:hover { background: #1D4ED8; }
+  </style>
+</head>
+<body>
+
+  <div class="tag">Module 58 - Tool</div>
+  <h2>Tracker Exposure Scanner</h2>
+  <p>Scan a mock news page to see every tracking technology active on a single visit. Click Scan to reveal what runs in the background.</p>
+
+  <div class="mock-browser">
+    <div class="browser-bar">
+      <div class="browser-dots"><div class="dot red"></div><div class="dot amber"></div><div class="dot green"></div></div>
+      <div class="url-bar">thedailynews-uk.com/world/latest</div>
+      <button class="scan-btn" id="scan-btn" onclick="startScan()">Scan Page</button>
+    </div>
+    <div class="page-preview" id="page-preview">
+      <div class="page-headline">World Briefing - Thursday 12 June 2025</div>
+      <div class="page-sub">Breaking news, analysis and live updates - thedailynews-uk.com</div>
+    </div>
+  </div>
+
+  <div class="scanning" id="scanning">
+    <div class="scan-label">Detecting tracking scripts...</div>
+    <div class="scan-bar"><div class="scan-fill"></div></div>
+    <div class="scan-label" id="scan-status">Analysing cookies...</div>
+  </div>
+
+  <div class="results" id="results">
+    <div class="summary-row">
+      <div class="summary-chip red"><div class="chip-num red">8</div><div class="chip-label">Advertising</div></div>
+      <div class="summary-chip amber"><div class="chip-num amber">3</div><div class="chip-label">Analytics</div></div>
+      <div class="summary-chip social"><div class="chip-num purple">4</div><div class="chip-label">Social</div></div>
+      <div class="summary-chip teal"><div class="chip-num teal">2</div><div class="chip-label">Fingerprinting</div></div>
+    </div>
+    <p style="font-weight:600; margin-bottom:12px;"><strong>17 organisations</strong> received data from your single page visit.</p>
+
+    <div class="tracker-list">
+      <div class="tracker-row">
+        <div class="tracker-info">
+          <div class="tracker-name">DoubleClick / Google Ads</div>
+          <div class="tracker-owner">Google (Alphabet Inc.)</div>
+          <div class="tracker-desc">Cross-site behavioural tracking. Assigns a persistent ID to follow you across every site running Google Ads.</div>
+        </div>
+        <div class="tracker-badge advertising">Advertising</div>
+      </div>
+      <div class="tracker-row">
+        <div class="tracker-info">
+          <div class="tracker-name">Meta Pixel</div>
+          <div class="tracker-owner">Meta Platforms</div>
+          <div class="tracker-desc">Reports your page visit to Meta whether or not you use Facebook or Instagram. Tied to a shadow profile if you don't have an account.</div>
+        </div>
+        <div class="tracker-badge social">Social</div>
+      </div>
+      <div class="tracker-row">
+        <div class="tracker-info">
+          <div class="tracker-name">Google Analytics 4</div>
+          <div class="tracker-owner">Google</div>
+          <div class="tracker-desc">Tracks pages visited, time on page, scroll depth, and links clicked. Data sent to Google servers.</div>
+        </div>
+        <div class="tracker-badge analytics">Analytics</div>
+      </div>
+      <div class="tracker-row">
+        <div class="tracker-info">
+          <div class="tracker-name">Canvas Fingerprinting</div>
+          <div class="tracker-owner">TradeDesk / Various</div>
+          <div class="tracker-desc">Renders an invisible image using your GPU settings to create a unique device fingerprint. Persists after clearing cookies.</div>
+        </div>
+        <div class="tracker-badge fingerprinting">Fingerprinting</div>
+      </div>
+      <div class="tracker-row">
+        <div class="tracker-info">
+          <div class="tracker-name">Criteo</div>
+          <div class="tracker-owner">Criteo SA</div>
+          <div class="tracker-desc">Retargeting network. Stores your browsing history to serve ads for products you viewed elsewhere.</div>
+        </div>
+        <div class="tracker-badge advertising">Advertising</div>
+      </div>
+      <div class="tracker-row">
+        <div class="tracker-info">
+          <div class="tracker-name">Twitter/X Pixel</div>
+          <div class="tracker-owner">X Corp</div>
+          <div class="tracker-desc">Reports visit to X. Used to match you to an X account and enable cross-site ad targeting.</div>
+        </div>
+        <div class="tracker-badge social">Social</div>
+      </div>
+    </div>
+
+    <div class="insight-box">You have not interacted with this page. You have not logged in. You have not clicked anything. These 17 organisations received your IP address, device fingerprint, and page visit the moment the page loaded.</div>
+
+    <div class="insight-box">Most of these trackers cannot be blocked by clearing cookies. Canvas fingerprinting and font fingerprinting reconstruct a unique ID from your device characteristics, even in private/incognito mode.</div>
+
+    <button class="btn-primary" onclick="reset()">Scan Again</button>
+  </div>
+
+  <script>
+    const statuses = ['Analysing cookies...', 'Detecting ad pixels...', 'Checking fingerprinting scripts...', 'Mapping third-party requests...', 'Building tracker report...'];
+    let si = 0;
+
+    function startScan() {
+      document.getElementById('scan-btn').disabled = true;
+      document.getElementById('scan-btn').textContent = 'Scanning...';
+      document.getElementById('page-preview').style.opacity = '0.4';
+      document.getElementById('scanning').style.display = 'block';
+      si = 0;
+      const interval = setInterval(() => {
+        si++;
+        if (si < statuses.length) {
+          document.getElementById('scan-status').textContent = statuses[si];
+        } else {
+          clearInterval(interval);
+          showResults();
+        }
+      }, 300);
+    }
+
+    function showResults() {
+      document.getElementById('scanning').style.display = 'none';
+      document.getElementById('results').style.display = 'block';
+      setTimeout(notifyHeight, 100);
+    }
+
+    function reset() {
+      document.getElementById('scan-btn').disabled = false;
+      document.getElementById('scan-btn').textContent = 'Scan Page';
+      document.getElementById('page-preview').style.opacity = '1';
+      document.getElementById('results').style.display = 'none';
+      notifyHeight();
+    }
+
+    function notifyHeight() {
+      window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+    }
+    notifyHeight();
+  </script>
+</body>
+</html>

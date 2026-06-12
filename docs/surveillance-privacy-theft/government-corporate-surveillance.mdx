@@ -2,14 +2,168 @@
 sidebar_position: 4
 title: "Government & Corporate Surveillance"
 sidebar_label: "Government & Corporate Surveillance"
+description: "How governments and corporations legally access your personal data - through court orders, telecom retention, facial recognition, and financial access - often without your knowledge."
+tags: [government-surveillance, facial-recognition, data-retention, predictive-policing, digital-rights, IPA, GDPR, surveillance-state]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Government & Corporate Surveillance
 
-## Sub-topics
+Most government surveillance of ordinary people is entirely legal. That is the point.
 
-- Government surveillance and data access
-- Facial recognition in public spaces
-- Police access to social media and personal data
-- Your data used in predictive policing
-- Digital rights violations and surveillance chilling effect
+---
+
+## The Data You Did Not Know Was Being Kept
+
+Daniel had never been arrested. He had never been investigated. He had attended a climate protest in October.
+
+His phone connected to cell towers along the route. His telecom retained those records. Facial recognition cameras at two points logged his face. His Oyster card tracked his journey to and from the area. His bank statement showed a transport charge matching the route.
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/surveillance-privacy-theft/government-corporate-surveillance/surveillance-pathways.webp"
+    alt="A diagram showing multiple surveillance data points collected from a person during a normal day."
+  />
+</figure>
+
+None of this required a warrant. All of it is legally retained and accessible to over 600 UK public bodies. **Daniel did not know he had been logged.**
+
+---
+
+## What Is Actually Happening
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>947,239</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>communications data requests made by UK public authorities in 2023.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>That is one request every 33 seconds, 24 hours a day. Most without a judicial warrant.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: Home Office Transparency Report on Investigatory Powers, 2024</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Facial Recognition</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Deployed in 13+ UK Cities</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Metropolitan Police and South Wales Police have deployed **live facial recognition at public events** since 2019. In 2023, the UK government confirmed plans to expand its use. No specific law governs its deployment. Challenging it requires expensive civil litigation.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Liberty UK; Home Office Facial Recognition Policy Review, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Predictive Policing</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>AI Flags You Before You Act</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>The Durham Constabulary's HART system and similar tools use **AI to classify individuals as "high," "medium," or "low" risk** before any crime is committed. These classifications inform bail, custody, and intervention decisions.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Big Brother Watch; Durham HART Algorithm Review, 2023</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Social Media Monitoring</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>No Warrant for Public Posts</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Police in the UK, EU, and US routinely monitor public social media without legal authorisation. **Keyword-monitoring tools** automatically flag accounts based on language patterns. Public posts have no legal protection from government access.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: EFF, "Social Media Surveillance by Law Enforcement," 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #06B6D4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>Chilling Effect</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Surveillance Changes Behaviour</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Studies show that **people who know they are being watched change their behaviour** - even when doing nothing wrong. This chilling effect on free expression and political participation is considered a fundamental rights violation by the ECHR.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: PEN America Chilling Effects Report, 2023; ECHR, Zakharov v. Russia</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## Explore: The Data Request Map
+
+See every legal pathway through which government or law enforcement can access your personal data. Tap each pathway to expand it.
+
+<iframe
+  id="drm-iframe"
+  src="/simulations/surveillance-privacy-theft/government-corporate-surveillance/data-request-map.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="The Data Request Map"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('drm-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._drmHandler);
+    window._drmHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. Most legal pathways require no warrant for an ordinary person.**
+Telecom metadata, social media monitoring, and CCTV footage are accessible through administrative rather than judicial processes. The bar for accessing your routine data is low.
+
+**2. You are almost never notified.**
+Across all five pathways, the default is that you are not informed that your data was accessed - and in some cases (SAR tipping-off), informing you is a criminal offence.
+
+**3. The data points combine.**
+Any single pathway produces limited information. When combined - cell tower records, Oyster data, CCTV footage, and social media - they produce a detailed picture of your movements, associations, and views.
+
+---
+
+## Three Things Worth Doing
+
+**1. Know your digital rights.**
+In the UK, Liberty and Big Brother Watch publish plain-language guides to your rights under the Investigatory Powers Act. In the EU, noyb.eu covers GDPR enforcement against government surveillance.
+
+**2. Set your social media accounts to private.**
+Public posts have no legal protection from government monitoring. Private accounts require a court order for access. This is one of the most effective steps you can take.
+
+**3. Use encrypted communications for sensitive conversations.**
+Signal uses end-to-end encryption by default for both messages and calls. Even if a court order requires Signal to hand over data, the content of messages is not accessible to them.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="A UK police force uses facial recognition cameras at a public event you attend. Do you have the right to opt out or be informed?"
+  options={[
+    {
+      label: "Yes - GDPR requires informed consent before biometric data is collected in public.",
+      correct: false,
+      explanation: "GDPR does apply to biometric data - but police facial recognition deployments in the UK have been treated as falling under law enforcement exemptions. There is currently no specific law requiring consent or prior notification for live facial recognition in public spaces in the UK."
+    },
+    {
+      label: "Currently no - UK live facial recognition has no specific governing law, and the courts have not yet established a clear right to opt out.",
+      correct: true,
+      explanation: "Correct. The UK High Court ruled in 2020 that South Wales Police's use of facial recognition was lawful despite the lack of specific legislation. The legal landscape has been challenged but not resolved. Liberty and other organisations are actively litigating this. For now, there is no guaranteed right to opt out of facial recognition in UK public spaces."
+    },
+    {
+      label: "Yes - you can cover your face legally in all public spaces in the UK.",
+      correct: false,
+      explanation: "You can cover your face in public in most circumstances, but this does not constitute a legally recognised opt-out from facial recognition. Police have, in at least one documented case, stopped an individual who covered their face near a facial recognition camera. The law on this remains contested."
+    },
+    {
+      label: "Yes - the EU AI Act bans all real-time facial recognition in public spaces, which applies in the UK.",
+      correct: false,
+      explanation: "The EU AI Act restricts (with exceptions) real-time facial recognition in EU member states. The UK is not an EU member state and is not bound by the EU AI Act. UK law on facial recognition is governed separately and is currently less restrictive."
+    }
+  ]}
+/>

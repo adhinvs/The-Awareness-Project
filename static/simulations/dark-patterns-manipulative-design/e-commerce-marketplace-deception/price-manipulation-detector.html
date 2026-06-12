@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Price Manipulation Detector</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #2563EB; --blue-faint: #EFF6FF;
+      --text-1: #111827; --text-2: #374151; --text-3: #6B7280;
+      --bg: #FFFFFF; --bg-2: #F9FAFB; --border: #E5E7EB;
+      --green: #16A34A; --green-bg: #F0FDF4;
+      --red: #DC2626; --red-bg: #FEF2F2;
+      --amber: #D97706; --amber-bg: #FFFBEB;
+      --font: 'Poppins', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-1); padding: 24px 20px 48px; max-width: 640px; margin: 0 auto; }
+
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; background: #1E293B; color: #fff; }
+    h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    p { font-size: 0.88rem; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+
+    .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0; }
+    .prod-btn { border: 2px solid var(--border); border-radius: 10px; padding: 14px 12px; cursor: pointer; background: var(--bg); font-family: var(--font); text-align: left; transition: all 0.15s; }
+    .prod-btn:hover { border-color: var(--blue); background: var(--blue-faint); }
+    .prod-btn.selected { border-color: var(--blue); background: var(--blue-faint); }
+    .prod-emoji { font-size: 1.6rem; display: block; margin-bottom: 6px; }
+    .prod-name { font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 2px; }
+    .prod-price { font-size: 0.78rem; color: var(--red); font-weight: 600; }
+    .prod-was { font-size: 0.7rem; color: var(--text-3); text-decoration: line-through; }
+
+    .analysis-panel { display: none; }
+    .analysis-panel.show { display: block; }
+
+    .product-display { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 16px 0; }
+    .product-display-header { background: var(--bg-2); padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+    .product-display-body { padding: 16px 18px; }
+    .prod-full-name { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+    .price-display { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+    .price-current { font-size: 1.5rem; font-weight: 700; color: var(--red); }
+    .price-original { font-size: 0.9rem; color: var(--text-3); text-decoration: line-through; }
+    .discount-pct { background: var(--red-bg); color: var(--red); font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+
+    /* Price history chart */
+    .chart-area { margin: 16px 0; }
+    .chart-title { font-size: 0.78rem; font-weight: 700; color: var(--text-3); text-transform: uppercase; margin-bottom: 8px; }
+    .chart { height: 80px; border: 1px solid var(--border); border-radius: 8px; position: relative; overflow: hidden; background: var(--bg-2); }
+    .chart-line { position: absolute; bottom: 0; left: 0; right: 0; top: 0; }
+    .chart-bar { position: absolute; bottom: 0; background: var(--blue-faint); border-top: 2px solid var(--blue); transition: height 0.3s; }
+    .chart-bar.highlight { background: #FEF2F2; border-top-color: var(--red); }
+    .chart-label { position: absolute; top: 4px; left: 6px; font-size: 0.62rem; color: var(--text-3); font-style: italic; }
+
+    .check-list { display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
+    .check-item { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .check-header { padding: 12px 14px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: background 0.1s; }
+    .check-header:hover { background: var(--bg-2); }
+    .check-icon { font-size: 1.1rem; flex-shrink: 0; }
+    .check-text { flex: 1; font-size: 0.85rem; font-weight: 600; }
+    .check-badge { font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+    .badge-red { background: var(--red-bg); color: var(--red); }
+    .badge-amber { background: var(--amber-bg); color: var(--amber); }
+    .badge-green { background: var(--green-bg); color: var(--green); }
+    .check-expand { display: none; padding: 0 14px 12px; font-size: 0.8rem; color: var(--text-2); line-height: 1.5; border-top: 1px solid var(--border); background: var(--bg-2); }
+    .check-expand.open { display: block; }
+
+    .verdict-box { border-radius: 10px; padding: 16px 18px; margin: 16px 0; }
+    .verdict-box.manipulated { background: var(--red-bg); border: 1px solid #FECACA; }
+    .verdict-box.partial { background: var(--amber-bg); border: 1px solid #FCD34D; }
+    .verdict-box.legit { background: var(--green-bg); border: 1px solid #86EFAC; }
+    .verdict-title { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .verdict-body { font-size: 0.82rem; line-height: 1.5; }
+
+    .reset-btn { width: 100%; padding: 12px; background: var(--bg-2); color: var(--text-2); border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 0.85rem; cursor: pointer; margin-top: 12px; }
+  </style>
+</head>
+<body>
+
+  <div class="tag">Module 50 - Tool</div>
+  <h2>Price Manipulation Detector</h2>
+  <p>Select a product to run a 5-point price check. Each check reveals a common e-commerce deception tactic.</p>
+
+  <div class="product-grid">
+    <button class="prod-btn" id="btn-laptop" onclick="check('laptop')">
+      <span class="prod-emoji">💻</span>
+      <span class="prod-name">UltraBook Pro 14</span>
+      <span class="prod-price">£449 <span class="prod-was">£899</span></span>
+    </button>
+    <button class="prod-btn" id="btn-jacket" onclick="check('jacket')">
+      <span class="prod-emoji">🧥</span>
+      <span class="prod-name">Alpine Winter Jacket</span>
+      <span class="prod-price">£79 <span class="prod-was">£159</span></span>
+    </button>
+    <button class="prod-btn" id="btn-blender" onclick="check('blender')">
+      <span class="prod-emoji">🥤</span>
+      <span class="prod-name">PowerBlend 900W</span>
+      <span class="prod-price">£64 <span class="prod-was">£80</span></span>
+    </button>
+    <button class="prod-btn" id="btn-watch" onclick="check('watch')">
+      <span class="prod-emoji">⌚</span>
+      <span class="prod-name">FitTrack Smart Watch</span>
+      <span class="prod-price">£119 <span class="prod-was">£140</span></span>
+    </button>
+  </div>
+
+  <div class="analysis-panel" id="analysis">
+    <div class="product-display" id="prod-display"></div>
+    <div class="chart-area">
+      <div class="chart-title">90-day price history</div>
+      <div class="chart" id="price-chart"><div class="chart-label" id="chart-label"></div></div>
+    </div>
+    <div class="check-list" id="check-list"></div>
+    <div class="verdict-box" id="verdict"></div>
+    <button class="reset-btn" onclick="reset()">Check a different product</button>
+  </div>
+
+<script>
+  const data = {
+    laptop: {
+      name: 'UltraBook Pro 14', emoji: '💻',
+      current: 449, was: 899,
+      verdict: 'manipulated',
+      verdictTitle: '🚩 Price heavily manipulated',
+      verdictText: 'The £899 "original price" was never a real selling price - this product has been listed at £449 for 8 of the last 9 months. The discount is fabricated. Checking CamelCamelCamel or price tracker tools would have revealed this immediately.',
+      chartLabel: 'Price steady at £449 for 8 months. "£899" was listed for 2 weeks only.',
+      chartData: [449,449,449,449,449,449,899,899,449,449,449,449],
+      checks: [
+        { icon: '📈', text: 'Price history', badge: 'badge-red', badgeText: '🚩 Fake', detail: 'The £899 price was listed for 2 weeks only — this product has been £449 for 8 of the last 9 months. The discount is fabricated. A price history tool confirms this immediately.' },
+        { icon: '🏪', text: 'Seller account age', badge: 'badge-amber', badgeText: '⚠️ New', detail: 'Seller account created 4 months ago. Newer accounts with short track records are more commonly linked to price manipulation and counterfeit products.' },
+        { icon: '🔄', text: 'Dynamic pricing check', badge: 'badge-red', badgeText: '🚩 +£40 logged in', detail: 'Logged in: £489. Incognito: £449. A £40 gap confirms personalised pricing — your browsing history is being used to charge you more.' },
+        { icon: '📢', text: 'Sponsored placement', badge: 'badge-amber', badgeText: '⚠️ Paid result', detail: 'This listing paid to appear at the top of search results. Paid placement does not indicate a better product or a better deal.' },
+        { icon: '↩️', text: 'Returns policy', badge: 'badge-red', badgeText: '🚩 Complex', detail: 'Returns require an authorisation number, original packaging, 7-day window, and a 15% restocking fee. Policies this complex are designed to deter returns, not enable them.' }
+      ]
+    },
+    jacket: {
+      name: 'Alpine Winter Jacket', emoji: '🧥',
+      current: 79, was: 159,
+      verdict: 'manipulated',
+      verdictTitle: '🚩 Seasonal price manipulation detected',
+      verdictText: 'The jacket has been at £79 since February. The £159 reference price was the launch price in October - used briefly at the start of the season. End-of-season "sales" often reference launch prices that no longer reflect market value.',
+      chartLabel: 'Launched at £159 in Oct, dropped to £79 in Feb and stayed there.',
+      chartData: [159,159,119,99,79,79,79,79,79,79,79,79],
+      checks: [
+        { icon: '📈', text: 'Price history', badge: 'badge-red', badgeText: '🚩 Stale reference', detail: 'The £159 launch price was charged for 6 weeks. For the last 7 months it has been £79. Advertising "50% off £159" technically references a real price — but one no longer meaningful as a market value.' },
+        { icon: '🏪', text: 'Seller account age', badge: 'badge-green', badgeText: '✅ Established', detail: '3 years active with consistent review history. Established sellers are less likely to engage in severe fraud, though seasonal price manipulation can occur at any scale.' },
+        { icon: '🔄', text: 'Dynamic pricing check', badge: 'badge-green', badgeText: '✅ Consistent', detail: 'Same price logged in and incognito. No personalised pricing detected — the price is not being adjusted based on your browsing profile.' },
+        { icon: '📢', text: 'Sponsored placement', badge: 'badge-green', badgeText: '✅ Organic', detail: 'Organic result ranked by sales volume and review score. Not a paid placement — a positive signal.' },
+        { icon: '↩️', text: 'Returns policy', badge: 'badge-amber', badgeText: '⚠️ Conditional', detail: '30-day returns accepted, but only with tags attached. The tag requirement is a common reason for return refusal on clothing items.' }
+      ]
+    },
+    blender: {
+      name: 'PowerBlend 900W', emoji: '🥤',
+      current: 64, was: 80,
+      verdict: 'partial',
+      verdictTitle: '⚠️ Minor manipulation - deal is mostly real',
+      verdictText: 'The £80 price was genuinely charged for 4 months. The current £64 represents a real reduction. However, dynamic pricing adds £6 for logged-in users and the returns policy has some friction. The deal is real but incomplete.',
+      chartLabel: 'Was £80 for 4 months. Current £64 is a genuine reduction.',
+      chartData: [80,80,80,80,80,74,68,64,64,64,64,64],
+      checks: [
+        { icon: '📈', text: 'Price history', badge: 'badge-green', badgeText: '✅ Real discount', detail: 'The £80 price was charged for 4 months and is documented in price history tools. The current £64 is a genuine 20% reduction.' },
+        { icon: '🏪', text: 'Seller account age', badge: 'badge-green', badgeText: '✅ 2 years active', detail: '2 years active with a consistent review pattern. No unusual spikes or suspicious seller behaviour detected.' },
+        { icon: '🔄', text: 'Dynamic pricing check', badge: 'badge-amber', badgeText: '⚠️ +£6 logged in', detail: '£70 logged in vs £64 incognito — a small £6 gap. Less aggressive than some products, but personalised pricing is still present.' },
+        { icon: '📢', text: 'Sponsored placement', badge: 'badge-amber', badgeText: '⚠️ Boosted', detail: 'Paid for enhanced visibility, but not a full sponsored result. Organic rank is strong — the boost is minor.' },
+        { icon: '↩️', text: 'Returns policy', badge: 'badge-green', badgeText: '✅ Clear', detail: '30-day no-questions returns with a prepaid label. No hidden conditions.' }
+      ]
+    },
+    watch: {
+      name: 'FitTrack Smart Watch', emoji: '⌚',
+      current: 119, was: 140,
+      verdict: 'legit',
+      verdictTitle: '✅ Price appears genuine',
+      verdictText: 'The £140 reference price was charged consistently for 6 months. The current £119 is a real 15% reduction. No significant manipulation signals detected across the 5 checks.',
+      chartLabel: 'Charged £140 for 6 months. Genuine reduction to £119.',
+      chartData: [140,140,140,140,140,140,140,130,125,119,119,119],
+      checks: [
+        { icon: '📈', text: 'Price history', badge: 'badge-green', badgeText: '✅ Genuine', detail: 'Charged at £140 consistently for 6 months across multiple retailers. The current £119 is a verified real reduction.' },
+        { icon: '🏪', text: 'Seller account age', badge: 'badge-green', badgeText: '✅ Brand store', detail: 'Listed directly from the manufacturer\'s official brand store — verified product authenticity and consistent pricing.' },
+        { icon: '🔄', text: 'Dynamic pricing check', badge: 'badge-green', badgeText: '✅ No difference', detail: 'Identical price logged in and incognito. No personalised pricing detected.' },
+        { icon: '📢', text: 'Sponsored placement', badge: 'badge-green', badgeText: '✅ Organic', detail: 'Organic result ranked by sales history and review score. Not paid placement.' },
+        { icon: '↩️', text: 'Returns policy', badge: 'badge-green', badgeText: '✅ 30-day free', detail: '30-day free returns with no restocking fee. No hidden conditions.' }
+      ]
+    }
+  };
+
+  function check(id) {
+    document.querySelectorAll('.prod-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('btn-' + id).classList.add('selected');
+
+    const d = data[id];
+
+    document.getElementById('prod-display').innerHTML = `
+      <div class="product-display-header">
+        <div style="font-size:2rem;">${d.emoji}</div>
+        <div>
+          <div class="prod-full-name">${d.name}</div>
+          <div class="price-display">
+            <span class="price-current">£${d.current}</span>
+            <span class="price-original">£${d.was}</span>
+            <span class="discount-pct">${Math.round((d.was - d.current)/d.was*100)}% OFF</span>
+          </div>
+        </div>
+      </div>`;
+
+    // Draw chart
+    const chart = document.getElementById('price-chart');
+    chart.innerHTML = `<div class="chart-label">${d.chartLabel}</div>`;
+    const max = Math.max(...d.chartData) * 1.1;
+    const w = 100 / d.chartData.length;
+    d.chartData.forEach((v, i) => {
+      const bar = document.createElement('div');
+      bar.className = 'chart-bar' + (v === Math.max(...d.chartData) ? ' highlight' : '');
+      bar.style.cssText = `left:${i*w}%;width:${w*0.85}%;height:${v/max*100}%`;
+      chart.appendChild(bar);
+    });
+
+    // Checks
+    const list = document.getElementById('check-list');
+    list.innerHTML = '';
+    d.checks.forEach((c, i) => {
+      const item = document.createElement('div');
+      item.className = 'check-item';
+      item.innerHTML = `
+        <div class="check-header" onclick="toggleCheck('chk-${id}-${i}')">
+          <span class="check-icon">${c.icon}</span>
+          <span class="check-text">${c.text}</span>
+          <span class="check-badge ${c.badge}">${c.badgeText}</span>
+        </div>
+        <div class="check-expand" id="chk-${id}-${i}">${c.detail}</div>`;
+      list.appendChild(item);
+    });
+
+    // Verdict
+    const v = document.getElementById('verdict');
+    v.className = 'verdict-box ' + d.verdict;
+    v.innerHTML = `<div class="verdict-title">${d.verdictTitle}</div><div class="verdict-body">${d.verdictText}</div>`;
+
+    document.getElementById('analysis').classList.add('show');
+    sendHeight();
+  }
+
+  function toggleCheck(id) {
+    document.getElementById(id).classList.toggle('open');
+    sendHeight();
+  }
+
+  function reset() {
+    document.querySelectorAll('.prod-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('analysis').classList.remove('show');
+    sendHeight();
+  }
+
+  function sendHeight() {
+    setTimeout(() => {
+      window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+    }, 100);
+  }
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>

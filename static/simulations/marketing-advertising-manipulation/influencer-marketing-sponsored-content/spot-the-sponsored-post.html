@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Spot the Sponsored Post</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --font: 'Outfit', system-ui, sans-serif;
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --border: #E2E8F0;
+      --text: #0F172A;
+      --muted: #64748B;
+      --green: #059669; --green-light: #ECFDF5;
+      --red: #DC2626; --red-light: #FEF2F2;
+      --amber: #B45309; --amber-light: #FFFBEB;
+      --blue: #2563EB; --blue-light: #EFF6FF;
+      --r: 12px;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); padding: 24px 16px 40px; -webkit-font-smoothing: antialiased; }
+    .header { text-align: center; margin-bottom: 22px; }
+    .header h1 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .header p { font-size: 13px; color: var(--muted); max-width: 480px; margin: 0 auto; }
+    .feed { max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+    .post {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .post-header { padding: 12px 14px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); }
+    .avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 700; flex-shrink: 0;
+    }
+    .avatar.a1 { background: #FEE2E2; color: #991B1B; }
+    .avatar.a2 { background: #DBEAFE; color: #1E40AF; }
+    .avatar.a3 { background: #D1FAE5; color: #065F46; }
+    .avatar.a4 { background: #EDE9FE; color: #5B21B6; }
+    .avatar.a5 { background: #FEF3C7; color: #92400E; }
+    .avatar.a6 { background: #FCE7F3; color: #9D174D; }
+    .avatar.a7 { background: #E0F2FE; color: #0C4A6E; }
+    .avatar.a8 { background: #F0FDF4; color: #14532D; }
+    .handle { font-size: 13px; font-weight: 700; }
+    .handle span { display: block; font-size: 11px; color: var(--muted); font-weight: 400; }
+    .disclosure-badge {
+      margin-left: auto;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+      letter-spacing: 0.04em;
+    }
+    .badge-paid { background: #FEF3C7; color: #92400E; }
+    .badge-gift { background: #FCE7F3; color: #9D174D; font-size: 9px; }
+    .badge-none { background: transparent; color: transparent; }
+    .post-body { padding: 12px 14px; }
+    .post-img {
+      width: 100%; height: 120px;
+      background: linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px; margin-bottom: 10px; border-radius: 8px;
+    }
+    .post-text { font-size: 13px; line-height: 1.6; color: #334155; margin-bottom: 10px; }
+    .post-text em { color: var(--muted); font-style: normal; font-size: 11px; }
+    .tag-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+    .tag { font-size: 11px; color: var(--blue); }
+    .action-row { display: flex; gap: 8px; }
+    .tag-btn {
+      flex: 1; padding: 8px 6px; border: 1.5px solid var(--border);
+      border-radius: 8px; font-family: var(--font); font-size: 12px;
+      font-weight: 600; cursor: pointer; transition: all 0.15s; background: var(--bg);
+    }
+    .tag-btn:hover { border-color: var(--blue); background: var(--blue-light); }
+    .tag-btn.sel-clear { border-color: var(--green); background: var(--green-light); color: var(--green); }
+    .tag-btn.sel-hidden { border-color: var(--red); background: var(--red-light); color: var(--red); }
+    .tag-btn.sel-organic { border-color: var(--amber); background: var(--amber-light); color: var(--amber); }
+    .reveal-box {
+      display: none;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      line-height: 1.55;
+    }
+    .reveal-box.correct { background: var(--green-light); border: 1px solid #6EE7B7; color: #064E3B; }
+    .reveal-box.incorrect { background: var(--red-light); border: 1px solid #FCA5A5; color: #7F1D1D; }
+    .reveal-box strong { display: block; font-size: 13px; margin-bottom: 3px; }
+    .score-panel {
+      display: none;
+      max-width: 500px;
+      margin: 20px auto 0;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r);
+      padding: 22px;
+      text-align: center;
+    }
+    .score-num { font-size: 40px; font-weight: 800; color: var(--blue); }
+    .score-panel h3 { font-size: 16px; font-weight: 700; margin: 8px 0 6px; }
+    .score-panel p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .reveal-all-btn {
+      display: block;
+      max-width: 500px;
+      margin: 14px auto 0;
+      padding: 12px;
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .reveal-all-btn:hover { background: #1D4ED8; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Spot the Sponsored Post</h1>
+  <p>Tag each post: clearly disclosed, hidden sponsorship, or organic. Then see how well you did.</p>
+</div>
+
+<div class="feed" id="feed"></div>
+
+<button class="reveal-all-btn" id="reveal-btn" onclick="revealAll()" style="display:none">Check My Answers</button>
+
+<div class="score-panel" id="score-panel"></div>
+
+<script>
+const posts = [
+  {
+    avatar: "a1", handle: "maya.wellness", name: "Maya K",
+    badge: "badge-none", badgeText: "",
+    img: "🌿",
+    text: "Been loving my morning routine lately. This ashwagandha supplement has genuinely changed how I handle stress. Link in bio if you want to try it! #wellness #health #morningroutine",
+    tags: ["#wellness","#health","#morningroutine"],
+    answer: "hidden",
+    explanation: "No disclosure present. FTC and ASA require 'Ad' or 'Paid Partnership' clearly at the start - not buried hashtags."
+  },
+  {
+    avatar: "a2", handle: "techwithtom", name: "Tom A",
+    badge: "badge-paid", badgeText: "Paid Partnership",
+    img: "💻",
+    text: "Paid Partnership with TechGear. Tested this laptop stand for two weeks in my actual workflow. Solid build, runs a bit warm under load. Use code TOM10 for 10% off.",
+    tags: ["#tech","#wfh"],
+    answer: "clear",
+    explanation: "'Paid Partnership' appears at the top with an honest mixed review. Clear, prominent, at the start - meets FTC and ASA requirements."
+  },
+  {
+    avatar: "a3", handle: "priya.eats", name: "Priya R",
+    badge: "badge-none", badgeText: "",
+    img: "🥗",
+    text: "Okay real talk - this meal prep service has actually saved me so much time this month. Not an ad, just genuinely obsessed. My referral link saves you 20% on your first box.",
+    tags: ["#mealprep","#healthyeating"],
+    answer: "hidden",
+    explanation: "A referral link is a direct financial incentive - disclosure required. 'Not an ad' is flagged by the FTC as a deceptive phrase when a commercial relationship exists."
+  },
+  {
+    avatar: "a4", handle: "stylebylee", name: "Lee M",
+    badge: "badge-gift", badgeText: "gifted",
+    img: "👗",
+    text: "gifted | This linen set arrived and I immediately put it on. The colour is exactly as shown online and it's surprisingly breathable. Linking everything below.",
+    tags: ["#fashion","#ootd"],
+    answer: "hidden",
+    explanation: "Gifted products require the same disclosure as paid posts. Regulators expect 'Ad' or 'Paid Partnership' - not informal alternatives like 'gifted' that audiences may not read as disclosures."
+  },
+  {
+    avatar: "a5", handle: "runnerslife", name: "Anu S",
+    badge: "badge-none", badgeText: "",
+    img: "🏃",
+    text: "Three years of running and my knees finally stopped hurting after switching to these. Did my research, spoke to my physio, and these were the recommendation. Game changer.",
+    tags: ["#running","#fitness"],
+    answer: "organic",
+    explanation: "No discount code, referral link, gifted label, or brand tag. Based on visible signals, this appears organic - though undisclosed paid posts are designed to look exactly like this."
+  },
+  {
+    avatar: "a6", handle: "beautybyrina", name: "Rina P",
+    badge: "badge-none", badgeText: "",
+    img: "💄",
+    text: "My skin has never looked better and it's genuinely all because of this serum. I get so many questions about what I use and this is literally it. Swipe for the full routine. #skincare #glowup #ad",
+    tags: ["#skincare","#glowup","#ad"],
+    answer: "hidden",
+    explanation: "#ad buried at the end of hashtags does not meet the standard. Disclosures must be impossible to miss - not hidden in a list."
+  },
+  {
+    avatar: "a7", handle: "dadswhocook", name: "James O",
+    badge: "badge-paid", badgeText: "Ad",
+    img: "🍳",
+    text: "Ad | This is a paid post with HomeCook. I've actually been using their pans for the last year before this deal came through. Genuinely good kit - heavy, even heat. They're 30% off this week.",
+    tags: ["#cooking","#homecook"],
+    answer: "clear",
+    explanation: "'Ad' appears at the very start. The audience knows before reading. This meets disclosure requirements."
+  },
+  {
+    avatar: "a8", handle: "traveltales", name: "Sara B",
+    badge: "badge-none", badgeText: "",
+    img: "✈️",
+    text: "Can't stop thinking about that Maldives trip. The resort was stunning, the staff were incredible, and waking up over the water every morning genuinely reset me. Find the link in my bio for booking.",
+    tags: ["#travel","#maldives"],
+    answer: "hidden",
+    explanation: "Hosted stays and press trips require disclosure under FTC and ASA rules. No disclosure appears. A referral link in bio adds a financial incentive."
+  }
+];
+
+let answers = {};
+let revealed = false;
+
+function render() {
+  const feed = document.getElementById('feed');
+  feed.innerHTML = '';
+  posts.forEach((p, i) => {
+    feed.innerHTML += `
+    <div class="post" id="post-${i}">
+      <div class="post-header">
+        <div class="avatar ${p.avatar}">${p.handle[0].toUpperCase()}</div>
+        <div class="handle">${p.handle}<span>${p.name}</span></div>
+        ${p.badgeText ? `<span class="disclosure-badge ${p.badge}">${p.badgeText}</span>` : ''}
+      </div>
+      <div class="post-body">
+        <div class="post-img">${p.img}</div>
+        <div class="post-text">${p.text}</div>
+        <div class="action-row">
+          <button class="tag-btn ${answers[i]==='clear'?'sel-clear':''}" onclick="tag(${i},'clear')">Clearly Disclosed</button>
+          <button class="tag-btn ${answers[i]==='hidden'?'sel-hidden':''}" onclick="tag(${i},'hidden')">Hidden Sponsorship</button>
+          <button class="tag-btn ${answers[i]==='organic'?'sel-organic':''}" onclick="tag(${i},'organic')">Organic</button>
+        </div>
+        <div class="reveal-box" id="reveal-${i}"></div>
+      </div>
+    </div>`;
+  });
+
+  const allAnswered = Object.keys(answers).length === posts.length;
+  document.getElementById('reveal-btn').style.display = allAnswered && !revealed ? 'block' : 'none';
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function tag(i, val) {
+  if (revealed) return;
+  answers[i] = val;
+  render();
+}
+
+function revealAll() {
+  revealed = true;
+  let score = 0;
+  posts.forEach((p, i) => {
+    const box = document.getElementById('reveal-' + i);
+    const correct = answers[i] === p.answer;
+    if (correct) score++;
+    box.style.display = 'block';
+    box.className = 'reveal-box ' + (correct ? 'correct' : 'incorrect');
+    box.innerHTML = `<strong>${correct ? 'Correct' : 'Incorrect'} - Answer: ${p.answer === 'clear' ? 'Clearly Disclosed' : p.answer === 'hidden' ? 'Hidden Sponsorship' : 'Organic'}</strong>${p.explanation}`;
+  });
+  document.getElementById('reveal-btn').style.display = 'none';
+  const panel = document.getElementById('score-panel');
+  panel.style.display = 'block';
+  panel.innerHTML = `<div class="score-num">${score}/${posts.length}</div><h3>${score >= 6 ? 'Strong awareness' : score >= 4 ? 'Getting there' : 'Tricky, right?'}</h3><p>${score < 5 ? 'Most undisclosed sponsorships are designed to be missed. The gap between obvious ads and disguised ones is commercial intent.' : 'Disclosure failures are engineered - understanding the rules helps you apply scepticism in the right places.'}</p>`;
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+render();
+window.addEventListener('load', () => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'));
+</script>
+</body>
+</html>

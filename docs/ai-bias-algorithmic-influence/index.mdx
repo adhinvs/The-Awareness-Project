@@ -1,14 +1,173 @@
 ---
-sidebar_position: 0
 title: "AI Bias & Algorithmic Influence"
 sidebar_label: "Section Overview"
+sidebar_position: 0
+description: "How AI systems discriminate, manipulate, and shape what you see and believe - without your knowledge or consent."
+tags: [ai-bias, algorithmic-influence, filter-bubbles, ai-hallucinations, deepfakes, persuasion, discrimination]
 ---
 
 import DocCardList from '@theme/DocCardList';
+import Quiz from '@site/src/components/Quiz';
 
 # AI Bias & Algorithmic Influence
 
-How artificial intelligence systems discriminate, manipulate, and shape what you see and believe
+How AI systems discriminate, manipulate, and shape what you see and believe - without your knowledge or consent.
+
+---
+
+## One Ordinary Day
+
+Priya woke up and read the news on her phone. Scrolled through her social feed at lunch. Applied for a job. Saw an ad that felt oddly well-timed. Asked an AI chatbot about a health concern before bed.
+
+She did not notice anything unusual.
+
+But across those five moments, AI systems had ranked her job application before any human saw it, narrowed her news feed to sources that matched her previous behavior, identified her psychological profile and selected the emotional angle most likely to convert her on the ad, and given her medical information with confident authority - some of which was not accurate.
+
+**None of these systems told her what they were doing. None of them are required to.**
+
+---
+
+## What Is Actually Happening
+
+AI systems are not neutral. They make decisions, shape information, and target behavior at a scale and speed that no human system could match.
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>72%</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>of hiring managers now use AI screening tools that filter CVs before human review.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Most candidates do not know they were screened by an algorithm - or rejected by one.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: LinkedIn Future of Recruiting Report, 2024</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>AI Hallucinations</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Wrong up to 27% of the time</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>AI language models produce <b>incorrect information in up to 27% of responses</b> depending on the task. The confidence of the answer is not correlated with its accuracy.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Stanford HAI AI Index Report, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Filter Bubbles</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>70% of watch time is algorithm-driven</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>On major video platforms, <b>over 70% of what people watch is recommended by the algorithm</b> - not searched for. The algorithm, not the user, decides what counts as relevant.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: YouTube, cited in MIT Technology Review, 2023</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>AI-Generated Content</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Deepfake fraud up 3,000% in 2024</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>AI-powered deepfake fraud attempts increased <b>3,000% in a single year</b>, including live video impersonation of executives. A worker in Hong Kong transferred $25 million after a deepfake CFO appeared on a video call.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Onfido Identity Fraud Report, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #10B981', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#10B981', fontWeight: 'bold' }}>Personalised Manipulation</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>88% personality accuracy from 68 likes</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>AI can predict your personality profile with <b>88% accuracy using just 68 Facebook likes</b>. Ad systems use profiles like this to select which emotional lever to use on you - without your knowledge.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Kosinski et al., PNAS, 2013 - confirmed and extended in commercial targeting studies, 2022-2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## The Invisible Hand Map
+
+An ordinary day, mapped. Five AI decision points that operated on one person before 9 PM - none of them visible, none of them requiring consent.
+
+<iframe
+  id="invisible-hand-map-iframe"
+  src="/simulations/ai-bias-algorithmic-influence/section/invisible-hand-map.html"
+  width="100%"
+  style={{ height: '700px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="The Invisible Hand Map"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('invisible-hand-map-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._invisibleHandHandler);
+    window._invisibleHandHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. AI decisions happen before any human is involved.**
+Most hiring, lending, and content filtering decisions are made algorithmically. A human review, if it happens at all, comes after the algorithm has already ranked or excluded you.
+
+**2. The algorithm optimises for its objective - not yours.**
+A recommendation algorithm optimises for engagement. An ad system optimises for conversion. These are not the same as informing you, helping you, or being accurate. Alignment between the algorithm's goal and your interest is coincidental.
+
+**3. Confidence is a feature of AI output, not a measure of accuracy.**
+AI language models generate text that sounds authoritative. The tone does not change when the content is wrong. You cannot distinguish a correct AI answer from a hallucinated one without independent verification.
+
+**4. The five failure modes in this section are connected.**
+They share a common structure: an AI system makes a decision about you, shapes what you see, or generates content you consume - and none of it is visible until the consequence arrives.
+
+---
+
+## Three Things Worth Doing
+
+**1. Treat AI answers like a first draft, not a final source.**
+Before acting on medical, legal, or financial information from an AI, verify the specific claim with a primary source - a licensed professional, a government body, or a peer-reviewed publication.
+
+**2. Actively search for what your feed is not showing you.**
+If a topic matters to you, search for the strongest opposing viewpoint directly. Do not rely on the algorithm to surface it. It probably won't.
+
+**3. When an AI decision affects you, ask what variables were used.**
+If you are rejected for a job, loan, or insurance product, you are entitled in many jurisdictions to ask for an explanation. Knowing that a model was involved is the first step to contesting its output.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Priya's job application was scored by an AI model before any human saw it - and she was not informed. Which of the following best describes why this is a meaningful problem?"
+  options={[
+    {
+      label: "Because AI models are always less accurate than human reviewers.",
+      correct: false,
+      explanation: "AI models can be more consistent than humans in some measures - but consistency is not the same as fairness. A model trained on biased historical data will reproduce that bias consistently and at scale."
+    },
+    {
+      label: "Because the model may have used proxy variables that correlate with protected characteristics, and there is no mechanism for Priya to know this happened or contest it.",
+      correct: true,
+      explanation: "Correct. The problem is not that AI was used - it is that the variables, weights, and outcomes are opaque, the decision was made without Priya's knowledge, and there is often no appeal pathway. Discrimination by proxy is still discrimination."
+    },
+    {
+      label: "Because all automated systems are illegal under current employment law.",
+      correct: false,
+      explanation: "Automated hiring tools are not broadly illegal. Some jurisdictions have begun requiring disclosure or audits of AI hiring systems, but most currently operate without mandatory transparency requirements."
+    },
+    {
+      label: "Because human reviewers would have made a fairer decision.",
+      correct: false,
+      explanation: "Human reviewers carry their own biases - often inconsistent and undocumented. The issue with algorithmic bias is not that humans would do better, but that the model's decision criteria are hidden, scalable, and difficult to challenge."
+    }
+  ]}
+/>
 
 ---
 

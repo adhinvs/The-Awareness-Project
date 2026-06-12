@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>The Welcome Bonus Trap</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --font: 'Outfit', system-ui, sans-serif;
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B;
+      --green: #059669; --green-light: #ECFDF5;
+      --red: #DC2626; --red-light: #FEF2F2;
+      --amber: #B45309; --amber-light: #FFFBEB;
+      --blue: #2563EB; --blue-light: #EFF6FF;
+      --r: 12px;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); padding: 24px 16px 40px; -webkit-font-smoothing: antialiased; }
+    .header { text-align: center; margin-bottom: 22px; }
+    .header h1 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .header p { font-size: 13px; color: var(--muted); max-width: 480px; margin: 0 auto; }
+    .step { display: none; max-width: 560px; margin: 0 auto; }
+    .step.active { display: block; }
+    .screen {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); overflow: hidden; margin-bottom: 14px;
+    }
+    .screen-bar {
+      background: #1E293B; padding: 10px 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .screen-bar .dot { width: 8px; height: 8px; border-radius: 50%; background: #475569; }
+    .screen-bar .url { font-size: 11px; color: #94A3B8; margin-left: 6px; }
+    .screen-body { padding: 20px; }
+    .bonus-hero {
+      background: linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%);
+      border-radius: 10px; padding: 24px; text-align: center; color: white; margin-bottom: 16px;
+    }
+    .bonus-hero .amount { font-size: 36px; font-weight: 800; }
+    .bonus-hero .label { font-size: 13px; opacity: 0.85; margin-top: 4px; }
+    .bonus-hero .sublabel { font-size: 11px; opacity: 0.65; margin-top: 6px; }
+    .claim-btn {
+      width: 100%; padding: 13px; border: none; border-radius: 9px;
+      font-family: var(--font); font-size: 15px; font-weight: 800;
+      cursor: pointer; transition: all 0.15s; margin-bottom: 8px;
+    }
+    .claim-btn.green { background: #059669; color: white; }
+    .claim-btn.green:hover { background: #047857; }
+    .claim-btn.blue { background: var(--blue); color: white; }
+    .claim-btn.blue:hover { background: #1D4ED8; }
+    .terms-toggle {
+      font-size: 11.5px; color: var(--muted); text-align: center;
+      cursor: pointer; text-decoration: underline; margin-bottom: 12px;
+    }
+    .terms-box {
+      background: #F1F5F9; border-radius: 8px; padding: 12px 14px;
+      font-size: 11.5px; line-height: 1.7; color: #475569;
+      max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
+    }
+    .terms-box.open { max-height: 400px; }
+    .terms-box .highlight {
+      background: #FEF9C3; border-left: 3px solid #F59E0B;
+      padding: 8px 10px; margin: 8px 0; border-radius: 0 6px 6px 0;
+      color: #78350F; font-weight: 600; font-size: 12px;
+    }
+    .q-label { font-size: 13px; font-weight: 700; margin-bottom: 10px; color: #1E293B; }
+    .q-options { display: flex; flex-direction: column; gap: 8px; }
+    .q-opt {
+      padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 9px;
+      font-family: var(--font); font-size: 13px; cursor: pointer;
+      transition: all 0.15s; background: var(--bg); text-align: left;
+    }
+    .q-opt:hover { border-color: var(--blue); background: var(--blue-light); }
+    .q-opt.correct { border-color: var(--green); background: var(--green-light); color: #064E3B; font-weight: 600; }
+    .q-opt.wrong { border-color: var(--red); background: var(--red-light); color: #7F1D1D; opacity: 0.7; }
+    .feedback {
+      margin-top: 10px; padding: 11px 13px; border-radius: 8px;
+      font-size: 12.5px; line-height: 1.55; display: none;
+    }
+    .feedback.ok { background: var(--green-light); border: 1px solid #6EE7B7; color: #064E3B; }
+    .feedback.bad { background: var(--red-light); border: 1px solid #FCA5A5; color: #7F1D1D; }
+    .next-btn {
+      width: 100%; margin-top: 12px; padding: 11px; background: #0F172A; color: white;
+      border: none; border-radius: 9px; font-family: var(--font); font-size: 14px;
+      font-weight: 700; cursor: pointer; display: none;
+    }
+    .next-btn:hover { background: #1E293B; }
+    .calc-row { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+    .calc-line {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 14px; border-radius: 8px; font-size: 13px;
+    }
+    .calc-line.neutral { background: #F1F5F9; }
+    .calc-line.bad { background: var(--red-light); color: var(--red); font-weight: 600; }
+    .calc-line.result { background: #1E293B; color: white; font-weight: 700; font-size: 14px; border-radius: 9px; }
+    .summary-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 22px; text-align: center;
+    }
+    .summary-card .verdict { font-size: 15px; font-weight: 800; color: var(--red); margin-bottom: 8px; }
+    .summary-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .rule-box {
+      margin-top: 14px; padding: 14px; background: #FFFBEB;
+      border: 1px solid #FDE68A; border-radius: 9px;
+      font-size: 12.5px; line-height: 1.6; color: #78350F;
+    }
+    .rule-box strong { display: block; font-size: 13px; margin-bottom: 4px; color: #92400E; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>The Welcome Bonus Trap</h1>
+  <p>Walk through signing up for a fictional betting platform. The bonus looks generous. Read the terms to find out what it actually costs.</p>
+</div>
+
+<!-- Step 1: The offer -->
+<div class="step active" id="s1">
+  <div class="screen">
+    <div class="screen-bar">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <span class="url">betquick.com/welcome-offer</span>
+    </div>
+    <div class="screen-body">
+      <div class="bonus-hero">
+        <div class="amount">100% Match Bonus</div>
+        <div class="label">Deposit Rs 5,000 - Get Rs 5,000 Free</div>
+        <div class="sublabel">New customers only. T&amp;Cs apply.</div>
+      </div>
+      <p style="font-size:13px;color:#475569;margin-bottom:14px;line-height:1.6">Start with double your deposit. Place bets with Rs 10,000 and keep what you win. New account required.</p>
+      <button class="claim-btn green" onclick="next(1)">Claim My Bonus</button>
+      <div class="terms-toggle" onclick="toggleTerms()">View full terms and conditions</div>
+      <div class="terms-box" id="terms">
+        The welcome bonus is subject to a 10x wagering requirement on both the deposit and bonus amount before withdrawal is permitted. Qualifying bets must have minimum odds of 1.8 (4/5). The bonus and any winnings derived from it must be wagered within 30 days of activation or they will be forfeited. Withdrawals requested before wagering requirements are met will result in forfeiture of the bonus amount. Bonus funds cannot be withdrawn. Only real-money funds remaining after bonus wagering is complete may be withdrawn. Betquick reserves the right to withhold withdrawals pending verification checks. Maximum bet with bonus funds is Rs 500 per bet. Free bet stakes are not returned with winnings.
+        <div class="highlight">Key condition: 10x wagering on deposit + bonus before any withdrawal.</div>
+      </div>
+    </div>
+  </div>
+  <button class="claim-btn blue" onclick="next(1)">Continue to deposit</button>
+</div>
+
+<!-- Step 2: Q1 -->
+<div class="step" id="s2">
+  <div class="screen">
+    <div class="screen-bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span class="url">betquick.com/deposit</span></div>
+    <div class="screen-body">
+      <p style="font-size:13px;color:#475569;margin-bottom:14px">You deposit Rs 5,000. The bonus Rs 5,000 is added. You have Rs 10,000 to bet with.</p>
+      <div class="q-label">Before you bet, work out the wagering requirement. The terms say "10x wagering on deposit and bonus." How much must you bet before you can withdraw?</div>
+      <div class="q-options" id="q1-opts"></div>
+      <div class="feedback" id="q1-fb"></div>
+      <button class="next-btn" id="q1-next" onclick="next(2)">Continue</button>
+    </div>
+  </div>
+</div>
+
+<!-- Step 3: Q2 -->
+<div class="step" id="s3">
+  <div class="screen">
+    <div class="screen-bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span class="url">betquick.com/bet-slip</span></div>
+    <div class="screen-body">
+      <p style="font-size:13px;color:#475569;margin-bottom:14px">You need to bet Rs 1,00,000 total. You have Rs 10,000. What does this require in practice?</p>
+      <div class="q-label">The minimum odds for qualifying bets are 1.8. What does this mean for your strategy?</div>
+      <div class="q-options" id="q2-opts"></div>
+      <div class="feedback" id="q2-fb"></div>
+      <button class="next-btn" id="q2-next" onclick="next(3)">Continue</button>
+    </div>
+  </div>
+</div>
+
+<!-- Step 4: Q3 -->
+<div class="step" id="s4">
+  <div class="screen">
+    <div class="screen-bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span class="url">betquick.com/withdrawal</span></div>
+    <div class="screen-body">
+      <p style="font-size:13px;color:#475569;margin-bottom:14px">You have placed bets but want to withdraw your original Rs 5,000 deposit now.</p>
+      <div class="q-label">What happens when you request a withdrawal before completing wagering requirements?</div>
+      <div class="q-options" id="q3-opts"></div>
+      <div class="feedback" id="q3-fb"></div>
+      <button class="next-btn" id="q3-next" onclick="next(4)">See the real cost</button>
+    </div>
+  </div>
+</div>
+
+<!-- Step 5: Outcome -->
+<div class="step" id="s5">
+  <div class="summary-card">
+    <div class="verdict">The real cost of a "free" Rs 5,000 bonus</div>
+    <div class="calc-row">
+      <div class="calc-line neutral"><span>Your deposit</span><span>Rs 5,000</span></div>
+      <div class="calc-line neutral"><span>Bonus received</span><span>Rs 5,000</span></div>
+      <div class="calc-line bad"><span>Total betting required before withdrawal</span><span>Rs 1,00,000</span></div>
+      <div class="calc-line bad"><span>Statistical expected loss at these odds (5%)</span><span>Rs 5,000</span></div>
+      <div class="calc-line result"><span>Expected net position after claiming bonus</span><span>- Rs 0 to - Rs 5,000</span></div>
+    </div>
+    <p>To access the "free" Rs 5,000, you must bet Rs 1,00,000 in total. At standard house edge, you will statistically lose between Rs 3,000 and Rs 8,000 in the process. The bonus does not give you money. It gives you a reason to deposit.</p>
+    <div class="rule-box">
+      <strong>How to evaluate any welcome bonus</strong>
+      Total wagering required = (deposit + bonus) x wagering multiplier. If that number is larger than you would comfortably lose, the bonus has no real value for you. The offer exists to create your first deposit - not to reward you for making it.
+    </div>
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    id: 'q1', step: 's2', nextStep: 's3', nextId: 'q1-next',
+    opts: [
+      { text: "Rs 10,000 - the total funds I have", correct: false, fb: "Not quite. The 10x applies to both deposit and bonus separately. That means Rs 5,000 x 10 + Rs 5,000 x 10 = Rs 1,00,000 total wagering required." },
+      { text: "Rs 50,000 - just the deposit amount times 10", correct: false, fb: "Close, but the wagering requirement applies to both the deposit AND the bonus amount. Rs 5,000 deposit x 10 plus Rs 5,000 bonus x 10 = Rs 1,00,000." },
+      { text: "Rs 1,00,000 - both the deposit and bonus each multiplied by 10", correct: true, fb: "Correct. 10x wagering on Rs 5,000 deposit (Rs 50,000) plus 10x wagering on Rs 5,000 bonus (Rs 50,000) = Rs 1,00,000 total. You must bet Rs 1,00,000 before any withdrawal is possible." }
+    ]
+  },
+  {
+    id: 'q2', step: 's3', nextStep: 's4', nextId: 'q2-next',
+    opts: [
+      { text: "I can bet small amounts on safe outcomes to clear the requirement", correct: false, fb: "Minimum odds of 1.8 exclude low-risk bets. Bets below 1.8 odds (roughly 50% probability or higher) do not count toward the wagering requirement - forcing you into higher-risk bets." },
+      { text: "I must bet on outcomes with at least 1.8 odds, which excludes low-risk favourites and forces higher-risk bets", correct: true, fb: "Correct. Odds of 1.8 exclude most 'safe' bets. You are required to take on meaningful risk on each qualifying bet. This increases the statistical likelihood of losing while working through the requirement." },
+      { text: "Odds restrictions only apply to the bonus funds, not my deposit", correct: false, fb: "The terms apply to all qualifying bets. You cannot separate deposit funds from bonus funds at the bet level - the restriction covers your entire wagering activity until the requirement is met." }
+    ]
+  },
+  {
+    id: 'q3', step: 's4', nextStep: 's5', nextId: 'q3-next',
+    opts: [
+      { text: "I can withdraw my deposit but the bonus is forfeited", correct: false, fb: "Not according to standard welcome bonus terms. Requesting a withdrawal before completing wagering requirements typically results in the entire bonus - and any winnings derived from it - being forfeited." },
+      { text: "The withdrawal is processed normally after a standard verification check", correct: false, fb: "Verification checks exist but are separate from wagering requirements. The withdrawal will be blocked until requirements are met, regardless of identity verification status." },
+      { text: "The bonus and all winnings from it are forfeited - only the original deposit may be returned", correct: true, fb: "Correct. This is the standard outcome. You lose the bonus and any winnings derived from it. Your original deposit may be returned, but you will have spent real money on bets while trying to access funds that are now gone." }
+    ]
+  }
+];
+
+function setupQ(q) {
+  const optsDiv = document.getElementById(q.id + '-opts');
+  optsDiv.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'q-opt';
+    btn.textContent = opt.text;
+    btn.onclick = () => answer(q, i);
+    optsDiv.appendChild(btn);
+  });
+}
+
+function answer(q, chosen) {
+  const opts = document.querySelectorAll('#' + q.id + '-opts .q-opt');
+  opts.forEach((btn, i) => {
+    btn.disabled = true;
+    if (q.opts[i].correct) btn.classList.add('correct');
+    else if (i === chosen && !q.opts[chosen].correct) btn.classList.add('wrong');
+  });
+  const fb = document.getElementById(q.id + '-fb');
+  fb.style.display = 'block';
+  fb.className = 'feedback ' + (q.opts[chosen].correct ? 'ok' : 'bad');
+  fb.textContent = q.opts[chosen].fb;
+  document.getElementById(q.nextId).style.display = 'block';
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function next(stepNum) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('s' + stepNum).classList.add('active');
+  if (stepNum === 2) setupQ(questions[0]);
+  if (stepNum === 3) setupQ(questions[1]);
+  if (stepNum === 4) setupQ(questions[2]);
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function toggleTerms() {
+  document.getElementById('terms').classList.toggle('open');
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+window.addEventListener('load', () => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'));
+</script>
+</body>
+</html>

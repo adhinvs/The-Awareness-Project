@@ -2,13 +2,191 @@
 sidebar_position: 3
 title: "Manufactured Urgency & Artificial Scarcity"
 sidebar_label: "Manufactured Urgency & Artificial Scarcity"
+description: "How countdown timers, fake stock warnings, and artificial deadlines pressure you into buying faster than you would choose to."
+tags: [dark-patterns, manufactured-urgency, artificial-scarcity, countdown-timers, fake-discounts, price-anchoring, flash-sales, e-commerce]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Manufactured Urgency & Artificial Scarcity
 
-## Sub-topics
+The timer was counting down. The stock warning said 2 left. The price was going to increase in 3 hours. None of it was real.
 
-- Countdown timers and fake inventory warnings in design
-- Flash sales and artificial deadlines
-- Limited edition and exclusivity claims
-- Price anchoring and fake discount presentation
+---
+
+## The Hotel That Was Never Fully Booked
+
+Priya needed a hotel for a conference trip. She found one she liked on a travel platform.
+
+"Only 2 rooms left at this price!" the listing read. "14 people are viewing this property right now. Price valid for the next 09:47."
+
+She booked immediately. She did not compare alternatives. She did not check the hotel's own website.
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/dark-patterns-manipulative-design/manufactured-urgency-artificial-scarcity/urgency-scarcity.webp"
+    alt="A product page showing a countdown timer, low-stock warning, and multiple people-viewing indicators layered on one listing."
+  />
+</figure>
+
+Two days later, a colleague booked the same hotel for the same dates. Same price. No urgency messages.
+
+Priya checked the platform again. Still available. Still the same price. The "2 rooms left" warning was gone. A new countdown timer had replaced it.
+
+**The urgency was fabricated. It only existed to make her stop comparing.**
+
+---
+
+## What Is Actually Happening
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>8-10%</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>increase in purchase conversions from countdown timers - regardless of whether the deadline is real.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>The timer does not need to be connected to anything. The psychological effect works the same way.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: Nielsen Norman Group E-Commerce UX Report, 2023</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Fake Reference Prices</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>87% of "Sales" Are Deceptive</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>UK consumer group Which? found that <b>87% of products in major retailer "sales"</b> were available at the same or lower price in the 6 months before the sale began. The crossed-out price was rarely a real previous price.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Which? Price Investigation, 2022</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Booking.com Fine</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Fined for Fake "X Viewing" Claims</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Booking.com was <b>fined by Dutch and Italian regulators</b> for displaying fabricated "X people viewing now" counts. The numbers were randomly generated, not based on real concurrent sessions.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Dutch ACM and Italian AGCM Enforcement, 2021</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #3B82F6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#3B82F6', fontWeight: 'bold' }}>Travel Platforms</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>87% Show Harmful Urgency Patterns</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>A Which? investigation of travel booking sites found <b>87% used at least one harmful urgency dark pattern</b> - including unverified popularity claims, stock warnings not tied to real inventory, and resetting countdown timers.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Which? Travel Booking Dark Patterns Report, 2023</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Price Anchoring</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>40% Higher Perceived Value</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Displaying a crossed-out higher price increases the perceived value of the current price by up to <b>40%,</b> even when the higher price was never genuinely charged. The anchor shifts judgement before rational comparison can begin.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Journal of Consumer Psychology, Anchoring Effects Study, 2022</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## How Urgency Bypasses Decision-Making
+
+Urgency works because it activates a threat-response in the brain. When something is about to run out or expire, the brain prioritises speed over accuracy.
+
+**This is exactly what artificial urgency exploits.** The timer has no server connection. The stock counter is not wired to real inventory. But your brain processes the visual signal before it can check whether the signal is real.
+
+### The test for fake urgency
+Reload the page. If the timer resets, the deadline is fabricated. If the stock warning disappears and reappears differently, it is not tied to real data. Most urgency signals on e-commerce pages fail this simple test.
+
+### Price anchoring: the crossed-out price
+The high price shown next to the current price creates an anchor. Once you see £899 struck through next to £449, your brain frames £449 as cheap - even if £449 is what it has always cost. The anchor price never needed to be real. It just needed to be visible first.
+
+---
+
+## Try It: The Scarcity Toolkit
+
+An annotated product page. Tap each urgency signal to reveal how it works and whether it is real.
+
+<iframe
+  id="scarcity-iframe"
+  src="/simulations/dark-patterns-manipulative-design/manufactured-urgency-artificial-scarcity/scarcity-toolkit.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="The Scarcity Toolkit"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('scarcity-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._scarcityHandler);
+    window._scarcityHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. Six urgency signals on one product page.**
+Real scarcity does not need six reinforcing signals. When a page layers a timer, a stock warning, a viewer count, a sales counter, a bestseller badge, and a crossed-out price onto one product - they are all probably fabricated.
+
+**2. The timer resets on page reload.**
+This is the simplest test. A real deadline tied to a server does not reset when you refresh the page. Most e-commerce countdown timers are purely client-side JavaScript with no connection to real inventory or pricing data.
+
+**3. "Bestseller" badges are largely self-assigned.**
+On most platforms, bestseller badges reflect a brief sales spike, a category position, or simply paid placement. They do not require sustained performance or independent verification.
+
+**4. The psychological effect works regardless.**
+Knowing a timer is fake does not completely remove its effect. The visual urgency still registers. This is why naming the pattern matters - it adds a conscious check before the emotional response completes.
+
+---
+
+## Three Things Worth Doing
+
+**1. Reload the page before buying anything time-sensitive.**
+If the countdown timer resets, the deadline is fake. If the stock warning changes randomly, it is not tied to real inventory. One page reload reveals the most common fabrications.
+
+**2. Search the same product elsewhere before buying.**
+Genuine limited-time deals are rare. If the same product is available at the same price on another platform with no urgency signals, the urgency was manufactured specifically for the platform you were on.
+
+**3. Use price history tools for significant purchases.**
+CamelCamelCamel (Amazon), Google Shopping history, or browser extensions like Keepa show the real price history of a product. A "50% discount" on an item that has never been sold at the higher price is not a discount.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Priya booked a hotel because the platform showed '2 rooms left' and a countdown timer. What is the simplest test that would have revealed whether these signals were real?"
+  options={[
+    {
+      label: "Read the platform's terms of service to check how they calculate availability.",
+      correct: false,
+      explanation: "Terms of service are rarely specific about how urgency signals are calculated, and reading them in the moment of a time-pressured decision is not a practical check."
+    },
+    {
+      label: "Reload the page - if the timer resets or the stock warning changes, the signals are not connected to real data.",
+      correct: true,
+      explanation: "Correct. A countdown timer tied to a real server-side deadline does not reset on page reload. A stock warning connected to real inventory does not change randomly. Both are the simplest, fastest tests for manufactured urgency - and most e-commerce urgency signals fail them."
+    },
+    {
+      label: "Call the hotel directly to verify room availability.",
+      correct: false,
+      explanation: "Calling the hotel would work, but it is more effort than the problem requires. The page reload test takes 2 seconds and reveals whether the urgency signals have any server connection at all - which is the core question."
+    },
+    {
+      label: "Wait until the timer expires and see what happens.",
+      correct: false,
+      explanation: "This would confirm the timer was fake after the fact - and by then you have already made a decision under false urgency. The goal is to identify the fabrication before acting, not after."
+    }
+  ]}
+/>

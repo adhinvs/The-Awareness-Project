@@ -1,14 +1,193 @@
 ---
-sidebar_position: 0
 title: "Dark Patterns & Manipulative Design"
 sidebar_label: "Section Overview"
+description: "How apps and websites use deliberate design tricks to steal your data, money, and time without your informed consent."
+tags: [dark-patterns, manipulative-design, ux-deception, consent-manipulation, subscription-traps, gamification, digital-literacy]
 ---
 
 import DocCardList from '@theme/DocCardList';
+import Quiz from '@site/src/components/Quiz';
 
 # Dark Patterns & Manipulative Design
 
-How products and interfaces are deliberately designed to trick, trap, and exploit you
+The interface is not neutral. Every button, default, and timer was designed by someone - and not always with your interests in mind.
+
+---
+
+## The Sign-Up That Cost £168
+
+Aisha downloaded a meditation app. The banner said "Free - Start Today."
+
+She tapped "Accept All" on the cookie screen because the alternative required 4 more clicks. She tapped "Continue" through 5 permission screens without reading them. She entered her card details for the "free trial."
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/dark-patterns-manipulative-design/section-hero.webp"
+    alt="A person scrolling through a confusing app interface, with hidden charges and manipulative buttons highlighted."
+  />
+</figure>
+
+On day 8, she was charged £13.99. She had missed the cancellation window. The reminder she set was for day 7 - but the trial ended at midnight on day 7, not day 8.
+
+When she tried to cancel, the process took 9 screens. A retention popup offered 2 free months. A confirm-shame button asked her to press "Yes, I want to stop improving my mental health."
+
+She cancelled. She had been charged for 12 months before she noticed the recurring charge in her bank statement. **Total cost of the "free" app: £167.88.**
+
+Nothing Aisha experienced was accidental. Every step was designed that way.
+
+---
+
+## What Is Actually Happening
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>76.4%</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>of the top 1,000 shopping sites use at least one dark pattern.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Not a fringe tactic. The default business model for much of the web.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: Princeton Web Transparency & Accountability Project, 2023</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Consent Design</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>75% Accept All Cookies</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}><b>75% of users click "Accept All"</b> on cookie banners because finding the reject option requires an average of 4 additional clicks. The design is not confusing by accident.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Norwegian Consumer Council, 2022</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Subscriptions</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>$133 vs. $86 Monthly</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>The average person spends <b>$133/month on subscriptions</b> but estimates they spend only $86. The $47 gap is largely explained by subscriptions people cannot easily cancel or have forgotten about.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: C+R Research Subscription Service Report, 2022</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Defaults</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>95% Accept Without Changing</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}><b>95% of users accept app defaults unchanged.</b> When every default is set to maximum data sharing, this means the vast majority of users share everything - not by choice, but by inertia.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Nielsen Norman Group, 2023</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #06B6D4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>Fake Reviews</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>31% of Reviews Are Fake</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Fakespot analysis found <b>31% of online reviews across major platforms are inauthentic.</b> Amazon removed over 200 million fake reviews in 2023 alone - and those are only the ones detected.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Fakespot / Amazon Transparency Report, 2023</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## What Makes a Design "Dark"
+
+A dark pattern is a user interface designed to lead you toward an action that benefits the company at your expense.
+
+It is not a bug. It is a deliberate choice, A/B tested and optimised. The button is placed there because testing showed it increases conversions. The setting is buried because surfacing it reduces sign-ups. The timer is fake because it increases urgency.
+
+**The design works against you by design.**
+
+Dark patterns fall into patterns that repeat across the entire industry: consent tricks, subscription traps, artificial urgency, compulsion loops, obfuscation, emotional manipulation. This section covers all of them - what they look like, how they work, and what to do about them.
+
+---
+
+## Try It: The Dark Pattern Gauntlet
+
+Sign up for a fictional service and then try to cancel. Every screen contains a real dark pattern. All 6 will reveal themselves as you go.
+
+<iframe
+  id="gauntlet-iframe"
+  src="/simulations/dark-patterns-manipulative-design/section/dark-pattern-gauntlet.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="The Dark Pattern Gauntlet"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('gauntlet-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._gauntletHandler);
+    window._gauntletHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. Dark patterns are invisible until you know what to look for.**
+Each pattern you encountered felt like a normal part of signing up. That is the point. Asymmetric design, pre-ticked boxes, and confirm-shame language only become visible once you have a name for them.
+
+**2. The friction is intentional and asymmetric.**
+Signing up was fast. Cancelling was slow. This imbalance is not a UX failure - it is a business decision. The harder cancellation is, the fewer people complete it.
+
+**3. Fake urgency is fabricated in JavaScript.**
+The countdown timer reset on every page reload. It had no server connection. Nothing happened at zero. Knowing this does not make urgency disappear - but it gives you a tool to test it.
+
+**4. These patterns compound.**
+Individually, each trick is a nudge. Together, they form a funnel. By the time you reach the cancel screen, you have been fatigued by 6 separate friction points. That fatigue is also designed.
+
+---
+
+## Three Things Worth Doing
+
+**1. Use a separate email for free trials.**
+Create a dedicated email address for trials and sign-ups. This makes it easy to track what you have signed up for and prevents trial-related messages from cluttering your main inbox.
+
+**2. Check your bank statement for recurring charges each month.**
+Subscription creep is real. A 10-minute monthly review of recurring charges often surfaces services you forgot about or never intended to keep.
+
+**3. Name the pattern when you see it.**
+Urgency timers, confirm-shame buttons, buried cancel links - naming them out loud breaks their effect. You cannot be manipulated by a trick you can identify.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="In the gauntlet, the cancellation flow took 7 screens while sign-up took 2 clicks. What does this asymmetry tell you about the company's design intent?"
+  options={[
+    {
+      label: "Cancellation requires more steps because it involves more system processes than sign-up.",
+      correct: false,
+      explanation: "Cancellation is technically simple - it requires toggling a flag in a database. The extra screens are not a technical requirement. They are deliberate friction designed to exhaust users before they reach the final confirmation."
+    },
+    {
+      label: "The asymmetry is deliberate. Easy sign-up maximises conversion; hard cancellation maximises retention. Both are business decisions, not UX failures.",
+      correct: true,
+      explanation: "Correct. Roach motel design - easy to enter, hard to exit - is a documented and studied business strategy. Companies know that most users who encounter enough friction will abandon cancellation. Every extra screen was put there to exploit that tendency."
+    },
+    {
+      label: "The extra steps protect users by ensuring they genuinely want to cancel.",
+      correct: false,
+      explanation: "Protecting users from accidental cancellation would require one confirmation step, not seven screens with retention offers and confirm-shame buttons. The extra steps serve the company's retention metrics, not the user's wellbeing."
+    },
+    {
+      label: "This is a regulatory requirement - companies must present alternatives before allowing cancellation.",
+      correct: false,
+      explanation: "No regulation requires companies to make cancellation difficult or to present multiple retention offers before confirming. In fact, regulators in the UK, EU, and US have increasingly targeted roach motel design as a consumer protection violation."
+    }
+  ]}
+/>
 
 ---
 
