@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investment Red Flag Detector</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #ffffff;
+      color: #18181b;
+      line-height: 1.6;
+      padding: 24px;
+      min-height: 100vh;
+    }
+
+    .sim-container {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .sim-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #09090b;
+      margin-bottom: 4px;
+    }
+
+    .sim-subtitle {
+      font-size: 0.85rem;
+      color: #52525b;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    /* Interest meter */
+    .meter-wrap {
+      margin-bottom: 28px;
+      padding: 20px;
+      background: #f8f8fa;
+      border: 1px solid #e4e4e7;
+      border-radius: 14px;
+    }
+
+    .meter-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .meter-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #52525b;
+    }
+
+    .meter-value {
+      font-size: 0.85rem;
+      font-weight: 700;
+      transition: color 0.3s;
+    }
+
+    .meter-bar-bg {
+      width: 100%;
+      height: 10px;
+      border-radius: 6px;
+      background: #e4e4e7;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .meter-bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 0.5s ease, background 0.5s ease;
+      width: 0%;
+    }
+
+    .meter-extremes {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: 0.7rem;
+      color: #71717a;
+    }
+
+    /* Steps */
+    .step-card {
+      background: #f8f8fa;
+      border: 1px solid #e4e4e7;
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 16px;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.45s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .step-number {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #8b5cf6;
+      margin-bottom: 10px;
+    }
+
+    .step-scenario {
+      font-size: 0.92rem;
+      color: #27272a;
+      line-height: 1.65;
+      margin-bottom: 18px;
+    }
+
+    .step-question {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #18181b;
+      margin-bottom: 14px;
+    }
+
+    .option-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .option-btn {
+      background: #ffffff;
+      border: 1px solid #d4d4d8;
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: #27272a;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+      font-family: inherit;
+      line-height: 1.5;
+    }
+
+    .option-btn:hover:not(.selected) {
+      background: rgba(139, 92, 246, 0.05);
+      border-color: rgba(139, 92, 246, 0.3);
+    }
+
+    .option-btn.selected {
+      pointer-events: none;
+    }
+
+    .option-btn.selected.safe {
+      background: #dcfce7;
+      border-color: #86efac;
+      color: #166534;
+    }
+
+    .option-btn.selected.risky {
+      background: #fee2e2;
+      border-color: #fca5a5;
+      color: #991b1b;
+    }
+
+    .option-btn.selected.moderate {
+      background: #fef3c7;
+      border-color: #fcd34d;
+      color: #92400e;
+    }
+
+    .option-btn.dimmed {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .feedback-box {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      line-height: 1.55;
+      animation: fadeUp 0.35s ease forwards;
+    }
+
+    .feedback-box.safe {
+      background: #dcfce7;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+    }
+
+    .feedback-box.risky {
+      background: #fee2e2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+    }
+
+    .feedback-box.moderate {
+      background: #fef3c7;
+      border: 1px solid #fde68a;
+      color: #92400e;
+    }
+
+    /* Red flag tracker */
+    .flag-tracker {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .flag-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: #fee2e2;
+      border: 1px solid #fca5a5;
+      color: #991b1b;
+      animation: fadeUp 0.3s ease forwards;
+    }
+
+    .flag-pill::before {
+      content: '🚩';
+      font-size: 0.7rem;
+    }
+
+    /* Summary panel */
+    .summary-panel {
+      background: #f8f8fa;
+      border: 1px solid #e4e4e7;
+      border-radius: 14px;
+      padding: 28px;
+      margin-top: 20px;
+      animation: fadeUp 0.5s ease forwards;
+    }
+
+    .summary-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #09090b;
+    }
+
+    .summary-score {
+      font-size: 0.85rem;
+      color: #52525b;
+      margin-bottom: 18px;
+    }
+
+    .summary-text {
+      font-size: 0.88rem;
+      line-height: 1.65;
+      color: #27272a;
+      margin-bottom: 14px;
+    }
+
+    .summary-flags {
+      margin-top: 12px;
+    }
+
+    .summary-flags h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #ef4444;
+      margin-bottom: 8px;
+    }
+
+    .progress-dots {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+
+    .progress-dot {
+      width: 28px;
+      height: 4px;
+      border-radius: 4px;
+      background: #e4e4e7;
+      transition: background 0.3s;
+    }
+
+    .progress-dot.active {
+      background: #8b5cf6;
+    }
+
+    .progress-dot.done {
+      background: rgba(139, 92, 246, 0.3);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sim-container">
+    <div class="sim-title">How Tempting Is This Opportunity?</div>
+    <div class="sim-subtitle">An investment opportunity unfolds in front of you. At each step, choose the response that
+      matches what you would do. Watch how the red flags accumulate.</div>
+
+    <div class="progress-dots" id="progressDots"></div>
+
+    <div class="meter-wrap">
+      <div class="meter-label-row">
+        <span class="meter-label">Your Risk Exposure</span>
+        <span class="meter-value" id="meterValue" style="color:#22c55e;">Low</span>
+      </div>
+      <div class="meter-bar-bg">
+        <div class="meter-bar-fill" id="meterFill"></div>
+      </div>
+      <div class="meter-extremes">
+        <span>Safe</span>
+        <span>High Risk</span>
+      </div>
+    </div>
+
+    <div id="flagTracker" class="flag-tracker" style="margin-bottom:20px;"></div>
+
+    <div id="stepsContainer"></div>
+    <div id="summaryContainer"></div>
+  </div>
+
+  <script>
+    const STEPS = [
+      {
+        scenario: "You see a social media ad: 'Earn ₹5,000–₹15,000 daily with smart crypto trading. No experience needed. Join 12,000+ successful traders.' A friend in your contacts has liked the post.",
+        question: "What do you do?",
+        options: [
+          { text: "Ignore it. Guaranteed daily returns from trading are not realistic.", type: "safe", delta: 0, feedback: "Good instinct. No legitimate trading platform can guarantee daily profits. Markets are inherently volatile, and any claim of fixed returns is a hallmark of fraud." },
+          { text: "Click the link to learn more. Researching doesn't cost anything.", type: "moderate", delta: 15, feedback: "Researching sounds reasonable, but scam platforms are designed to convert curiosity into engagement. Once you visit, you will be contacted by 'advisors' trained to build trust quickly." },
+          { text: "Click and sign up. A friend liked it, and 12,000 users can't all be wrong.", type: "risky", delta: 30, feedback: "Social proof is one of the most effective manipulation tools in investment scams. The '12,000 traders' are fabricated, and your friend likely did not deliberately endorse the post — likes can be purchased or triggered by engagement algorithms.", flag: "Fake social proof" }
+        ]
+      },
+      {
+        scenario: "After signing up, you are added to a WhatsApp group with 200+ members. People regularly post screenshots showing daily profits of ₹8,000 to ₹25,000. An 'account manager' named Rahul calls you personally to explain the platform.",
+        question: "How do you respond?",
+        options: [
+          { text: "Leave the group. Organised profit-sharing screenshots are a known scam pattern.", type: "safe", delta: 0, feedback: "Correct. Profit screenshots in WhatsApp groups are manufactured. In documented cases, the same images have appeared across dozens of unrelated scam groups, sometimes with different names edited onto the same screenshot." },
+          { text: "Stay and observe for a few days to see if the profits are consistent.", type: "moderate", delta: 15, feedback: "Observing feels cautious, but scammers plan for observers. The group will show consistent profits for weeks precisely to convert people like you who are 'just watching.' The consistency is the manipulation." },
+          { text: "Start with a small investment of ₹5,000. It is a low amount and worth trying.", type: "risky", delta: 25, feedback: "The small initial investment is by design. The platform will show your ₹5,000 growing to ₹8,000 or more within days. That early 'success' is the hook that leads to much larger deposits later.", flag: "Manufactured early profits" }
+        ]
+      },
+      {
+        scenario: "Your dashboard now shows your ₹5,000 has grown to ₹11,400 in five days. Rahul calls to congratulate you and suggests increasing your investment to ₹50,000 to access 'premium trading signals' with higher returns.",
+        question: "What is your move?",
+        options: [
+          { text: "Try to withdraw your ₹11,400 first. If the money is real, it should be withdrawable.", type: "safe", delta: 5, feedback: "This is the right test. Legitimate platforms allow withdrawals at any time. Scam platforms will either delay, add conditions, or allow one small withdrawal to build confidence before blocking larger ones later." },
+          { text: "Invest ₹25,000 — not the full ₹50,000, but enough to access better returns.", type: "moderate", delta: 25, feedback: "The compromise feels rational, but any additional deposit into an unverified platform deepens your exposure. The dashboard numbers are fabricated — they cost the scammers nothing to display.", flag: "Escalating deposits" },
+          { text: "Invest the full ₹50,000. The returns so far prove the platform works.", type: "risky", delta: 35, feedback: "Past performance on a fake dashboard is not evidence of a real market. You are trusting numbers displayed by the same people asking for your money. This is the stage where most victims commit their largest amounts.", flag: "Trusting unverified dashboards" }
+        ]
+      },
+      {
+        scenario: "You request a withdrawal of ₹10,000. After two days, a message appears: 'Your withdrawal is under review. To release funds, a one-time verification fee of ₹2,500 is required for anti-money laundering compliance.'",
+        question: "What do you do?",
+        options: [
+          { text: "Refuse to pay and report the platform immediately. Legitimate platforms do not charge withdrawal fees like this.", type: "safe", delta: 0, feedback: "Exactly right. Regulated financial platforms deduct fees automatically — they never ask you to make a separate payment to 'release' your own money. This is advance-fee fraud, the core mechanism of most investment scams." },
+          { text: "Pay the ₹2,500. It is a small fee compared to your ₹10,000 withdrawal.", type: "risky", delta: 30, feedback: "This is the trap. The ₹2,500 is not a fee — it is a test of compliance. Once you pay, you will be asked for a 'tax clearance fee,' then an 'international transfer fee,' then an 'account upgrade fee.' Each one will be described as the final step. None of them will be.", flag: "Advance-fee extraction" },
+          { text: "Ask Rahul to waive the fee as a loyalty benefit since you are a long-standing user.", type: "moderate", delta: 20, feedback: "Negotiating with a scammer about their fee structure keeps you inside their framework. The question is not whether the fee can be reduced. The question is why your own money requires a separate payment to access." }
+        ]
+      },
+      {
+        scenario: "After paying the verification fee, another message arrives: 'A tax deduction certificate is required before cross-border fund transfers can be processed. Please pay ₹7,500 for TDS compliance.' Rahul assures you this is the final step.",
+        question: "Final decision:",
+        options: [
+          { text: "Stop immediately. This is a pattern of repeated extraction. No more payments.", type: "safe", delta: 0, feedback: "This is the correct decision, though it is the hardest one emotionally. Every rupee you have already paid creates pressure to pay more — this is called the sunk cost trap. Walking away now saves you from the escalating demands that follow." },
+          { text: "Pay it. You have already invested too much to walk away now.", type: "risky", delta: 35, feedback: "This is exactly the psychological mechanism the scam is built on. The previous payments are gone regardless of what you do next. Paying more does not recover them. In documented cases, victims have paid 8 to 12 separate 'final fees' before the platform disappeared.", flag: "Sunk cost exploitation" },
+          { text: "Ask Rahul for proof of SEBI or RBI registration before paying anything more.", type: "moderate", delta: 10, feedback: "Asking for regulatory proof is better than paying, but it should have been the first question, not the last. Any platform that cannot provide SEBI or RBI registration details on its website is operating illegally." }
+        ]
+      }
+    ];
+
+    let currentStep = 0;
+    let totalRisk = 0;
+    let flags = [];
+
+    function init() {
+      const dotsEl = document.getElementById('progressDots');
+      STEPS.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'progress-dot' + (i === 0 ? ' active' : '');
+        dot.id = 'dot-' + i;
+        dotsEl.appendChild(dot);
+      });
+      renderStep(0);
+      sendHeight();
+    }
+
+    function renderStep(idx) {
+      const step = STEPS[idx];
+      const container = document.getElementById('stepsContainer');
+
+      const card = document.createElement('div');
+      card.className = 'step-card';
+      card.id = 'step-' + idx;
+
+      let optionsHtml = step.options.map((o, oi) =>
+        `<button class="option-btn" data-step="${idx}" data-opt="${oi}" onclick="handleChoice(${idx},${oi})">${o.text}</button>`
+      ).join('');
+
+      card.innerHTML = `
+    <span class="step-number">Step ${idx + 1} of ${STEPS.length}</span>
+    <p class="step-scenario">${step.scenario}</p>
+    <p class="step-question">${step.question}</p>
+    <div class="option-grid" id="opts-${idx}">${optionsHtml}</div>
+  `;
+
+      container.appendChild(card);
+      setTimeout(sendHeight, 500);
+    }
+
+    function handleChoice(stepIdx, optIdx) {
+      const step = STEPS[stepIdx];
+      const chosen = step.options[optIdx];
+
+      // Disable all buttons in this step
+      const btns = document.querySelectorAll(`#opts-${stepIdx} .option-btn`);
+      btns.forEach((btn, i) => {
+        if (i === optIdx) {
+          btn.classList.add('selected', chosen.type);
+        } else {
+          btn.classList.add('dimmed');
+        }
+      });
+
+      // Update risk
+      totalRisk = Math.min(100, totalRisk + chosen.delta);
+      updateMeter();
+
+      // Add flag
+      if (chosen.flag) {
+        flags.push(chosen.flag);
+        const tracker = document.getElementById('flagTracker');
+        const pill = document.createElement('span');
+        pill.className = 'flag-pill';
+        pill.textContent = chosen.flag;
+        tracker.appendChild(pill);
+      }
+
+      // Show feedback
+      const feedbackEl = document.createElement('div');
+      feedbackEl.className = 'feedback-box ' + chosen.type;
+      feedbackEl.textContent = chosen.feedback;
+      document.getElementById('step-' + stepIdx).appendChild(feedbackEl);
+
+      // Update progress
+      document.getElementById('dot-' + stepIdx).className = 'progress-dot done';
+
+      // Next step or summary
+      currentStep++;
+      if (currentStep < STEPS.length) {
+        document.getElementById('dot-' + currentStep).className = 'progress-dot active';
+        setTimeout(() => renderStep(currentStep), 800);
+      } else {
+        setTimeout(showSummary, 1000);
+      }
+
+      setTimeout(sendHeight, 600);
+    }
+
+    function updateMeter() {
+      const fill = document.getElementById('meterFill');
+      const val = document.getElementById('meterValue');
+
+      fill.style.width = totalRisk + '%';
+
+      if (totalRisk <= 20) {
+        fill.style.background = 'linear-gradient(90deg, #22c55e, #4ade80)';
+        val.style.color = '#22c55e';
+        val.textContent = 'Low';
+      } else if (totalRisk <= 45) {
+        fill.style.background = 'linear-gradient(90deg, #f59e0b, #fbbf24)';
+        val.style.color = '#f59e0b';
+        val.textContent = 'Moderate';
+      } else if (totalRisk <= 70) {
+        fill.style.background = 'linear-gradient(90deg, #f97316, #fb923c)';
+        val.style.color = '#f97316';
+        val.textContent = 'High';
+      } else {
+        fill.style.background = 'linear-gradient(90deg, #ef4444, #f87171)';
+        val.style.color = '#ef4444';
+        val.textContent = 'Critical';
+      }
+    }
+
+    function showSummary() {
+      const container = document.getElementById('summaryContainer');
+      let riskLabel, riskColor, summaryMsg;
+
+      if (totalRisk <= 20) {
+        riskLabel = 'Low Risk';
+        riskColor = '#22c55e';
+        summaryMsg = 'You identified the warning signs early and avoided escalating your exposure. Most people who recognise the first red flag — guaranteed returns — are able to disengage before any real damage occurs. The critical skill is not intelligence; it is willingness to walk away from something that feels exciting.';
+      } else if (totalRisk <= 50) {
+        riskLabel = 'Moderate Risk';
+        riskColor = '#f59e0b';
+        summaryMsg = 'You showed caution at several points but engaged more than you needed to. In a real scenario, even moderate engagement — joining a group, exploring a platform, or depositing a small amount — creates emotional investment that makes it harder to stop. The scam relies on each small step making the next one feel more reasonable.';
+      } else {
+        riskLabel = 'High Risk';
+        riskColor = '#ef4444';
+        summaryMsg = 'Your choices followed the exact path that investment scam operators design for. This is not a failure of intelligence — it is the result of sophisticated psychological manipulation. The manufactured profits, the personal attention from an advisor, the small initial success, and the escalating fees are all documented fraud techniques used across thousands of cases.';
+      }
+
+      let flagsHtml = '';
+      if (flags.length > 0) {
+        flagsHtml = `
+      <div class="summary-flags">
+        <h4>Red Flags You Encountered</h4>
+        <div class="flag-tracker">${flags.map(f => `<span class="flag-pill">${f}</span>`).join('')}</div>
+      </div>
+    `;
+      }
+
+      container.innerHTML = `
+    <div class="summary-panel">
+      <div class="summary-title">Your Result</div>
+      <div class="summary-score" style="color:${riskColor}">${riskLabel} — Risk Score: ${totalRisk}/100</div>
+      <p class="summary-text">${summaryMsg}</p>
+      ${flagsHtml}
+    </div>
+  `;
+
+      setTimeout(sendHeight, 500);
+    }
+
+    function sendHeight() {
+      const h = document.documentElement.scrollHeight;
+      window.parent.postMessage({ iframeHeight: h }, '*');
+    }
+
+    window.addEventListener('resize', sendHeight);
+    init();
+  </script>
+</body>
+
+</html>
