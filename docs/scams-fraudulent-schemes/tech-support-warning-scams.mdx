@@ -1,16 +1,183 @@
 ---
-sidebar_position: 3
+sidebar_position: 17
 title: "Tech Support & Warning Scams"
 sidebar_label: "Tech Support & Warning Scams"
+description: "How fake alerts hijack your screen, why scammers want remote access, and how to safely respond to device warnings."
+tags: [tech-support-scam, social-engineering, malware, remote-access, cybersecurity, popup-warning, fake-support]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Tech Support & Warning Scams
 
-## Sub-topics
+Scammers know that a broken computer creates instant panic. They manufacture a fake digital crisis on your screen. They then offer to fix the exact problem they created. **The real attack only begins when you accept their help** .
 
-- Pop-up warnings on devices — virus found
-- Fake Apple, Microsoft, and Amazon support calls
-- Remote access to your computer under the guise of help
-- Installing malware while appearing to fix the problem
-- Charging for unnecessary repairs and fake services
-- How to safely respond to device warnings
+## The Fake Infection
+
+Mark was working on an important presentation. He clicked a link in a standard web search. 
+
+Suddenly a loud siren sound played from his speakers. His web browser locked up entirely. A bright red flashing pop-up filled the entire screen. The message claimed a critical virus was found. It warned him not to turn off his computer. It provided a toll-free number to call for immediate assistance. 
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/scams-fraudulent-schemes/techscam/techscamimage.webp"
+    alt="A person looking worried at a laptop screen displaying a bright red fake virus warning pop-up."
+  />
+</figure>
+
+Mark panicked about losing his files and called the number. The friendly agent told Mark they needed to scan his system. Mark downloaded a remote support tool. The agent took control of Mark's mouse. 
+
+The agent opened a black terminal screen and typed commands. A list of errors scrolled down the screen rapidly. The agent told Mark his network was compromised. **Mark paid $300 for a lifetime firewall repair** . 
+
+While Mark was paying, the agent quietly installed hidden malware in the background . Mark paid the attacker to hack his own computer.
+
+## What Is Actually Happening: The Manufactured Crisis
+
+Tech support scams rely on fear and technical overwhelm. They weaponize your trust in big brands to steal your money and data.
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>$1.3 Billion</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>lost globally to tech support and customer service scams in a single year.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Victims willingly hand over control of their devices because they believe they are talking to official support teams.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: FBI Internet Crime Report 2023 </span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>The Illusion</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Webpages Cannot Scan Your Hard Drive</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Pop-up warnings are completely fake. A website cannot scan your computer for viruses . The flashing red screen is just a malicious webpage designed to look like a system alert. <b>It is an illusion designed to cause panic.</b></p>
+      </div>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Authority Impersonation</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Fake Microsoft and Apple Calls</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Major tech companies do not monitor your personal computer for errors. <b>Apple, Microsoft, and Amazon will never proactively call you</b> or prompt you to call a number on your screen .</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>The Real Threat</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Remote Access Is the Virus</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>The pop-up itself is harmless until you act on it. <b>Granting remote access to your computer is the actual security breach</b> . Once they are inside, they have full control over your files, passwords, and banking sessions.</p>
+      </div>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #06B6D4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>The Double Scam</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Paying for Malware</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Attackers charge you heavily for entirely unnecessary repairs . While they pretend to fix your computer, they frequently install backdoors, keyloggers, and spyware to ensure they can steal your data later .</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+## Now Try It From the Other Side
+
+Your computer locks up. A loud voice tells you your data is being deleted. A phone number flashes on the screen. What do you do?
+
+Work through the scenario and see how your choices determine your safety.
+
+<iframe
+  id="tech-support-iframe"
+  src="/simulations/scams-fraudulent-schemes/techscam/support_simulator.html"
+  width="100%"
+  style={{ height: '620px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Tech Support Scam Simulator"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('tech-support-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._supportIframeHandler);
+    window._supportIframeHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+*Different choices lead to different levels of compromise. Try all of them.*
+
+## What That Just Showed You
+
+### 1. The warning is just a loud website.
+
+The flashing screen is a web browser trick. It usually utilizes full-screen mode to hide your browser tabs. **It cannot hurt your computer.** It only hurts you if you dial the phone number .
+
+### 2. The terminal screen trick is theater.
+
+Scammers love opening the Command Prompt or Terminal. They run basic network commands. This makes text scroll very fast on your screen. **They point to normal system processes and claim they are foreign hackers.** It is entirely a script. 
+
+### 3. Remote access software is a weapon.
+
+Legitimate tools like AnyDesk or TeamViewer are safe when used by authorized IT teams. Scammers weaponize these exact same tools. **Never download remote support software for an unexpected caller** .
+
+### 4. The fix is actually the payload.
+
+You are paying them to install malware . If you grant remote access, you must assume every saved password, document, and banking session on that device has been compromised. 
+
+## How to Safely Respond to Device Warnings
+
+Run every scary device alert through this checklist before acting . Pick one habit and apply it today.
+
+### 1. Never call the number on the screen.
+
+Microsoft, Apple, and your antivirus provider will never put a phone number in a threat alert. **If there is a phone number, it is a scam 100% of the time.** 
+
+### 2. Do not click the X on the pop-up itself.
+
+Scammers often program the close buttons on their pop-ups to trigger a download or open more tabs. **Instead, force quit your entire browser.** Use Alt + F4 on Windows, or Command + Option + Esc on a Mac. 
+
+### 3. Restart your computer.
+
+If your browser is locked up and you cannot force quit, hold down the physical power button on your computer for 10 seconds. **A hard reboot will clear the malicious webpage from your screen.**
+
+### 4. Run a scan with your real antivirus.
+
+Once your computer restarts, open your actual, pre-installed antivirus software like Windows Defender. Run a full system scan yourself. **Only trust the software you installed**, never the warnings from a web browser.
+
+### 5. Revoke access immediately if you made a mistake.
+
+If you already gave a scammer remote access, disconnect your computer from the internet immediately. Unplug the Wi-Fi router or pull the ethernet cable. **This instantly severs their remote connection.** Take the device to a professional for a clean wipe.
+
+## One Question Before You Continue
+
+<Quiz
+  question="A loud red warning takes over your screen saying your Mac is infected with a Trojan. It provides a toll-free Apple Support number to call immediately to prevent data loss. What should you do?"
+  options={[
+    {
+      label: "Call the number immediately to stop the data loss.",
+      correct: false,
+      explanation: "Apple will never provide a phone number in a virus warning. Calling the number connects you directly to the scammer."
+    },
+    {
+      label: "Click the 'Fix Now' button located inside the red warning box.",
+      correct: false,
+      explanation: "The buttons inside the pop-up are often fake and designed to download actual malware onto your computer."
+    },
+    {
+      label: "Force quit your web browser and restart your computer.",
+      correct: true,
+      explanation: "Correct. The warning is simply a malicious webpage designed to look scary. Force quitting the browser safely removes the illusion without risking your system."
+    },
+    {
+      label: "Follow the link to download the recommended cleanup tool.",
+      correct: false,
+      explanation: "Downloading software from an untrusted pop-up is exactly how actual malware gets installed on your device."
+    }
+  ]}
+/>
