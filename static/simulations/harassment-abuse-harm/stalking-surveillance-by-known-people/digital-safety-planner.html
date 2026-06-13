@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Digital Safety Planner</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f9f7f4;
+    color: #1a1a1a;
+    padding: 1.5rem 1rem 2.5rem;
+  }
+
+  .wrap { max-width: 680px; margin: 0 auto; }
+
+  .header { margin-bottom: 1.25rem; }
+  .header h1 { font-size: 18px; font-weight: 700; margin-bottom: 5px; }
+  .header p { font-size: 14px; color: #555; line-height: 1.6; }
+
+  .progress-bar { background: #e8e4de; border-radius: 99px; height: 5px; margin-bottom: 1.25rem; }
+  .progress-fill { height: 100%; border-radius: 99px; background: #4a7c5a; width: 0%; transition: width 0.3s ease; }
+
+  .section {
+    background: #fff;
+    border: 1px solid #e0dcd5;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    cursor: pointer;
+    background: #faf8f5;
+    border-bottom: 1px solid #e5e1da;
+    user-select: none;
+  }
+  .section-header:hover { background: #f2ede6; }
+  .section-label { font-size: 14px; font-weight: 600; flex: 1; }
+  .section-count { font-size: 12px; color: #888; }
+  .chevron { font-size: 11px; color: #aaa; transition: transform 0.2s; }
+  .section.open .chevron { transform: rotate(180deg); }
+  .section-body { display: none; }
+  .section.open .section-body { display: block; }
+
+  .item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 15px;
+    cursor: pointer;
+    border-top: 1px solid #f0ece6;
+    transition: background 0.1s;
+  }
+  .item:hover { background: #faf8f5; }
+  .item:first-child { border-top: none; }
+
+  .checkbox {
+    width: 18px; height: 18px; min-width: 18px;
+    border: 1.5px solid #bbb; border-radius: 4px;
+    margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    background: #fff;
+    font-size: 11px; font-weight: 700; color: #fff;
+    transition: all 0.15s;
+  }
+  .item.done .checkbox { background: #4a7c5a; border-color: #4a7c5a; }
+
+  .item-main { flex: 1; }
+  .item-text { font-size: 14px; line-height: 1.5; transition: color 0.15s; }
+  .item.done .item-text { color: #aaa; text-decoration: line-through; text-decoration-color: #ccc; }
+  .item-step { font-size: 12px; color: #888; margin-top: 3px; line-height: 1.45; display: none; }
+  .item.done .item-step { display: none; }
+
+  .summary {
+    display: none;
+    background: #fff;
+    border: 1px solid #e0dcd5;
+    border-radius: 10px;
+    padding: 16px;
+    margin-top: 1rem;
+  }
+  .summary h2 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .summary p { font-size: 14px; color: #444; line-height: 1.6; margin-bottom: 10px; }
+
+  .reset-btn {
+    font-size: 13px; color: #555; background: none;
+    border: 1px solid #ccc; border-radius: 6px;
+    padding: 6px 14px; cursor: pointer; transition: all 0.15s;
+  }
+  .reset-btn:hover { background: #f0ece6; color: #1a1a1a; }
+
+  .note {
+    font-size: 12px; color: #999; line-height: 1.6;
+    margin-top: 12px; padding-top: 12px;
+    border-top: 1px solid #ede9e3;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>Digital Safety Planner</h1>
+    <p>Work through each area. Tick items you have already addressed. Each unticked item has a specific action step.</p>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+  <div id="sections"></div>
+
+  <div class="summary" id="summary">
+    <h2 id="summary-heading"></h2>
+    <p id="summary-text"></p>
+    <button class="reset-btn" onclick="reset()">Start again</button>
+    <div class="note">If you are in immediate risk, contact local emergency services. Domestic abuse support: IN: iCall (+91 9152987821) | UK: National DA Helpline (0808 2000 247) | US: NDVH (1-800-799-7233) | AU: 1800RESPECT (1800 737 732)</div>
+  </div>
+
+</div>
+
+<script>
+const SECTIONS = [
+  {
+    id: "accounts",
+    label: "Shared accounts",
+    items: [
+      { text: "Google or Apple account shared with this person", step: "Go to Account > Security > Your devices. Remove unrecognised devices and change your password from a private device." },
+      { text: "Streaming accounts (Netflix, Spotify, etc.) with shared access", step: "Change the password and log out all other sessions from Account Settings." },
+      { text: "Email accounts this person may have access to", step: "Check mail forwarding rules (Settings > Forwarding in Gmail) - a forwarding rule can send every email to another address without your knowledge. Delete any you did not set." },
+      { text: "Social media accounts using the same password as above", step: "Use a password manager to generate unique passwords for each account. Enable two-factor authentication with an authenticator app, not SMS." }
+    ]
+  },
+  {
+    id: "location",
+    label: "Location sharing",
+    items: [
+      { text: "Google Maps location sharing is active", step: "Google Maps > Profile icon > Location sharing. Turn off sharing with any person you do not currently trust." },
+      { text: "Apple Find My is sharing your location", step: "Settings > [Your name] > Find My. Check 'Share My Location' and who it is shared with." },
+      { text: "WhatsApp live location is running", step: "In WhatsApp, open each conversation > tap the name at top > scroll to see if 'Live Location' is active. Stop sharing." },
+      { text: "Your vehicle has a GPS tracker or a connected app", step: "Check for unfamiliar OBD dongle ports under the dashboard. Review which phone numbers are registered to connected car apps." }
+    ]
+  },
+  {
+    id: "devices",
+    label: "Device surveillance",
+    items: [
+      { text: "This person has had physical access to your phone", step: "Android: Settings > Apps - look for unfamiliar apps with admin permissions. iPhone: Settings > Privacy & Security - check location, microphone, and camera access." },
+      { text: "Your phone has unknown apps installed", step: "Search your app list for remote access, monitoring, or 'family safety' apps you did not install. Common stalkerware names change often - look for anything you cannot identify." },
+      { text: "Your laptop or home computer was accessed by this person", step: "Check login history: Mac: Apple menu > System Settings > Privacy & Security. Windows: Event Viewer > Windows Logs > Security. Change your login password." }
+    ]
+  },
+  {
+    id: "smarthome",
+    label: "Smart home devices",
+    items: [
+      { text: "Smart speakers (Amazon Echo, Google Home) are in shared account", step: "Remove the device from the shared account or change the account password. Note: smart speakers can be used to listen to audio in range." },
+      { text: "Smart locks, cameras, or doorbells are on a shared account", step: "Change the account password or transfer device ownership. Check activity logs for access patterns." },
+      { text: "Wi-Fi router admin access was set up by this person", step: "Log into your router admin panel (usually 192.168.1.1) and change the admin password and Wi-Fi password. Review connected devices." }
+    ]
+  },
+  {
+    id: "evidence",
+    label: "Evidence preservation",
+    items: [
+      { text: "I have saved screenshots of threatening or monitoring behaviour", step: "Save to a cloud account this person does not have access to. Include timestamps and sender information in every screenshot." },
+      { text: "I have written dates and details of specific incidents", step: "Keep a log with: date, time, what was said or done, any witnesses. This record is required for protective orders and law enforcement reports." },
+      { text: "I know how to report to law enforcement in my country", step: "IN: Nearest police station + cybercrime.gov.in | UK: Police (101 for non-emergency) + Action Fraud | US: Local police + FBI IC3 | AU: Police Link + ReportCyber (cyber.gov.au)" }
+    ]
+  }
+];
+
+let checked = {};
+
+function totalChecked() { return Object.values(checked).reduce((a, arr) => a + arr.length, 0); }
+function totalItems() { return SECTIONS.reduce((a, s) => a + s.items.length, 0); }
+
+function getResult(n) {
+  const total = totalItems();
+  if (n === total) return {
+    heading: "All areas addressed",
+    text: "You have worked through every item. If you are in a difficult situation, the most important next step is connecting with a support organisation who can help you plan safely. Your safety comes before any device or account."
+  };
+  if (n >= total * 0.7) return {
+    heading: "Most areas covered",
+    text: "Good progress. The remaining unticked items are worth addressing - each one is a potential access point. Take your time. Do not rush steps that could alert someone to what you are doing."
+  };
+  return {
+    heading: "Keep going - each item matters",
+    text: "Every ticked item closes a potential access point. Focus on the sections most relevant to your situation first. If you need help, contact a digital safety specialist before making changes that could be noticed."
+  };
+}
+
+function render() {
+  const container = document.getElementById('sections');
+  container.innerHTML = '';
+  const total = totalChecked();
+  document.getElementById('progress').style.width = totalItems() ? (total / totalItems() * 100).toFixed(1) + '%' : '0%';
+
+  SECTIONS.forEach(section => {
+    const checkedArr = checked[section.id] || [];
+    const isOpen = true;
+    const div = document.createElement('div');
+    div.className = 'section' + (isOpen ? ' open' : '');
+
+    const hdr = document.createElement('div');
+    hdr.className = 'section-header';
+    hdr.innerHTML = `<span class="section-label">${section.label}</span><span class="section-count">${checkedArr.length}/${section.items.length}</span><span class="chevron">&#9660;</span>`;
+    hdr.addEventListener('click', () => { div.classList.toggle('open'); sendHeight(); });
+
+    const body = document.createElement('div');
+    body.className = 'section-body';
+
+    section.items.forEach((item, i) => {
+      const isDone = checkedArr.includes(i);
+      const el = document.createElement('div');
+      el.className = 'item' + (isDone ? ' done' : '');
+      el.innerHTML = `<div class="checkbox">${isDone ? '&#10003;' : ''}</div><div class="item-main"><div class="item-text">${item.text}</div>${!isDone ? `<div class="item-step">${item.step}</div>` : ''}</div>`;
+      el.addEventListener('click', () => {
+        if (!checked[section.id]) checked[section.id] = [];
+        const arr = checked[section.id];
+        const pos = arr.indexOf(i);
+        if (pos >= 0) arr.splice(pos, 1); else arr.push(i);
+        render();
+      });
+      body.appendChild(el);
+    });
+
+    div.appendChild(hdr);
+    div.appendChild(body);
+    container.appendChild(div);
+  });
+
+  const summaryEl = document.getElementById('summary');
+  if (total > 0) {
+    const res = getResult(total);
+    document.getElementById('summary-heading').textContent = res.heading;
+    document.getElementById('summary-text').textContent = res.text;
+    summaryEl.style.display = 'block';
+  } else {
+    summaryEl.style.display = 'none';
+  }
+  sendHeight();
+}
+
+function reset() { checked = {}; render(); }
+
+function sendHeight() {
+  setTimeout(() => {
+    if (window.parent) window.parent.postMessage({ iframeHeight: document.documentElement.scrollHeight + 20 }, '*');
+  }, 50);
+}
+
+render();
+</script>
+</body>
+</html>

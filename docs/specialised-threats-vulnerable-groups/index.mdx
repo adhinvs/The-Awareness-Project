@@ -1,14 +1,199 @@
 ---
-sidebar_position: 0
 title: "Specialised Threats & Vulnerable Groups"
 sidebar_label: "Section Overview"
+description: "How attackers target specific groups, platforms, and contexts - and what protection looks like from the inside."
+tags: [vulnerable-groups, gaming-exploitation, dating-apps, health-data, iot-security, workplace-threats, activist-security, cryptocurrency-fraud, opsec, elder-fraud, child-safety]
 ---
 
 import DocCardList from '@theme/DocCardList';
+import Quiz from '@site/src/components/Quiz';
 
 # Specialised Threats & Vulnerable Groups
 
-Targeted exploitation of specific communities, platforms, and contexts
+*Some attacks are designed for everyone. Others are calibrated for a specific person, in a specific situation, on a specific platform. This section covers the contexts where that targeting is most concentrated.*
+
+---
+
+## The Phone Call Ramesh Almost Answered
+
+Ramesh is 68. He retired from teaching two years ago and manages his pension savings through a bank app his daughter helped him set up.
+
+On a Tuesday morning, his phone rang. The caller said he was from the Pension Fund Authority. There was a discrepancy in Ramesh's account. His next payment was at risk. He needed to verify his Aadhaar number and bank details immediately.
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/specialised-threats-vulnerable-groups/section/section-hero.webp"
+    alt="An illustration of a diverse group of people using phones and computers, each with a subtle protective shield icon - calm, educational tone."
+  />
+</figure>
+
+Ramesh had never heard of this kind of scam. He had no reason not to trust a caller who knew his name, knew his bank, and sounded official.
+
+He paused and called his daughter first.
+
+She told him to hang up and call the pension office directly on the number from their website. He did. The pension office had no record of any such call. His account was fine.
+
+**What protected Ramesh was one habit: pause and verify through a channel you already trust.**
+
+Not every person in Ramesh's situation has that habit. Not every person has someone to call.
+
+This section exists because protection is not equally distributed. **Attackers know who is least likely to have it.**
+
+---
+
+## What Is Actually Happening: Targeting Is Not Random
+
+Vulnerability is not weakness. It is circumstance. Attackers study which situations reduce the friction of compliance, make verification harder, or increase the cost of not acting.
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>$3.4B</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>lost by adults over 60 to fraud in the US alone in 2024, the highest of any age group.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>The financial loss is the visible damage. Psychological harm and lost independence are harder to quantify but consistently reported as more devastating.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: FBI Internet Crime Complaint Center (IC3) Annual Report, 2025</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Gaming Exploitation</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>$1.1B in In-Game Fraud</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>In-game item theft, account hijacking, and fake trading sites cost gamers an estimated <b>$1.1B globally in 2024</b>. Gaming platforms are also the primary first-contact environment for grooming of minors.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Akamai State of the Internet / Gaming Report, 2025</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Workplace Fraud</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>BEC Tops $2.77B in Losses</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Business Email Compromise remains the costliest cybercrime category. <b>Vendor payment fraud and CEO impersonation</b> account for the majority of losses. A single successful invoice scam can exceed $500,000.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: FBI IC3 Annual Report, 2025</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #3B82F6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#3B82F6', fontWeight: 'bold' }}>Crypto Fraud</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>$5.6B Lost to Crypto Scams</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Crypto and investment fraud accounted for <b>$5.6B in losses in 2024</b>. Rug pulls, fake exchanges, and pig-butchering scams targeting crypto holders make up the fastest-growing fraud category globally.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: FBI IC3 Annual Report, 2025</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Journalist Safety</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>65% of Journalists Targeted Digitally</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>In a 2024 UNESCO survey, <b>65% of women journalists reported online violence</b>. State-sponsored spyware like Pegasus has been confirmed on devices of journalists and activists in 45+ countries since 2020.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: UNESCO / RSF Press Freedom Index, 2024-2025</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## See It From the Other Side
+
+You will see digital threats differently after experiencing them from outside your own context. This section simulation places you inside someone else's digital day. Select a profile and navigate 3 threat moments they face.
+
+<iframe
+  id="other-screen-iframe"
+  src="/simulations/specialised-threats-vulnerable-groups/section/other-persons-screen.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="The Other Person's Screen"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('other-screen-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._otherScreenHandler);
+    window._otherScreenHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '12px', margin: '24px 0' }}>
+  <div className="glass-panel" style={{ padding: '20px 24px', borderRadius: '14px', borderLeft: '4px solid var(--ifm-color-primary)', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <span style={{ fontSize: '1.5rem', lineHeight: '1', marginTop: '2px' }}>🔒</span>
+    <div>
+      <p style={{ fontWeight: '700', margin: '0 0 6px 0', fontSize: '1rem' }}>The constraint is the vulnerability.</p>
+      <p style={{ margin: '0', fontSize: '0.9rem', opacity: '0.85', lineHeight: '1.55' }}>Every profile had a different reason why the safe response was harder to take. Financial urgency, limited digital literacy, language barriers, and fear of deportation are not character flaws. They are the conditions attackers deliberately seek out.</p>
+    </div>
+  </div>
+  <div className="glass-panel" style={{ padding: '20px 24px', borderRadius: '14px', borderLeft: '4px solid #059669', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <span style={{ fontSize: '1.5rem', lineHeight: '1', marginTop: '2px' }}>🤝</span>
+    <div>
+      <p style={{ fontWeight: '700', margin: '0 0 6px 0', fontSize: '1rem' }}>Protective networks are the most durable protection.</p>
+      <p style={{ margin: '0', fontSize: '0.9rem', opacity: '0.85', lineHeight: '1.55' }}>In nearly every scenario, having access to one trusted person made the difference. The most scalable protection for vulnerable groups is not more awareness training for them. It is more aware people around them.</p>
+    </div>
+  </div>
+  <div className="glass-panel" style={{ padding: '20px 24px', borderRadius: '14px', borderLeft: '4px solid #D97706', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <span style={{ fontSize: '1.5rem', lineHeight: '1', marginTop: '2px' }}>👁️</span>
+    <div>
+      <p style={{ fontWeight: '700', margin: '0 0 6px 0', fontSize: '1rem' }}>The same attack looks different to different people.</p>
+      <p style={{ margin: '0', fontSize: '0.9rem', opacity: '0.85', lineHeight: '1.55' }}>A loan app that reads as obviously predatory to a financially stable person looks like the only option to someone in genuine distress. Understanding context is how you help people in your own network.</p>
+    </div>
+  </div>
+</div>
+
+---
+
+## Three Things Worth Doing
+
+**1. Identify one person in your network who might be in a high-risk group.**
+Think about who around you is older, recently arrived in a new country, in financial difficulty, or going through a major life transition. Check in. Share what you know.
+
+**2. Set up a "pause and verify" habit for anyone you support.**
+The single most protective behaviour across all vulnerable-group attacks is a habitual pause before acting. Help the people around you identify who to call when something seems wrong.
+
+**3. Know the reporting paths for the groups in this section.**
+Each module ends with specific resources. The most useful thing you can do is know where to send someone before they need it.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Ramesh almost gave his Aadhaar and bank details to a fraudulent caller. The caller knew his name and which bank he used. What made the call convincing, and what would have stopped it?"
+  options={[
+    {
+      label: "The caller was very technically skilled at voice manipulation.",
+      correct: false,
+      explanation: "No technical skill was required. Knowing a name and bank is achievable through a basic data breach, a phone directory, or social media. The persuasiveness came from authority framing and urgency, not technical sophistication."
+    },
+    {
+      label: "The call exploited the combination of authority, urgency, and the cost of not acting, and calling the official number directly would have ended the scam immediately.",
+      correct: true,
+      explanation: "Correct. The caller claimed official status, framed inaction as costly, and provided no time to verify. One call to the real pension office on a number found independently, not supplied by the caller, would have resolved the situation in under two minutes."
+    },
+    {
+      label: "Ramesh should have known better, this is a well-known scam type.",
+      correct: false,
+      explanation: "Awareness of a scam type is not the same as recognising it in the moment under pressure. Ramesh had no prior exposure to vishing. His protective action (calling his daughter) came from a relationship, not from cybersecurity training."
+    },
+    {
+      label: "The attack only works on elderly people who are not good with technology.",
+      correct: false,
+      explanation: "Vishing and authority impersonation scams target people across all age groups. The same attack has successfully targeted finance professionals and IT staff. The specific framing varies by target, the psychology does not."
+    }
+  ]}
+/>
 
 ---
 

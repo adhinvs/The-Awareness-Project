@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Safety Planning Tool</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --font: 'Outfit', system-ui, sans-serif;
+    --bg: #F8FAFC;
+    --surface: #FFFFFF;
+    --border: #E2E8F0;
+    --text: #0F172A;
+    --muted: #64748B;
+    --blue: #2563EB;
+    --blue-light: #EFF6FF;
+    --red: #DC2626;
+    --red-light: #FEF2F2;
+    --green: #059669;
+    --green-light: #ECFDF5;
+    --amber: #B45309;
+    --amber-light: #FFFBEB;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    padding: 28px 20px 40px;
+    line-height: 1.6;
+  }
+
+  .wrap { max-width: 680px; margin: 0 auto; }
+
+  .header { margin-bottom: 20px; }
+  .header h1 { font-size: 1.15rem; font-weight: 700; margin-bottom: 5px; }
+  .header p { font-size: 0.88rem; color: var(--muted); }
+
+  /* Tabs */
+  .tab-bar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    font-family: var(--font);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.16s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { border-color: #CBD5E1; color: var(--text); }
+  .tab-btn.active {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
+  }
+
+  /* Tab panels */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Progress */
+  .progress-bar-wrap { margin-bottom: 6px; }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+  .progress-bar-bg {
+    height: 6px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--green);
+    border-radius: 99px;
+    transition: width 0.3s;
+  }
+
+  /* Section */
+  .section { margin-bottom: 20px; }
+  .section-title {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 700;
+    color: var(--blue);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1.5px solid var(--blue-light);
+  }
+
+  /* Checklist items */
+  .checklist { display: flex; flex-direction: column; gap: 8px; }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.16s;
+  }
+  .check-item:hover { border-color: #CBD5E1; background: #FAFBFC; }
+  .check-item.checked { background: var(--green-light); border-color: #A7F3D0; }
+
+  .checkbox {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 6px;
+    border: 2px solid var(--border);
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+    transition: all 0.16s;
+    flex-shrink: 0;
+  }
+  .check-item.checked .checkbox {
+    background: var(--green);
+    border-color: var(--green);
+  }
+  .checkbox svg { display: none; }
+  .check-item.checked .checkbox svg { display: block; }
+
+  .check-label {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--text);
+  }
+  .check-item.checked .check-label { color: #065F46; }
+  .check-sublabel {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 3px;
+    line-height: 1.45;
+  }
+  .check-item.checked .check-sublabel { color: #047857; }
+
+  /* Tip box */
+  .tip-box {
+    background: var(--blue-light);
+    border: 1.5px solid #BFDBFE;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 0.83rem;
+    color: #1E40AF;
+    line-height: 1.55;
+    margin-top: 14px;
+  }
+  .tip-box strong { font-weight: 700; }
+
+  /* Platform select */
+  .platform-select-wrap { margin-bottom: 16px; }
+  .platform-select-wrap label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  select {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    font-family: var(--font);
+    font-size: 0.88rem;
+    color: var(--text);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748B' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    cursor: pointer;
+  }
+
+  .platform-info {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: #334155;
+  }
+  .platform-info strong { color: var(--text); }
+  .platform-info .path {
+    background: #F1F5F9;
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin: 8px 0;
+    font-size: 0.8rem;
+    color: var(--blue);
+    font-family: monospace;
+    letter-spacing: 0.01em;
+  }
+
+  /* Contacts grid */
+  .contacts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .contact-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .contact-country {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--blue);
+    margin-bottom: 5px;
+  }
+  .contact-detail {
+    font-size: 0.8rem;
+    color: #334155;
+    line-height: 1.6;
+  }
+
+  /* Amber warning box */
+  .warn-box {
+    background: var(--amber-light);
+    border: 1.5px solid #FDE68A;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 0.83rem;
+    color: #78350F;
+    line-height: 1.55;
+    margin-top: 14px;
+  }
+
+  @media (max-width: 500px) {
+    .contacts-grid { grid-template-columns: 1fr; }
+    .tab-btn { font-size: 0.78rem; padding: 7px 11px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>Safety Planning Tool</h1>
+    <p>Work through each tab at your own pace. Check items as you complete them.</p>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="evidence">1. Evidence</button>
+    <button class="tab-btn" data-tab="platform">2. Platform Reporting</button>
+    <button class="tab-btn" data-tab="law">3. Law Enforcement</button>
+    <button class="tab-btn" data-tab="safety">4. Digital &amp; Physical Safety</button>
+  </div>
+
+  <!-- Tab 1: Evidence Documentation -->
+  <div class="tab-panel active" id="tab-evidence">
+    <div class="progress-bar-wrap" id="prog-evidence"></div>
+
+    <div class="section">
+      <div class="section-title">What to capture</div>
+      <div class="checklist" data-group="evidence">
+        <div class="check-item" data-id="e1">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Screenshot every message with the timestamp visible</div>
+            <div class="check-sublabel">Make sure the date, time, and sender's name are visible in each screenshot</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="e2">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Record the sender's username and account URL</div>
+            <div class="check-sublabel">Screenshot their profile page - including any profile photos</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="e3">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Note dates and times of any physical incidents</div>
+            <div class="check-sublabel">Including where it happened and anyone who may have witnessed it</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="e4">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Do not delete anything - even messages that feel trivial</div>
+            <div class="check-sublabel">A pattern is built from small things. Courts respond to patterns, not single incidents</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Create your evidence record</div>
+      <div class="checklist" data-group="evidence">
+        <div class="check-item" data-id="e5">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Write a chronological timeline of events</div>
+            <div class="check-sublabel">Date, what happened, platform or location, any witnesses</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="e6">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Store everything in a cloud-backed folder only you can access</div>
+            <div class="check-sublabel">Do not use a device or account the person has ever had access to</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="e7">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Consider using a separate email account for evidence storage</div>
+            <div class="check-sublabel">Forward evidence emails there so they are separate from your main inbox</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <strong>Tip:</strong> You can restrict what you see without deleting. On most platforms you can mute or archive conversations so you do not have to view them, while keeping the evidence intact.
+    </div>
+  </div>
+
+  <!-- Tab 2: Platform Reporting -->
+  <div class="tab-panel" id="tab-platform">
+    <div class="progress-bar-wrap" id="prog-platform"></div>
+
+    <div class="platform-select-wrap">
+      <label for="platform-sel">Select the platform where harassment is occurring:</label>
+      <select id="platform-sel">
+        <option value="">Choose a platform...</option>
+        <option value="meta">Facebook / Instagram (Meta)</option>
+        <option value="twitter">Twitter / X</option>
+        <option value="whatsapp">WhatsApp</option>
+        <option value="tiktok">TikTok</option>
+        <option value="snapchat">Snapchat</option>
+        <option value="other">Other platform</option>
+      </select>
+    </div>
+
+    <div id="platform-detail" style="display:none; margin-bottom:16px;"></div>
+
+    <div class="section">
+      <div class="section-title">After you report</div>
+      <div class="checklist" data-group="platform">
+        <div class="check-item" data-id="p1">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Save your report reference number</div>
+            <div class="check-sublabel">Platforms issue this after submission - screenshot it or copy it to your evidence folder</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="p2">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Block the account after reporting (not before)</div>
+            <div class="check-sublabel">Blocking first can limit your access to evidence</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="p3">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">If the report is dismissed, re-report and note "imminent safety risk"</div>
+            <div class="check-sublabel">This routes to more senior review in most platform Trust and Safety teams</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <strong>Tip:</strong> Platform reports and police reports can run simultaneously. You do not need to wait for one to resolve before starting the other.
+    </div>
+  </div>
+
+  <!-- Tab 3: Law Enforcement -->
+  <div class="tab-panel" id="tab-law">
+    <div class="progress-bar-wrap" id="prog-law"></div>
+
+    <div class="section">
+      <div class="section-title">What constitutes a reportable offence</div>
+      <div class="checklist" data-group="law">
+        <div class="check-item" data-id="l1">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Repeated unwanted contact (even without explicit threats)</div>
+            <div class="check-sublabel">A pattern of contact after being asked to stop is legally actionable as harassment</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="l2">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Any explicit threats of harm - physical or reputational</div>
+            <div class="check-sublabel">Threats to hurt you, damage your reputation, or contact your family or employer</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="l3">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Appearing at your home, workplace, or regular locations</div>
+            <div class="check-sublabel">Physical following or monitoring is a core component of stalking legislation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">What to bring when you report</div>
+      <div class="checklist" data-group="law">
+        <div class="check-item" data-id="l4">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Printed screenshots with timestamps and sender details</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="l5">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Your written chronological timeline</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="l6">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Contact details of any witnesses</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="l7">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Ask for a report reference number before you leave</div>
+            <div class="check-sublabel">Even if no immediate action is taken, a filed report creates a documented pattern</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="l8">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Ask about a non-molestation order / restraining order / protection order</div>
+            <div class="check-sublabel">Emergency applications can be granted within 24-72 hours when risk is established</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contacts-grid">
+      <div class="contact-card">
+        <div class="contact-country">India</div>
+        <div class="contact-detail">Local police station<br>Cybercrime: cybercrime.gov.in<br>Helpline: 1930</div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-country">United Kingdom</div>
+        <div class="contact-detail">999 (immediate danger)<br>101 (non-emergency)<br>Action Fraud: actionfraud.police.uk</div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-country">United States</div>
+        <div class="contact-detail">Local police department<br>Online threats: IC3.gov<br>Hotline: 1-800-799-7233</div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-country">Australia</div>
+        <div class="contact-detail">Local police<br>1800RESPECT: 1800 737 732<br>eSafety: esafety.gov.au</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 4: Digital & Physical Safety -->
+  <div class="tab-panel" id="tab-safety">
+    <div class="progress-bar-wrap" id="prog-safety"></div>
+
+    <div class="section">
+      <div class="section-title">Digital safety</div>
+      <div class="checklist" data-group="safety">
+        <div class="check-item" data-id="s1">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Change passwords on email and social media accounts</div>
+            <div class="check-sublabel">Use a new password not used anywhere else. Do this from a device you trust</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="s2">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Enable two-factor authentication (2FA) on every important account</div>
+            <div class="check-sublabel">Use an authenticator app rather than SMS where possible</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="s3">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Review which apps have access to your location</div>
+            <div class="check-sublabel">iPhone: Settings > Privacy > Location Services. Android: Settings > Location > App permissions</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="s4">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Check for unknown apps that might be monitoring your device</div>
+            <div class="check-sublabel">Signs include battery draining unusually fast, data usage spikes, device staying warm when idle</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="s5">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">If the person has had physical access to your phone, consider a factory reset</div>
+            <div class="check-sublabel">Back up important data to a separate account first. Do this with support if needed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Physical safety</div>
+      <div class="checklist" data-group="safety">
+        <div class="check-item" data-id="s6">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Vary your routes and timing when travelling to regular locations</div>
+            <div class="check-sublabel">Small changes to routine significantly reduce predictability</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="s7">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Tell 2-3 trusted people what is happening</div>
+            <div class="check-sublabel">Not to involve them in conflict - so that someone else knows and can help if needed</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="s8">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Identify a safe place you can go to quickly if needed</div>
+            <div class="check-sublabel">A friend, family member, or public space that is accessible from your usual locations</div>
+          </div>
+        </div>
+        <div class="check-item" data-id="s9">
+          <div class="checkbox"><svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div>
+            <div class="check-label">Inform your workplace reception or manager discreetly</div>
+            <div class="check-sublabel">They can log any appearances and notify you if the person arrives</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn-box">
+      You do not need to upend your life. These are small, manageable steps. Do them one at a time.
+    </div>
+  </div>
+
+</div>
+
+<script>
+// State
+const checked = new Set();
+
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    updateProgress();
+    sendHeight();
+  });
+});
+
+// Checklist items
+document.querySelectorAll('.check-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const id = item.dataset.id;
+    if (checked.has(id)) checked.delete(id);
+    else checked.add(id);
+    item.classList.toggle('checked', checked.has(id));
+    updateProgress();
+    sendHeight();
+  });
+});
+
+// Platform info
+const PLATFORM_INFO = {
+  meta: {
+    name: 'Facebook / Instagram (Meta)',
+    path: 'Help Center > Report a problem > Non-consensual intimate images',
+    note: 'Meta has a dedicated specialist team for intimate image reporting. Reports are reviewed by trained staff, not automated systems only.'
+  },
+  twitter: {
+    name: 'Twitter / X',
+    path: 'Help Center > Safety and hacked accounts > Report a post > Intimate media without consent',
+    note: 'You can also report harassment directly from a tweet or profile. Use "Abusive or harmful" > "Threatening violence or physical harm".'
+  },
+  whatsapp: {
+    name: 'WhatsApp',
+    path: 'Open chat > Tap contact name > Report > Report contact',
+    note: 'WhatsApp also allows you to report and block in one step. For harassment from someone you know, also report to your local police with chat screenshots.'
+  },
+  tiktok: {
+    name: 'TikTok',
+    path: 'Long-press the content > Report > Harassment or bullying',
+    note: 'For account-level reporting: Profile > ... > Report. TikTok has specific categories for targeted harassment and threatening behaviour.'
+  },
+  snapchat: {
+    name: 'Snapchat',
+    path: 'Press and hold the message > Report > It\'s harassment or bullying',
+    note: 'You can also report a profile: press and hold the username > More > Report. Snapchat Safety: snap.com/en-US/safety/report-a-safety-concern'
+  },
+  other: {
+    name: 'Other platform',
+    path: 'Look for: Settings > Help > Report a problem, or a flag icon on content',
+    note: 'Most platforms have a "Report" option accessible from content or profiles. Search the platform\'s help centre for "harassment" or "stalking" to find the specific path. If you cannot find it, contact their support team directly.'
+  }
+};
+
+document.getElementById('platform-sel').addEventListener('change', function() {
+  const detail = document.getElementById('platform-detail');
+  const info = PLATFORM_INFO[this.value];
+  if (info) {
+    detail.style.display = 'block';
+    detail.innerHTML = `
+      <div class="platform-info">
+        <strong>${info.name}</strong>
+        <div class="path">${info.path}</div>
+        <p style="font-size:0.83rem; color:#475569; line-height:1.55;">${info.note}</p>
+      </div>
+    `;
+  } else {
+    detail.style.display = 'none';
+  }
+  sendHeight();
+});
+
+// Progress bars
+function updateProgress() {
+  const groups = {
+    evidence: ['e1','e2','e3','e4','e5','e6','e7'],
+    platform: ['p1','p2','p3'],
+    law: ['l1','l2','l3','l4','l5','l6','l7','l8'],
+    safety: ['s1','s2','s3','s4','s5','s6','s7','s8','s9']
+  };
+  const tabMap = { evidence: 'evidence', platform: 'platform', law: 'law', safety: 'safety' };
+
+  Object.entries(groups).forEach(([group, ids]) => {
+    const done = ids.filter(id => checked.has(id)).length;
+    const pct = Math.round((done / ids.length) * 100);
+    const wrap = document.getElementById('prog-' + group);
+    if (wrap) {
+      wrap.innerHTML = `
+        <div class="progress-label">
+          <span>Progress</span>
+          <span>${done} of ${ids.length} completed</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width:${pct}%"></div>
+        </div>
+      `;
+    }
+  });
+}
+
+function sendHeight() {
+  setTimeout(() => {
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+  }, 60);
+}
+
+window.addEventListener('load', () => { updateProgress(); sendHeight(); });
+window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>

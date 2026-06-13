@@ -2,15 +2,208 @@
 sidebar_position: 3
 title: "Your Apps & Permissions"
 sidebar_label: "Your Apps & Permissions"
+description: "What app permissions actually give access to, how to audit them on Android and iPhone, and what over-permission signals about intent."
+tags: [app-permissions, mobile-security, location-access, microphone-access, privacy, android, iphone]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Your Apps & Permissions
 
-## Sub-topics
+Every permission you grant is a door. Most people open dozens of doors they never intended to open, on apps they no longer use, for data they do not realise is being collected.
 
-- What each permission type actually gives an app access to — camera, microphone, contacts, location, storage, call logs
-- The difference between 'while using' and 'always on' for location access
-- Apps that ask for more than they need — and what that signals about intent
-- How to review and revoke app permissions on Android and iPhone right now
-- What happens to data already collected when you delete an app
-- Why a flashlight app asking for your contacts is a red flag
+---
+
+## The Flashlight App
+
+A 2023 investigation found a popular flashlight app on the Google Play Store had been quietly accessing users' microphones in the background.
+
+**The app had over 10 million installs.** It worked fine as a flashlight. It also held microphone permission that users had granted during installation without reading why a flashlight would need to listen.
+
+The collected audio data was sent to a server in a jurisdiction with no data protection laws. The developer generated revenue by selling the recordings to a third party that analysed them for consumer research.
+
+**The permission was granted in 2021. It was collecting data until the app was delisted in 2024.** Most users never knew.
+
+---
+
+## What Is Actually Happening: The Permission Economy
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>89%</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>of Android apps request at least one dangerous permission they do not need for their stated function.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Over-permissioning is standard practice in the app economy, not an edge case.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: ENISA Threat Landscape for Mobile, 2024</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Location</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>"Always On" Means 24/7 Tracking</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>"Always on" location permission means the app tracks your position <b>even when it is closed</b>. Most apps only need location "while using" - never always on.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Princeton IoT Privacy Study, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Contacts</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Contacts Access Exports Your Entire Network</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Granting contacts permission sends <b>every name, number, and email in your address book</b> to the app's servers. This is used to build social graphs and target your contacts with ads.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: AppCensus Mobile Privacy Research, 2024</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Data Persistence</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Deleting an App Does Not Delete Its Data</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Removing an app from your phone removes the app. Data <b>already sent to the developer's servers remains</b> and is governed by their privacy policy, which you agreed to on install.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: GDPR Foundation Research, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #10B981', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#10B981', fontWeight: 'bold' }}>Third-Party Stores</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Sideloaded Apps Skip Security Review</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Apps installed outside the App Store or Google Play bypass the security review process. <b>Malware is routinely distributed</b> through unofficial app download links in messages and emails.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Zimperium Mobile Threat Report, 2025</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## What Each Permission Actually Gives
+
+Understanding each permission makes the decision simple.
+
+**Location** reveals where you are and have been. "While using" is appropriate for maps and delivery. "Always on" is almost never appropriate.
+
+**Microphone** gives access to audio from your surroundings, not just calls you initiate. A game, shopping app, or keyboard has no legitimate reason to access your microphone.
+
+**Camera** allows the app to activate your camera. Legitimate uses include video calling and document scanning. An app with no camera feature requesting this permission is a red flag.
+
+**Contacts** exports your entire address book. Messaging apps need it. Fitness apps, games, and most other categories do not.
+
+**Storage** allows reading and writing files on your device. File managers and document editors legitimately need this. Most other app categories should not have broad storage access.
+
+**Call logs** exposes who you call, how often, and for how long. Only your phone dialler has a legitimate reason to access this.
+
+---
+
+## The Over-Permission Signal
+
+When an app asks for more than it needs to function, that request is telling you something about its business model.
+
+A flashlight asking for microphone access. A weather app asking for contacts. A game asking for call logs. These permissions are not required for the app to work. They are required for the app to profile and monetise you.
+
+Over-permission is not always malicious intent. It is sometimes lazy development. But the practical consequence - your data being collected and sold - is the same either way.
+
+---
+
+## How to Audit Right Now
+
+**On Android:**
+Settings > Privacy > Permission manager. This shows every permission category and which apps hold each one.
+
+Or: long-press any app icon, tap App info, then Permissions.
+
+**On iPhone:**
+Settings > Privacy & Security. Each permission category is listed. Tap any to see all apps holding it.
+
+Or: Settings > [App Name] to see all permissions for a specific app in one view.
+
+---
+
+## Try It: Permission Audit Guide
+
+Select your OS. Work through each permission category - who legitimately needs it, who never should, and the exact path to revoke it.
+
+<iframe
+  id="permission-audit-iframe"
+  src="/simulations/your-digital-protection-habits/your-apps-permissions/permission-audit-guide.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Permission Audit Guide"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('permission-audit-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._permissionAuditHandler);
+    window._permissionAuditHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. Location, microphone, camera, and contacts are high-sensitivity permissions.**
+These four grant access to your physical world. Apply extra scrutiny before granting any of them.
+
+**2. "While using" is almost always sufficient for location access.**
+If an app requests "always on" location, the question is why. For nearly all apps, there is no legitimate reason.
+
+**3. Unused apps retain active permissions.**
+An app you have not opened in six months still holds everything you granted it. Delete unused apps or revoke their permissions individually.
+
+**4. Data already collected does not disappear when you delete the app.**
+To request deletion, use the "delete my account and data" option in the app's settings, or contact the developer under your data rights.
+
+---
+
+## Three Things Worth Doing
+
+**1. Open your permission manager now and check microphone and camera.**
+Look for any app that has microphone or camera access but has no obvious reason to need it. Revoke immediately.
+
+**2. Change location access for all apps to "while using."**
+Go through Location Services and downgrade any "always on" settings. Few apps legitimately need continuous location tracking.
+
+**3. Delete apps you have not opened in 3 months.**
+They are still holding permissions and potentially still collecting data. Remove them.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="A popular flashlight app had microphone permission enabled. The user never noticed because the app worked perfectly as a flashlight. What does this tell you about how over-permission works?"
+  options={[
+    {
+      label: "The app was broken - microphone access must have been granted by mistake.",
+      correct: false,
+      explanation: "The permission was intentional. The app functioned as advertised while simultaneously using the microphone access it had been granted. The two functions operated independently."
+    },
+    {
+      label: "Apps can collect data through permissions you granted and never think about again, regardless of whether the app's visible function uses that data.",
+      correct: true,
+      explanation: "Correct. The permission was granted once at install and remained active for years. The app worked fine as a flashlight while using microphone access for an entirely separate commercial purpose. Periodic audits of what permissions apps hold are necessary because you will not be notified when they are being used."
+    },
+    {
+      label: "Google Play's security review should have caught and blocked this.",
+      correct: false,
+      explanation: "App store reviews provide some protection but are not comprehensive. Apps regularly pass review while including data collection behaviour that is disclosed in fine-print privacy policies most users never read."
+    },
+    {
+      label: "The user should not have installed a flashlight app - only use built-in phone features.",
+      correct: false,
+      explanation: "The issue is not which app category was used but that the permission was granted without consideration. Any app category can over-request permissions. The habit is to review before granting and audit afterwards."
+    }
+  ]}
+/>

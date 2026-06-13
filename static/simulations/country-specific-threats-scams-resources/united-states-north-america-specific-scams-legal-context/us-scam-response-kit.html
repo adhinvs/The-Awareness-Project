@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>US Scam Response Kit</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f9f7f4;
+    color: #1a1a1a;
+    padding: 1.5rem 1rem 2.5rem;
+  }
+
+  .wrap { max-width: 680px; margin: 0 auto; }
+
+  .header { margin-bottom: 1.5rem; }
+  .header h1 { font-size: 18px; font-weight: 700; margin-bottom: 5px; }
+  .header p { font-size: 14px; color: #555; line-height: 1.6; }
+
+  .btn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+  }
+
+  .scam-btn {
+    padding: 12px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    border: 1.5px solid #d4cfc8;
+    border-radius: 8px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.15s;
+    line-height: 1.4;
+  }
+  .scam-btn:hover { border-color: #4a7c5a; background: #f0f7f2; color: #2d5c3a; }
+  .scam-btn.active { border-color: #4a7c5a; background: #4a7c5a; color: #fff; }
+
+  .response-box {
+    display: none;
+    background: #fff;
+    border: 1px solid #e0dcd5;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .response-box.visible { display: block; }
+
+  .response-header {
+    background: #4a7c5a;
+    color: #fff;
+    padding: 14px 18px;
+  }
+  .response-header h2 { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+  .response-header p { font-size: 12px; opacity: 0.85; }
+
+  .step {
+    display: flex;
+    gap: 14px;
+    padding: 14px 18px;
+    border-bottom: 1px solid #f0ece6;
+    align-items: flex-start;
+  }
+  .step:last-child { border-bottom: none; }
+
+  .step-num {
+    width: 26px; height: 26px; min-width: 26px;
+    border-radius: 50%;
+    background: #4a7c5a;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+  }
+
+  .step-body { flex: 1; }
+  .step-title { font-size: 13.5px; font-weight: 700; margin-bottom: 3px; }
+  .step-detail { font-size: 13px; color: #555; line-height: 1.55; }
+  .step-detail strong { color: #222; font-weight: 600; }
+
+  .law-box {
+    background: #faf8f5;
+    border-top: 1px solid #e8e4de;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.6;
+  }
+  .law-box strong { color: #333; }
+
+  .urgent-tag {
+    display: inline-block;
+    background: #FEF2F2;
+    color: #DC2626;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>US & North America Scam Response Kit</h1>
+    <p>Select the scam type. Get the exact federal and state reporting path and time-critical steps.</p>
+  </div>
+
+  <div class="btn-grid">
+    <button class="scam-btn" onclick="show('irs')">IRS / tax impersonation</button>
+    <button class="scam-btn" onclick="show('ssa')">Social Security fraud</button>
+    <button class="scam-btn" onclick="show('medicare')">Medicare / health scam</button>
+    <button class="scam-btn" onclick="show('wire')">Wire transfer / ACH fraud</button>
+    <button class="scam-btn" onclick="show('credit')">Credit reporting fraud</button>
+    <button class="scam-btn" onclick="show('bec')">Business email compromise</button>
+  </div>
+
+  <div class="response-box" id="response-box"></div>
+
+</div>
+
+<script>
+const RESPONSES = {
+  'irs': {
+    title: "IRS / Tax Impersonation",
+    subtitle: "Caller or email claims to be the IRS demanding immediate payment or threatening arrest",
+    urgentLabel: "The IRS contacts you by mail first — never by surprise call or email",
+    steps: [
+      { title: "Do not pay or engage", detail: "<strong>The IRS never demands immediate payment by gift card, wire transfer, or cryptocurrency.</strong> They never threaten arrest for non-payment over the phone." },
+      { title: "Report to the IRS directly", detail: "Report to <strong>phishing@irs.gov</strong> for email scams. For phone scams, report at <strong>IRS.gov/report-phishing</strong>." },
+      { title: "Report to FTC", detail: "<strong>ReportFraud.ftc.gov</strong> — select 'Imposter Scam > Government imposter'." },
+      { title: "Report to FBI IC3", detail: "If money was transferred: <strong>ic3.gov</strong>. Include amounts, payment method, and all scammer contact details." },
+      { title: "Verify your actual IRS account", detail: "Check real tax status at <strong>IRS.gov/account</strong>. Use only official numbers from that site." },
+    ],
+    law: "Applicable law: 18 U.S.C. § 912 (impersonating a federal official) · 26 U.S.C. § 7212 (interference with administration of tax laws) · Wire Fraud Act 18 U.S.C. § 1343"
+  },
+  'ssa': {
+    title: "Social Security Fraud",
+    subtitle: "Caller claims your SSN is suspended, linked to crime, or has been stolen",
+    urgentLabel: "Social Security Administration never suspends your SSN",
+    steps: [
+      { title: "Hang up and verify independently", detail: "Call the real SSA at <strong>1-800-772-1213</strong>. Check your account at <strong>ssa.gov/myaccount</strong>. A legitimate SSA agent will not call you about suspended SSNs." },
+      { title: "Report to SSA OIG", detail: "<strong>oig.ssa.gov/report</strong> or call <strong>1-800-269-0271</strong>. The SSA Inspector General handles SSN-related fraud reports." },
+      { title: "Report to FTC", detail: "<strong>IdentityTheft.gov</strong> — file an identity theft report if your SSN was compromised. FTC creates a personal recovery plan." },
+      { title: "Place a fraud alert on your credit", detail: "Contact any one of the three bureaus — <strong>Equifax, Experian, or TransUnion</strong>. A free 1-year fraud alert is placed automatically across all three." },
+      { title: "Consider a credit freeze", detail: "Free at all three bureaus. A freeze blocks new credit opened in your name. More protective than a fraud alert. Takes effect within 1 business day." },
+    ],
+    law: "Applicable law: 42 U.S.C. § 408 (misuse of SSN) · 18 U.S.C. § 1028 (identity fraud) · Fair Credit Reporting Act (credit freeze rights)"
+  },
+  'medicare': {
+    title: "Medicare / Health Insurance Scam",
+    subtitle: "Fake Medicare card offer, unsolicited medical equipment, or billing for services not received",
+    urgentLabel: "Medicare never calls unsolicited to offer free equipment",
+    steps: [
+      { title: "Do not give your Medicare number", detail: "Treat your Medicare number like a credit card number. <strong>Medicare does not call you to offer free equipment or ask for your number to keep coverage active.</strong>" },
+      { title: "Report to HHS OIG", detail: "<strong>oig.hhs.gov/fraud/report-fraud</strong> or call <strong>1-800-HHS-TIPS (1-800-447-8477)</strong>. HHS handles Medicare/Medicaid fraud." },
+      { title: "Report to 1-800-MEDICARE", detail: "Call <strong>1-800-633-4227</strong> to report suspected billing fraud. Review your Medicare Summary Notice for services you did not receive." },
+      { title: "Report to FTC", detail: "<strong>ReportFraud.ftc.gov</strong> for health insurance scams and fake Medicare plans." },
+      { title: "Report to your state AG", detail: "Find your State Attorney General at <strong>naag.org</strong>. Many states have specific elder fraud units for Medicare scams." },
+    ],
+    law: "Applicable law: False Claims Act (31 U.S.C. § 3729) · Anti-Kickback Statute (42 U.S.C. § 1320a-7b) · 18 U.S.C. § 1347 (health care fraud)"
+  },
+  'wire': {
+    title: "Wire Transfer / ACH Fraud",
+    subtitle: "Unauthorised wire transfer, ACH debit, or bank account access",
+    urgentLabel: "Contact your bank within hours — wire recall is time-critical",
+    steps: [
+      { title: "Call your bank immediately", detail: "<strong>Use the number on the back of your card, not a number from an email.</strong> Request a wire recall or ACH reversal. Banks can attempt recall for up to 5 business days on ACH." },
+      { title: "File with FBI IC3", detail: "<strong>ic3.gov</strong> — for wire fraud, the FBI's IC3 can coordinate with FinCEN and receiving banks to freeze funds. File the same day." },
+      { title: "Report to FinCEN", detail: "Financial crimes crossing $5,000: <strong>fincen.gov</strong>. Your bank will also file a SAR (Suspicious Activity Report) on your behalf." },
+      { title: "Report to FTC", detail: "<strong>ReportFraud.ftc.gov</strong>. If the fraud was connected to an impersonation (fake bank, fake employer), file this as an imposter scam." },
+      { title: "File with your state AG", detail: "Wire fraud is prosecutable at both state and federal level. Your state AG's consumer protection division can assist with recovery pressure on domestic institutions." },
+    ],
+    law: "Applicable law: 18 U.S.C. § 1343 (wire fraud) · Electronic Funds Transfer Act (Regulation E — consumer protections for ACH) · Bank Secrecy Act (reporting obligations)"
+  },
+  'credit': {
+    title: "Credit Reporting Fraud",
+    subtitle: "Accounts opened in your name, fraudulent credit inquiries, or identity theft",
+    urgentLabel: "Place a freeze first — it costs nothing and works immediately",
+    steps: [
+      { title: "Place a credit freeze at all three bureaus", detail: "<strong>Equifax (equifax.com) · Experian (experian.com) · TransUnion (transunion.com)</strong>. Free. Takes effect immediately online. Prevents new credit being opened in your name." },
+      { title: "Get your free credit report", detail: "<strong>AnnualCreditReport.com</strong> — the only federally authorised free report source. Review all three bureaus for accounts you did not open." },
+      { title: "File an FTC identity theft report", detail: "<strong>IdentityTheft.gov</strong> — creates a personal recovery plan and generates an official report you can use with creditors and law enforcement." },
+      { title: "Dispute fraudulent accounts", detail: "Send dispute letters to each bureau with your FTC report attached. Bureaus must investigate within 30 days. Creditors must remove fraudulent accounts." },
+      { title: "File a police report", detail: "Some creditors require a police report alongside an FTC report to remove fraudulent accounts. File locally and request a copy of the report." },
+    ],
+    law: "Applicable law: Fair Credit Reporting Act (FCRA — dispute rights, fraud alerts, security freezes) · 15 U.S.C. § 1681 · Identity Theft Enforcement and Restitution Act"
+  },
+  'bec': {
+    title: "Business Email Compromise (BEC)",
+    subtitle: "Fake invoice, supplier impersonation, or CEO fraud leading to wire transfer",
+    urgentLabel: "Contact your bank within hours — 72-hour recovery window",
+    steps: [
+      { title: "Call your bank immediately", detail: "Request a recall of the wire. Banks have a 72-hour window to attempt recall with the receiving institution. <strong>Time is the only variable you control.</strong>" },
+      { title: "File with FBI IC3", detail: "<strong>ic3.gov</strong> — IC3 has a dedicated BEC team that coordinates directly with financial institutions for fund recovery. Filing the same day significantly improves outcomes." },
+      { title: "Notify finance team and IT security", detail: "Preserve all original email headers. Do not delete the fraudulent thread." },
+      { title: "Report to FinCEN", detail: "Losses over $5,000: file at <strong>fincen.gov</strong> to flag receiving accounts across banks." },
+      { title: "Preserve all evidence", detail: "Save email headers, phone numbers, and all communication used in the fraud." },
+    ],
+    law: "Applicable law: 18 U.S.C. § 1343 (wire fraud) · 18 U.S.C. § 1030 (computer fraud) · Racketeer Influenced and Corrupt Organisations Act (RICO) for organised BEC rings"
+  }
+};
+
+function show(key) {
+  document.querySelectorAll('.scam-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  const r = RESPONSES[key];
+  let html = `
+    <div class="response-header">
+      <h2>${r.title}</h2>
+      <p>${r.subtitle}</p>
+    </div>
+    <div style="padding: 14px 18px 0;">
+      <div class="urgent-tag">${r.urgentLabel}</div>
+    </div>
+  `;
+  r.steps.forEach((s, i) => {
+    html += `<div class="step"><div class="step-num">${i+1}</div><div class="step-body"><div class="step-title">${s.title}</div><div class="step-detail">${s.detail}</div></div></div>`;
+  });
+  html += `<div class="law-box"><strong>Legal basis:</strong> ${r.law}</div>`;
+  const box = document.getElementById('response-box');
+  box.innerHTML = html;
+  box.classList.add('visible');
+  sendHeight();
+}
+
+function sendHeight() {
+  setTimeout(() => {
+    if (window.parent) window.parent.postMessage({ iframeHeight: document.documentElement.scrollHeight + 20 }, '*');
+  }, 60);
+}
+</script>
+</body>
+</html>

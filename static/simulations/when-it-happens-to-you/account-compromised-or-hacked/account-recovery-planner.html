@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Account Recovery Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #F8FAFC;
+    --surface: #FFFFFF;
+    --border: #E2E8F0;
+    --text: #0F172A;
+    --muted: #64748B;
+    --blue: #2563EB;
+    --green: #059669;
+    --red: #DC2626;
+    --amber: #B45309;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Outfit', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .wrap { max-width: 680px; margin: 0 auto; }
+
+  .header { margin-bottom: 1.25rem; }
+  .header h1 { font-size: 1.2rem; font-weight: 700; margin-bottom: 6px; }
+  .header p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+  .type-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .type-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+  }
+
+  .type-btn {
+    padding: 9px 18px;
+    border-radius: 24px;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .type-btn:hover { border-color: var(--blue); color: var(--blue); }
+  .type-btn.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+  .checklist-panel {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .checklist-panel.visible { display: block; }
+
+  .panel-header {
+    padding: 14px 18px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .panel-header h2 {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .progress-track {
+    width: 80px;
+    height: 6px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--green);
+    border-radius: 99px;
+    width: 0%;
+    transition: width 0.3s;
+  }
+
+  .progress-text {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .step-list { padding: 12px 0; }
+
+  .step-item {
+    display: flex;
+    gap: 12px;
+    padding: 11px 18px;
+    border-bottom: 1px solid var(--bg);
+    cursor: pointer;
+    transition: background 0.1s;
+    align-items: flex-start;
+  }
+
+  .step-item:last-child { border-bottom: none; }
+  .step-item:hover { background: var(--bg); }
+  .step-item.done { opacity: 0.6; }
+
+  .step-checkbox {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    background: var(--surface);
+  }
+
+  .step-item.done .step-checkbox {
+    background: var(--green);
+    border-color: var(--green);
+  }
+
+  .check-icon {
+    display: none;
+    width: 12px;
+    height: 12px;
+  }
+
+  .check-icon path { fill: #fff; }
+  .step-item.done .check-icon { display: block; }
+
+  .step-num {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--blue);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    margin-top: 2px;
+    min-width: 44px;
+  }
+
+  .step-text {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--text);
+  }
+
+  .step-item.done .step-text { text-decoration: line-through; color: var(--muted); }
+
+  .complete-banner {
+    display: none;
+    background: #ECFDF5;
+    border-top: 2px solid var(--green);
+    padding: 16px 18px;
+    text-align: center;
+  }
+
+  .complete-banner.visible { display: block; }
+
+  .complete-banner .tick {
+    font-size: 1.5rem;
+    margin-bottom: 6px;
+  }
+
+  .complete-banner h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 4px;
+  }
+
+  .complete-banner p {
+    font-size: 0.82rem;
+    color: #065F46;
+  }
+
+  .reset-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: var(--blue);
+    cursor: pointer;
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>Account Recovery Planner</h1>
+    <p>Select the type of account that was compromised to see a prioritised recovery checklist. Check each step off as you complete it.</p>
+  </div>
+
+  <div class="type-label">What type of account was compromised?</div>
+  <div class="type-buttons">
+    <button class="type-btn" onclick="showChecklist('email')">Email</button>
+    <button class="type-btn" onclick="showChecklist('social')">Social Media</button>
+    <button class="type-btn" onclick="showChecklist('banking')">Banking</button>
+    <button class="type-btn" onclick="showChecklist('cloud')">Cloud Storage</button>
+    <button class="type-btn" onclick="showChecklist('password')">Password Manager</button>
+  </div>
+
+  <div class="checklist-panel" id="checklist-panel">
+    <div class="panel-header">
+      <h2 id="panel-title">Recovery Steps</h2>
+      <div class="progress-wrap">
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <span class="progress-text" id="progress-text">0 / 0</span>
+      </div>
+    </div>
+    <div class="step-list" id="step-list"></div>
+    <div class="complete-banner" id="complete-banner">
+      <div class="tick">&#10003;</div>
+      <h3>Recovery Checklist Complete</h3>
+      <p>You have completed all recovery steps for this account type. Monitor the account for unusual activity over the next 7 days and enable login alerts if you have not already.</p>
+      <span class="reset-link" onclick="resetChecklist()">Reset checklist</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const CHECKLISTS = {
+  email: {
+    title: "Email Account Recovery",
+    steps: [
+      "Go to account security settings from a trusted device - not the device you suspect may be compromised.",
+      "End all active sessions. Look for 'Sign out of all devices' or 'Manage devices' in security settings. This terminates the attacker's session immediately.",
+      "Change your password to something unique to this account. Use a long phrase or a password manager to generate one.",
+      "Check recovery options. Verify your recovery email address and phone number are still yours. Remove any you did not add.",
+      "Check email forwarding rules. Attackers often set up forwarding to continue monitoring your inbox after a password change. Delete any rules you did not create.",
+      "Enable two-factor authentication using an authenticator app (Google Authenticator, Authy, or similar). Avoid SMS-based 2FA if you can.",
+      "Check your sent folder for phishing messages sent in your name, then notify affected contacts with a warning from a different channel."
+    ]
+  },
+  social: {
+    title: "Social Media Account Recovery",
+    steps: [
+      "Log out all other active sessions from account security settings. Most platforms have a 'Where you're logged in' section.",
+      "Change your password immediately from a trusted device.",
+      "Go to connected apps settings and remove any third-party apps you do not recognise.",
+      "Check if your recovery email address or phone number was changed. If so, restore your original details.",
+      "Review recent posts, stories, and direct messages sent in your name. Document anything you did not post.",
+      "Enable two-factor authentication using an authenticator app.",
+      "If you are locked out of the account entirely, use the platform's official account recovery page. Search '[platform name] account recovery' to find the official page."
+    ]
+  },
+  banking: {
+    title: "Banking Account Recovery",
+    steps: [
+      "Call your bank's fraud line immediately. This is urgent - ask them to review recent transactions and place the account under review.",
+      "Request a temporary card freeze to prevent any further card transactions while you investigate.",
+      "Review all recent transactions in your account history. Flag any you do not recognise to the fraud team.",
+      "Change your online banking password from a trusted device that has not been used to access the account recently.",
+      "Update your security questions and any PINs associated with the account.",
+      "Enable transaction alerts via SMS or email so you are notified immediately of all future transactions.",
+      "Request a new card if your card details may have been seen by the attacker. Most banks issue a replacement free of charge."
+    ]
+  },
+  cloud: {
+    title: "Cloud Storage Account Recovery",
+    steps: [
+      "Go to connected apps settings and revoke access for any third-party apps you do not recognise.",
+      "Change your password and end all active sessions from account security settings.",
+      "Check your shared files list. Remove sharing access for any folders shared with unknown people.",
+      "Review your download and export history if the platform provides it. Look for any bulk downloads you did not make.",
+      "Enable two-factor authentication using an authenticator app.",
+      "Check which other apps and services use your cloud account for sign-in (OAuth connections). Revoke any you do not need."
+    ]
+  },
+  password: {
+    title: "Password Manager Recovery",
+    steps: [
+      "Change your master password immediately from a secure, trusted device. Use a long, memorable passphrase you have not used elsewhere.",
+      "Enable two-factor authentication on the password manager itself if it is not already active.",
+      "Check if your vault export logs show any exports you did not make. This indicates the attacker may have copied all your passwords.",
+      "Change passwords for your highest-risk accounts first: banking, primary email, and work accounts. Generate new unique passwords.",
+      "Check for any unknown trusted devices or active sessions in your password manager's security settings. Remove them.",
+      "Generate new unique passwords for all remaining accounts stored in the vault. Start with financial, then email, then everything else."
+    ]
+  }
+};
+
+let currentType = null;
+let checked = {};
+
+function showChecklist(type) {
+  currentType = type;
+  checked = {};
+
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  const data = CHECKLISTS[type];
+  document.getElementById('panel-title').textContent = data.title;
+
+  const list = document.getElementById('step-list');
+  list.innerHTML = data.steps.map((step, i) => `
+    <div class="step-item" id="step-${i}" onclick="toggleStep(${i})">
+      <div class="step-checkbox" id="cb-${i}">
+        <svg class="check-icon" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="step-num">Step ${i + 1}</div>
+      <div class="step-text">${step}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('complete-banner').classList.remove('visible');
+  document.getElementById('checklist-panel').classList.add('visible');
+  updateProgress();
+  sendHeight();
+}
+
+function toggleStep(i) {
+  checked[i] = !checked[i];
+  const item = document.getElementById('step-' + i);
+  if (checked[i]) {
+    item.classList.add('done');
+  } else {
+    item.classList.remove('done');
+  }
+  updateProgress();
+}
+
+function updateProgress() {
+  if (!currentType) return;
+  const total = CHECKLISTS[currentType].steps.length;
+  const done = Object.values(checked).filter(Boolean).length;
+  const pct = total > 0 ? (done / total) * 100 : 0;
+
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = done + ' / ' + total;
+
+  if (done === total) {
+    document.getElementById('complete-banner').classList.add('visible');
+  } else {
+    document.getElementById('complete-banner').classList.remove('visible');
+  }
+  sendHeight();
+}
+
+function resetChecklist() {
+  if (!currentType) return;
+  checked = {};
+  const data = CHECKLISTS[currentType];
+  data.steps.forEach((_, i) => {
+    const item = document.getElementById('step-' + i);
+    if (item) item.classList.remove('done');
+  });
+  document.getElementById('complete-banner').classList.remove('visible');
+  updateProgress();
+}
+
+function sendHeight() {
+  setTimeout(() => {
+    if (window.parent) {
+      window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+    }
+  }, 100);
+}
+
+window.addEventListener('load', sendHeight);
+window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>

@@ -2,14 +2,243 @@
 sidebar_position: 4
 title: "Your Network & Connections"
 sidebar_label: "Your Network & Connections"
+description: "Public Wi-Fi risks, what a VPN does and does not protect, home router security, and safe browsing fundamentals."
+tags: [network-security, public-wifi, vpn, home-router, bluetooth, https, safe-browsing]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Your Network & Connections
 
-## Sub-topics
+Every connection your device makes is a potential interception point. Most people think nothing of connecting to any available network. That habit is what attackers rely on.
 
-- Public Wi-Fi risks — what you should never do on an open network
-- What a VPN actually does — and how to spot fake or dangerous free VPNs
-- Your home router — changing default passwords, setting up a guest network, basic security
-- Bluetooth and NFC risks — when to turn them off and why
-- Safe browsing habits — HTTPS, browser privacy settings, and extensions to avoid
+---
+
+## The Hotel Lobby
+
+Anita was staying at a business hotel in Bengaluru.
+
+She connected to "Hotel_GrandView_WiFi" in the lobby to check her corporate email before a morning meeting. The network was open, no password required.
+
+**She did not know that name had been set by another guest's mobile hotspot.** The actual hotel network was "GrandView_Guest" - a name she had not checked.
+
+The hotspot owner was running a man-in-the-middle proxy. Every request Anita's device sent was routed through it. **Her corporate email session token was captured.** So was her banking app session, which she opened briefly to check a payment.
+
+Three days later, her corporate email began forwarding copies of every email to an external address. It took IT two weeks to identify the source.
+
+**The attack took under four minutes in a hotel lobby.**
+
+---
+
+## What Is Actually Happening: Network Interception
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>34%</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>of public Wi-Fi networks tested in major cities lacked adequate encryption or were configured for traffic interception.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Open networks are unencrypted by design. Anyone on the same network can attempt to read traffic.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Norton Cybersecurity Insights Report, 2024</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Home Routers</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>84% of Routers Use Weak or Default Passwords</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Most home routers ship with <b>default admin credentials</b> that are publicly documented. An attacker nearby who knows your router model can try the default password.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: ENISA Threat Landscape for Home Networks, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Bluetooth</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Bluetooth Attacks Require Proximity - Not Much Else</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Bluetooth-based attacks work within 10 metres. <b>Leaving Bluetooth on in public</b> makes your device discoverable without any action on your part.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: CERT-In Wireless Security Advisory, 2024</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #3B82F6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#3B82F6', fontWeight: 'bold' }}>Free VPNs</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Free VPNs Often Sell the Data They Claim to Protect</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Several high-profile free VPN apps were found to <b>log and sell user browsing data</b>. A VPN shifts trust from your ISP to the VPN provider - choose carefully.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Top10VPN Free VPN Risk Index, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #10B981', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#10B981', fontWeight: 'bold' }}>HTTPS</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>HTTPS Encrypts Content - Not Your Identity</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>HTTPS encrypts data between you and a site. It does not hide <b>which sites you visit</b>, your IP address, or session metadata from network observers.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: EFF Surveillance Self-Defense Guide, 2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## What to Never Do on Public Wi-Fi
+
+Open networks transmit data unencrypted. Anyone on the same network can attempt to read it.
+
+**Never on public Wi-Fi:**
+- Log into banking, investment, or payment apps.
+- Enter card details for any purchase.
+- Access work systems or corporate email without a company VPN.
+- Access systems containing others' personal data.
+
+**Generally fine on public Wi-Fi:**
+- Reading news or public websites.
+- Streaming video or music.
+- Looking up directions or public information.
+
+When in doubt, use mobile data. Your carrier connection is encrypted end-to-end and cannot be intercepted by someone in the same coffee shop.
+
+---
+
+## What a VPN Does - and What It Does Not
+
+A VPN encrypts traffic between your device and the VPN server and hides your IP address from the sites you visit.
+
+**What a VPN protects:**
+- Your ISP from seeing which sites you visit.
+- Local network observers on public Wi-Fi.
+
+**What a VPN does not protect:**
+- The VPN provider itself can see your traffic.
+- Session tokens already captured before connecting.
+- Malware already on your device.
+- Phishing - a VPN does not verify where a site goes.
+
+**Choosing a VPN:** Mullvad, ProtonVPN, and Windscribe have independently audited no-log policies. Treat free VPNs with significant scepticism.
+
+---
+
+## Bluetooth and NFC Risks
+
+Both are short-range wireless protocols that should be off when not actively in use.
+
+**Bluetooth** connects headphones, keyboards, and speakers. In public, it also makes your device discoverable to nearby strangers. Bluejacking and KNOB attacks exploit open Bluetooth connections within 10 metres. Turn it off when not using headphones or a paired device.
+
+**NFC** (Near Field Communication) enables tap-to-pay and quick device pairing. It operates within a few centimetres, but malicious NFC tags placed on public surfaces can trigger unwanted actions - redirecting your browser, initiating a payment, or installing a configuration profile. Turn NFC off when you are not making payments.
+
+Simple rule: **both on when using, both off otherwise.**
+
+---
+
+## Safe Browsing Habits
+
+Three habits that meaningfully reduce browsing risk:
+
+**Check for HTTPS.** Before entering any credentials or payment details, confirm the URL starts with `https://`. The padlock icon confirms the connection is encrypted. An HTTP site (no 's') transmits data in plain text.
+
+**Review browser privacy settings.** Most browsers default to accepting all cookies and tracking scripts. In Chrome: Settings > Privacy and security. In Firefox: Settings > Privacy & Security. Switch to "Strict" tracking protection. Clear cookies for sites you no longer use.
+
+**Avoid unvetted browser extensions.** Extensions run inside your browser with broad access to every page you visit - including banking pages. Remove extensions you no longer use. Before installing one, check the publisher, the permissions it requests, and the number of reviews. A malicious extension with camera or microphone access can capture everything you do in the browser.
+
+---
+
+## Your Home Router
+
+Your router is the gateway for every device in your home. Three things to do:
+
+**1. Change the admin password.** Log into your router's admin panel (usually 192.168.1.1 in your browser). Change the default admin password to something unique.
+
+**2. Set up a guest network.** Use a separate "guest" Wi-Fi for visitors and smart home devices. This prevents a compromised IoT device from accessing your main devices.
+
+**3. Update the firmware.** Routers receive security updates that are not applied automatically. Check your router's admin panel for a firmware update option every 6 months.
+
+---
+
+## Try It: The Public Wi-Fi Test
+
+You are in a coffee shop on free open Wi-Fi. Five tasks to complete. Decide which are safe to do here.
+
+<iframe
+  id="wifi-test-iframe"
+  src="/simulations/your-digital-protection-habits/your-network-connections/public-wifi-test.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="The Public Wi-Fi Test"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('wifi-test-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._wifiTestHandler);
+    window._wifiTestHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. The task type determines the risk, not the network quality.**
+Streaming on public Wi-Fi is low risk. Banking on it is high risk. What you do matters more than how fast the network is.
+
+**2. A network name proves nothing.**
+Anyone can name a hotspot "Airport_Free_WiFi." Verify network names with a human at the location before connecting for sensitive tasks.
+
+**3. Mobile data is the simplest safe alternative.**
+When unsure about a network, use your carrier's data. It cannot be intercepted by someone in the same physical space.
+
+**4. VPNs add protection but are not a complete solution.**
+A corporate VPN is appropriate for work systems on public networks. Neither a VPN nor HTTPS fully protect an already-intercepted session.
+
+---
+
+## Three Things Worth Doing
+
+**1. Turn Bluetooth off when not in use.**
+Make it a habit: headphones on, Bluetooth on. Headphones away, Bluetooth off. Reduces your discoverable exposure in public.
+
+**2. Log into your router admin panel and change the default password.**
+Search for your router model and "default admin password." If it is still the default, change it now.
+
+**3. Never do banking or work logins on open Wi-Fi - use mobile data instead.**
+This single rule covers the highest-risk public network scenario.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Anita connected to 'Hotel_GrandView_WiFi' - which was a rogue hotspot set up by another guest. What was the key failure that enabled the attack?"
+  options={[
+    {
+      label: "She did not have a VPN installed on her device.",
+      correct: false,
+      explanation: "A VPN would have helped, but is not the root failure. The root failure was connecting to an unverified network and then accessing sensitive accounts on it."
+    },
+    {
+      label: "She connected to an open network without verifying it was the legitimate hotel network, then accessed sensitive accounts on it.",
+      correct: true,
+      explanation: "Correct. Any staff member at the hotel could have confirmed the real network name in 10 seconds. Verifying the network before connecting - and avoiding banking access on any open network - would have prevented the breach."
+    },
+    {
+      label: "She did not have two-factor authentication on her email.",
+      correct: false,
+      explanation: "2FA protects login attempts. The attack captured a session token - a credential that is valid after the login step. 2FA would not have protected an already-active session from interception."
+    },
+    {
+      label: "Hotel networks are always unsafe and should never be used.",
+      correct: false,
+      explanation: "Legitimate hotel networks with proper encryption are generally low risk for non-sensitive browsing. The issue was connecting to a rogue network that impersonated the hotel's."
+    }
+  ]}
+/>

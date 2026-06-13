@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>The One-Second Pause</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B;
+      --blue: #2563EB; --blue-light: #EFF6FF;
+      --green: #059669; --green-light: #ECFDF5;
+      --red: #DC2626; --red-light: #FEF2F2;
+      --amber: #D97706; --amber-light: #FFFBEB;
+      --r: 12px;
+    }
+    body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px 16px 36px; -webkit-font-smoothing: antialiased; }
+    .wrap { max-width: 600px; margin: 0 auto; }
+    .header { text-align: center; margin-bottom: 22px; }
+    .header h1 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .header p { font-size: 13.5px; color: var(--muted); max-width: 480px; margin: 0 auto; }
+    /* Progress */
+    .progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+    .prog-track { flex: 1; height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .prog-fill { height: 100%; background: var(--blue); border-radius: 99px; transition: width 0.3s; }
+    .prog-label { font-size: 12.5px; font-weight: 600; color: var(--muted); flex-shrink: 0; }
+    /* Moment card */
+    .moment-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,0.05); }
+    .mc-bar { padding: 12px 18px; background: var(--bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+    .mc-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+    .mc-icon { font-size: 18px; margin-left: auto; }
+    .mc-body { padding: 20px 18px; }
+    .mc-scenario { font-size: 15px; font-weight: 700; margin-bottom: 8px; line-height: 1.4; }
+    .mc-context { font-size: 13px; color: var(--muted); margin-bottom: 18px; line-height: 1.5; }
+    .choices { display: flex; flex-direction: column; gap: 8px; }
+    .choice-btn { padding: 12px 14px; background: var(--surface); border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500; color: var(--text); text-align: left; line-height: 1.4; transition: all 0.15s; }
+    .choice-btn:hover { border-color: var(--blue); background: var(--blue-light); }
+    .choice-btn.selected { border-color: var(--blue); background: var(--blue-light); font-weight: 600; }
+    /* Reveal */
+    .reveal { display: none; margin-top: 18px; }
+    .reveal.show { display: block; }
+    .reveal-box { border-radius: var(--r); padding: 16px; }
+    .reveal-box.good { background: var(--green-light); border: 1px solid #A7F3D0; }
+    .reveal-box.ok { background: var(--amber-light); border: 1px solid #FDE68A; }
+    .reveal-box.bad { background: var(--red-light); border: 1px solid #FECACA; }
+    .reveal-title { font-size: 13.5px; font-weight: 700; margin-bottom: 6px; }
+    .reveal-box.good .reveal-title { color: var(--green); }
+    .reveal-box.ok .reveal-title { color: var(--amber); }
+    .reveal-box.bad .reveal-title { color: var(--red); }
+    .reveal-text { font-size: 13px; line-height: 1.55; }
+    .reveal-habit { margin-top: 10px; padding: 10px 12px; background: rgba(255,255,255,0.7); border-radius: 8px; font-size: 12.5px; font-weight: 600; }
+    .next-btn { display: block; width: 100%; padding: 12px; background: var(--blue); color: #fff; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; margin-top: 14px; transition: background 0.15s; }
+    .next-btn:hover { background: #1D4ED8; }
+    /* Summary */
+    .summary { display: none; }
+    .summary.show { display: block; }
+    .sum-box { text-align: center; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 28px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .sum-num { font-size: 52px; font-weight: 800; }
+    .sum-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .sum-label { font-size: 14px; font-weight: 600; margin-top: 10px; }
+    .habit-summary { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .hs-title { font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+    .hs-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 13px; line-height: 1.4; }
+    .hs-item.pass { background: var(--green-light); }
+    .hs-item.warn { background: var(--amber-light); }
+    .hs-item.miss { background: var(--red-light); }
+    .hs-icon { flex-shrink: 0; font-size: 16px; }
+    .btn-reset { display: block; width: 100%; padding: 12px; background: transparent; color: var(--muted); font-family: 'Outfit', sans-serif; font-size: 13.5px; font-weight: 600; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; margin-top: 10px; transition: all 0.15s; }
+    .btn-reset:hover { background: var(--border); color: var(--text); }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>The One-Second Pause</h1>
+    <p>8 micro-moments from a normal day. Choose your instinctive response. Then see the correct behaviour.</p>
+  </div>
+
+  <div class="progress-row">
+    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="prog-label" id="prog-label">1 of 8</div>
+  </div>
+
+  <div id="moment-section">
+    <div class="moment-card" id="moment-card">
+      <div class="mc-bar">
+        <span class="mc-label" id="mc-label">Moment 1</span>
+        <span class="mc-icon" id="mc-icon"></span>
+      </div>
+      <div class="mc-body">
+        <div class="mc-scenario" id="mc-scenario"></div>
+        <div class="mc-context" id="mc-context"></div>
+        <div class="choices" id="choices"></div>
+        <div class="reveal" id="reveal">
+          <div class="reveal-box" id="reveal-box">
+            <div class="reveal-title" id="reveal-title"></div>
+            <div class="reveal-text" id="reveal-text"></div>
+            <div class="reveal-habit" id="reveal-habit"></div>
+          </div>
+          <button class="next-btn" id="next-btn" onclick="nextMoment()">Next moment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="summary" id="summary">
+    <div class="sum-box">
+      <div class="sum-num" id="sum-num">-</div>
+      <div class="sum-sub">pauses used correctly</div>
+      <div class="sum-label" id="sum-label"></div>
+    </div>
+    <div class="habit-summary">
+      <div class="hs-title">Your moment-by-moment breakdown</div>
+      <div id="hs-list"></div>
+    </div>
+    <button class="btn-reset" onclick="reset()">Try Again</button>
+  </div>
+</div>
+
+<script>
+  const moments = [
+    {
+      icon: '📧', label: 'Unexpected email',
+      scenario: '"Your parcel could not be delivered. Click to reschedule."',
+      context: 'You were not expecting a delivery. Sender: noreply@deliveryupdate-in.com',
+      choices: ['Click the link to check', 'Visit the carrier\'s official site directly', 'Delete it'],
+      correct: 1,
+      quality: ['bad', 'good', 'ok'],
+      feedback: ['That domain is not a real carrier. This is the most common phishing format.', 'Correct. Go to the carrier website directly - never through the link in the message.', 'Verify first. The right action is to check directly, not delete.'],
+      habit: 'Rule: Never use a link in an unexpected message. Go directly to the source.'
+    },
+    {
+      icon: '📮', label: 'QR code on a poster',
+      scenario: 'A coffee shop poster says "Free Wi-Fi - scan to connect."',
+      context: 'The QR code is printed on plain paper taped to the wall.',
+      choices: ['Scan and connect', 'Ask a staff member for the real Wi-Fi name', 'Scan but avoid entering passwords'],
+      correct: 1,
+      quality: ['bad', 'good', 'ok'],
+      feedback: ['A QR code taped to any surface could have been placed by anyone.', 'Correct. Staff can confirm the real network name in seconds.', 'Connecting to a rogue network is the risk - even without entering passwords.'],
+      habit: 'Rule: Verify physical QR codes with a human before connecting.'
+    },
+    {
+      icon: '📱', label: 'Urgent WhatsApp from unknown number',
+      scenario: '"Hi, it\'s Mum. New phone. Something urgent happened. Send Rs 2,000 now?"',
+      context: 'You do not recognise the number.',
+      choices: ['Send it - might be real', 'Reply asking for proof it\'s her', 'Call your mum on her known number'],
+      correct: 2,
+      quality: ['bad', 'ok', 'good'],
+      feedback: ['Sending money to an unverified number is exactly what this attack targets.', 'Proof can be faked. Verification must happen outside this conversation.', 'Correct. One call to her saved number settles it in 10 seconds.'],
+      habit: 'Rule: Urgent money requests - verify through a channel you already have.'
+    },
+    {
+      icon: '📣', label: 'Too-good social media ad',
+      scenario: 'Brand new AirPods for Rs 499. "Limited stock." Retail price: Rs 15,000.',
+      context: 'The seller page shows 4.9 stars and 200 reviews.',
+      choices: ['Buy - the reviews look good', 'Check the seller independently first', 'Ignore it entirely'],
+      correct: 1,
+      quality: ['bad', 'good', 'ok'],
+      feedback: ['Fake reviews take minutes to generate. A 95% discount signals fraud, not a deal.', 'Correct. Search the seller name. Check if reviews are clustered on the same day.', 'You do not need to ignore all ads - just verify before entering payment details.'],
+      habit: 'Rule: A 95% discount on electronics is not a deal. It is a signal.'
+    },
+    {
+      icon: '📎', label: 'File from a colleague',
+      scenario: '"Q2_Budget_Final_REVISED.xlsx.exe" arrives by email from a colleague.',
+      context: 'You were expecting a spreadsheet. The email looks normal.',
+      choices: ['Open it - it came from them', 'Check the file extension first', 'Confirm with the colleague on a different channel'],
+      correct: 2,
+      quality: ['bad', 'ok', 'good'],
+      feedback: ['.exe files are not spreadsheets. Their account may have been compromised.', 'Good check - but their account could still have sent it without their knowledge.', 'Correct. A 10-second Slack message or call confirms whether they sent it.'],
+      habit: 'Rule: Unexpected attachments - even from known contacts - need quick verification.'
+    },
+    {
+      icon: '🔐', label: 'Login prompt on unfamiliar site',
+      scenario: 'A site you have never used asks you to "Log in with Google" to read one article.',
+      context: 'The URL looks unfamiliar.',
+      choices: ['Log in with Google - it\'s quick', 'Create a separate account instead', 'Close and find the content elsewhere'],
+      correct: 2,
+      quality: ['bad', 'ok', 'good'],
+      feedback: ['"Log in with Google" grants this unknown site access to your Google profile data.', 'Better, but still giving your email to an unknown site. Use an alias email.', 'Correct. If the content requires an account on an unfamiliar site, it is rarely worth the access grant.'],
+      habit: 'Rule: "Log in with Google" = sharing data with that site. Use it only for trusted services.'
+    },
+    {
+      icon: '📞', label: 'Inbound call from "your bank"',
+      scenario: '"This is HDFC Bank fraud team. Suspicious activity detected. Please verify your OTP."',
+      context: 'The caller knows your name and last 4 card digits.',
+      choices: ['Give the OTP to stop the fraud', 'Hang up and call the number on your card', 'Ask the caller more questions first'],
+      correct: 1,
+      quality: ['bad', 'good', 'ok'],
+      feedback: ['The OTP is exactly what the attacker needs. Sharing it hands over your account.', 'Correct. End the call. Call back using the number printed on your card.', 'Any verification they offer was prepared in advance. End the call and reconnect officially.'],
+      habit: 'Rule: No real bank asks for your OTP on an inbound call. Hang up. Call back.'
+    },
+    {
+      icon: '📲', label: '"Fun" personal data post',
+      scenario: '"Share your first car, first pet, and first school! Let\'s see who you are."',
+      context: 'It is trending with thousands of comments.',
+      choices: ['Join in - it\'s harmless', 'Skip it - these are security question answers', 'Share only non-sensitive details'],
+      correct: 1,
+      quality: ['bad', 'good', 'ok'],
+      feedback: ['First car, first pet, first school are the three most common password reset security questions.', 'Correct. These posts harvest security question answers, whether that was the intent or not.', 'Even partial answers help attackers guess the rest. Skip entirely.'],
+      habit: 'Rule: "Fun" personal data prompts are often security question harvests.'
+    }
+  ];
+
+  let current = 0;
+  let results = [];
+  let answered = false;
+
+  function render() {
+    const m = moments[current];
+    document.getElementById('prog-fill').style.width = (current/8*100) + '%';
+    document.getElementById('prog-label').textContent = (current+1) + ' of 8';
+    document.getElementById('mc-label').textContent = 'Moment ' + (current+1);
+    document.getElementById('mc-icon').textContent = m.icon;
+    document.getElementById('mc-scenario').textContent = m.scenario;
+    document.getElementById('mc-context').textContent = m.context;
+    let html = '';
+    m.choices.forEach((c, i) => {
+      html += `<button class="choice-btn" onclick="pick(${i})">${c}</button>`;
+    });
+    document.getElementById('choices').innerHTML = html;
+    document.getElementById('reveal').classList.remove('show');
+    answered = false;
+    if (current === 7) document.getElementById('next-btn').textContent = 'See Results';
+    else document.getElementById('next-btn').textContent = 'Next moment';
+  }
+
+  function pick(i) {
+    if (answered) return;
+    answered = true;
+    const m = moments[current];
+    document.querySelectorAll('.choice-btn').forEach((b, idx) => {
+      if (idx === i) b.classList.add('selected');
+    });
+    const q = m.quality[i];
+    const box = document.getElementById('reveal-box');
+    box.className = 'reveal-box ' + (q === 'good' ? 'good' : q === 'ok' ? 'ok' : 'bad');
+    document.getElementById('reveal-title').textContent = q === 'good' ? 'Good pause' : q === 'ok' ? 'Partially right' : 'Risk taken';
+    document.getElementById('reveal-text').textContent = m.feedback[i];
+    document.getElementById('reveal-habit').textContent = m.habit;
+    document.getElementById('reveal').classList.add('show');
+    results.push({ moment: m, choice: i, quality: q });
+    setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'), 200);
+  }
+
+  function nextMoment() {
+    current++;
+    if (current >= 8) {
+      showSummary();
+    } else {
+      render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  function showSummary() {
+    document.getElementById('prog-fill').style.width = '100%';
+    document.getElementById('prog-label').textContent = '8 of 8';
+    document.getElementById('moment-section').style.display = 'none';
+    const correct = results.filter(r => r.quality === 'good').length;
+    document.getElementById('sum-num').textContent = correct + '/8';
+    const colors = {0:'#DC2626',1:'#DC2626',2:'#D97706',3:'#D97706',4:'#D97706',5:'#059669',6:'#059669',7:'#059669',8:'#059669'};
+    document.getElementById('sum-num').style.color = colors[correct];
+    const labels = ['Several gaps - review the moments you missed.','Several gaps - review the moments you missed.','Keep reviewing - habits take practice.','Getting there - 3 more to master.','Good instincts - a few edge cases to sharpen.','Strong habit set - maintain it.','Strong habit set - maintain it.','Very aware - keep the standard up.','Perfect - this is the habit.'];
+    document.getElementById('sum-label').textContent = labels[correct];
+    const icons = { good: '✓', ok: '~', bad: '✗' };
+    const colors2 = { good: 'pass', ok: 'warn', bad: 'miss' };
+    let html = '';
+    results.forEach((r, i) => {
+      html += `<div class="hs-item ${colors2[r.quality]}">
+        <span class="hs-icon">${icons[r.quality]}</span>
+        <span><strong>${r.moment.label}:</strong> ${r.moment.choices[r.choice]}</span>
+      </div>`;
+    });
+    document.getElementById('hs-list').innerHTML = html;
+    document.getElementById('summary').classList.add('show');
+    setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'), 300);
+  }
+
+  function reset() {
+    current = 0;
+    results = [];
+    answered = false;
+    document.getElementById('summary').classList.remove('show');
+    document.getElementById('moment-section').style.display = 'block';
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  render();
+  window.addEventListener('load', () => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'));
+</script>
+</body>
+</html>

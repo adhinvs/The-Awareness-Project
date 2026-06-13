@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Your Protection Scorecard</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B;
+      --blue: #2563EB; --blue-light: #EFF6FF;
+      --green: #059669; --green-light: #ECFDF5;
+      --red: #DC2626; --red-light: #FEF2F2;
+      --amber: #D97706; --amber-light: #FFFBEB;
+      --r: 12px;
+    }
+    body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px 16px 36px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .header { text-align: center; margin-bottom: 28px; }
+    .header h1 { font-size: 20px; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.02em; }
+    .header p { font-size: 13.5px; color: var(--muted); max-width: 500px; margin: 0 auto; }
+    .wrap { max-width: 640px; margin: 0 auto; }
+    .domain { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 14px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,0.04); }
+    .domain-header { padding: 14px 18px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); background: var(--bg); }
+    .domain-icon { font-size: 20px; }
+    .domain-title { font-size: 14px; font-weight: 700; }
+    .domain-score { margin-left: auto; font-size: 13px; font-weight: 600; color: var(--muted); }
+    .questions { padding: 14px 18px; display: flex; flex-direction: column; gap: 10px; }
+    .q-row { display: flex; align-items: flex-start; gap: 12px; }
+    .q-text { flex: 1; font-size: 13.5px; line-height: 1.5; }
+    .toggle { display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; flex-shrink: 0; }
+    .toggle button { padding: 5px 13px; font-family: 'Outfit', sans-serif; font-size: 12.5px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--muted); transition: all 0.15s; }
+    .toggle button.yes.active { background: var(--green); color: #fff; }
+    .toggle button.no.active { background: var(--red); color: #fff; }
+    .toggle button:hover:not(.active) { background: var(--border); }
+    .results { display: none; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 24px; margin-top: 6px; box-shadow: 0 1px 6px rgba(0,0,0,0.04); }
+    .results.show { display: block; }
+    .score-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .score-label { font-size: 13px; font-weight: 600; width: 120px; flex-shrink: 0; }
+    .bar-track { flex: 1; height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 99px; transition: width 0.5s ease; }
+    .score-num { font-size: 12.5px; font-weight: 600; width: 36px; text-align: right; flex-shrink: 0; }
+    .overall { text-align: center; padding: 20px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 20px; }
+    .overall-num { font-size: 48px; font-weight: 800; line-height: 1; }
+    .overall-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .verdict { font-size: 15px; font-weight: 600; margin-top: 10px; }
+    .actions-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+    .action-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; background: var(--blue-light); border: 1px solid #BFDBFE; border-radius: 8px; margin-bottom: 8px; font-size: 13px; line-height: 1.5; }
+    .action-num { font-weight: 800; color: var(--blue); flex-shrink: 0; }
+    .btn { display: block; width: 100%; padding: 13px; background: var(--blue); color: #fff; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; margin-top: 18px; transition: background 0.15s; }
+    .btn:hover { background: #1D4ED8; }
+    .btn-reset { background: transparent; color: var(--muted); border: 1px solid var(--border); margin-top: 10px; }
+    .btn-reset:hover { background: var(--border); color: var(--text); }
+    .progress-bar { height: 4px; background: var(--border); border-radius: 99px; margin-bottom: 24px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--blue); border-radius: 99px; transition: width 0.3s ease; }
+    .green { color: var(--green); } .amber { color: var(--amber); } .red-t { color: var(--red); }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>Your Protection Scorecard</h1>
+    <p>15 questions across 6 habit domains. Binary: done or not done. Takes about 3 minutes.</p>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+
+  <!-- Domain 1: Devices -->
+  <div class="domain">
+    <div class="domain-header">
+      <span class="domain-icon">💻</span>
+      <span class="domain-title">Devices & Software</span>
+      <span class="domain-score" id="d1-score">0 / 3</span>
+    </div>
+    <div class="questions">
+      <div class="q-row">
+        <span class="q-text">My device OS and apps update automatically.</span>
+        <div class="toggle"><button class="yes" onclick="answer(1,1,true,this)">Yes</button><button class="no" onclick="answer(1,1,false,this)">No</button></div>
+      </div>
+      <div class="q-row">
+        <span class="q-text">I have a screen lock (PIN, fingerprint, or face) enabled.</span>
+        <div class="toggle"><button class="yes" onclick="answer(1,2,true,this)">Yes</button><button class="no" onclick="answer(1,2,false,this)">No</button></div>
+      </div>
+      <div class="q-row">
+        <span class="q-text">I wipe devices before selling or giving them away.</span>
+        <div class="toggle"><button class="yes" onclick="answer(1,3,true,this)">Yes</button><button class="no" onclick="answer(1,3,false,this)">No</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Domain 2: Accounts -->
+  <div class="domain">
+    <div class="domain-header">
+      <span class="domain-icon">🔑</span>
+      <span class="domain-title">Accounts & Passwords</span>
+      <span class="domain-score" id="d2-score">0 / 3</span>
+    </div>
+    <div class="questions">
+      <div class="q-row">
+        <span class="q-text">I use a password manager for my main accounts.</span>
+        <div class="toggle"><button class="yes" onclick="answer(2,1,true,this)">Yes</button><button class="no" onclick="answer(2,1,false,this)">No</button></div>
+      </div>
+      <div class="q-row">
+        <span class="q-text">I have two-factor authentication on my email and banking apps.</span>
+        <div class="toggle"><button class="yes" onclick="answer(2,2,true,this)">Yes</button><button class="no" onclick="answer(2,2,false,this)">No</button></div>
+      </div>
+      <div class="q-row">
+        <span class="q-text">I have reviewed which third-party apps have access to my accounts in the last 6 months.</span>
+        <div class="toggle"><button class="yes" onclick="answer(2,3,true,this)">Yes</button><button class="no" onclick="answer(2,3,false,this)">No</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Domain 3: Apps -->
+  <div class="domain">
+    <div class="domain-header">
+      <span class="domain-icon">📱</span>
+      <span class="domain-title">Apps & Permissions</span>
+      <span class="domain-score" id="d3-score">0 / 3</span>
+    </div>
+    <div class="questions">
+      <div class="q-row">
+        <span class="q-text">I know how to review app permissions on my phone.</span>
+        <div class="toggle"><button class="yes" onclick="answer(3,1,true,this)">Yes</button><button class="no" onclick="answer(3,1,false,this)">No</button></div>
+      </div>
+      <div class="q-row">
+        <span class="q-text">I only install apps from official stores (App Store, Google Play).</span>
+        <div class="toggle"><button class="yes" onclick="answer(3,2,true,this)">Yes</button><button class="no" onclick="answer(3,2,false,this)">No</button></div>
+      </div>
+      <div class="q-row">
+        <span class="q-text">I have deleted apps I no longer use in the last 3 months.</span>
+        <div class="toggle"><button class="yes" onclick="answer(3,3,true,this)">Yes</button><button class="no" onclick="answer(3,3,false,this)">No</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Domain 4: Network -->
+  <div class="domain">
+    <div class="domain-header">
+      <span class="domain-icon">📡</span>
+      <span class="domain-title">Network & Connections</span>
+      <span class="domain-score" id="d4-score">0 / 3</span>
+    </div>
+    <div class="questions">
+      <div class="q-row">
+        <span class="q-text">I avoid banking or logging into sensitive accounts on public Wi-Fi.</span>
+        <div class="toggle"><button class="yes" onclick="answer(4,1,true,this)">Yes</button><button class="no" onclick="answer(4,1,false,this)">No</button></div>
+      </div>
+      <div class="q-row">
+        <span class="q-text">My home router uses a strong, non-default password.</span>
+        <div class="toggle"><button class="yes" onclick="answer(4,2,true,this)">Yes</button><button class="no" onclick="answer(4,2,false,this)">No</button></div>
+      </div>
+      <div class="q-row">
+        <span class="q-text">I turn off Bluetooth when not actively using it.</span>
+        <div class="toggle"><button class="yes" onclick="answer(4,3,true,this)">Yes</button><button class="no" onclick="answer(4,3,false,this)">No</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Domain 5: Data -->
+  <div class="domain">
+    <div class="domain-header">
+      <span class="domain-icon">🔒</span>
+      <span class="domain-title">Data & Privacy Settings</span>
+      <span class="domain-score" id="d5-score">0 / 3</span>
+    </div>
+    <div class="questions">
+      <div class="q-row">
+        <span class="q-text">I have reviewed my social media privacy settings in the last 6 months.</span>
+        <div class="toggle"><button class="yes" onclick="answer(5,1,true,this)">Yes</button><button class="no" onclick="answer(5,1,false,this)">No</button></div>
+      </div>
+      <div class="q-row">
+        <span class="q-text">I have turned off ad personalisation on at least one major platform.</span>
+        <div class="toggle"><button class="yes" onclick="answer(5,2,true,this)">Yes</button><button class="no" onclick="answer(5,2,false,this)">No</button></div>
+      </div>
+      <div class="q-row">
+        <span class="q-text">I know where to find my Google or Apple data download.</span>
+        <div class="toggle"><button class="yes" onclick="answer(5,3,true,this)">Yes</button><button class="no" onclick="answer(5,3,false,this)">No</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Domain 6: Behaviour -->
+  <div class="domain">
+    <div class="domain-header">
+      <span class="domain-icon">🧠</span>
+      <span class="domain-title">Digital Behaviour & Habits</span>
+      <span class="domain-score" id="d6-score">0 / 3</span>
+    </div>
+    <div class="questions">
+      <div class="q-row">
+        <span class="q-text">I pause before clicking links in unexpected emails or messages.</span>
+        <div class="toggle"><button class="yes" onclick="answer(6,1,true,this)">Yes</button><button class="no" onclick="answer(6,1,false,this)">No</button></div>
+      </div>
+      <div class="q-row">
+        <span class="q-text">I know who to call if my bank account or email is compromised.</span>
+        <div class="toggle"><button class="yes" onclick="answer(6,2,true,this)">Yes</button><button class="no" onclick="answer(6,2,false,this)">No</button></div>
+      </div>
+      <div class="q-row">
+        <span class="q-text">I am careful about what personal information I share publicly online.</span>
+        <div class="toggle"><button class="yes" onclick="answer(6,3,true,this)">Yes</button><button class="no" onclick="answer(6,3,false,this)">No</button></div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn" onclick="showResults()">See My Scorecard</button>
+
+  <div class="results" id="results">
+    <div class="overall" id="overall-box">
+      <div class="overall-num" id="overall-num">0/15</div>
+      <div class="overall-label">questions done</div>
+      <div class="verdict" id="verdict"></div>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <div class="score-row" id="bar-1"></div>
+      <div class="score-row" id="bar-2"></div>
+      <div class="score-row" id="bar-3"></div>
+      <div class="score-row" id="bar-4"></div>
+      <div class="score-row" id="bar-5"></div>
+      <div class="score-row" id="bar-6"></div>
+    </div>
+
+    <div class="actions-title">Your 6 highest-impact next actions</div>
+    <div id="actions-list"></div>
+
+    <button class="btn btn-reset" onclick="reset()">Start Over</button>
+  </div>
+</div>
+
+<script>
+  const state = {
+    1: [null,null,null],
+    2: [null,null,null],
+    3: [null,null,null],
+    4: [null,null,null],
+    5: [null,null,null],
+    6: [null,null,null]
+  };
+
+  const domainNames = ['Devices & Software','Accounts & Passwords','Apps & Permissions','Network & Connections','Data & Privacy Settings','Digital Behaviour'];
+
+  const actions = {
+    1: ['Enable automatic OS updates. On Android: Settings > System > Software update. On iPhone: Settings > General > Software Update > Automatic Updates.','Turn on a screen lock now. Settings > Security (Android) or Face ID & Passcode (iPhone).','Before your next device handoff, do a full factory reset, not just a file delete.'],
+    2: ['Install a free password manager today: Bitwarden (free) or 1Password. Start with your email account.','Add an authenticator app (Google Authenticator or Authy) to your email and banking app this week.','Go to Google/Apple/Facebook account settings > Connected apps > remove anything you don\'t recognise.'],
+    3: ['Open Settings > Apps > Permissions on Android or Settings > Privacy & Security on iPhone. Spend 5 minutes reviewing.','Delete any app you haven\'t opened in 3 months. It still has its permissions active.','Check if any app you installed has microphone or location access it doesn\'t need. Revoke it.'],
+    4: ['Never log into banking or work systems on coffee shop or hotel Wi-Fi. Use mobile data instead.','Log into your router admin panel (usually 192.168.1.1) and change the default admin password.','Switch Bluetooth to off by default. Turn it on only when using headphones or a device.'],
+    5: ['Spend 4 minutes on Facebook: Settings > Privacy > review who sees your posts and future posts.','On Google: myaccount.google.com > Data & Privacy > turn off Ads Personalisation.','Download your Google data at takeout.google.com to see exactly what they hold about you.'],
+    6: ['Before clicking any link in an email: hover over it first to see the actual destination URL.','Save your bank\'s fraud line in your contacts now, before you need it under pressure.','Set your social media profiles to private or friends-only if they are currently public.']
+  };
+
+  function answer(domain, q, yes, btn) {
+    state[domain][q-1] = yes;
+    const parent = btn.closest('.toggle');
+    parent.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    updateDomainScore(domain);
+    updateProgress();
+  }
+
+  function updateDomainScore(d) {
+    const s = state[d].filter(v => v === true).length;
+    const total = state[d].filter(v => v !== null).length;
+    document.getElementById('d'+d+'-score').textContent = s + ' / 3';
+  }
+
+  function updateProgress() {
+    const answered = Object.values(state).flat().filter(v => v !== null).length;
+    document.getElementById('progress').style.width = (answered/15*100) + '%';
+  }
+
+  function showResults() {
+    const scores = {};
+    let total = 0;
+    for (let d = 1; d <= 6; d++) {
+      scores[d] = state[d].filter(v => v === true).length;
+      total += scores[d];
+    }
+
+    document.getElementById('overall-num').textContent = total + '/15';
+    const pct = Math.round(total/15*100);
+    let verdict, vclass;
+    if (pct >= 80) { verdict = 'Strong baseline. Keep it maintained.'; vclass = 'green'; }
+    else if (pct >= 53) { verdict = 'Decent foundation. A few gaps to close.'; vclass = 'amber'; }
+    else { verdict = 'Several gaps. Pick the top action per domain.'; vclass = 'red-t'; }
+    const vEl = document.getElementById('verdict');
+    vEl.textContent = verdict;
+    vEl.className = 'verdict ' + vclass;
+
+    const barColors = { 0: '#DC2626', 1: '#D97706', 2: '#D97706', 3: '#059669' };
+    for (let d = 1; d <= 6; d++) {
+      const s = scores[d];
+      const pctBar = (s/3*100);
+      document.getElementById('bar-'+d).innerHTML =
+        `<span class="score-label">${domainNames[d-1]}</span>
+         <div class="bar-track"><div class="bar-fill" style="width:${pctBar}%;background:${barColors[s]}"></div></div>
+         <span class="score-num">${s}/3</span>`;
+    }
+
+    const list = document.getElementById('actions-list');
+    list.innerHTML = '';
+    for (let d = 1; d <= 6; d++) {
+      const s = scores[d];
+      const actionIdx = s === 3 ? 0 : (3 - s - 1 < 0 ? 0 : 3 - s - 1);
+      const actionText = s === 3 ? actions[d][0].replace('...','') : actions[d][actionIdx] || actions[d][0];
+      const label = s === 3 ? '✓ ' + domainNames[d-1] : domainNames[d-1];
+      const style = s === 3 ? 'background:#ECFDF5;border-color:#A7F3D0' : '';
+      list.innerHTML += `<div class="action-item" style="${style}"><span class="action-num">${d}.</span><span><strong>${label}:</strong> ${actionText}</span></div>`;
+    }
+
+    document.getElementById('results').classList.add('show');
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    setTimeout(() => {
+      window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+    }, 400);
+  }
+
+  function reset() {
+    for (let d = 1; d <= 6; d++) {
+      state[d] = [null,null,null];
+      document.getElementById('d'+d+'-score').textContent = '0 / 3';
+    }
+    document.querySelectorAll('.toggle button').forEach(b => b.classList.remove('active'));
+    document.getElementById('progress').style.width = '0%';
+    document.getElementById('results').classList.remove('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  window.addEventListener('load', () => {
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+  });
+</script>
+</body>
+</html>

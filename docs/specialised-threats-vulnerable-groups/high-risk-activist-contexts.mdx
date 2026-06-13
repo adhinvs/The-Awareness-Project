@@ -2,14 +2,183 @@
 sidebar_position: 8
 title: "High-Risk & Activist Contexts"
 sidebar_label: "High-Risk & Activist Contexts"
+description: "Spyware, state-sponsored surveillance, border device searches, de-platforming, and operational security for journalists and activists."
+tags: [high-risk, activist-security, journalist-safety, pegasus-spyware, opsec, border-security, de-platforming, digital-rights, surveillance, state-sponsored-hacking]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # High-Risk & Activist Contexts
 
-## Sub-topics
+*For most people, digital security is about protecting money and privacy. For journalists, activists, and researchers, it is about protecting sources, safety, and the ability to continue working.*
 
-- Surveillance targeting journalists and activists
-- Spyware and state-sponsored hacking
-- Border security and device search
-- De-platforming and digital erasure
-- Protective measures for high-risk users
+---
+
+## The Message That Looked Like a Source
+
+Meena was an investigative journalist covering organised crime. She had been working on a story for six months.
+
+A Signal message arrived from an unknown number. A whistleblower, they said, with documents that would change everything. They needed her to install a "secure viewer" to open the files, a link was attached.
+
+She had seen stories about this kind of attack. She was sceptical. She told the contact to use SecureDrop and did not click the link.
+
+Two weeks later, a colleague at a different outlet, working on a similar story, received the same message. He installed the software.
+
+**The software was Pegasus. His phone reported every call, message, and location for the next four months before a forensic analysis identified it.**
+
+His sources were exposed. His story was killed. He received death threats.
+
+---
+
+## What Is Actually Happening
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>50+</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>countries where Pegasus spyware has been confirmed on devices of journalists, activists, and opposition figures.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Commercial spyware sold to governments is now a mainstream tool of political repression, available to states without significant technical capacity.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: Citizen Lab / Amnesty Tech Reports, 2024-2025</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Online Violence</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>73% of Women Journalists Targeted</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>UNESCO found that <b>73% of women journalists have experienced online violence</b>, with 20% reporting offline attacks that followed digital targeting. The combination of harassment and surveillance creates a chilling effect on reporting.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: UNESCO Journalism Safety Report, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Border Security</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Device Searches at Borders Rising</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>US Customs and Border Protection conducted <b>over 41,000 device searches in FY2023</b>, a record number. Journalists and activists entering or exiting high-risk countries face disproportionate device inspection. Source data on an unprotected device is permanently exposed.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: US CBP Border Search Statistics, 2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## Five High-Risk Threat Vectors
+
+### Surveillance Targeting Journalists and Activists
+
+State-sponsored and commercial surveillance targets people whose work threatens powerful interests. This includes journalists, opposition politicians, NGO workers, and researchers. The threat is not hypothetical, Citizen Lab has documented Pegasus infections on hundreds of devices globally, including major media organisations.
+
+### Spyware and State-Sponsored Hacking
+
+Commercial spyware like Pegasus can be delivered via zero-click exploits, no action from the target required. Once installed, it accesses all messages, calls, photos, microphone, and camera. **Even fully updated devices from major manufacturers have been compromised.** Regular forensic checks are the only detection method.
+
+### Border Security and Device Search
+
+Crossing a border with source communications, unpublished stories, or activist coordination on your device creates exposure. Law enforcement in many jurisdictions can compel device unlocking. The correct practice is travelling with a clean device containing no sensitive data, with real data accessible only remotely after crossing.
+
+### De-platforming and Digital Erasure
+
+Coordinated reporting campaigns can suspend accounts without legitimate cause. State actors and organised groups use mass reporting as a suppression tool. **Archiving work independently of any single platform is essential**, accounts that have existed for years can be suspended in hours.
+
+### Physical Security Intersection
+
+Digital targeting escalates to physical threat in documented cases. Journalists and activists whose location, home address, or daily routine has been exposed face genuine physical danger. **Digital safety and physical safety cannot be planned separately** for high-risk individuals.
+
+---
+
+## Try It: OpSec Checklist
+
+Three tiers of operational security, from baseline protections everyone should have, to advanced measures for those facing active threat actors.
+
+<iframe
+  id="opsec-iframe"
+  src="/simulations/specialised-threats-vulnerable-groups/high-risk-activist-contexts/opsec-checklist.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="OpSec Checklist for High-Risk Users"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('opsec-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._opsecHandler);
+    window._opsecHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '12px', margin: '24px 0' }}>
+  <div className="glass-panel" style={{ padding: '20px 24px', borderRadius: '14px', borderLeft: '4px solid var(--ifm-color-primary)', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <span style={{ fontSize: '1.5rem', lineHeight: '1', marginTop: '2px' }}>🛡️</span>
+    <div>
+      <p style={{ fontWeight: '700', margin: '0 0 6px 0', fontSize: '1rem' }}>Baseline protections are missing for most people.</p>
+      <p style={{ margin: '0', fontSize: '0.9rem', opacity: '0.85', lineHeight: '1.55' }}>The first tier of the checklist covers protections that prevent the majority of non-targeted attacks. Most of them take under five minutes to implement. The gap is not that they are difficult — it is that they are not habitual.</p>
+    </div>
+  </div>
+  <div className="glass-panel" style={{ padding: '20px 24px', borderRadius: '14px', borderLeft: '4px solid #EF4444', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <span style={{ fontSize: '1.5rem', lineHeight: '1', marginTop: '2px' }}>⚖️</span>
+    <div>
+      <p style={{ fontWeight: '700', margin: '0 0 6px 0', fontSize: '1rem' }}>Threat level determines which tier applies to you.</p>
+      <p style={{ margin: '0', fontSize: '0.9rem', opacity: '0.85', lineHeight: '1.55' }}>Signal alone is not enough against a state actor. A hardware key alone is not enough if your device is compromised. The checklist is tiered because the protections required scale with who is targeting you and what resources they have.</p>
+    </div>
+  </div>
+  <div className="glass-panel" style={{ padding: '20px 24px', borderRadius: '14px', borderLeft: '4px solid #059669', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <span style={{ fontSize: '1.5rem', lineHeight: '1', marginTop: '2px' }}>💸</span>
+    <div>
+      <p style={{ fontWeight: '700', margin: '0 0 6px 0', fontSize: '1rem' }}>Every tool in all three tiers is free.</p>
+      <p style={{ margin: '0', fontSize: '0.9rem', opacity: '0.85', lineHeight: '1.55' }}>Signal, Tor, Tails, a hardware key, and VPNs with verified no-log policies are all either free or under $30. The barrier to high-level operational security is knowledge and habit, not money.</p>
+    </div>
+  </div>
+</div>
+
+---
+
+## Three Things Worth Doing
+
+**1. Use Signal for all sensitive communications, with disappearing messages enabled.**
+Signal is the baseline. Disappearing messages means a device seizure does not expose historical conversations. This is the single most impactful change for most journalists and activists.
+
+**2. Contact Access Now's Digital Security Helpline if you are under active threat.**
+Access Now provides free, confidential digital security support to journalists, activists, and human rights defenders. accessnow.org/help
+
+**3. Prepare a clean travel device before any high-risk crossing.**
+A device with no source communications, no sensitive documents, and no stored credentials eliminates the risk of a border search exposing your work. Plan this before travel, not at the checkpoint.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Meena was asked to install a 'secure viewer' app sent by an unknown contact claiming to be a source. She refused. Her colleague installed it and was compromised. What made Meena's instinct correct?"
+  options={[
+    {
+      label: "She recognised the specific Pegasus delivery mechanism from security training.",
+      correct: false,
+      explanation: "Meena did not need to identify the specific spyware. Her refusal was based on a simpler rule: a legitimate source with genuine documents will use established secure submission tools like SecureDrop. Any unknown contact asking a journalist to install software is a red flag regardless of the specific threat it represents."
+    },
+    {
+      label: "Legitimate sources do not ask journalists to install software. Any such request, regardless of how it is framed, should be redirected to an established secure channel.",
+      correct: true,
+      explanation: "Correct. This is the operational rule. SecureDrop, OnionShare, and similar tools exist specifically so sources can submit materials without journalists needing to install anything or expose themselves to unknown software. Any deviation from this, especially a link to a third-party viewer, is a standard spyware delivery pattern."
+    },
+    {
+      label: "She should have asked the contact to verify their identity before installing anything.",
+      correct: false,
+      explanation: "Identity verification from an anonymous source is not possible to confirm. An attacker can provide any claimed identity. The safe practice is not to verify identity, it is to redirect to a submission method that does not require installing anything."
+    },
+    {
+      label: "She was lucky, this kind of attack rarely works on experienced journalists.",
+      correct: false,
+      explanation: "This attack has successfully compromised experienced security professionals, editors, and senior journalists at major outlets. Experience does not protect against zero-click exploits or well-crafted social engineering. The protection is the procedural rule, not individual expertise."
+    }
+  ]}
+/>

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Scam Response Timer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #F8FAFC;
+    --surface: #FFFFFF;
+    --border: #E2E8F0;
+    --text: #0F172A;
+    --muted: #64748B;
+    --blue: #2563EB;
+    --green: #059669;
+    --red: #DC2626;
+    --amber: #B45309;
+    --purple: #7C3AED;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Outfit', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .wrap { max-width: 680px; margin: 0 auto; }
+
+  .header { margin-bottom: 1.25rem; }
+  .header h1 { font-size: 1.2rem; font-weight: 700; margin-bottom: 6px; }
+  .header p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+  .selector-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 1.25rem;
+  }
+
+  @media (max-width: 480px) {
+    .selector-row { grid-template-columns: 1fr; }
+  }
+
+  .selector-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+  }
+
+  .selector-block .sel-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .pill-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .pill {
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .pill:hover { border-color: var(--blue); color: var(--blue); }
+  .pill.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+  /* Recovery likelihood bar */
+  .likelihood-bar {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .likelihood-bar.visible { display: block; }
+
+  .likelihood-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .likelihood-label {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .likelihood-track {
+    height: 8px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+
+  .likelihood-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+
+  .likelihood-note {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* Action checklist */
+  .action-panel {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .action-panel.visible { display: block; }
+
+  .action-panel-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .action-panel-header h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .action-panel-header p {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .action-item {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--bg);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .action-item:last-child { border-bottom: none; }
+
+  .priority-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 110px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .priority-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    min-width: 6px;
+  }
+
+  .p1 { background: #FEF2F2; color: var(--red); }
+  .p1 .priority-dot { background: var(--red); }
+  .p2 { background: #FFF7ED; color: var(--amber); }
+  .p2 .priority-dot { background: var(--amber); }
+  .p3 { background: #EFF6FF; color: var(--blue); }
+  .p3 .priority-dot { background: var(--blue); }
+  .p4 { background: #F0FDF4; color: var(--green); }
+  .p4 .priority-dot { background: var(--green); }
+
+  .action-content .action-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .action-content .action-detail {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 4px;
+  }
+
+  .action-content .action-contact {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--blue);
+  }
+
+  .time-warning {
+    display: none;
+    background: #FFF7ED;
+    border: 1px solid #FED7AA;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    font-size: 0.82rem;
+    color: #92400E;
+    line-height: 1.5;
+  }
+
+  .time-warning.visible { display: block; }
+  .time-warning strong { font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>Scam Response Timer</h1>
+    <p>Select your payment method and how long ago the loss occurred. Get a time-critical action checklist with specific contacts.</p>
+  </div>
+
+  <div class="selector-row">
+    <div class="selector-block">
+      <div class="sel-label">Payment Method</div>
+      <div class="pill-group" id="method-pills">
+        <button class="pill" onclick="selectMethod('upi', this)">UPI</button>
+        <button class="pill" onclick="selectMethod('bank', this)">Bank Transfer</button>
+        <button class="pill" onclick="selectMethod('card', this)">Credit/Debit Card</button>
+        <button class="pill" onclick="selectMethod('crypto', this)">Crypto</button>
+        <button class="pill" onclick="selectMethod('gift', this)">Cash/Gift Cards</button>
+      </div>
+    </div>
+    <div class="selector-block">
+      <div class="sel-label">Time Since Loss</div>
+      <div class="pill-group" id="time-pills">
+        <button class="pill" onclick="selectTime('under1', this)">Under 1 hour</button>
+        <button class="pill" onclick="selectTime('1to24', this)">1-24 hours</button>
+        <button class="pill" onclick="selectTime('1to3days', this)">1-3 days</button>
+        <button class="pill" onclick="selectTime('over3days', this)">Over 3 days</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="time-warning" id="time-warning"></div>
+
+  <div class="likelihood-bar" id="likelihood-bar">
+    <div class="likelihood-title">Recovery Likelihood</div>
+    <div class="likelihood-label" id="likelihood-label">-</div>
+    <div class="likelihood-track">
+      <div class="likelihood-fill" id="likelihood-fill"></div>
+    </div>
+    <div class="likelihood-note" id="likelihood-note"></div>
+  </div>
+
+  <div class="action-panel" id="action-panel">
+    <div class="action-panel-header">
+      <h2>Your Action Checklist</h2>
+      <p id="panel-subtitle">Prioritised steps based on your payment method and time elapsed.</p>
+    </div>
+    <div id="action-list"></div>
+  </div>
+
+</div>
+
+<script>
+let selectedMethod = null;
+let selectedTime = null;
+
+const LIKELIHOOD = {
+  upi: {
+    under1:    { label: "Moderate", pct: 55, color: '#F59E0B', note: "UPI recall requests within 1 hour succeed in roughly half of cases where funds have not been withdrawn. Call 1930 and your bank immediately." },
+    '1to24':   { label: "Low-Moderate", pct: 35, color: '#F59E0B', note: "Recall is still possible if funds remain in the receiving account. Speed of escalation to 1930 is the key variable." },
+    '1to3days':{ label: "Low", pct: 15, color: '#EF4444', note: "Funds have likely been moved on. Reporting is still important for legal record and for other victims. Focus on fraud alerts on your account." },
+    over3days: { label: "Very Low", pct: 5, color: '#EF4444', note: "Financial recovery is unlikely at this point. Reporting still matters for police records and protecting others from the same scam." }
+  },
+  bank: {
+    under1:    { label: "Moderate", pct: 50, color: '#F59E0B', note: "Bank recall requests within the first hour have the best chance. The receiving bank can be asked to freeze the funds before they are moved." },
+    '1to24':   { label: "Low-Moderate", pct: 30, color: '#F59E0B', note: "A recall is worth attempting. Success depends on whether the receiving bank cooperates and whether funds are still in the account." },
+    '1to3days':{ label: "Low", pct: 10, color: '#EF4444', note: "Wire transfers and bank transfers cleared over 24 hours ago are rarely reversed. Filing reports is important for legal and insurance purposes." },
+    over3days: { label: "Very Low", pct: 4, color: '#EF4444', note: "Wire transfer fraud has under a 4% recovery rate overall. Focus on fraud alerts, credit monitoring, and official reporting." }
+  },
+  card: {
+    under1:    { label: "Good", pct: 75, color: '#059669', note: "Credit card chargebacks filed within 48 hours succeed in 55% of cases. Debit card fraud protections are weaker but still worth pursuing." },
+    '1to24':   { label: "Good", pct: 65, color: '#059669', note: "Still within the optimal chargeback window. File the dispute today. Use the word 'chargeback' and 'fraud' when you call." },
+    '1to3days':{ label: "Moderate", pct: 45, color: '#F59E0B', note: "Chargeback rights typically extend 60-120 days. File the dispute now. Document everything you have about the transaction." },
+    over3days: { label: "Moderate", pct: 40, color: '#F59E0B', note: "You still have chargeback rights if within 60-120 days of the transaction. File immediately and provide full documentation." }
+  },
+  crypto: {
+    under1:    { label: "Very Low", pct: 8, color: '#EF4444', note: "If the transaction is unconfirmed on the blockchain, an exchange may be able to reverse it. This window closes within minutes to hours." },
+    '1to24':   { label: "Very Low", pct: 5, color: '#EF4444', note: "Blockchain transactions confirmed more than a few minutes ago are permanent. Report to the exchange and police for any investigation." },
+    '1to3days':{ label: "Negligible", pct: 2, color: '#EF4444', note: "Crypto transactions are irreversible once confirmed. Recovery is almost never possible. Report to police and the exchange for official record." },
+    over3days: { label: "Negligible", pct: 2, color: '#EF4444', note: "Crypto losses are effectively permanent. File reports for legal record and to contribute to investigations of the scam operation." }
+  },
+  gift: {
+    under1:    { label: "Low", pct: 20, color: '#EF4444', note: "Call the gift card issuer immediately. If the card has not yet been redeemed, some issuers can place a hold. This window is very short." },
+    '1to24':   { label: "Very Low", pct: 8, color: '#EF4444', note: "Gift cards are usually redeemed within minutes by scammers. An unredeemed card is the rare exception. Still call the issuer." },
+    '1to3days':{ label: "Negligible", pct: 3, color: '#EF4444', note: "Gift card fraud is nearly unrecoverable. File a police report and report to the FTC or your country's consumer protection authority." },
+    over3days: { label: "Negligible", pct: 3, color: '#EF4444', note: "Gift card losses are almost never recovered. Focus on reporting for record purposes and to help authorities track the scam operation." }
+  }
+};
+
+const TIME_WARNINGS = {
+  under1: null,
+  '1to24': "<strong>You are still within the critical window.</strong> Some options narrow after 24 hours. Do not delay - act on Priority 1 and Priority 2 steps immediately.",
+  '1to3days': "<strong>Some recovery options have closed.</strong> Bank recalls are less likely to succeed after 24 hours. However, chargebacks (if you paid by card) and official reporting are still fully available.",
+  over3days: "<strong>Financial recovery is less likely at this stage.</strong> The most important remaining steps are official reports (which support legal action and protect others) and credit monitoring to prevent follow-on identity theft."
+};
+
+const ACTIONS = {
+  upi: {
+    under1: [
+      { p: 'p1', time: 'Do Now', title: 'Call 1930 (India Cybercrime Helpline)', detail: 'Report the fraudulent UPI transaction. Provide the UPI ID you sent to, the amount, and the time. Ask for a complaint reference number.', contact: '1930 (India) | cybercrime.gov.in' },
+      { p: 'p1', time: 'Do Now', title: "Call your bank's fraud line", detail: 'Ask them to initiate a payment recall to the receiving bank. Even if they say success is uncertain, request it formally.', contact: 'Number on back of your bank card' },
+      { p: 'p2', time: 'Within 1 hour', title: 'File on cybercrime.gov.in', detail: 'Submit a formal complaint online. Include the screenshot of the UPI transaction, the UPI ID, and any communication from the scammer.', contact: 'cybercrime.gov.in' },
+      { p: 'p3', time: 'Within 24 hours', title: 'File an FIR at your local police station', detail: 'Bring your cybercrime complaint number, bank statements, and any messages. An FIR creates the official record needed for further action.', contact: 'Your nearest police station' }
+    ],
+    '1to24': [
+      { p: 'p1', time: 'Do Now', title: 'Call 1930 immediately', detail: 'Even past the first hour, the 1930 helpline can coordinate with the receiving bank. Every hour matters. Request a complaint number.', contact: '1930' },
+      { p: 'p1', time: 'Do Now', title: "Call your bank's fraud line", detail: 'Request a payment recall. Explain the transaction was fraudulent. Ask what the receiving bank status is.', contact: 'Number on back of your bank card' },
+      { p: 'p2', time: 'Within a few hours', title: 'File on cybercrime.gov.in', detail: 'Submit a formal complaint with transaction details, the UPI ID used, and any messages received from the scammer.', contact: 'cybercrime.gov.in' },
+      { p: 'p3', time: 'Within 24 hours', title: 'File an FIR', detail: 'Visit your local police station with your complaint reference number from 1930 and all documentation.', contact: 'Your nearest police station' }
+    ],
+    '1to3days': [
+      { p: 'p1', time: 'Do Now', title: 'File on cybercrime.gov.in if not already done', detail: 'Official reporting is still fully available and creates the record needed for any further action.', contact: 'cybercrime.gov.in | 1930' },
+      { p: 'p2', time: 'Next', title: 'File an FIR at your local police station', detail: 'Bring all transaction evidence and your cybercrime reference number. An FIR supports insurance claims and RBI ombudsman complaints.', contact: 'Your nearest police station' },
+      { p: 'p3', time: 'Within 72 hours', title: 'Contact RBI Ombudsman if your bank is unresponsive', detail: "If your bank refuses to assist or does not respond within 48 hours, escalate to the RBI's Banking Ombudsman.", contact: 'cms.rbi.org.in' },
+      { p: 'p4', time: 'This week', title: 'Place a fraud alert with CIBIL', detail: 'Protect against follow-on identity theft by placing a fraud alert on your credit file.', contact: 'transunion.com/product/fraud' }
+    ],
+    over3days: [
+      { p: 'p1', time: 'Do Now', title: 'File official reports', detail: 'Report to cybercrime.gov.in and file an FIR. Financial recovery is unlikely but official records matter for legal action and protecting others.', contact: 'cybercrime.gov.in | 1930' },
+      { p: 'p2', time: 'This week', title: 'Place a fraud alert with credit bureaus', detail: 'Anyone who obtained your banking details may attempt follow-on identity fraud. A fraud alert instructs lenders to verify identity before approving credit.', contact: 'CIBIL: transunion.com/product/fraud' },
+      { p: 'p3', time: 'This week', title: 'Enable transaction alerts on all accounts', detail: 'Set up SMS or email alerts for every transaction on your bank accounts and UPI-linked apps.', contact: 'Your bank app or website' },
+      { p: 'p4', time: 'Ongoing', title: 'Consider speaking to someone', detail: 'Financial fraud causes real psychological harm. iCall offers free counselling for fraud victims in India.', contact: 'icallhelpline.org | 9152987821' }
+    ]
+  },
+  bank: {
+    under1: [
+      { p: 'p1', time: 'Do Now', title: "Call your bank's 24-hour fraud line", detail: 'Ask them to initiate a payment recall immediately. Give the exact amount, recipient account, and time of transfer. Ask for a case reference number.', contact: 'Number on back of your bank card' },
+      { p: 'p1', time: 'Do Now', title: 'Request an account freeze on outgoing transfers', detail: 'Ask the bank to temporarily block any further outgoing transfers while the fraud is investigated.', contact: 'Your bank fraud line' },
+      { p: 'p2', time: 'Within 1 hour', title: 'Report to your national cybercrime portal', detail: 'India: 1930 / cybercrime.gov.in | UK: actionfraud.police.uk | US: ic3.gov | Australia: cyber.gov.au', contact: 'See your country portal above' },
+      { p: 'p3', time: 'Within 24 hours', title: 'File a police report', detail: 'Bring bank statements, screenshots of communications, and your cybercrime complaint reference number.', contact: 'Your local police station' }
+    ],
+    '1to24': [
+      { p: 'p1', time: 'Do Now', title: "Call your bank's fraud line now", detail: 'A recall is worth attempting even past the first hour. The bank can contact the receiving institution. Every hour matters.', contact: 'Number on back of your bank card' },
+      { p: 'p2', time: 'Next', title: 'Report to cybercrime portal', detail: 'India: 1930 | UK: 0300 123 2040 / actionfraud.police.uk | US: ic3.gov', contact: 'See your country above' },
+      { p: 'p3', time: 'Within 24 hours', title: 'File a police report', detail: 'Even if the bank cannot recover the funds, a police report creates the legal record needed for any claim.', contact: 'Your local police station' },
+      { p: 'p4', time: 'Within 72 hours', title: 'Place a fraud alert with credit bureaus', detail: 'Scammers who have your bank details may attempt further fraud. A fraud alert protects your credit.', contact: 'CIBIL / Experian / Equifax (by country)' }
+    ],
+    '1to3days': [
+      { p: 'p1', time: 'Do Now', title: 'Report to cybercrime portal if not done', detail: 'Official reporting is still available and creates your legal record.', contact: 'India: cybercrime.gov.in | UK: actionfraud.police.uk | US: ic3.gov' },
+      { p: 'p2', time: 'Do Now', title: 'File a police report', detail: 'Bring all documentation. Request a copy of the report for your records.', contact: 'Your local police station' },
+      { p: 'p3', time: 'Within 72 hours', title: 'Place a fraud alert with credit bureaus', detail: 'Prevent follow-on identity theft by alerting credit bureaus to verify identity on new applications.', contact: 'CIBIL / Experian / Equifax' },
+      { p: 'p4', time: 'This week', title: 'Contact bank ombudsman if your bank is not responding', detail: 'UK: Financial Ombudsman. India: RBI Banking Ombudsman. US: CFPB.', contact: 'India: cms.rbi.org.in | UK: financial-ombudsman.org.uk | US: consumerfinance.gov' }
+    ],
+    over3days: [
+      { p: 'p1', time: 'Do Now', title: 'File official reports', detail: 'Report to police and cybercrime portal for legal record. Recovery is unlikely but reporting still matters.', contact: 'India: cybercrime.gov.in | UK: actionfraud.police.uk | US: ic3.gov' },
+      { p: 'p2', time: 'This week', title: 'Place a fraud alert with credit bureaus', detail: 'Protect against follow-on identity theft.', contact: 'CIBIL / Experian / Equifax (by country)' },
+      { p: 'p3', time: 'This week', title: 'Enable transaction alerts on all accounts', detail: 'Set up immediate SMS or email alerts for all transactions on your accounts.', contact: 'Your bank app' },
+      { p: 'p4', time: 'Ongoing', title: 'Access emotional support', detail: 'Financial loss to scams causes real psychological harm. UK: Victim Support. India: iCall. US: AARP Fraud Watch 1-877-908-3360.', contact: 'victimsupport.org.uk | icallhelpline.org' }
+    ]
+  },
+  card: {
+    under1: [
+      { p: 'p1', time: 'Do Now', title: 'Call your card issuer and request a chargeback', detail: "Use the words 'chargeback' and 'fraud' or 'unauthorised transaction'. This routes your request to the right team. Ask for a case reference number.", contact: 'Number on back of your card' },
+      { p: 'p1', time: 'Do Now', title: 'Ask for the card to be blocked and a replacement issued', detail: 'If card details were shared with the scammer, block the card immediately to prevent further charges.', contact: 'Your card issuer fraud line' },
+      { p: 'p2', time: 'Within a few hours', title: 'Report to cybercrime portal', detail: 'India: 1930 / cybercrime.gov.in | UK: actionfraud.police.uk | US: ic3.gov', contact: 'See your country above' },
+      { p: 'p3', time: 'Within 24 hours', title: 'Contact card network directly if issuer is unhelpful', detail: 'Visa disputes: 1-800-VISA-911. Mastercard: 1-800-MASTERCARD. These are separate from your bank.', contact: 'Visa or Mastercard dispute line' }
+    ],
+    '1to24': [
+      { p: 'p1', time: 'Do Now', title: 'File a chargeback with your card issuer', detail: "Still within the optimal window. Call and use the words 'chargeback' and 'fraud'. You have rights here.", contact: 'Number on back of your card' },
+      { p: 'p2', time: 'Next', title: 'Report to cybercrime portal', detail: 'India: 1930 | UK: actionfraud.police.uk | US: ic3.gov', contact: 'See your country above' },
+      { p: 'p3', time: 'Within 24 hours', title: 'File a police report', detail: 'Required for many card insurance claims and supports the chargeback if disputed by the merchant.', contact: 'Your local police station' },
+      { p: 'p4', time: 'Within 72 hours', title: 'Block card and request replacement', detail: 'If card details were exposed, replace the card to prevent further charges.', contact: 'Your card issuer' }
+    ],
+    '1to3days': [
+      { p: 'p1', time: 'Do Now', title: 'File a chargeback - you are still within the window', detail: 'Chargeback rights typically extend 60-120 days from the transaction. File now and document everything.', contact: 'Number on back of your card' },
+      { p: 'p2', time: 'Do Now', title: 'Report to cybercrime portal', detail: 'India: cybercrime.gov.in | UK: actionfraud.police.uk | US: ic3.gov', contact: 'See your country above' },
+      { p: 'p3', time: 'Within 72 hours', title: 'File a police report', detail: 'The report supports your chargeback claim and is required for card insurance.', contact: 'Your local police station' },
+      { p: 'p4', time: 'This week', title: 'Escalate to card network if issuer refuses', detail: 'Visa and Mastercard have their own dispute processes. Contact them directly if your card issuer declines the chargeback.', contact: 'Visa: 1-800-VISA-911 | Mastercard: 1-800-MASTERCARD' }
+    ],
+    over3days: [
+      { p: 'p1', time: 'Do Now', title: 'Check if you are still within the chargeback window', detail: 'Most card networks allow 60-120 days from the transaction. Check with your issuer. If still within window, file immediately.', contact: 'Number on back of your card' },
+      { p: 'p2', time: 'Do Now', title: 'File official reports', detail: 'Police report and cybercrime portal submission support any remaining chargeback claims.', contact: 'India: cybercrime.gov.in | UK: actionfraud.police.uk | US: ic3.gov' },
+      { p: 'p3', time: 'This week', title: 'Place a fraud alert with credit bureaus', detail: 'Protect against identity theft using your card details.', contact: 'CIBIL / Experian / Equifax (by country)' },
+      { p: 'p4', time: 'Ongoing', title: 'Monitor card statements', detail: 'Set up transaction alerts on your card for any further unauthorised charges.', contact: 'Your bank or card app' }
+    ]
+  },
+  crypto: {
+    under1: [
+      { p: 'p1', time: 'Do Now', title: 'Check if the transaction is still unconfirmed', detail: 'If the transaction is still pending on the blockchain, contact the exchange immediately. Some exchanges can reverse unconfirmed transactions.', contact: 'Your exchange support line' },
+      { p: 'p1', time: 'Do Now', title: 'Contact the exchange if you used one', detail: 'Exchanges like Binance, Coinbase, or WazirX have fraud teams. Report the transaction. They may be able to freeze the destination account if it is on the same exchange.', contact: 'Your exchange support' },
+      { p: 'p2', time: 'Within a few hours', title: 'Report to cybercrime portal', detail: 'India: cybercrime.gov.in | US: ic3.gov | UK: actionfraud.police.uk', contact: 'See your country above' },
+      { p: 'p3', time: 'Within 24 hours', title: 'File a police report with transaction hash', detail: 'Include the wallet address you sent to and the transaction hash. Law enforcement increasingly works with blockchain analytics to track crypto fraud.', contact: 'Your local police station' }
+    ],
+    '1to24': [
+      { p: 'p1', time: 'Do Now', title: 'Contact the exchange', detail: 'Even if the transaction confirmed, exchanges may freeze associated accounts if the scammer is also using the exchange.', contact: 'Your exchange support' },
+      { p: 'p2', time: 'Do Now', title: 'Report to cybercrime portal', detail: 'India: cybercrime.gov.in | US: ic3.gov | UK: actionfraud.police.uk. Include the wallet address and transaction hash.', contact: 'See your country above' },
+      { p: 'p3', time: 'Within 24 hours', title: 'File a police report', detail: 'Bring the transaction hash, wallet addresses involved, and any communications with the scammer.', contact: 'Your local police station' },
+      { p: 'p4', time: 'This week', title: 'Report wallet address to blockchain blacklisting services', detail: 'Services like Chainabuse.com allow you to report fraudulent wallet addresses, helping others avoid the same scam.', contact: 'chainabuse.com' }
+    ],
+    '1to3days': [
+      { p: 'p1', time: 'Do Now', title: 'File official reports', detail: 'Report to cybercrime portal and police. Financial recovery is very unlikely, but official reports support any law enforcement investigation.', contact: 'India: cybercrime.gov.in | US: ic3.gov | UK: actionfraud.police.uk' },
+      { p: 'p2', time: 'This week', title: 'Report the scam wallet address', detail: 'Report the fraudulent wallet to Chainabuse.com to warn others and contribute to blockchain fraud investigations.', contact: 'chainabuse.com' },
+      { p: 'p3', time: 'This week', title: 'Secure your remaining crypto assets', detail: 'If you shared any wallet credentials or seed phrases, move any remaining assets to a new wallet immediately.', contact: 'Your crypto wallet provider' },
+      { p: 'p4', time: 'Ongoing', title: 'Access support', detail: 'Crypto losses can be significant. Speaking to someone helps. UK: Victim Support. India: iCall.', contact: 'victimsupport.org.uk | icallhelpline.org' }
+    ],
+    over3days: [
+      { p: 'p1', time: 'Do Now', title: 'File official reports for legal record', detail: 'Even with very low recovery likelihood, official reports are important for investigations and protecting others.', contact: 'India: cybercrime.gov.in | US: ic3.gov | UK: actionfraud.police.uk' },
+      { p: 'p2', time: 'This week', title: 'Secure any remaining crypto assets', detail: 'Move remaining assets to a fresh wallet if any credentials were shared with the scammer.', contact: 'Your crypto wallet' },
+      { p: 'p3', time: 'This week', title: 'Report the wallet to Chainabuse', detail: 'Help others avoid the same scam by reporting the fraudulent wallet address.', contact: 'chainabuse.com' },
+      { p: 'p4', time: 'Ongoing', title: 'Access financial and emotional support', detail: 'Significant losses affect mental health. Specialist support is available.', contact: 'UK: victimsupport.org.uk | India: icallhelpline.org | US: 1-877-908-3360 (AARP)' }
+    ]
+  },
+  gift: {
+    under1: [
+      { p: 'p1', time: 'Do Now', title: 'Call the gift card issuer immediately', detail: 'Call the number on the card or on the packaging. Ask them to place a hold on the card. If it has not been redeemed, they may be able to block it. This window is minutes, not hours.', contact: 'Number on back of the card or packaging' },
+      { p: 'p1', time: 'Do Now', title: 'Do not give the card number to anyone else', detail: "Scammers often call back posing as 'recovery agents' who need the card number to help. This is a second scam. Do not share the number with anyone.", contact: 'No further sharing of card details' },
+      { p: 'p2', time: 'Within 1 hour', title: 'Report to cybercrime portal', detail: 'India: cybercrime.gov.in | UK: actionfraud.police.uk | US: FTC at reportfraud.ftc.gov', contact: 'See your country above' },
+      { p: 'p3', time: 'Within 24 hours', title: 'File a police report', detail: 'Bring the card details, receipt, and any communication from the scammer. This creates the legal record.', contact: 'Your local police station' }
+    ],
+    '1to24': [
+      { p: 'p1', time: 'Do Now', title: 'Call the gift card issuer', detail: 'The card is likely already redeemed, but the issuer should be notified. Some have fraud departments that can assist with investigations.', contact: 'Number on back of the card or packaging' },
+      { p: 'p2', time: 'Do Now', title: 'Report to cybercrime portal', detail: 'India: cybercrime.gov.in | UK: actionfraud.police.uk | US: FTC at reportfraud.ftc.gov', contact: 'See your country above' },
+      { p: 'p3', time: 'Within 24 hours', title: 'File a police report', detail: 'Essential for any follow-on legal action. Bring card details and communications.', contact: 'Your local police station' },
+      { p: 'p4', time: 'This week', title: 'Report to the retailer', detail: 'Major retailers (Amazon, Google Play, iTunes) have gift card fraud teams. Reporting contributes to pattern detection and may assist investigations.', contact: 'Retailer customer support' }
+    ],
+    '1to3days': [
+      { p: 'p1', time: 'Do Now', title: 'File official reports', detail: 'Report to cybercrime portal and police. Financial recovery is very unlikely but reporting is still important.', contact: 'India: cybercrime.gov.in | UK: actionfraud.police.uk | US: reportfraud.ftc.gov' },
+      { p: 'p2', time: 'This week', title: 'Report to the retailer', detail: 'Gift card fraud reports to retailers help them detect and shut down scam operations.', contact: 'Retailer customer support or fraud line' },
+      { p: 'p3', time: 'This week', title: 'Place a fraud alert with credit bureaus', detail: 'If you gave any personal or financial information to the scammer, protect your credit file.', contact: 'CIBIL / Experian / Equifax (by country)' },
+      { p: 'p4', time: 'Ongoing', title: 'Access support', detail: 'Gift card scams cause real distress. Specialist support is available in every country.', contact: 'UK: victimsupport.org.uk | India: icallhelpline.org | US: 1-877-908-3360' }
+    ],
+    over3days: [
+      { p: 'p1', time: 'Do Now', title: 'File official reports', detail: 'Report for legal record and to contribute to law enforcement investigations of this scam type.', contact: 'India: cybercrime.gov.in | UK: actionfraud.police.uk | US: reportfraud.ftc.gov' },
+      { p: 'p2', time: 'This week', title: 'Place a fraud alert if personal data was shared', detail: 'Protect your credit file if you gave any personal or financial details to the scammer.', contact: 'CIBIL / Experian / Equifax' },
+      { p: 'p3', time: 'This week', title: 'Report to the retailer', detail: 'Reporting helps retailers detect fraud patterns across victims.', contact: 'Retailer customer support' },
+      { p: 'p4', time: 'Ongoing', title: 'Access emotional support', detail: 'Gift card scams are designed to cause shame. The shame is not yours. Support is available.', contact: 'UK: victimsupport.org.uk | India: icallhelpline.org | US: 1-877-908-3360' }
+    ]
+  }
+};
+
+function selectMethod(method, btn) {
+  selectedMethod = method;
+  document.querySelectorAll('#method-pills .pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  tryRender();
+}
+
+function selectTime(time, btn) {
+  selectedTime = time;
+  document.querySelectorAll('#time-pills .pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  tryRender();
+}
+
+function tryRender() {
+  if (!selectedMethod || !selectedTime) return;
+
+  const lk = LIKELIHOOD[selectedMethod][selectedTime];
+  const actions = ACTIONS[selectedMethod][selectedTime];
+  const warning = TIME_WARNINGS[selectedTime];
+
+  // Time warning
+  const warnEl = document.getElementById('time-warning');
+  if (warning) {
+    warnEl.innerHTML = warning;
+    warnEl.classList.add('visible');
+  } else {
+    warnEl.classList.remove('visible');
+  }
+
+  // Likelihood bar
+  const lkBar = document.getElementById('likelihood-bar');
+  document.getElementById('likelihood-label').textContent = lk.label;
+  document.getElementById('likelihood-label').style.color = lk.color;
+  document.getElementById('likelihood-fill').style.width = lk.pct + '%';
+  document.getElementById('likelihood-fill').style.background = lk.color;
+  document.getElementById('likelihood-note').textContent = lk.note;
+  lkBar.classList.add('visible');
+
+  // Actions
+  const methodLabels = { upi: 'UPI', bank: 'Bank Transfer', card: 'Credit/Debit Card', crypto: 'Crypto', gift: 'Cash/Gift Cards' };
+  const timeLabels = { under1: 'Under 1 hour ago', '1to24': '1-24 hours ago', '1to3days': '1-3 days ago', over3days: 'Over 3 days ago' };
+  document.getElementById('panel-subtitle').textContent = `Payment method: ${methodLabels[selectedMethod]} · Loss: ${timeLabels[selectedTime]}`;
+
+  const list = document.getElementById('action-list');
+  list.innerHTML = actions.map((a, i) => `
+    <div class="action-item">
+      <div>
+        <div class="priority-badge ${a.p}" style="margin-bottom:6px;">
+          <div class="priority-dot"></div>
+          Priority ${i + 1} · ${a.time}
+        </div>
+      </div>
+      <div class="action-content">
+        <div class="action-title">${a.title}</div>
+        <div class="action-detail">${a.detail}</div>
+        <div class="action-contact">${a.contact}</div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('action-panel').classList.add('visible');
+  sendHeight();
+}
+
+function sendHeight() {
+  setTimeout(() => {
+    if (window.parent) {
+      window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+    }
+  }, 100);
+}
+
+window.addEventListener('load', sendHeight);
+window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>

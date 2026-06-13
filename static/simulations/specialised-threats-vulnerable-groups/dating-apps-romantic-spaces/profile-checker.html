@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Profile Authenticity Checker</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B;
+      --blue: #2563EB; --blue-light: #EFF6FF;
+      --red: #DC2626; --red-light: #FEF2F2;
+      --green: #059669; --green-light: #ECFDF5;
+      --amber: #D97706; --amber-light: #FFFBEB;
+      --r: 14px;
+    }
+    body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px 16px 36px; -webkit-font-smoothing: antialiased; line-height: 1.6; }
+    h1 { font-size: 20px; font-weight: 800; text-align: center; margin-bottom: 6px; }
+    .subtitle { font-size: 13px; color: var(--muted); text-align: center; max-width: 500px; margin: 0 auto 22px; }
+
+    .tabs { display: flex; gap: 6px; max-width: 640px; margin: 0 auto 18px; }
+    .tab { flex: 1; background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 12px; text-align: center; cursor: pointer; font-size: 13.5px; font-weight: 600; transition: all .15s; }
+    .tab.active { background: var(--blue); color: white; border-color: var(--blue); }
+
+    .panel { max-width: 640px; margin: 0 auto; display: none; }
+    .panel.active { display: block; }
+
+    /* Profile cards */
+    .profile-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+    .pcard { background: var(--surface); border: 2px solid var(--border); border-radius: var(--r); padding: 16px; cursor: pointer; transition: border-color .15s; }
+    .pcard:hover, .pcard.active { border-color: var(--blue); background: var(--blue-light); }
+    .pcard-name { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+    .pcard-preview { font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+    .analysis-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; display: none; }
+    .analysis-box.active { display: block; }
+    .profile-text { background: var(--bg); border-radius: 10px; padding: 14px 16px; font-size: 13.5px; line-height: 1.6; margin-bottom: 18px; border: 1px solid var(--border); font-style: italic; }
+    .score-bar-wrap { margin-bottom: 18px; }
+    .score-label { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 8px; display: flex; justify-content: space-between; }
+    .score-bar { background: var(--border); border-radius: 6px; height: 10px; }
+    .score-fill { height: 10px; border-radius: 6px; transition: width .8s ease; }
+    .score-fill.low { background: var(--green); }
+    .score-fill.medium { background: var(--amber); }
+    .score-fill.high { background: var(--red); }
+
+    .flags { display: flex; flex-direction: column; gap: 8px; }
+    .flag { border-radius: 10px; padding: 12px 14px; font-size: 13px; line-height: 1.5; border-left: 4px solid; }
+    .flag.red { background: var(--red-light); border-left-color: var(--red); }
+    .flag.amber { background: var(--amber-light); border-left-color: var(--amber); }
+    .flag.green { background: var(--green-light); border-left-color: var(--green); }
+    .flag strong { display: block; font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 3px; }
+    .flag.red strong { color: var(--red); }
+    .flag.amber strong { color: var(--amber); }
+    .flag.green strong { color: var(--green); }
+
+    .verdict { border-radius: 10px; padding: 14px 16px; margin-top: 16px; font-size: 13.5px; font-weight: 600; }
+    .verdict.suspicious { background: var(--red-light); color: var(--red); }
+    .verdict.caution { background: var(--amber-light); color: var(--amber); }
+    .verdict.clear { background: var(--green-light); color: var(--green); }
+
+    /* Reverse image guide */
+    .steps { display: flex; flex-direction: column; gap: 10px; }
+    .step { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+    .step-num { background: var(--blue); color: white; width: 26px; height: 26px; border-radius: 50%; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .step-text { font-size: 13px; line-height: 1.55; }
+    .step-text strong { display: block; margin-bottom: 2px; font-size: 13.5px; }
+    .tip { background: var(--blue-light); border: 1px solid #BFDBFE; border-radius: 10px; padding: 12px 14px; font-size: 12.5px; margin-top: 16px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+<h1>Profile Authenticity Checker</h1>
+<p class="subtitle">Analyse a dating profile description for synthetic persona signals, or learn how to run a reverse image search.</p>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('text')">Text Analysis</div>
+  <div class="tab" onclick="switchTab('image')">Reverse Image Guide</div>
+</div>
+
+<!-- TEXT PANEL -->
+<div class="panel active" id="panel-text">
+  <div class="profile-selector">
+    <div class="pcard" onclick="analyse('a')">
+      <div class="pcard-name">Profile A — "Marcus, 41"</div>
+      <div class="pcard-preview">"US Army engineer, currently stationed abroad. Looking for genuine connection..."</div>
+    </div>
+    <div class="pcard" onclick="analyse('b')">
+      <div class="pcard-name">Profile B — "Divya, 29"</div>
+      <div class="pcard-preview">"Bangalore-based architect. Loves hiking and honest conversations..."</div>
+    </div>
+    <div class="pcard" onclick="analyse('c')">
+      <div class="pcard-name">Profile C — "Ryan, 35"</div>
+      <div class="pcard-preview">"Offshore petroleum engineer, widower, raising my daughter alone..."</div>
+    </div>
+    <div class="pcard" onclick="analyse('d')">
+      <div class="pcard-name">Profile D — "Anika, 31"</div>
+      <div class="pcard-preview">"Teacher in Chennai. I'm quite boring honestly — I just love my students..."</div>
+    </div>
+  </div>
+  <div class="analysis-box" id="analysis-box"></div>
+</div>
+
+<!-- IMAGE PANEL -->
+<div class="panel" id="panel-image">
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Save the profile photo</strong>Screenshot or save the image to your device. On mobile: press and hold the photo, then tap "Save."</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Open Google Images</strong>Go to images.google.com in your browser. On desktop, click the camera icon in the search bar.</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Upload and search</strong>Select "Upload an image" and choose the saved photo. Google will search for matching images across the web.</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Check the results</strong>If the photo appears on stock image sites, LinkedIn profiles with a different name, or multiple dating profiles — it is stolen. A genuine person's selfie rarely appears elsewhere online.</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Try TinEye as a second check</strong>TinEye (tineye.com) specialises in finding where images first appeared online. It sometimes catches results Google misses.</div></div>
+  </div>
+  <div class="tip">
+    <strong>What to look for in results:</strong> Same face, different name on another platform. Appearance on a stock photo site (Shutterstock, Getty). The image indexed years before this person claims to have created their profile. Multiple accounts using the same photo. Any of these is a strong signal the profile is fake.
+  </div>
+</div>
+
+<script>
+const profiles = {
+  a: {
+    text: '"My name is Marcus. I am a civil engineer with the US Army, currently stationed in Germany on a 10-month deployment. I am 41, widowed, with a 9-year-old daughter back in Texas. I am looking for a genuine, deep connection — someone who understands that the heart does not need proximity to feel real love. I believe in honesty and would love to speak to you every day. I will be returning home in 4 months and hope we can meet then."',
+    suspicion: 82,
+    flags: [
+      { color: 'red', label: 'Military backstory', text: 'US Army / overseas deployment is the most common identity used in romance scams. It provides a permanent excuse for why meeting is impossible and creates a sympathetic context.' },
+      { color: 'red', label: 'Rapid intimacy language', text: '"Genuine deep connection," "the heart does not need proximity" — emotional language this intense is rarely used in opening profiles. It is designed to accelerate emotional bonding.' },
+      { color: 'red', label: 'Unreachable in person', text: 'The deployment backstory makes any request to meet, video call, or verify identity easy to defer. "I will be back in 4 months" is a standard holding pattern.' },
+      { color: 'amber', label: 'Single parent sympathy hook', text: 'The 9-year-old daughter in Texas is a sympathy anchor. It is commonly added to profiles to increase emotional investment before the request for help arrives.' }
+    ],
+    verdict: 'suspicious',
+    verdictText: 'High suspicion. This profile matches 4 documented synthetic persona patterns used in romance scam scripts. Recommend reverse image search before any further contact.'
+  },
+  b: {
+    text: '"Architect based in Bangalore, working mostly on residential projects. I hike when I can — usually the Sahyadri range. Looking for someone who actually talks, not just texts. I\'m not great at describing myself in 200 characters. My friends say I overthink, which is probably accurate. Happy to get coffee if things feel right."',
+    suspicion: 12,
+    flags: [
+      { color: 'green', label: 'Specific, local detail', text: '"Sahyadri range" is a real, specific location. Synthetic personas tend to use vague or international locations that cannot easily be verified.' },
+      { color: 'green', label: 'Realistic self-description', text: 'The admission of overthinking and difficulty with self-description reads as authentic. Scammer profiles typically present idealised personas.' },
+      { color: 'green', label: 'Low-stakes meeting suggestion', text: '"Coffee if things feel right" is grounded and real. Romance scammer profiles avoid specific meeting proposals because they cannot follow through.' },
+      { color: 'amber', label: 'Limited verifiable detail', text: 'The profile is light on verifiable specifics. A reverse image search is still worthwhile before any personal information is shared.' }
+    ],
+    verdict: 'clear',
+    verdictText: 'Low suspicion. No synthetic persona patterns detected. Standard caution applies — verify the photo independently before meeting.'
+  },
+  c: {
+    text: '"I am Ryan, 35, an offshore petroleum engineer currently on a 3-month contract in the North Sea. I am a widower — my wife passed from cancer two years ago and I am raising my daughter Elena alone. She is the most important person in my world. I am looking for a woman with a big heart who understands that real love is rare. I am financially comfortable and would never ask anyone for money. I just want someone to talk to during the long nights offshore."',
+    suspicion: 91,
+    flags: [
+      { color: 'red', label: 'Offshore / inaccessible profession', text: 'Petroleum engineer offshore is a top-3 occupation used in romance scam profiles. Like the military backstory, it explains why the person cannot meet or video call reliably.' },
+      { color: 'red', label: 'Pre-emptive money denial', text: '"I would never ask anyone for money" is a documented scam script phrase. Genuine people don\'t open with financial reassurance — scammers do, because it lowers guard before the request arrives.' },
+      { color: 'red', label: 'Deceased spouse + child sympathy layering', text: 'Widower with a child named Elena is a sympathy stacking pattern. Multiple emotional anchors are layered to maximise attachment before exploitation begins.' },
+      { color: 'red', label: 'Intensity in opening message', text: '"Real love is rare," "long nights offshore" — the emotional register is high for a first profile. This is designed to accelerate connection past scepticism.' }
+    ],
+    verdict: 'suspicious',
+    verdictText: 'Very high suspicion. This profile stacks 4 major red flag patterns in a single description. Do not share personal information. Reverse image search the photo immediately.'
+  },
+  d: {
+    text: '"I teach secondary school in Chennai — class 9 and 10 English. Honestly quite boring day-to-day but I love what I do. I have been on here for about 6 months with no luck, which is fine. I like cooking badly and reading better. Not really sure what I\'m looking for — maybe just someone to talk to without it being exhausting."',
+    suspicion: 8,
+    flags: [
+      { color: 'green', label: 'Specific profession and location', text: '"Secondary school, Chennai, class 9 and 10" — real people describe their work with specificity. Synthetic personas use general or glamorous job descriptions.' },
+      { color: 'green', label: 'Authentic uncertainty', text: '"Not sure what I\'m looking for" and "no luck which is fine" reflect genuine emotional complexity. Scammer profiles always express certainty about wanting deep, serious connection.' },
+      { color: 'green', label: 'Self-deprecating humour', text: '"Cooking badly" and "boring day-to-day" are human, unpretentious, and impossible to script convincingly at scale.' },
+      { color: 'amber', label: 'Limited external verification available', text: 'The profile is authentic in tone but cannot be verified from the text alone. Still recommend a photo reverse search before exchanging personal contact details.' }
+    ],
+    verdict: 'clear',
+    verdictText: 'Very low suspicion. Natural, specific, self-deprecating language with no synthetic persona markers. Standard verification (reverse image search) is still recommended before meeting.'
+  }
+};
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', (i === 0 && tab === 'text') || (i === 1 && tab === 'image')));
+  document.getElementById('panel-text').classList.toggle('active', tab === 'text');
+  document.getElementById('panel-image').classList.toggle('active', tab === 'image');
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function analyse(id) {
+  document.querySelectorAll('.pcard').forEach(c => c.classList.remove('active'));
+  document.querySelector(`.pcard[onclick="analyse('${id}')"]`).classList.add('active');
+  const p = profiles[id];
+  const box = document.getElementById('analysis-box');
+  const level = p.suspicion > 60 ? 'high' : p.suspicion > 30 ? 'medium' : 'low';
+  box.className = 'analysis-box active';
+  box.innerHTML = `
+    <div class="profile-text">${p.text}</div>
+    <div class="score-bar-wrap">
+      <div class="score-label"><span>Synthetic Persona Risk Score</span><span>${p.suspicion}%</span></div>
+      <div class="score-bar"><div class="score-fill ${level}" style="width:${p.suspicion}%"></div></div>
+    </div>
+    <div class="flags">
+      ${p.flags.map(f => `<div class="flag ${f.color}"><strong>${f.label}</strong>${f.text}</div>`).join('')}
+    </div>
+    <div class="verdict ${p.verdict}">${p.verdictText}</div>
+  `;
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+window.addEventListener('load', () => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'));
+</script>
+</body>
+</html>

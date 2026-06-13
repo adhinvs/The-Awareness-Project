@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>India Scam Response Kit</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f9f7f4;
+    color: #1a1a1a;
+    padding: 1.5rem 1rem 2.5rem;
+  }
+
+  .wrap { max-width: 680px; margin: 0 auto; }
+
+  .header { margin-bottom: 1.5rem; }
+  .header h1 { font-size: 18px; font-weight: 700; margin-bottom: 5px; }
+  .header p { font-size: 14px; color: #555; line-height: 1.6; }
+
+  .select-label { font-size: 13px; font-weight: 600; color: #444; margin-bottom: 6px; display: block; }
+
+  .btn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+  }
+
+  .scam-btn {
+    padding: 12px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    border: 1.5px solid #d4cfc8;
+    border-radius: 8px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.15s;
+    line-height: 1.4;
+  }
+  .scam-btn:hover { border-color: #4a7c5a; background: #f0f7f2; color: #2d5c3a; }
+  .scam-btn.active { border-color: #4a7c5a; background: #4a7c5a; color: #fff; }
+
+  .response-box {
+    display: none;
+    background: #fff;
+    border: 1px solid #e0dcd5;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .response-box.visible { display: block; }
+
+  .response-header {
+    background: #4a7c5a;
+    color: #fff;
+    padding: 14px 18px;
+  }
+  .response-header h2 { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+  .response-header p { font-size: 12px; opacity: 0.85; }
+
+  .step {
+    display: flex;
+    gap: 14px;
+    padding: 14px 18px;
+    border-bottom: 1px solid #f0ece6;
+    align-items: flex-start;
+  }
+  .step:last-child { border-bottom: none; }
+
+  .step-num {
+    width: 26px; height: 26px; min-width: 26px;
+    border-radius: 50%;
+    background: #4a7c5a;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+  }
+
+  .step-body { flex: 1; }
+  .step-title { font-size: 13.5px; font-weight: 700; margin-bottom: 3px; }
+  .step-detail { font-size: 13px; color: #555; line-height: 1.55; }
+  .step-detail strong { color: #222; font-weight: 600; }
+
+  .law-box {
+    background: #faf8f5;
+    border-top: 1px solid #e8e4de;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.6;
+  }
+  .law-box strong { color: #333; }
+
+  .urgent-tag {
+    display: inline-block;
+    background: #FEF2F2;
+    color: #DC2626;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>India Scam Response Kit</h1>
+    <p>Select the scam type you have experienced. Get the exact reporting path and time-critical steps.</p>
+  </div>
+
+  <div class="btn-grid">
+    <button class="scam-btn" onclick="show('digital-arrest')">Digital arrest scam</button>
+    <button class="scam-btn" onclick="show('upi')">UPI / payment fraud</button>
+    <button class="scam-btn" onclick="show('aadhaar')">Aadhaar / PAN impersonation</button>
+    <button class="scam-btn" onclick="show('loan-app')">Predatory loan app</button>
+    <button class="scam-btn" onclick="show('matrimonial')">Matrimonial fraud</button>
+    <button class="scam-btn" onclick="show('sim-swap')">SIM swap</button>
+  </div>
+
+  <div class="response-box" id="response-box"></div>
+
+</div>
+
+<script>
+const RESPONSES = {
+  'digital-arrest': {
+    title: "Digital Arrest Scam",
+    subtitle: "Caller impersonates police / CBI / customs / TRAI to claim you are under 'digital arrest'",
+    urgentLabel: "Do not pay. Hang up immediately.",
+    steps: [
+      { title: "Stop and disconnect", detail: "No government agency conducts arrests over video call. Hang up. Block the number. <strong>Do not share any documents, OTPs, or money.</strong>" },
+      { title: "Call helpline 1930", detail: "Report within 24 hours. Have the caller's number, time of call, and any screenshots ready." },
+      { title: "File on cybercrime.gov.in", detail: "Go to <strong>cybercrime.gov.in > Report Cybercrime > Other Cybercrimes</strong>. Select 'Online Financial Fraud'. You will receive a complaint reference number." },
+      { title: "Report to local police", detail: "File an FIR at your nearest police station. Bring your complaint reference number from cybercrime.gov.in." },
+      { title: "Alert your bank", detail: "If you transferred any money, call your bank's fraud line immediately. Request a freeze on the beneficiary account. Time is critical." },
+    ],
+    law: "Applicable law: IT Act 2000 Section 66D (cheating by impersonation using computer), Section 66C (identity theft) · BNS 2023 Section 319 (cheating by impersonation)"
+  },
+  'upi': {
+    title: "UPI / Payment Fraud",
+    subtitle: "Unauthorised UPI transaction, fake payment request, or QR code scam",
+    urgentLabel: "Act within 24 hours for best chance of reversal",
+    steps: [
+      { title: "Call your bank immediately", detail: "<strong>Call the bank's 24/7 fraud line</strong> — not via a link or SMS. Request the beneficiary account be frozen. Every hour reduces recovery chances." },
+      { title: "Call helpline 1930", detail: "The Cyber Crime Helpline can coordinate with banks for fund freeze. Report the UPI transaction ID, amount, and recipient VPA (UPI ID)." },
+      { title: "File on cybercrime.gov.in", detail: "Report > Online Financial Fraud > UPI. Provide transaction reference, time, and the recipient UPI ID. Keep your NPCI transaction ID." },
+      { title: "RBI complaint portal", detail: "If your bank is unresponsive: <strong>cms.rbi.org.in</strong>. File within 30 days of the bank's response." },
+      { title: "NPCI dispute", detail: "Raise a dispute directly at <strong>npci.org.in</strong> for UPI transaction disputes. Use your UPI app's built-in dispute option for fastest processing." },
+    ],
+    law: "Applicable law: IT Act 2000 Section 66C, 66D · Payment and Settlement Systems Act 2007 · RBI Circular on Zero Liability (2017) — if fraud is reported within 3 working days, you may be entitled to full refund"
+  },
+  'aadhaar': {
+    title: "Aadhaar / PAN / Income Tax Impersonation",
+    subtitle: "Caller claims your Aadhaar is misused, linked to crime, or asks you to 'verify' for TRAI/CBI",
+    urgentLabel: "Verify before acting — never share OTPs",
+    steps: [
+      { title: "Verify your Aadhaar authentication history", detail: "Go to <strong>myaadhaar.uidai.gov.in > Authentication History</strong>. Check if your Aadhaar was recently used without your consent." },
+      { title: "Lock your Aadhaar biometrics", detail: "myaadhaar.uidai.gov.in > Lock/Unlock Biometrics. Locking prevents anyone from using your fingerprint/iris for authentication." },
+      { title: "Report to UIDAI", detail: "Call <strong>1947</strong> (UIDAI helpline) for Aadhaar-related fraud. Also report on <strong>uidai.gov.in > Resident Support</strong>." },
+      { title: "Income tax impersonation", detail: "If someone claimed to be Income Tax — verify via <strong>incometax.gov.in</strong> using your PAN. Report impersonation to cybercrime.gov.in." },
+      { title: "File on cybercrime.gov.in", detail: "Report under 'Identity Theft'. Provide the caller's number, what was requested, and any documents you may have shared." },
+    ],
+    law: "Applicable law: IT Act 2000 Section 66C (identity theft) · Aadhaar Act 2016 Section 29 (unauthorised use of Aadhaar identity) · DPDP Act 2023 (unlawful data processing)"
+  },
+  'loan-app': {
+    title: "Predatory Loan App",
+    subtitle: "Illegal loan app harassment, data theft, blackmail, or fake loan approval fees",
+    urgentLabel: "Do not pay further fees — they will escalate",
+    steps: [
+      { title: "Stop all payments", detail: "<strong>Do not pay any 'processing fee', 'insurance', or 'GST' upfront.</strong> Legitimate RBI-registered lenders do not deduct fees before disbursement." },
+      { title: "Check RBI's approved list", detail: "Verify the app at <strong>rbi.org.in > Financial Entities > NBFCs</strong>. Unlisted = illegal." },
+      { title: "Report to RBI Sachet portal", detail: "<strong>sachet.rbi.org.in</strong> — report unauthorised lending with app name and screenshots." },
+      { title: "File cybercrime complaint", detail: "cybercrime.gov.in or helpline 1930. Provide the app name, Google Play link (if available), and evidence of harassment messages." },
+      { title: "If blackmailed using contacts/photos", detail: "This is an IT Act offence. File FIR at local police immediately. Do not comply with blackmail demands — it always escalates." },
+    ],
+    law: "Applicable law: RBI Guidelines on Digital Lending (2022) · IT Act 2000 Section 67 (obscene material), Section 66E (privacy violation) · BNS 2023 Section 308 (extortion)"
+  },
+  'matrimonial': {
+    title: "Matrimonial / Marriage Fraud",
+    subtitle: "Fake profile on matrimonial site, marriage-related financial fraud, or romance scam",
+    urgentLabel: "Preserve all evidence before confronting",
+    steps: [
+      { title: "Screenshot all communication", detail: "Save every message, profile link, photo, phone number, and bank transfer receipt. <strong>Do not delete anything</strong> — this is your evidence." },
+      { title: "Report to the matrimonial platform", detail: "Most major platforms (Shaadi, Jeevansathi, BharatMatrimony) have dedicated fraud reporting. The profile will be investigated and removed." },
+      { title: "File on cybercrime.gov.in", detail: "Report > Online Financial Fraud (if money was taken) or Women/Child-Related Crimes > Cyberstalking/Cheating. Include all profile screenshots." },
+      { title: "File FIR at local police", detail: "Matrimonial fraud with financial loss is prosecutable. Bring all evidence. A women's police help desk is available at most stations." },
+      { title: "National Commission for Women", detail: "For harassment, coercion, or marriage-related cheating: <strong>ncw.nic.in</strong> or complaint helpline <strong>7827170170</strong>." },
+    ],
+    law: "Applicable law: IT Act 2000 Section 66D (cheating by impersonation) · BNS 2023 Section 318 (cheating) · Protection of Women from Domestic Violence Act 2005 (if applicable)"
+  },
+  'sim-swap': {
+    title: "SIM Swap Attack",
+    subtitle: "Your SIM stops working, OTPs go to someone else, accounts accessed without your knowledge",
+    urgentLabel: "Call your telecom operator within minutes",
+    steps: [
+      { title: "Call your telecom operator immediately", detail: "<strong>Airtel: 121 | Jio: 198 | BSNL: 1800-180-1503 | Vi: 199</strong>. Report SIM swap fraud and request your number be blocked from receiving OTPs." },
+      { title: "Contact your bank", detail: "Call your bank's 24/7 fraud line. Request a temporary freeze on all transactions. Disable mobile banking if possible." },
+      { title: "Report to TRAI", detail: "File a complaint at <strong>trai.gov.in</strong> or call TRAI on 1800-110-999. SIM swap fraud often involves telecom employee collusion." },
+      { title: "File on cybercrime.gov.in", detail: "Report under 'Online Financial Fraud' > 'SIM Swap Fraud'. Include your number, telecom operator, time the SIM stopped working, and accounts affected." },
+      { title: "Secure all accounts", detail: "Once SIM control is restored: change passwords for email, banking, and social media. Switch 2FA from SMS to an authenticator app." },
+    ],
+    law: "Applicable law: IT Act 2000 Section 66C (identity theft) · Indian Telegraph Act (unauthorised SIM transfer) · TRAI Regulations on SIM Swap (2023 updated guidelines)"
+  }
+};
+
+let activeScam = null;
+
+function show(key) {
+  document.querySelectorAll('.scam-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  activeScam = key;
+  const r = RESPONSES[key];
+  let html = `
+    <div class="response-header">
+      <h2>${r.title}</h2>
+      <p>${r.subtitle}</p>
+    </div>
+    <div style="padding: 14px 18px 0;">
+      <div class="urgent-tag">${r.urgentLabel}</div>
+    </div>
+  `;
+  r.steps.forEach((s, i) => {
+    html += `<div class="step"><div class="step-num">${i+1}</div><div class="step-body"><div class="step-title">${s.title}</div><div class="step-detail">${s.detail}</div></div></div>`;
+  });
+  html += `<div class="law-box"><strong>Legal basis:</strong> ${r.law}</div>`;
+  const box = document.getElementById('response-box');
+  box.innerHTML = html;
+  box.classList.add('visible');
+  sendHeight();
+}
+
+function sendHeight() {
+  setTimeout(() => {
+    if (window.parent) window.parent.postMessage({ iframeHeight: document.documentElement.scrollHeight + 20 }, '*');
+  }, 60);
+}
+</script>
+</body>
+</html>

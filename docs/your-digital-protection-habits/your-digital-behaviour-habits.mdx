@@ -2,14 +2,238 @@
 sidebar_position: 6
 title: "Your Digital Behaviour & Habits"
 sidebar_label: "Your Digital Behaviour & Habits"
+description: "The one-second pause habit, when to trust instinct, what to share and not share online, and who to call when something goes wrong."
+tags: [digital-habits, online-behaviour, cyber-awareness, click-safety, incident-response, digital-literacy, personal-security]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Your Digital Behaviour & Habits
 
-## Sub-topics
+Settings and tools only work if behaviour supports them. The most consistently effective protection is not a piece of software - it is the habit of pausing for one second before acting on any unexpected digital prompt.
 
-- Think before you click — the one-second pause habit that catches most attacks
-- Think before you share — personal information, location data, and life events online
-- Recognising when something feels off — trusting instinct as a genuine security signal
-- Who to call when something goes wrong — building your personal response plan before you need it
-- Teaching digital safety to the people around you — family members, elderly relatives, and children
+---
+
+## The Three Seconds That Cost Rs 40,000
+
+Kiran received a WhatsApp message at 7:30pm on a Friday.
+
+It appeared to be from his bank. It said his account had been temporarily restricted due to suspicious activity. A link was provided to verify his identity and restore access.
+
+**Kiran was tired, slightly stressed about the week, and the message looked exactly like the bank's real formatting.** He clicked the link. He entered his net banking credentials on what looked like a login page. He entered the OTP that arrived on his phone.
+
+He realised something was wrong when a second OTP arrived that he had not requested. He called his bank immediately. **Rs 40,000 had already been transferred.**
+
+Kiran knew phishing existed. He had read about it. He had never been fooled before.
+
+**The attack worked because he did not pause.** He acted on instinct, and his instinct was trained to expect messages exactly like this one from his real bank.
+
+The one-second pause - stop, notice the trigger, verify before acting - was the habit that was missing.
+
+---
+
+## What Is Actually Happening: The Instinct Exploit
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>3 sec</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>is the average time between receiving a phishing message and clicking the link - faster than any security training can intervene.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>The attack targets the gap between stimulus and deliberate thought. The pause closes that gap.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Proofpoint State of the Phish Report, 2025</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Instinct</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>74% of Breaches Involve Human Action</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Clicking a link, entering credentials, or approving a request. <b>Nearly 3 in 4 breaches</b> involve a person taking an action that a one-second pause could have prevented.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Verizon Data Breach Investigations Report, 2025</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Oversharing</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Life Events Trigger Targeted Attacks Within Hours</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>New job posts, home purchase announcements, and bereavement posts are scraped by fraud operations. <b>Targeted scam contact begins within hours</b> of a public life event post.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: CIFAS UK Fraud Prevention Report, 2024</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #3B82F6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#3B82F6', fontWeight: 'bold' }}>Instinct as Signal</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>"Something Feels Off" Is a Security Signal</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Studies in cyber risk psychology show that <b>gut discomfort about a digital interaction</b> is a reliable early signal - yet most people override it because the message looks legitimate.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Behavioural Cybersecurity Research Review, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #10B981', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#10B981', fontWeight: 'bold' }}>Response Plans</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Having a Response Plan Reduces Financial Loss by 38%</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>People who know in advance who to call and what to do when an incident happens <b>act faster and lose less</b>. Thinking clearly under pressure requires having thought about it in advance.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Ponemon Institute Cost of a Data Breach, 2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## The One-Second Pause Habit
+
+The pause is not about spending time analysing every message. It is about inserting one moment of deliberate attention between stimulus and response.
+
+**The trigger for the pause:** anything unexpected, urgent, or too good to be true.
+
+**What to do in that moment:**
+1. Notice the emotional pull - urgency, fear, curiosity, excitement.
+2. Ask: did I expect this?
+3. If no: verify through a channel you already have before acting.
+
+**That is the entire habit.** Most attacks depend on you not pausing. The pause disrupts the attack mechanics even when the message looks completely legitimate.
+
+---
+
+## Think Before You Share
+
+Information you share publicly becomes available to anyone building a profile on you - including scammers, stalkers, and social engineers.
+
+**What to limit:**
+
+- **Location data.** Geotagged photos reveal your home address, routine, and workplace. Most people share photos without knowing the GPS data is embedded.
+- **Life events.** New job, new house, new baby, bereavement. Each triggers a specific category of targeted attack.
+- **Security question answers.** "First car," "mother's maiden name," "childhood pet" - these frequently appear as viral social media games. They are your account recovery answers.
+- **Real-time location.** Live location sharing, stories with location tags, and check-ins create a public record of where you are right now.
+
+The question before posting: **would I be comfortable with a complete stranger using this information?**
+
+---
+
+## Trusting Your Instinct
+
+When something feels off, that feeling is information.
+
+Attackers design messages to suppress instinct by adding familiar elements - correct logos, known names, expected formats. Your discomfort in the presence of these familiar signals is your threat detection working correctly. Act on it.
+
+**The response when something feels off:** stop, do not click, verify through a separate channel. If the request was legitimate, the sender will understand a 5-minute delay. If it was not, you have just avoided the attack.
+
+---
+
+## Build Your Response Plan Before You Need It
+
+The worst time to figure out who to call is while your bank account is being drained.
+
+**Five things to save in your contacts now:**
+
+1. Your bank's 24-hour fraud reporting line (on the back of your card).
+2. Your mobile carrier's SIM lock or emergency number.
+3. The cybercrime helpline for your country (India: 1930; UK: Action Fraud 0300 123 2040).
+4. One trusted person you would call in a crisis.
+5. Your email provider's account recovery page URL.
+
+These contacts cost nothing to save. Under pressure, having them takes seconds to use. Finding them under pressure takes minutes you may not have.
+
+---
+
+## Teaching the Habit to Others
+
+The weakest link in your household's security is the device and behaviour of the person with the least awareness.
+
+**One habit is easier to teach than a course.** The one-second pause - "before you click anything unexpected, call me first" - is the single highest-return habit to pass on to elderly relatives, children, and anyone in your household who is less confident with digital tools.
+
+You do not need to teach everything. You need to teach this one thing.
+
+---
+
+## Try It: The One-Second Pause
+
+Eight micro-moments from a normal day. Choose your instinctive response to each. Then see the correct pause-and-verify behaviour.
+
+<iframe
+  id="pause-iframe"
+  src="/simulations/your-digital-protection-habits/your-digital-behaviour-habits/one-second-pause.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="The One-Second Pause"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('pause-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._pauseHandler);
+    window._pauseHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. Most attacks arrive in ordinary formats.**
+Unexpected delivery notifications. Urgent messages from contacts. Too-good offers. None of these look like "hacking." They look like normal digital life. That is the design.
+
+**2. The pause creates the gap the attack needs you to skip.**
+Every scenario in the simulation had a verification option available. The correct response in almost every case was not to act on the message, but to verify through a source you already trust.
+
+**3. Verification takes seconds and kills the attack.**
+A 10-second phone call to a known number, a direct visit to an official website, or a check of your bank app directly - any of these would have stopped Kiran's attack before it completed.
+
+**4. Your instinct about "something feeling off" is accurate more often than you think.**
+Trust the discomfort. Act on it by verifying, not by dismissing it.
+
+---
+
+## Three Things Worth Doing
+
+**1. Save your bank's fraud line in your contacts today.**
+Find the number on the back of your card and add it as a named contact. This is the number you call the moment something feels wrong - before following any instructions from any message.
+
+**2. Before your next social media post, check whether it reveals location, life event, or security question answers.**
+This is not about stopping sharing. It is about one moment of deliberate thought before posting anything that could be used to target you.
+
+**3. Teach one person in your household the one-second pause.**
+Pick the person in your home who is most likely to click first and verify later. Teach them one rule: if an unexpected message asks you to click or call or pay - stop and tell me first.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Kiran knew what phishing was, had read about it, and had never been fooled before. Why did the attack succeed this time?"
+  options={[
+    {
+      label: "He lacked enough security knowledge to recognise the attack.",
+      correct: false,
+      explanation: "He already knew about phishing. Knowledge was not the gap. The attack succeeded despite his knowledge because it targeted a different layer: the automatic response to a familiar-looking message under low-attention conditions."
+    },
+    {
+      label: "He acted on instinct without pausing - and his instinct was trained to expect messages in this exact format from his real bank.",
+      correct: true,
+      explanation: "Correct. The attack succeeded not because Kiran was uninformed, but because it arrived at a moment of low attention and replicated the exact format of legitimate bank messages. The one-second pause - noticing the emotional trigger and verifying through a known channel before acting - is the habit that interrupts this automatic response regardless of how legitimate the message looks."
+    },
+    {
+      label: "His bank's security systems failed to block the fraudulent transaction in time.",
+      correct: false,
+      explanation: "The bank could not block a transaction initiated through credentials the attacker had legitimately obtained from Kiran himself. The attack vector was human, not technical."
+    },
+    {
+      label: "He should never click links in WhatsApp messages from any sender.",
+      correct: false,
+      explanation: "Blanket avoidance of all links is not a practical or necessary habit. The correct response is to verify unexpected links through an independent channel - not to avoid all links entirely."
+    }
+  ]}
+/>

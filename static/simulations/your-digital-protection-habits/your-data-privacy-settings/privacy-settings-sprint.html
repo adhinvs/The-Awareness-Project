@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Privacy Settings Sprint</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B;
+      --blue: #2563EB; --blue-light: #EFF6FF;
+      --green: #059669; --green-light: #ECFDF5;
+      --red: #DC2626; --red-light: #FEF2F2;
+      --amber: #D97706; --amber-light: #FFFBEB;
+      --r: 12px;
+    }
+    body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px 16px 36px; -webkit-font-smoothing: antialiased; }
+    .wrap { max-width: 620px; margin: 0 auto; }
+    .header { text-align: center; margin-bottom: 22px; }
+    .header h1 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .header p { font-size: 13.5px; color: var(--muted); max-width: 480px; margin: 0 auto; }
+    .platform-picker { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+    .p-btn { flex: 1; min-width: 120px; padding: 12px 8px; background: var(--surface); border: 2px solid var(--border); border-radius: var(--r); cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; color: var(--muted); text-align: center; transition: all 0.15s; }
+    .p-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .p-btn.active { border-color: var(--blue); background: var(--blue-light); color: var(--blue); }
+    .p-btn .icon { font-size: 20px; display: block; margin-bottom: 4px; }
+    .settings-wrap { display: none; }
+    .settings-wrap.show { display: block; }
+    .time-badge { display: inline-block; background: var(--amber-light); border: 1px solid #FDE68A; border-radius: 99px; padding: 4px 12px; font-size: 12.5px; font-weight: 600; color: var(--amber); margin-bottom: 18px; }
+    .setting-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px 18px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .sc-top { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
+    .sc-num { width: 24px; height: 24px; border-radius: 50%; background: var(--blue-light); color: var(--blue); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .sc-title { font-size: 14px; font-weight: 700; }
+    .default-tag { margin-left: auto; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 99px; background: var(--red-light); color: var(--red); flex-shrink: 0; }
+    .sc-what { font-size: 12.5px; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
+    .path-row { display: flex; align-items: flex-start; gap: 8px; padding: 9px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; }
+    .path-icon { font-size: 14px; flex-shrink: 0; margin-top: 2px; }
+    .path-text { font-size: 12.5px; line-height: 1.5; }
+    .path-text strong { color: var(--text); }
+    .done-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+    .done-check { width: 18px; height: 18px; border: 2px solid var(--border); border-radius: 4px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+    .done-check.checked { background: var(--green); border-color: var(--green); }
+    .done-check.checked::after { content: '✓'; color: #fff; font-size: 11px; font-weight: 700; }
+    .done-label { font-size: 12.5px; color: var(--muted); cursor: pointer; }
+    .progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+    .prog-track { flex: 1; height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .prog-fill { height: 100%; background: var(--green); border-radius: 99px; transition: width 0.3s ease; width: 0%; }
+    .prog-text { font-size: 12.5px; font-weight: 600; color: var(--muted); flex-shrink: 0; }
+    .congrats { display: none; background: var(--green-light); border: 1px solid #A7F3D0; border-radius: var(--r); padding: 20px; text-align: center; margin-top: 14px; }
+    .congrats.show { display: block; }
+    .congrats-title { font-size: 16px; font-weight: 700; color: var(--green); margin-bottom: 6px; }
+    .congrats-sub { font-size: 13px; color: var(--muted); }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>Privacy Settings Sprint</h1>
+    <p>Pick a platform. Work through 6 high-impact settings with the exact path for each. Check them off as you go.</p>
+  </div>
+
+  <div class="platform-picker">
+    <button class="p-btn" onclick="selectPlatform('google',this)"><span class="icon">🔍</span>Google</button>
+    <button class="p-btn" onclick="selectPlatform('meta',this)"><span class="icon">📘</span>Meta</button>
+    <button class="p-btn" onclick="selectPlatform('apple',this)"><span class="icon">🍎</span>Apple</button>
+    <button class="p-btn" onclick="selectPlatform('x',this)"><span class="icon">𝕏</span>X / Twitter</button>
+  </div>
+
+  <div class="settings-wrap" id="settings-wrap">
+    <div class="time-badge" id="time-badge">⏱ Estimated time: 4 minutes</div>
+    <div class="progress-row">
+      <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+      <div class="prog-text" id="prog-text">0 / 6 done</div>
+    </div>
+    <div id="settings-list"></div>
+    <div class="congrats" id="congrats">
+      <div class="congrats-title">All 6 settings reviewed</div>
+      <div class="congrats-sub">Set a calendar reminder to repeat this audit in 6 months. Platforms update their default settings regularly.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const platforms = {
+    google: [
+      { title: 'Turn off Ad Personalisation', what: 'Google builds an ad profile from your searches, YouTube views, Maps history, and more. This is on by default.', default: 'On by default', path: 'myaccount.google.com > Data & Privacy > My Ad Centre > Turn off Ad Personalisation' },
+      { title: 'Review Location History', what: 'Timeline records everywhere you go if Location History is active. Many people never turned this on intentionally.', default: 'Varies', path: 'myaccount.google.com > Data & Privacy > Location History > Pause or delete' },
+      { title: 'Check Web & App Activity', what: 'This stores every search and site you visit while signed into Google. It powers personalisation but also builds a permanent profile.', default: 'On by default', path: 'myaccount.google.com > Data & Privacy > Web & App Activity > Turn off and delete' },
+      { title: 'Download your Google data', what: 'See the full picture of what Google holds on you - searches, location, YouTube, email metadata.', default: 'Never prompted', path: 'takeout.google.com > select data types > Create export' },
+      { title: 'Review Third-Party App Access', what: 'Any app you signed into using "Sign in with Google" has access to your account. Remove what you no longer use.', default: 'Accumulates over time', path: 'myaccount.google.com > Security > Third-party apps with account access > Remove access' },
+      { title: 'Turn off YouTube Watch & Search History', what: 'YouTube history feeds recommendation algorithms and your ad profile. You can keep using YouTube without recording history.', default: 'On by default', path: 'myaccount.google.com > Data & Privacy > YouTube History > Pause' }
+    ],
+    meta: [
+      { title: 'Set posts to Friends only', what: 'Default post visibility is often set to Public, meaning anyone can see your content even without being connected.', default: 'Often Public', path: 'Facebook > Settings > Privacy > Who can see your future posts > Friends' },
+      { title: 'Turn off Off-Facebook Activity', what: 'Meta tracks you on other websites and apps via the Facebook pixel, even when you are not on Facebook.', default: 'On by default', path: 'Facebook > Settings > Your Facebook Information > Off-Facebook activity > Manage > Disconnect future activity' },
+      { title: 'Review Ad Preferences', what: 'Meta builds interest and demographic profiles to target ads. You can see exactly what they think you are interested in.', default: 'Full profiling on', path: 'Facebook > Settings > Ads > Ad preferences > review and remove interests' },
+      { title: 'Limit profile visibility', what: 'Phone number, email, and workplace are often visible to Friends of Friends or the public by default.', default: 'Too visible', path: 'Facebook > Settings > Privacy > How people find and contact you > limit each field' },
+      { title: 'Review Instagram Data Sharing', what: 'Instagram shares data with Meta and third-party partners. The setting to limit this is buried.', default: 'Broad sharing', path: 'Instagram > Settings > Ads > Ad Preferences > Data about your activity from partners' },
+      { title: 'Check Active Sessions', what: 'See every device currently logged into your Facebook or Instagram account. Remove any you don\'t recognise.', default: 'Unchecked', path: 'Facebook > Settings > Security and Login > Where you\'re logged in > See all > End any unfamiliar session' }
+    ],
+    apple: [
+      { title: 'Review Location Services per app', what: 'Many apps default to "Always" location access. Most only need it "While Using."', default: 'Apps often set to Always', path: 'Settings > Privacy & Security > Location Services > review each app > set to While Using' },
+      { title: 'Turn off Personalised Ads', what: 'Apple uses your purchase history, app usage, and other signals to serve targeted ads in the App Store and Apple News.', default: 'On by default', path: 'Settings > Privacy & Security > Apple Advertising > Personalised Ads > Off' },
+      { title: 'Limit cross-app tracking', what: 'Apps can request permission to track your activity across other apps and websites. You can block all such requests.', default: 'Ask per app', path: 'Settings > Privacy & Security > Tracking > Allow Apps to Request to Track > Off' },
+      { title: 'Review iCloud data categories', what: 'Check which categories of data are syncing to iCloud, including Health, Photos, and Messages.', default: 'Varies', path: 'Settings > [your name] > iCloud > review each category and toggle off anything unnecessary' },
+      { title: 'Check Mail Privacy Protection', what: 'This prevents email senders from knowing when you open an email or what your IP address is.', default: 'Off on older installs', path: 'Settings > Mail > Privacy Protection > Protect Mail Activity > On' },
+      { title: 'Review Siri suggestions and data', what: 'Siri learns from your behaviour. You can limit what it retains and which apps feed it data.', default: 'Broad access', path: 'Settings > Siri & Search > Siri & Dictation History > Delete Siri & Dictation History, then review per-app settings' }
+    ],
+    x: [
+      { title: 'Turn off personalised ads', what: 'X uses your activity, location, and device data to serve targeted ads unless you opt out.', default: 'On by default', path: 'X > Settings > Privacy and safety > Ads preferences > uncheck Personalise ads' },
+      { title: 'Turn off location data for ads', what: 'X infers your location from GPS, IP address, and device data. This is used for targeting.', default: 'On by default', path: 'X > Settings > Privacy and safety > Location information > Precise location > Off' },
+      { title: 'Limit data sharing with partners', what: 'X shares data with advertising and measurement partners. You can limit this under Privacy settings.', default: 'Sharing enabled', path: 'X > Settings > Privacy and safety > Data sharing with business partners > Off' },
+      { title: 'Set your account to protected (if appropriate)', what: 'Protected accounts limit who can see and interact with your posts. Useful if you want a private account.', default: 'Public', path: 'X > Settings > Privacy and safety > Audience and tagging > Protect your posts' },
+      { title: 'Review app connections', what: 'Third-party apps authorised via X retain access even if you stopped using them.', default: 'Accumulates', path: 'X > Settings > Security and account access > Apps and sessions > Connected apps > Revoke access for old apps' },
+      { title: 'Turn off sensitive content in discoverability', what: 'Limit what information others can use to find your account (phone number, email).', default: 'Findable', path: 'X > Settings > Privacy and safety > Discoverability and contacts > uncheck email and phone number' }
+    ]
+  };
+
+  let checked = [];
+  let currentPlatform = null;
+
+  function selectPlatform(p, btn) {
+    currentPlatform = p;
+    checked = Array(6).fill(false);
+    document.querySelectorAll('.p-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('congrats').classList.remove('show');
+    renderSettings();
+    document.getElementById('settings-wrap').classList.add('show');
+    setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'), 200);
+  }
+
+  function renderSettings() {
+    const settings = platforms[currentPlatform];
+    let html = '';
+    settings.forEach((s, i) => {
+      html += `<div class="setting-card" id="sc-${i}">
+        <div class="sc-top">
+          <div class="sc-num">${i+1}</div>
+          <div class="sc-title">${s.title}</div>
+          <div class="default-tag">${s.default}</div>
+        </div>
+        <div class="sc-what">${s.what}</div>
+        <div class="path-row">
+          <span class="path-icon">🔗</span>
+          <span class="path-text"><strong>Where to find it:</strong> ${s.path}</span>
+        </div>
+        <div class="done-row">
+          <div class="done-check" id="check-${i}" onclick="toggleDone(${i})"></div>
+          <span class="done-label" onclick="toggleDone(${i})">I've changed this setting</span>
+        </div>
+      </div>`;
+    });
+    document.getElementById('settings-list').innerHTML = html;
+    updateProgress();
+  }
+
+  function toggleDone(i) {
+    checked[i] = !checked[i];
+    const el = document.getElementById('check-'+i);
+    el.classList.toggle('checked', checked[i]);
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const done = checked.filter(Boolean).length;
+    document.getElementById('prog-fill').style.width = (done/6*100) + '%';
+    document.getElementById('prog-text').textContent = done + ' / 6 done';
+    if (done === 6) {
+      document.getElementById('congrats').classList.add('show');
+      setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'), 300);
+    }
+  }
+
+  window.addEventListener('load', () => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'));
+</script>
+</body>
+</html>

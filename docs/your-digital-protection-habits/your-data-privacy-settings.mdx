@@ -2,14 +2,234 @@
 sidebar_position: 5
 title: "Your Data & Privacy Settings"
 sidebar_label: "Your Data & Privacy Settings"
+description: "How to audit and update privacy settings on Google, Meta, Apple, and X - with exact menu paths and what each setting controls."
+tags: [privacy-settings, data-privacy, google-privacy, meta-privacy, ad-personalisation, data-minimisation, digital-hygiene]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Your Data & Privacy Settings
 
-## Sub-topics
+Every major platform ships with settings that maximise data collection by default. Most people never change them. This module covers the specific settings that make the biggest difference, and exactly where to find them.
 
-- Social media privacy settings — the specific settings worth reviewing on every platform
-- What Google, Meta, and Apple know about you — and how to see your own data
-- Turning off ad personalisation across major platforms — step by step
-- Data minimisation — sharing only what is necessary, with only who genuinely needs it
-- A simple monthly digital hygiene checklist — what to check and when
+---
+
+## The Settings No One Told You To Change
+
+Fatima had been using Gmail, Instagram, and Google Maps for six years.
+
+She was careful about what she posted publicly. She did not share personal information with strangers. She felt reasonably private.
+
+Then she requested her Google data through Google Takeout out of curiosity.
+
+**The download contained 14 years of search history, every location she had visited since 2017 mapped on a timeline, every YouTube video she had watched, every ad she had clicked, and a detailed interest profile Google had built from all of it** - including inferred information about her health concerns, relationship status, and financial situation.
+
+She had consented to all of it. The consent was in the terms she agreed to when she created her account. The collection had been running silently since day one.
+
+**None of the settings that limited this were on by default.**
+
+---
+
+## What Is Actually Happening: The Default Problem
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>72%</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>of people have never reviewed their social media privacy settings since creating their account.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Platforms update their data collection practices regularly. Reviewing once is not enough.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Pew Research Center Digital Privacy Survey, 2024</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Ad Profiles</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Google Infers 5,000+ Interest Categories Per User</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Google's ad profile for an average user includes <b>thousands of inferred interest and demographic categories</b>, built from search, maps, YouTube, Gmail metadata, and location history.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Google Ads Transparency Report, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #3B82F6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#3B82F6', fontWeight: 'bold' }}>Off-Platform Tracking</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Meta Tracks You on Sites You Have Never Visited</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>The Facebook pixel is embedded on <b>millions of third-party websites</b>. Meta tracks your browsing behaviour across the web even when you are not logged into Facebook or Instagram.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Electronic Frontier Foundation, 2024</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Data Brokers</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Your Platform Data Is Sold to Third Parties</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Platform data is shared with <b>advertising and analytics partners</b> under terms buried in privacy policies. Limiting data sharing settings reduces how far your profile travels.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Global Data Protection Report, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #10B981', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#10B981', fontWeight: 'bold' }}>Data Download</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>You Can See Everything Platforms Hold on You</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Every major platform provides a data download. Most people have <b>never requested theirs</b>. Seeing the actual data is often what motivates meaningful privacy action.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: GDPR / DPDP Act Data Rights, 2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## Why Defaults Are Set Against You
+
+When a platform sets ad personalisation to "on" by default, that default is worth money. Every user who never changes it represents ad revenue the platform would not have if the default were "off."
+
+Default settings are product decisions, not neutral choices. They reflect what is in the platform's commercial interest, not what is in yours.
+
+**Changing defaults is not paranoia. It is correcting settings that were made without your active input.**
+
+---
+
+## What Google Knows - and How to Limit It
+
+Go to myaccount.google.com to see your Google data and manage settings.
+
+**High-impact settings to check:**
+
+- **Ad Personalisation:** My Ad Centre > turn off. Stops Google from building an ad profile from your activity.
+- **Location History:** Data & Privacy > Location History > pause. Stops the automatic recording of everywhere you go.
+- **Web & App Activity:** Data & Privacy > Web & App Activity > turn off. Stops recording every search and website visit.
+- **YouTube History:** Data & Privacy > YouTube History > pause. Stops your watch and search history feeding recommendations.
+- **Third-Party Apps:** Security > Third-party apps with account access > remove old connections.
+
+---
+
+## What Meta Knows - and How to Limit It
+
+**High-impact settings on Facebook and Instagram:**
+
+- **Off-Facebook Activity:** Settings > Your Facebook Information > Off-Facebook activity > Disconnect future activity. Stops cross-site tracking by Meta's pixel.
+- **Post Visibility:** Settings > Privacy > Who can see your future posts > Friends.
+- **Ad Preferences:** Settings > Ads > Ad Preferences > remove interest categories.
+- **Data Sharing with Partners:** Settings > Privacy Policy > Ad partners > limit sharing.
+
+---
+
+## Data Minimisation as a Habit
+
+Beyond platform settings, the underlying principle is data minimisation: **share only what is necessary, with only who genuinely needs it.**
+
+Practical applications:
+- Do not use "Sign in with Google" or "Sign in with Facebook" for sites you rarely use. Create a separate account with a throwaway email instead.
+- Do not fill in optional fields on forms (birthday, phone number, location) unless the service requires them to function.
+- Review which personal details your social profiles display publicly. Phone number and email are almost never necessary to share.
+- Check your platforms every 6 months. Settings change when platforms update their terms.
+
+---
+
+## Monthly Digital Hygiene Checklist
+
+A single monthly pass across the following keeps your settings current without becoming a full audit.
+
+| What to check | Where | Takes |
+|---|---|---|
+| Review active sessions on email | Account > Security > Active devices | 2 min |
+| Remove any app permissions you granted last month | Settings > Privacy | 3 min |
+| Check for OS and app updates | Settings > Software Update | 1 min |
+| Scan for apps you have not opened in 30 days | App Library (iPhone) or App Drawer (Android) | 2 min |
+| Review who can see your most recent social posts | Profile > Privacy | 1 min |
+| Check HaveIBeenPwned.com for new breaches involving your email | haveibeenpwned.com | 1 min |
+
+**10 minutes once a month** covers the most common drift points. Set a repeating calendar reminder.
+
+---
+
+## Try It: Privacy Settings Sprint
+
+Pick a platform. Work through 6 high-impact privacy settings with the exact path for each. Check them off as you go. Takes about 4 minutes.
+
+<iframe
+  id="privacy-sprint-iframe"
+  src="/simulations/your-digital-protection-habits/your-data-privacy-settings/privacy-settings-sprint.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Privacy Settings Sprint"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('privacy-sprint-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._privacySprintHandler);
+    window._privacySprintHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. The most impactful settings are rarely obvious.**
+Ad personalisation, off-platform tracking, and location history are not in the obvious "Privacy" section on most platforms. They are spread across multiple menus.
+
+**2. Platform defaults favour the platform.**
+Every setting that was "on by default" in the sprint was generating data for the platform. The default was a commercial decision, not a neutral one.
+
+**3. A 4-minute sprint covers the most important ground.**
+You do not need to change every setting. The 6 highest-impact settings per platform - when changed - significantly reduce how much of your activity feeds into advertising profiles.
+
+**4. Set a reminder to repeat this in 6 months.**
+Platforms update settings and introduce new data collection features regularly. A review you did last year may be incomplete today.
+
+---
+
+## Three Things Worth Doing
+
+**1. Turn off ad personalisation on Google today.**
+Go to myaccount.google.com > Data & Privacy > My Ad Centre > turn off personalised ads. Takes under 2 minutes.
+
+**2. Disconnect Off-Facebook Activity.**
+Facebook > Settings > Your Facebook Information > Off-Facebook Activity > Disconnect future activity. This is the single most impactful Meta privacy setting available to you.
+
+**3. Download your data from one platform.**
+Google Takeout (takeout.google.com) or Facebook's "Download Your Information" option will show you the actual profile held on you. Seeing it once changes how you approach default settings permanently.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Fatima was careful about what she shared publicly, yet Google held a detailed profile of her health concerns, relationship status, and finances. How was this possible?"
+  options={[
+    {
+      label: "Google hacked her private messages to gather this information.",
+      correct: false,
+      explanation: "No hacking was involved. The data was collected through normal product usage under terms she agreed to when creating her account."
+    },
+    {
+      label: "Google inferred this profile from her search history, location, YouTube activity, and other usage data - all collected by default settings she never changed.",
+      correct: true,
+      explanation: "Correct. The data was collected through ordinary platform use under default settings that maximise collection. Fatima did not share this information directly - Google inferred it. Changing data collection defaults (ad personalisation, location history, web activity) limits what can be inferred."
+    },
+    {
+      label: "Third-party apps she had connected to Google shared this data with Google.",
+      correct: false,
+      explanation: "Third-party app connections are a separate risk. The profile described was built by Google itself from her own platform activity, not data from third parties."
+    },
+    {
+      label: "She should not have used Google products at all.",
+      correct: false,
+      explanation: "The issue is not using Google but accepting default settings that maximise data collection. The settings to limit collection exist - they are simply not the default, and most users never encounter them."
+    }
+  ]}
+/>

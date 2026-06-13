@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sextortion Response Map</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f9f7f4;
+    color: #1a1a1a;
+    padding: 1.5rem 1rem 2.5rem;
+  }
+
+  .wrap { max-width: 680px; margin: 0 auto; }
+
+  .header { margin-bottom: 1.5rem; }
+  .header h1 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .header p { font-size: 14px; color: #555; line-height: 1.6; }
+
+  .step-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .step {
+    background: #fff;
+    border: 1px solid #e0dcd5;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .step-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .step-icon {
+    width: 32px; height: 32px; min-width: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    background: #f0ece6;
+    color: #555;
+  }
+  .step.active .step-icon { background: #4a7c5a; color: #fff; }
+  .step.warning .step-icon { background: #c04a20; color: #fff; }
+
+  .step-summary { flex: 1; }
+  .step-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #888; font-weight: 600; margin-bottom: 3px; }
+  .step.warning .step-label { color: #c04a20; }
+  .step-title { font-size: 15px; font-weight: 700; line-height: 1.35; }
+
+  .chevron { font-size: 11px; color: #aaa; margin-top: 5px; transition: transform 0.2s; }
+  .step.open .chevron { transform: rotate(180deg); }
+
+  .step-detail {
+    display: none;
+    padding: 0 16px 14px 60px;
+    font-size: 13px;
+    color: #444;
+    line-height: 1.65;
+  }
+  .step.open .step-detail { display: block; }
+
+  .paralysis-note {
+    font-size: 12px;
+    color: #777;
+    border-top: 1px solid #f0ece6;
+    padding-top: 8px;
+    margin-top: 8px;
+    font-style: italic;
+    line-height: 1.55;
+  }
+
+  .contacts-box {
+    background: #fff;
+    border: 1px solid #e0dcd5;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 1rem;
+  }
+  .contacts-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+  .contact-row { font-size: 13px; color: #444; line-height: 1.7; }
+  .contact-row strong { color: #1a1a1a; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>Sextortion Response Map</h1>
+    <p>If you have received a threat to share intimate images unless you pay, these are the correct steps - in order. Select each one to see the detail and why it matters.</p>
+  </div>
+
+  <div class="step-list" id="steps"></div>
+
+  <div class="contacts-box">
+    <div class="contacts-title">Reporting contacts by country</div>
+    <div class="contact-row">
+      <strong>India:</strong> cybercrime.gov.in | Helpline 1930 | NCPCR (for under 18)<br>
+      <strong>UK:</strong> Revenge Porn Helpline: 0345 600 0459 | Action Fraud: actionfraud.police.uk<br>
+      <strong>US:</strong> CCRI Crisis Line: 844-878-2274 | FBI IC3: ic3.gov | NCMEC (for under 18): 1-800-843-5678<br>
+      <strong>AU:</strong> eSafety Commissioner: esafety.gov.au | 1800RESPECT: 1800 737 732
+    </div>
+  </div>
+
+</div>
+
+<script>
+const STEPS = [
+  {
+    num: "1",
+    label: "Critical first step",
+    title: "Do not pay",
+    type: "warning",
+    detail: "Paying does not stop the threat - it proves the threat works. Demands escalate after every payment.",
+    paralysis: "The fear that content will be shared anyway is used to justify paying. Payment prolongs extortion in the vast majority of cases."
+  },
+  {
+    num: "2",
+    label: "Step two",
+    title: "Do not respond with emotion",
+    type: "warning",
+    detail: "Emotional responses reveal what you fear most and give the extorter more leverage. Silence is not compliance - it removes useful information from them.",
+    paralysis: "The impulse to explain or plead rarely changes outcomes and can increase demands."
+  },
+  {
+    num: "3",
+    label: "Step three",
+    title: "Screenshot and preserve all evidence",
+    type: "active",
+    detail: "Screenshot every message, threat, and account profile. Save URLs and note the date and time. This evidence is what law enforcement and platforms need.",
+    paralysis: "Many victims delete messages to avoid seeing them. Save first - then block."
+  },
+  {
+    num: "4",
+    label: "Step four",
+    title: "Report to the platform",
+    type: "active",
+    detail: "Report under 'Sextortion' or 'Non-consensual intimate imagery.' Include screenshots. On Meta, the intimate images path goes to a specialist team.",
+    paralysis: "Shame about how images were obtained stops many people from reporting. Platforms assess the threat, not the context."
+  },
+  {
+    num: "5",
+    label: "Step five",
+    title: "Use StopNCII.org to prevent image spread",
+    type: "active",
+    detail: "StopNCII hashes the image without uploading it, then distributes the fingerprint to 15+ platforms to block sharing. Free, confidential, and covers AI-generated content.",
+    paralysis: "This is the fastest way to limit spread across multiple platforms at once. Most people do not know it exists."
+  },
+  {
+    num: "6",
+    label: "Step six",
+    title: "Report to law enforcement",
+    type: "active",
+    detail: "File a report even if you do not know who the person is. Describe the images - you do not need to provide them. Law enforcement can request platform data with a case number.",
+    paralysis: "This shame belongs to the person making the threat, not to you. Police have seen every variant of this crime."
+  },
+  {
+    num: "7",
+    label: "Step seven",
+    title: "Contact a specialist support organisation",
+    type: "active",
+    detail: "CCRI Crisis Line (US): 844-878-2274. Revenge Porn Helpline (UK): 0345 600 0459. These organisations give practical help - platform reporting, legal options - without judgement.",
+    paralysis: "The feeling that you are the only person this has happened to is designed to keep you silent. You are not alone."
+  }
+];
+
+let open = new Set();
+
+function render() {
+  const container = document.getElementById('steps');
+  container.innerHTML = '';
+  STEPS.forEach((s, i) => {
+    const isOpen = open.has(i);
+    const div = document.createElement('div');
+    div.className = `step ${s.type}${isOpen ? ' open' : ''}`;
+    div.innerHTML = `
+      <div class="step-top">
+        <div class="step-icon">${s.num}</div>
+        <div class="step-summary">
+          <div class="step-label">${s.label}</div>
+          <div class="step-title">${s.title}</div>
+        </div>
+        <div class="chevron">&#9660;</div>
+      </div>
+      <div class="step-detail">
+        ${s.detail}
+        <div class="paralysis-note">Common hesitation: ${s.paralysis}</div>
+      </div>
+    `;
+    div.addEventListener('click', () => {
+      if (open.has(i)) open.delete(i); else open.add(i);
+      render();
+    });
+    container.appendChild(div);
+  });
+  sendHeight();
+}
+
+function sendHeight() {
+  setTimeout(() => {
+    if (window.parent) window.parent.postMessage({ iframeHeight: document.documentElement.scrollHeight + 20 }, '*');
+  }, 50);
+}
+
+render();
+</script>
+</body>
+</html>

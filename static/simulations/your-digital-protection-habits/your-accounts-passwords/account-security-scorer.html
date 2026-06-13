@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Account Security Scorer</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B;
+      --blue: #2563EB; --blue-light: #EFF6FF;
+      --green: #059669; --green-light: #ECFDF5;
+      --red: #DC2626; --red-light: #FEF2F2;
+      --amber: #D97706; --amber-light: #FFFBEB;
+      --r: 12px;
+    }
+    body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px 16px 36px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .header { text-align: center; margin-bottom: 24px; }
+    .header h1 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .header p { font-size: 13.5px; color: var(--muted); max-width: 480px; margin: 0 auto; }
+    .wrap { max-width: 600px; margin: 0 auto; }
+    .acct-picker { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
+    .acct-btn { flex: 1; min-width: 140px; padding: 12px 10px; background: var(--surface); border: 2px solid var(--border); border-radius: var(--r); cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; color: var(--muted); text-align: center; transition: all 0.15s; }
+    .acct-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .acct-btn.active { border-color: var(--blue); background: var(--blue-light); color: var(--blue); }
+    .acct-btn .icon { font-size: 22px; display: block; margin-bottom: 4px; }
+    .checks-wrap { display: none; }
+    .checks-wrap.show { display: block; }
+    .check-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px 18px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .check-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 5px; }
+    .check-q { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .check-hint { font-size: 12.5px; color: var(--muted); margin-bottom: 12px; }
+    .status-row { display: flex; gap: 8px; }
+    .s-btn { flex: 1; padding: 8px 6px; font-family: 'Outfit', sans-serif; font-size: 12.5px; font-weight: 600; border-radius: 7px; border: 1.5px solid var(--border); cursor: pointer; background: transparent; color: var(--muted); transition: all 0.15s; }
+    .s-btn:hover { border-color: var(--blue); }
+    .s-btn.pass.active { background: var(--green); border-color: var(--green); color: #fff; }
+    .s-btn.warn.active { background: var(--amber); border-color: var(--amber); color: #fff; }
+    .s-btn.fail.active { background: var(--red); border-color: var(--red); color: #fff; }
+    .btn { display: block; width: 100%; padding: 13px; background: var(--blue); color: #fff; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; margin-top: 18px; transition: background 0.15s; }
+    .btn:hover { background: #1D4ED8; }
+    .results { display: none; }
+    .results.show { display: block; }
+    .score-ring { text-align: center; padding: 28px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .ring-num { font-size: 52px; font-weight: 800; line-height: 1; }
+    .ring-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .rating { font-size: 15px; font-weight: 600; margin-top: 10px; }
+    .result-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .ri-top { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+    .ri-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .ri-name { font-size: 13.5px; font-weight: 600; }
+    .ri-fix { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+    .btn-reset { background: transparent; color: var(--muted); border: 1px solid var(--border); margin-top: 8px; }
+    .btn-reset:hover { background: var(--border); color: var(--text); }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>Account Security Scorer</h1>
+    <p>Pick an account type. Rate each of the 6 security factors: Pass, Warning, or Fail. Get your takeover resistance score.</p>
+  </div>
+
+  <div class="acct-picker">
+    <button class="acct-btn" onclick="selectAccount('email',this)"><span class="icon">📧</span>Email</button>
+    <button class="acct-btn" onclick="selectAccount('banking',this)"><span class="icon">🏦</span>Banking</button>
+    <button class="acct-btn" onclick="selectAccount('social',this)"><span class="icon">🌐</span>Social Media</button>
+  </div>
+
+  <div class="checks-wrap" id="checks-wrap">
+    <div id="checks-list"></div>
+    <button class="btn" onclick="showResults()">Get My Score</button>
+  </div>
+
+  <div class="results" id="results">
+    <div class="score-ring">
+      <div class="ring-num" id="ring-num">-</div>
+      <div class="ring-label">security score</div>
+      <div class="rating" id="rating"></div>
+    </div>
+    <div id="result-items"></div>
+    <button class="btn btn-reset" onclick="reset()">Check Another Account</button>
+  </div>
+</div>
+
+<script>
+  const checks = [
+    {
+      id: 'password', label: 'Password Strength',
+      q: 'How is your password?',
+      hint: 'A strong password is 12+ characters, unique to this account, and not a word from a dictionary.',
+      options: ['Pass - unique and strong', 'Warn - decent but reused', 'Fail - weak or default'],
+      fixes: {
+        pass: 'Strong password. Review again in 6 months.',
+        warn: 'Reused passwords are a serious risk. Change this one in your password manager now.',
+        fail: 'Change this immediately. Use your password manager to generate a 16-character random password.'
+      }
+    },
+    {
+      id: '2fa', label: 'Two-Factor Authentication',
+      q: 'What 2FA do you have enabled?',
+      hint: 'Authenticator apps (Google Authenticator, Authy) are much stronger than SMS codes.',
+      options: ['Pass - authenticator app', 'Warn - SMS only', 'Fail - none'],
+      fixes: {
+        pass: 'Best available 2FA. Keep it.',
+        warn: 'SMS can be intercepted via SIM swap. Add an authenticator app as your primary 2FA.',
+        fail: 'Enable 2FA now - it blocks over 99% of automated account takeover attempts.'
+      }
+    },
+    {
+      id: 'recovery', label: 'Recovery Info',
+      q: 'Is your recovery email and phone number still current?',
+      hint: 'Old recovery contacts mean you can lose permanent access after a takeover.',
+      options: ['Pass - up to date', 'Warn - not sure', 'Fail - outdated or none'],
+      fixes: {
+        pass: 'Good. Check again every 12 months.',
+        warn: 'Check now. Account > Security > Recovery options.',
+        fail: 'Update immediately. This is the most common way people lose account access permanently.'
+      }
+    },
+    {
+      id: 'apps', label: 'Third-Party App Access',
+      q: 'Have you reviewed which apps are connected to this account?',
+      hint: 'Old connected apps keep access even if you stopped using them years ago.',
+      options: ['Pass - reviewed recently', 'Warn - not in 6+ months', 'Fail - never checked'],
+      fixes: {
+        pass: 'Good habit. Repeat every 6 months.',
+        warn: 'Go to your account security settings and revoke access for apps you no longer use.',
+        fail: 'Go to: Account Settings > Security > Third-party apps. Revoke anything unfamiliar.'
+      }
+    },
+    {
+      id: 'logins', label: 'Login Activity',
+      q: 'Have you checked for unfamiliar login locations?',
+      hint: 'Most accounts show recent login history under Security settings.',
+      options: ['Pass - no unfamiliar activity', 'Warn - haven\'t checked', 'Fail - suspicious logins'],
+      fixes: {
+        pass: 'Clear. Check again if you notice anything unusual.',
+        warn: 'Check now: Account > Security > Recent activity or Where you\'re signed in.',
+        fail: 'Sign out all sessions, change your password, and enable 2FA immediately.'
+      }
+    },
+    {
+      id: 'dormant', label: 'Account Necessity',
+      q: 'Do you still actively need this account?',
+      hint: 'Dormant accounts are takeover targets - attackers look for accounts nobody monitors.',
+      options: ['Pass - actively used', 'Warn - rarely used', 'Fail - no longer needed'],
+      fixes: {
+        pass: 'Keep monitoring it.',
+        warn: 'If you rarely use it, either check it regularly or close it.',
+        fail: 'Delete it. A closed account cannot be compromised. Find the deletion option in Settings > Account > Delete.'
+      }
+    }
+  ];
+
+  const accountNames = { email: 'Email Account', banking: 'Banking App', social: 'Social Media Account' };
+  let currentAccount = null;
+  let answers = Array(6).fill(null);
+
+  function selectAccount(type, btn) {
+    currentAccount = type;
+    answers = Array(6).fill(null);
+    document.querySelectorAll('.acct-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('results').classList.remove('show');
+    renderChecks();
+    document.getElementById('checks-wrap').classList.add('show');
+    setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'), 200);
+  }
+
+  function renderChecks() {
+    let html = '';
+    checks.forEach((c, i) => {
+      html += `<div class="check-item">
+        <div class="check-label">${c.label}</div>
+        <div class="check-q">${c.q}</div>
+        <div class="check-hint">${c.hint}</div>
+        <div class="status-row">
+          <button class="s-btn pass" onclick="setAns(${i},'pass',this)">Pass</button>
+          <button class="s-btn warn" onclick="setAns(${i},'warn',this)">Warning</button>
+          <button class="s-btn fail" onclick="setAns(${i},'fail',this)">Fail</button>
+        </div>
+      </div>`;
+    });
+    document.getElementById('checks-list').innerHTML = html;
+  }
+
+  function setAns(i, val, btn) {
+    answers[i] = val;
+    const row = btn.closest('.status-row');
+    row.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function showResults() {
+    const pts = answers.map(a => a === 'pass' ? 2 : a === 'warn' ? 1 : 0);
+    const total = pts.reduce((a, b) => a + b, 0);
+    const pct = Math.round(total / 12 * 100);
+    document.getElementById('ring-num').textContent = pct + '%';
+    const colors = [[0,50,'#DC2626'],[50,75,'#D97706'],[75,101,'#059669']];
+    for (const [lo, hi, c] of colors) if (pct >= lo && pct < hi) { document.getElementById('ring-num').style.color = c; break; }
+    const labels = { low: 'High takeover risk. Act on the Fail items today.', mid: 'Moderate risk. Address the Warnings.', high: 'Well protected. Maintain these habits.' };
+    const key = pct < 50 ? 'low' : pct < 75 ? 'mid' : 'high';
+    document.getElementById('rating').textContent = labels[key];
+    const dotColors = { pass: '#059669', warn: '#D97706', fail: '#DC2626' };
+    let html = '';
+    checks.forEach((c, i) => {
+      const a = answers[i] || 'fail';
+      html += `<div class="result-item">
+        <div class="ri-top">
+          <div class="ri-dot" style="background:${dotColors[a]}"></div>
+          <div class="ri-name">${c.label}</div>
+        </div>
+        <div class="ri-fix">${c.fixes[a]}</div>
+      </div>`;
+    });
+    document.getElementById('result-items').innerHTML = html;
+    document.getElementById('results').classList.add('show');
+    setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'), 300);
+  }
+
+  function reset() {
+    currentAccount = null;
+    answers = Array(6).fill(null);
+    document.querySelectorAll('.acct-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('checks-wrap').classList.remove('show');
+    document.getElementById('results').classList.remove('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  window.addEventListener('load', () => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'));
+</script>
+</body>
+</html>

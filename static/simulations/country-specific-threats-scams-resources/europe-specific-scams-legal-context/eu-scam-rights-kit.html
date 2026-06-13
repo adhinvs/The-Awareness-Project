@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EU Scam & Rights Kit</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f9f7f4;
+    color: #1a1a1a;
+    padding: 1.5rem 1rem 2.5rem;
+  }
+
+  .wrap { max-width: 700px; margin: 0 auto; }
+
+  .header { margin-bottom: 1.5rem; }
+  .header h1 { font-size: 18px; font-weight: 700; margin-bottom: 5px; }
+  .header p { font-size: 14px; color: #555; line-height: 1.6; }
+
+  .row-selects { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.25rem; }
+
+  select {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 13px;
+    border: 1.5px solid #d4cfc8;
+    border-radius: 8px;
+    background: #fff;
+    color: #1a1a1a;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    cursor: pointer;
+  }
+  select:focus { outline: 2px solid #4a7c5a; border-color: #4a7c5a; }
+
+  .select-label { font-size: 12px; font-weight: 600; color: #666; margin-bottom: 5px; display: block; }
+
+  .response-box {
+    display: none;
+    background: #fff;
+    border: 1px solid #e0dcd5;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .response-box.visible { display: block; }
+
+  .response-header {
+    background: #4a7c5a;
+    color: #fff;
+    padding: 14px 18px;
+  }
+  .response-header h2 { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+  .response-header p { font-size: 12px; opacity: 0.85; }
+
+  .step {
+    display: flex;
+    gap: 14px;
+    padding: 14px 18px;
+    border-bottom: 1px solid #f0ece6;
+    align-items: flex-start;
+  }
+  .step:last-child { border-bottom: none; }
+
+  .step-num {
+    width: 26px; height: 26px; min-width: 26px;
+    border-radius: 50%;
+    background: #4a7c5a;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+  }
+
+  .step-body { flex: 1; }
+  .step-title { font-size: 13.5px; font-weight: 700; margin-bottom: 3px; }
+  .step-detail { font-size: 13px; color: #555; line-height: 1.55; }
+  .step-detail strong { color: #222; font-weight: 600; }
+
+  .law-box {
+    background: #faf8f5;
+    border-top: 1px solid #e8e4de;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  .dpa-box {
+    background: #f0f7f2;
+    border: 1px solid #c3deca;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 14px 18px 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #2d5c3a;
+  }
+  .dpa-box strong { font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>EU Scam & Rights Kit</h1>
+    <p>Select your country and issue type to get the correct reporting path and your GDPR rights.</p>
+  </div>
+
+  <div class="row-selects">
+    <div>
+      <label class="select-label" for="country-sel">Your country</label>
+      <select id="country-sel" onchange="update()">
+        <option value="">-- Select country --</option>
+        <option value="de">Germany</option>
+        <option value="fr">France</option>
+        <option value="es">Spain</option>
+        <option value="it">Italy</option>
+        <option value="nl">Netherlands</option>
+        <option value="pl">Poland</option>
+        <option value="se">Sweden</option>
+        <option value="other">Other EU country</option>
+      </select>
+    </div>
+    <div>
+      <label class="select-label" for="issue-sel">Issue type</label>
+      <select id="issue-sel" onchange="update()">
+        <option value="">-- Select issue --</option>
+        <option value="gdpr">GDPR / data violation</option>
+        <option value="sepa">SEPA payment fraud</option>
+        <option value="holiday">Holiday / travel scam</option>
+        <option value="energy">Energy / utility scam</option>
+        <option value="crossborder">Cross-border e-commerce fraud</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="response-box" id="response-box"></div>
+
+</div>
+
+<script>
+const DPA = {
+  de: { name: "BfDI (Germany)", url: "bfdi.bund.de", note: "State DPAs handle regional complaints (e.g. LDA Bayern, DPA Hamburg)." },
+  fr: { name: "CNIL (France)", url: "cnil.fr/fr/plaintes", note: "Online complaint portal. Response typically within 3 months." },
+  es: { name: "AEPD (Spain)", url: "aepd.es", note: "Online complaints available. AEPD is one of the most active EU DPAs." },
+  it: { name: "Garante (Italy)", url: "gpdp.it", note: "Complaint form at garanteprivacy.it. Also handles data breach notifications." },
+  nl: { name: "Autoriteit Persoonsgegevens (Netherlands)", url: "autoriteitpersoonsgegevens.nl", note: "English interface available. Strong enforcement record." },
+  pl: { name: "UODO (Poland)", url: "uodo.gov.pl", note: "Skargi i wnioski section for complaints. Polish language primarily." },
+  se: { name: "IMY (Sweden)", url: "imy.se", note: "English interface available. IMY handles both complaints and notifications." },
+  other: { name: "Your national DPA", url: "edpb.europa.eu/about-edpb/board/members_en", note: "Find your national DPA at the European Data Protection Board website." }
+};
+
+const ISSUES = {
+  gdpr: {
+    title: "GDPR / Data Violation",
+    subtitle: "Your personal data was processed unlawfully, breached, or shared without consent",
+    steps: [
+      { title: "Make a Subject Access Request first", detail: "You have the right to request all data a company holds on you. Send a SAR to the company's Data Protection Officer. They must respond within 30 days. Free of charge." },
+      { title: "Send an erasure request", detail: "Under Article 17 GDPR, you can request deletion of your data in many circumstances: consent withdrawn, data no longer necessary, unlawful processing. Companies must respond within 30 days." },
+      { title: "File with your national DPA", detail: "If the company ignores your requests or denies your rights without valid grounds, file a complaint with your national Data Protection Authority (shown below)." },
+      { title: "Cross-border complaints", detail: "If the company is based in another EU country: you can file with your own DPA (your home DPA will coordinate with the company's lead DPA under GDPR's one-stop-shop mechanism)." },
+      { title: "Europol for criminal data misuse", detail: "If the data violation is part of a criminal act (identity theft, fraud): report at <strong>europol.europa.eu/report-a-crime</strong>." },
+    ],
+    law: "GDPR Art. 15 (access) · Art. 17 (erasure) · Art. 77 (right to lodge complaint) · Art. 82 (right to compensation) · Fines up to €20 million or 4% of global turnover"
+  },
+  sepa: {
+    title: "SEPA Payment Fraud",
+    subtitle: "Unauthorised SEPA transfer, fake IBAN fraud, or payment app scam",
+    steps: [
+      { title: "Contact your bank immediately", detail: "<strong>SEPA Credit Transfer recall is possible within 10 business days.</strong> Request a recall immediately — do not wait. Provide the IBAN, amount, and date." },
+      { title: "File with your national cybercrime unit", detail: "Report to your national police cybercrime unit. In cross-border cases, your police will coordinate with Europol's EC3." },
+      { title: "Europol EC3", detail: "For cross-border SEPA fraud: <strong>europol.europa.eu/report-a-crime</strong>. EC3 (European Cybercrime Centre) handles payment fraud cases." },
+      { title: "EBA for bank complaints", detail: "If your bank does not cooperate: file with the European Banking Authority or your national banking regulator." },
+      { title: "ECC-Net for cross-border disputes", detail: "<strong>eccnet.eu</strong> — European Consumer Centres Network provides free advice and mediation for cross-border consumer payment disputes." },
+    ],
+    law: "EU Payment Services Directive 2 (PSD2) — banks must refund unauthorised transactions unless gross negligence proved · EU SEPA Regulation 260/2012 · National payment fraud laws apply alongside"
+  },
+  holiday: {
+    title: "Holiday / Travel Scam",
+    subtitle: "Fake booking platform, non-existent rental, or fraudulent travel agency",
+    steps: [
+      { title: "Document everything", detail: "Save all booking confirmations, payment receipts, communication with the platform, and screenshots of the listing. This is your evidence for all subsequent steps." },
+      { title: "Dispute with your card or payment provider", detail: "If paid by card: initiate a chargeback within 120 days. PayPal: open a dispute within 180 days. Bank transfer: request recall immediately (less likely to succeed)." },
+      { title: "ECC-Net for cross-border bookings", detail: "<strong>eccnet.eu</strong> — free consumer advice for cross-border EU travel disputes. They contact the business on your behalf and mediate." },
+      { title: "Report to your national consumer authority", detail: "In Germany: Verbraucherzentrale. France: DGCCRF. Spain: OMIC. The authority may investigate the platform if many complaints are received." },
+      { title: "Report to Europol for organised fraud", detail: "Fake booking platforms operating at scale are often criminal organisations. Report at europol.europa.eu/report-a-crime." },
+    ],
+    law: "EU Package Travel Directive (2015/2302) — tour operators liable for service failures · EU Consumer Rights Directive — 14-day withdrawal right on digital contracts · PSD2 chargeback rights"
+  },
+  energy: {
+    title: "Energy / Utility Scam",
+    subtitle: "Fake energy supplier, fraudulent bill, or crisis-exploitation utility fraud",
+    steps: [
+      { title: "Verify the supplier is real", detail: "Check your national energy regulator's licensed supplier list before engaging. Do not call back numbers from unsolicited calls — use the number on your official bill." },
+      { title: "Report to your national energy regulator", detail: "Every EU country has a national energy regulator (ACER at EU level: acer.europa.eu). Report fraudulent suppliers for investigation." },
+      { title: "Report to consumer authority", detail: "Energy scams often violate consumer protection law. File with your national consumer authority alongside the energy regulator." },
+      { title: "Cybercrime report for phishing/spoofing", detail: "If the scam involved fake emails or websites mimicking your energy company: report to your national cybercrime unit and the company being impersonated." },
+      { title: "ECC-Net for cross-border issues", detail: "<strong>eccnet.eu</strong> for disputes with energy providers based in another EU country." },
+    ],
+    law: "EU Energy Regulation (2019/942) · EU Consumer Rights Directive · National consumer protection laws · GDPR applies if your data was collected fraudulently"
+  },
+  crossborder: {
+    title: "Cross-Border E-Commerce Fraud",
+    subtitle: "Fake online shop, non-delivery of goods, or counterfeit products from an EU seller",
+    steps: [
+      { title: "Chargeback with your card provider", detail: "If paid by card: initiate a chargeback within 120 days. Provide order confirmation, non-delivery evidence, and seller communication. Success rate is high for genuine cases." },
+      { title: "ECC-Net complaint", detail: "<strong>eccnet.eu</strong> — Your national European Consumer Centre contacts the seller's ECC for mediation. Free. Best option for disputes with sellers in other EU countries." },
+      { title: "ODR Platform", detail: "<strong>ec.europa.eu/consumers/odr</strong> — EU Online Dispute Resolution platform. Sellers who accept ODR must engage with mediation. Check the shop's website for the ODR link." },
+      { title: "Report the fake shop", detail: "Report to your national consumer authority. They share data with EUROPOL and the European Consumer Protection Cooperation network to take down fraudulent sellers." },
+      { title: "EU 14-day return right", detail: "All online purchases in the EU are subject to a 14-day right of withdrawal, no reason needed. Legitimate sellers must honour this. If they do not, report to your DPA and consumer authority." },
+    ],
+    law: "EU Consumer Rights Directive (14-day right, delivery rules) · EU E-Commerce Directive · Digital Services Act (2024 — platforms must remove illegal content) · PSD2 (payment protection)"
+  }
+};
+
+function update() {
+  const country = document.getElementById('country-sel').value;
+  const issue = document.getElementById('issue-sel').value;
+  if (!country || !issue) { return; }
+  const dpa = DPA[country];
+  const iss = ISSUES[issue];
+  let html = `
+    <div class="response-header">
+      <h2>${iss.title}</h2>
+      <p>${iss.subtitle}</p>
+    </div>
+  `;
+  iss.steps.forEach((s, i) => {
+    html += `<div class="step"><div class="step-num">${i+1}</div><div class="step-body"><div class="step-title">${s.title}</div><div class="step-detail">${s.detail}</div></div></div>`;
+  });
+  if (issue === 'gdpr') {
+    html += `<div class="dpa-box"><strong>Your DPA:</strong> ${dpa.name} — ${dpa.url}<br><span style="font-size:12px;opacity:0.8">${dpa.note}</span></div>`;
+  }
+  html += `<div class="law-box"><strong>Legal basis:</strong> ${iss.law}</div>`;
+  const box = document.getElementById('response-box');
+  box.innerHTML = html;
+  box.classList.add('visible');
+  sendHeight();
+}
+
+function sendHeight() {
+  setTimeout(() => {
+    if (window.parent) window.parent.postMessage({ iframeHeight: document.documentElement.scrollHeight + 20 }, '*');
+  }, 60);
+}
+</script>
+</body>
+</html>

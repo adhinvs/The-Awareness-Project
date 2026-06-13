@@ -1,14 +1,210 @@
 ---
-sidebar_position: 0
 title: "Your Digital Protection Habits"
-sidebar_label: "Section Overview"
+sidebar_label: "Section 15: Protection Habits"
+description: "Six practical habit areas that make you significantly harder to target - devices, accounts, apps, networks, data settings, and daily behaviour."
+tags: [digital-safety, cybersecurity-habits, device-security, password-manager, privacy-settings, digital-hygiene]
 ---
 
 import DocCardList from '@theme/DocCardList';
+import Quiz from '@site/src/components/Quiz';
 
 # Your Digital Protection Habits
 
-Simple practices that make you significantly harder to target
+*Most attacks succeed not because someone is clever, but because a basic habit was missing. This section covers the six areas where small, consistent actions make the biggest difference.*
+
+---
+
+## The Breach That Took Three Minutes
+
+Maya was a project manager with 11 years of digital experience.
+
+She kept her software updated. She used strong passwords. She was not careless.
+
+On a Tuesday afternoon, she connected to the free Wi-Fi at an airport lounge to quickly check her work email before a flight. She was logged in already, so no password was needed.
+
+**She did not know the network was a rogue hotspot** - a device set up by another traveller to intercept traffic on that exact corridor of the airport.
+
+Her session token was captured. By the time she boarded, someone had used that token to access her company's project management dashboard. They downloaded three months of client data and changed the billing email address.
+
+**Maya had done almost everything right. The one gap was the network.**
+
+The breach cost her company a client and three weeks of recovery. The attacker was never identified.
+
+---
+
+## What Is Actually Happening: The Habit Gap
+
+These six modules are not about technical knowledge. They are about the gap between knowing and doing.
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>95%</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>of cybersecurity incidents involve human error or missing habits - not unbeatable technical attacks.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>The protection is available. The habits are what most people skip.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: IBM Security Cost of a Data Breach Report, 2024</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Accounts</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Only 26% Use a Password Manager</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Despite password reuse being the top account takeover vector, <b>fewer than 1 in 4 people</b> use a password manager to generate unique credentials.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: NordPass Password Habits Report, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Devices</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>43% Never Update Their OS</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Nearly <b>half of smartphone users</b> delay or skip OS updates, leaving known vulnerabilities open long after patches are available.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Lookout Mobile Security Report, 2024</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #3B82F6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#3B82F6', fontWeight: 'bold' }}>Privacy</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>72% Never Review Privacy Settings</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}><b>7 in 10 people</b> have never reviewed their social media privacy settings since creating their account, leaving defaults in place that maximise data sharing.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Pew Research Center, Digital Privacy Survey, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #10B981', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#10B981', fontWeight: 'bold' }}>Authentication</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>2FA Blocks 99.9% of Attacks</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Two-factor authentication stops <b>99.9% of automated account compromise attempts</b> - yet fewer than half of users have enabled it on their primary accounts.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Microsoft Security Intelligence Report, 2024</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Apps</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Average User Grants 25+ Permissions Per App</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Most users <b>tap Allow without reading</b> what each app permission means. Camera, location, and microphone access are routinely granted to apps that have no need for them.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Cybernews App Permission Research, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #06B6D4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>Behaviour</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>1 in 3 Wi-Fi Hotspots Can Intercept Traffic</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Research found that <b>approximately 1 in 3 public hotspots</b> in tested locations either lacked encryption or were configured in ways that exposed user data.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Norton Cybersecurity Insights Report, 2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## Where Do You Actually Stand?
+
+This 15-point audit covers all six habit domains: devices, accounts, apps, network, data settings, and daily behaviour. Three questions each. Binary answers only.
+
+The output is not a lecture. It gives you one high-impact action per domain - six specific next steps, not a long list.
+
+<iframe
+  id="scorecard-iframe"
+  src="/simulations/your-digital-protection-habits/section/protection-scorecard.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '10px', display: 'block', marginTop: '16px' }}
+  title="Your Protection Scorecard"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('scorecard-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._scorecardHandler);
+    window._scorecardHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+*Your score is a starting point, not a verdict. Each domain can be addressed with a single focused action.*
+
+---
+
+## What the Scorecard Shows You
+
+Protection is not achieved by doing everything perfectly once. It is maintained by doing a small number of things consistently.
+
+### The six domains are interdependent.
+
+A strong password means nothing if the device it is stored on has no screen lock. Reviewing privacy settings once means nothing if you grant every app permission without checking. The six domains in this section reinforce each other.
+
+### Defaults are set against you.
+
+Every platform and operating system ships with settings that maximise data sharing and minimise friction. The default is rarely the secure option. Reviewing settings is not paranoia - it is correcting what was set without your input.
+
+### Habits beat knowledge.
+
+You can know every threat in this curriculum and still be compromised because knowing is not the same as doing. The three-minute habit of pausing before clicking, the four-minute habit of reviewing privacy settings, and the five-minute habit of a device health check are worth more than hours of reading about attacks.
+
+---
+
+## Three Things Worth Doing
+
+### 1. Fix one gap per domain this week.
+
+You do not need to address everything at once. Pick the lowest-effort action from your scorecard results and complete it today. One per domain over six weeks is more sustainable than trying to do everything on a single afternoon.
+
+### 2. Set a calendar reminder for 6 months from now.
+
+Privacy settings change when platforms update their terms. App permissions reset after operating system upgrades. The threat landscape shifts. A 6-month review cycle catches what has drifted.
+
+### 3. Teach one habit to someone in your household.
+
+The weakest device on your home network is the entry point for every device on it. Sharing one habit - screen lock, auto-updates, or checking before clicking - with a family member protects your network as much as it protects them.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Maya had good security habits but was still compromised. What was the single gap that made the breach possible?"
+  options={[
+    {
+      label: "She used a weak password for her work system.",
+      correct: false,
+      explanation: "No password was involved. The attack captured a session token over the network, bypassing her password entirely."
+    },
+    {
+      label: "She connected to an untrusted public Wi-Fi network while accessing a work system.",
+      correct: true,
+      explanation: "Correct. The rogue hotspot intercepted her active session token - a credential that bypasses password checks entirely. No amount of password strength helps when the session itself is captured over an insecure network."
+    },
+    {
+      label: "She did not have two-factor authentication enabled.",
+      correct: false,
+      explanation: "2FA protects login attempts. It does not protect against session token theft, which bypasses the login step entirely."
+    },
+    {
+      label: "She failed to update her software before the trip.",
+      correct: false,
+      explanation: "Updates patch vulnerabilities in software, not network interception. The attack was network-based, not a software exploit."
+    }
+  ]}
+/>
 
 ---
 

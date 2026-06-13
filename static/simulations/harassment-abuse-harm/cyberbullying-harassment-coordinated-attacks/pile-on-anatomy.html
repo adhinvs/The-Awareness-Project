@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Pile-On Anatomy</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f9f7f4;
+    color: #1a1a1a;
+    padding: 1.5rem 1rem 2.5rem;
+  }
+
+  .wrap { max-width: 680px; margin: 0 auto; }
+
+  .header { margin-bottom: 1.5rem; }
+  .header h1 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .header p { font-size: 14px; color: #555; line-height: 1.6; }
+
+  .tab-bar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 13px;
+    border-radius: 20px;
+    border: 1.5px solid #d8d3cb;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: #555;
+  }
+  .tab-btn.active {
+    background: #b05020;
+    border-color: #b05020;
+    color: #fff;
+  }
+
+  .stage-card {
+    display: none;
+    background: #fff;
+    border: 1px solid #e0dcd5;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  .stage-card.visible { display: block; }
+
+  .stage-header {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid #f0ece6;
+  }
+  .stage-num { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: #b05020; font-weight: 700; margin-bottom: 4px; }
+  .stage-title { font-size: 16px; font-weight: 700; }
+
+  .stage-body { padding: 14px 16px; }
+
+  .stage-what { font-size: 14px; color: #333; line-height: 1.6; margin-bottom: 12px; }
+
+  .mechanics-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #888; font-weight: 600; margin-bottom: 8px; }
+  .mechanic-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #444;
+    line-height: 1.5;
+  }
+  .mechanic-dot {
+    width: 6px;
+    height: 6px;
+    min-width: 6px;
+    border-radius: 50%;
+    background: #b05020;
+    margin-top: 6px;
+  }
+
+  .action-box {
+    background: #fdf9f6;
+    border: 1px solid #e8e0d6;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .action-box strong { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: #b05020; margin-bottom: 5px; }
+
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 1rem;
+  }
+  .nav-btn {
+    font-size: 13px;
+    color: #555;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 7px 16px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .nav-btn:hover { background: #f0ece6; color: #1a1a1a; }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; }
+  .nav-btn.primary { background: #b05020; border-color: #b05020; color: #fff; }
+  .nav-btn.primary:hover { background: #903d16; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>The Pile-On Anatomy</h1>
+    <p>A coordinated harassment campaign has five stages. Each stage uses specific platform mechanics. Select a stage to see how it works - and what to do.</p>
+  </div>
+
+  <div class="tab-bar" id="tab-bar"></div>
+  <div id="stage-container"></div>
+
+  <div class="nav-row">
+    <button class="nav-btn" id="prev-btn" onclick="changeStage(-1)" disabled>Previous</button>
+    <button class="nav-btn primary" id="next-btn" onclick="changeStage(1)">Next stage</button>
+  </div>
+
+</div>
+
+<script>
+const STAGES = [
+  {
+    num: "Stage 1",
+    title: "The Target Is Flagged",
+    what: "A post flags a person by name, location, or username. The original account may not participate further - they just point.",
+    mechanics: [
+      "Quote-tweet or 'ratio' culture on X amplifies the original post to thousands before the target knows it is happening",
+      "Instagram and TikTok comment sections become organising points with minimal platform intervention",
+      "The person flagging the target often does not participate directly - they just point"
+    ],
+    action: "Do not delete the original post - deletion removes your documentation and can look like admission. Screenshot everything first."
+  },
+  {
+    num: "Stage 2",
+    title: "Private Coordination",
+    what: "A private group - on Discord, Telegram, WhatsApp, or a subreddit - receives the signal and begins organising. Participants divide tasks: finding personal information, coordinating mass reports, drafting messages to send to the target's employer.",
+    mechanics: [
+      "Discord servers have private channels that coordinate public actions while remaining hidden",
+      "Telegram groups move faster than platform moderation can respond",
+      "Reddit threads are sometimes used to compile research on targets"
+    ],
+    action: "If you suspect coordination: save public-facing posts (which may reference the private group). Report coordinated inauthentic behaviour to platforms - this is treated differently from individual harassment reports and is escalated faster."
+  },
+  {
+    num: "Stage 3",
+    title: "Volume Amplification",
+    what: "Many accounts reach the target simultaneously - real people, bots, and secondary accounts. The volume creates a false impression of consensus.",
+    mechanics: [
+      "Hashtags coordinate timing so posts arrive together and trend",
+      "Mass reporting can temporarily suspend an innocent account while the harasser's accounts remain active",
+      "Identical or near-identical messages are sent to confuse automated spam detection"
+    ],
+    action: "Contact platform support directly - not just automated reports. Explain you are the target of coordinated fake reporting."
+  },
+  {
+    num: "Stage 4",
+    title: "Contact with Employer or Family",
+    what: "The campaign contacts the target's employer, family, or institution using information gathered in the coordination phase - job title, city, family names. The goal is real-world consequence.",
+    mechanics: [
+      "LinkedIn is cross-referenced to find employer and colleague names",
+      "Employers are often sent screenshots presented without context",
+      "Family members are contacted to increase emotional impact on the target"
+    ],
+    action: "Speak to HR before they receive communications. Bring documentation showing the campaign is coordinated."
+  },
+  {
+    num: "Stage 5",
+    title: "Doxxing - Personal Information Published",
+    what: "Home address, phone number, and daily routine are published publicly, converting a digital campaign into a physical risk. Swatting - a fake emergency call to your address - is the most dangerous escalation.",
+    mechanics: [
+      "Home addresses are found through voter registration records, company filings, or LinkedIn cross-referencing",
+      "Public data brokers (Spokeo, Whitepages) are used to aggregate information",
+      "Once published, information spreads faster than it can be removed"
+    ],
+    action: "Use the word 'doxxing' in platform reports - this escalates priority. File a police report. Request data broker removal (DeleteMe or similar) to reduce future exposure."
+  }
+];
+
+let current = 0;
+
+function renderTabs() {
+  const bar = document.getElementById('tab-bar');
+  bar.innerHTML = STAGES.map((s, i) => `
+    <button class="tab-btn ${i === current ? 'active' : ''}" onclick="goToStage(${i})">${i + 1}</button>
+  `).join('');
+}
+
+function renderStage() {
+  const container = document.getElementById('stage-container');
+  const s = STAGES[current];
+  container.innerHTML = `
+    <div class="stage-card visible">
+      <div class="stage-header">
+        <div class="stage-num">${s.num} of ${STAGES.length}</div>
+        <div class="stage-title">${s.title}</div>
+      </div>
+      <div class="stage-body">
+        <p class="stage-what">${s.what}</p>
+        <div class="mechanics-label">Platform mechanics that enable this</div>
+        ${s.mechanics.map(m => `<div class="mechanic-item"><div class="mechanic-dot"></div>${m}</div>`).join('')}
+        <div class="action-box"><strong>If this is happening to you</strong>${s.action}</div>
+      </div>
+    </div>
+  `;
+  document.getElementById('prev-btn').disabled = current === 0;
+  const nextBtn = document.getElementById('next-btn');
+  if (current === STAGES.length - 1) {
+    nextBtn.textContent = 'Start again';
+    nextBtn.onclick = () => goToStage(0);
+  } else {
+    nextBtn.textContent = 'Next stage';
+    nextBtn.onclick = () => changeStage(1);
+  }
+  sendHeight();
+}
+
+function goToStage(i) {
+  current = i;
+  renderTabs();
+  renderStage();
+}
+
+function changeStage(dir) {
+  current = Math.max(0, Math.min(STAGES.length - 1, current + dir));
+  renderTabs();
+  renderStage();
+}
+
+function sendHeight() {
+  setTimeout(() => {
+    if (window.parent) {
+      window.parent.postMessage({ iframeHeight: document.documentElement.scrollHeight + 20 }, '*');
+    }
+  }, 50);
+}
+
+renderTabs();
+renderStage();
+</script>
+</body>
+</html>

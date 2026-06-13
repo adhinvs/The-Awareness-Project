@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Your Country Kit</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f9f7f4;
+    color: #1a1a1a;
+    padding: 1.5rem 1rem 2.5rem;
+  }
+
+  .wrap { max-width: 700px; margin: 0 auto; }
+
+  .header { margin-bottom: 1.5rem; }
+  .header h1 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .header p { font-size: 14px; color: #555; line-height: 1.6; }
+
+  .select-label { font-size: 13px; font-weight: 600; color: #444; margin-bottom: 6px; display: block; }
+
+  select {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 14px;
+    border: 1.5px solid #d4cfc8;
+    border-radius: 8px;
+    background: #fff;
+    color: #1a1a1a;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    cursor: pointer;
+    margin-bottom: 1.25rem;
+  }
+  select:focus { outline: 2px solid #4a7c5a; border-color: #4a7c5a; }
+
+  .kit {
+    display: none;
+    background: #fff;
+    border: 1px solid #e0dcd5;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .kit.visible { display: block; }
+
+  .kit-header {
+    background: #4a7c5a;
+    color: #fff;
+    padding: 16px 20px;
+  }
+  .kit-header h2 { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
+  .kit-header p { font-size: 13px; opacity: 0.85; }
+
+  .kit-body { padding: 0; }
+
+  .kit-row {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid #f0ece6;
+  }
+  .kit-row:last-child { border-bottom: none; }
+
+  .kit-label {
+    width: 130px;
+    min-width: 130px;
+    padding: 14px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #888;
+    background: #faf8f5;
+    border-right: 1px solid #f0ece6;
+    display: flex;
+    align-items: flex-start;
+    padding-top: 16px;
+  }
+
+  .kit-content {
+    flex: 1;
+    padding: 14px 16px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #222;
+  }
+
+  .kit-content strong { font-weight: 600; }
+  .kit-content a { color: #4a7c5a; text-decoration: none; }
+  .kit-content a:hover { text-decoration: underline; }
+
+  .scam-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .scam-tag {
+    background: #f0f7f2;
+    border: 1px solid #c3deca;
+    color: #3a6347;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  .note {
+    font-size: 12px;
+    color: #888;
+    margin-top: 1.25rem;
+    line-height: 1.6;
+    padding: 12px 14px;
+    background: #faf8f5;
+    border-radius: 8px;
+    border: 1px solid #e8e4de;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>Your Country Kit</h1>
+    <p>Select your country. The kit assembles your local threat profile, reporting portals, and emergency contacts.</p>
+  </div>
+
+  <label class="select-label" for="country-select">Select your country</label>
+  <select id="country-select" onchange="showKit(this.value)">
+    <option value="">-- Choose a country --</option>
+    <option value="india">India</option>
+    <option value="us">United States</option>
+    <option value="canada">Canada</option>
+    <option value="uk">United Kingdom</option>
+    <option value="australia">Australia</option>
+    <option value="eu">European Union (general)</option>
+    <option value="germany">Germany</option>
+    <option value="france">France</option>
+    <option value="philippines">Philippines</option>
+    <option value="indonesia">Indonesia</option>
+    <option value="malaysia">Malaysia</option>
+    <option value="singapore">Singapore</option>
+    <option value="uae">United Arab Emirates</option>
+    <option value="saudi">Saudi Arabia</option>
+  </select>
+
+  <div class="kit" id="kit-box"></div>
+
+  <div class="note" id="note" style="display:none">
+    This kit is a reference, not a substitute for professional legal advice. Reporting portals and contact numbers change - verify current details at the official site before filing.
+  </div>
+
+</div>
+
+<script>
+const KITS = {
+  india: {
+    name: "India",
+    subtitle: "Top scams, reporting paths, and legal resources",
+    rows: [
+      { label: "Top scams", content: `<div class="scam-tags"><span class="scam-tag">Digital arrest</span><span class="scam-tag">UPI fraud</span><span class="scam-tag">Aadhaar impersonation</span><span class="scam-tag">Predatory loan apps</span><span class="scam-tag">Matrimonial fraud</span></div>` },
+      { label: "Cybercrime report", content: `<strong>cybercrime.gov.in</strong> — File online complaints for financial fraud, harassment, and cyber threats. Available 24/7.` },
+      { label: "Helpline", content: `<strong>1930</strong> — National Cyber Crime Helpline. Call immediately after any financial fraud for the best chance of fund recovery.` },
+      { label: "Financial fraud", content: `<strong>RBI portal:</strong> cms.rbi.org.in for banking and payment fraud. File within 24 hours for UPI disputes.` },
+      { label: "Data protection", content: `<strong>DPDP Act 2023</strong> — Complaints to the Data Protection Board once fully operational. For now: file via MeitY at meity.gov.in.` },
+      { label: "Key laws", content: `IT Act 2000 (Sections 66, 66C, 66D, 67) · DPDP Act 2023 · BNS 2023 (Sections 318, 319 for fraud)` },
+    ]
+  },
+  us: {
+    name: "United States",
+    subtitle: "Top scams, reporting paths, and legal resources",
+    rows: [
+      { label: "Top scams", content: `<div class="scam-tags"><span class="scam-tag">IRS impersonation</span><span class="scam-tag">Social Security fraud</span><span class="scam-tag">Medicare scams</span><span class="scam-tag">Wire transfer fraud</span><span class="scam-tag">Tech support scams</span></div>` },
+      { label: "Cybercrime report", content: `<strong>FBI IC3:</strong> ic3.gov — Internet Crime Complaint Center. File for any internet-enabled crime. Best for significant financial losses.` },
+      { label: "Consumer fraud", content: `<strong>FTC:</strong> ReportFraud.ftc.gov — For scams, impersonation, identity theft. Reports feed the FTC enforcement database.` },
+      { label: "Financial fraud", content: `<strong>CFPB:</strong> consumerfinance.gov/complaint for financial product issues. Card disputes: contact your card issuer within 60 days.` },
+      { label: "Data protection", content: `<strong>FTC Act Section 5</strong> covers unfair/deceptive data practices. State laws vary: California CCPA is strongest. File via state AG.` },
+      { label: "Key agencies", content: `FBI IC3 · FTC · SSA OIG (oig.ssa.gov) · HHS OIG for Medicare fraud · State Attorney General` },
+    ]
+  },
+  canada: {
+    name: "Canada",
+    subtitle: "Top scams, reporting paths, and legal resources",
+    rows: [
+      { label: "Top scams", content: `<div class="scam-tags"><span class="scam-tag">CRA impersonation</span><span class="scam-tag">Grandparent scams</span><span class="scam-tag">Romance fraud</span><span class="scam-tag">E-transfer fraud</span><span class="scam-tag">Package delivery scams</span></div>` },
+      { label: "Cybercrime report", content: `<strong>Canadian Anti-Fraud Centre:</strong> antifraudcentre-centreantifraude.ca or call 1-888-495-8501.` },
+      { label: "Consumer fraud", content: `<strong>Competition Bureau:</strong> competitionbureau.gc.ca for misleading advertising and pricing fraud.` },
+      { label: "Financial fraud", content: `Report to your bank immediately. FCAC (fcac-acfc.gc.ca) handles financial institution complaints.` },
+      { label: "Data protection", content: `<strong>PIPEDA / Bill C-27:</strong> File with the Privacy Commissioner at priv.gc.ca/en/report-a-concern.` },
+      { label: "Key agencies", content: `CAFC · RCMP Cybercrime · Provincial police · Privacy Commissioner · FCAC` },
+    ]
+  },
+  uk: {
+    name: "United Kingdom",
+    subtitle: "Top scams, reporting paths, and legal resources",
+    rows: [
+      { label: "Top scams", content: `<div class="scam-tags"><span class="scam-tag">APP fraud</span><span class="scam-tag">Parcel delivery scams</span><span class="scam-tag">HMRC impersonation</span><span class="scam-tag">Romance fraud</span><span class="scam-tag">Investment scams</span></div>` },
+      { label: "Cybercrime report", content: `<strong>Action Fraud:</strong> actionfraud.police.uk or 0300 123 2040. National reporting centre for fraud and cybercrime.` },
+      { label: "Financial fraud", content: `APP fraud reimbursement: mandatory from October 2024 up to £85,000. Contact your bank first, then the Financial Ombudsman (financial-ombudsman.org.uk).` },
+      { label: "Data protection", content: `<strong>ICO:</strong> ico.org.uk — Data protection complaints against any UK organisation. File online.` },
+      { label: "Online safety", content: `<strong>NCSC:</strong> ncsc.gov.uk/report-an-incident. Online Safety Act 2023 complaints via Ofcom: ofcom.org.uk.` },
+      { label: "Key agencies", content: `Action Fraud · NCSC · ICO · Financial Ombudsman · National Stalking Helpline (0808 802 0300)` },
+    ]
+  },
+  australia: {
+    name: "Australia",
+    subtitle: "Top scams, reporting paths, and legal resources",
+    rows: [
+      { label: "Top scams", content: `<div class="scam-tags"><span class="scam-tag">myGov impersonation</span><span class="scam-tag">ATO scams</span><span class="scam-tag">Investment fraud</span><span class="scam-tag">Romance scams</span><span class="scam-tag">Parcel SMS scams</span></div>` },
+      { label: "Cybercrime report", content: `<strong>ReportCyber:</strong> cyber.gov.au/report — Australian Cyber Security Centre incident reporting.` },
+      { label: "Consumer fraud", content: `<strong>Scamwatch:</strong> scamwatch.gov.au — ACCC scam reporting. Also report to your bank immediately.` },
+      { label: "Financial fraud", content: `Bank disputes via your bank first, then AFCA (afca.org.au). ATO scams: ato.gov.au/scam.` },
+      { label: "Data protection", content: `<strong>Privacy Act 1988 / Privacy Amendment 2022:</strong> Complaints to the OAIC at oaic.gov.au.` },
+      { label: "Key agencies", content: `ACSC · Scamwatch · OAIC · AFCA · eSafety Commissioner (esafety.gov.au)` },
+    ]
+  },
+  eu: {
+    name: "European Union",
+    subtitle: "Top scams, reporting paths, and legal resources",
+    rows: [
+      { label: "Top scams", content: `<div class="scam-tags"><span class="scam-tag">SEPA fraud</span><span class="scam-tag">Holiday booking scams</span><span class="scam-tag">Phishing</span><span class="scam-tag">Energy utility scams</span><span class="scam-tag">Investment fraud</span></div>` },
+      { label: "Cybercrime report", content: `<strong>Europol EC3:</strong> europol.europa.eu/report-a-crime. For cross-border cases. Also report to your national cybercrime unit.` },
+      { label: "Consumer rights", content: `<strong>ECC-Net:</strong> eccnet.eu — European Consumer Centres Network for cross-border disputes. Free advice.` },
+      { label: "Data protection", content: `<strong>GDPR:</strong> File with your national Data Protection Authority (DPA). Right to erasure, access, and portability apply.` },
+      { label: "Financial fraud", content: `SEPA fraud: contact your bank within 24 hours. File with national financial regulator. EBA for banking issues.` },
+      { label: "Key agencies", content: `Europol EC3 · National DPA · ECC-Net · National cybercrime unit · European Banking Authority` },
+    ]
+  },
+  germany: {
+    name: "Germany",
+    subtitle: "Top scams, reporting paths, and legal resources",
+    rows: [
+      { label: "Top scams", content: `<div class="scam-tags"><span class="scam-tag">Fake online shops</span><span class="scam-tag">Phishing</span><span class="scam-tag">Romance fraud</span><span class="scam-tag">Package SMS scams</span><span class="scam-tag">Investment fraud</span></div>` },
+      { label: "Cybercrime report", content: `<strong>BKA Cybercrime:</strong> bka.de or report to local Polizei. Online: polizei.de (varies by state).` },
+      { label: "Consumer fraud", content: `<strong>Verbraucherzentrale:</strong> verbraucherzentrale.de for consumer complaints. ECC Germany for cross-border.` },
+      { label: "Data protection", content: `<strong>BfDI</strong> (bfdi.bund.de) for federal data complaints. State DPAs handle regional issues.` },
+      { label: "Financial fraud", content: `BaFin (bafin.de) for financial institution complaints. Bank disputes via your bank then BaFin.` },
+      { label: "Key agencies", content: `BKA · BSI (IT security: bsi.bund.de) · BfDI · BaFin · Verbraucherzentrale` },
+    ]
+  },
+  france: {
+    name: "France",
+    subtitle: "Top scams, reporting paths, and legal resources",
+    rows: [
+      { label: "Top scams", content: `<div class="scam-tags"><span class="scam-tag">Phishing</span><span class="scam-tag">Fake tech support</span><span class="scam-tag">Romance fraud</span><span class="scam-tag">Energy crisis scams</span><span class="scam-tag">Investment fraud</span></div>` },
+      { label: "Cybercrime report", content: `<strong>Cybermalveillance.gouv.fr</strong> — national cybercrime assistance and reporting platform.` },
+      { label: "Consumer fraud", content: `<strong>DGCCRF:</strong> signal.conso.gouv.fr for consumer fraud complaints.` },
+      { label: "Data protection", content: `<strong>CNIL</strong> (cnil.fr) — French DPA. Online complaint portal available. GDPR rights fully enforceable.` },
+      { label: "Financial fraud", content: `ACPR (acpr.banque-france.fr) for banking complaints. Bank disputes within 60 days.` },
+      { label: "Key agencies", content: `Police Nationale Cybercrime · ANSSI · CNIL · DGCCRF · AMF (investment fraud)` },
+    ]
+  },
+  philippines: {
+    name: "Philippines",
+    subtitle: "Top scams, reporting paths, and legal resources",
+    rows: [
+      { label: "Top scams", content: `<div class="scam-tags"><span class="scam-tag">SMS phishing (smishing)</span><span class="scam-tag">GCash fraud</span><span class="scam-tag">Fake recruitment</span><span class="scam-tag">Romance scams</span><span class="scam-tag">Online selling fraud</span></div>` },
+      { label: "Cybercrime report", content: `<strong>PNP Anti-Cybercrime Group:</strong> acg.pnp.gov.ph or call (02) 8414-1560. E2M portal for online filing.` },
+      { label: "Financial fraud", content: `BSP Financial Consumer Protection: consumeraffairs@bsp.gov.ph. GCash disputes: gcash.com/help.` },
+      { label: "Migration safety", content: `<strong>POEA:</strong> poea.gov.ph — Verify overseas job offers. Never pay a recruitment fee. Report illegal recruiters.` },
+      { label: "Data protection", content: `<strong>NPC:</strong> privacy.gov.ph — National Privacy Commission. File data breach or misuse complaints.` },
+      { label: "Key agencies", content: `PNP-ACG · NBI Cybercrime · BSP · NPC · POEA (overseas jobs)` },
+    ]
+  },
+  indonesia: {
+    name: "Indonesia",
+    subtitle: "Top scams, reporting paths, and legal resources",
+    rows: [
+      { label: "Top scams", content: `<div class="scam-tags"><span class="scam-tag">WhatsApp phishing</span><span class="scam-tag">OVO/GoPay fraud</span><span class="scam-tag">Pinjol (illegal loans)</span><span class="scam-tag">Online shop fraud</span><span class="scam-tag">Fake investment</span></div>` },
+      { label: "Cybercrime report", content: `<strong>Bareskrim Polri:</strong> patrolisiber.id — National cybercrime reporting. Also contact local police (Polres).` },
+      { label: "Financial fraud", content: `OJK (ojk.go.id) for financial fraud and illegal lending apps. Report illegal pinjol immediately.` },
+      { label: "Data protection", content: `<strong>UU PDP (Law 27/2022):</strong> Personal Data Protection Law now in force. File via Kominfo: kominfo.go.id.` },
+      { label: "Emergency contacts", content: `Cybercrime: 110 ext 6 · Financial fraud: 157 (OJK) · BSSN for cybersecurity incidents` },
+      { label: "Key agencies", content: `Bareskrim Polri · BSSN · OJK · Kominfo · Kemenaker (labour/recruitment issues)` },
+    ]
+  },
+  malaysia: {
+    name: "Malaysia",
+    subtitle: "Top scams, reporting paths, and legal resources",
+    rows: [
+      { label: "Top scams", content: `<div class="scam-tags"><span class="scam-tag">Macau scam</span><span class="scam-tag">Love scam</span><span class="scam-tag">Parcel/custom scams</span><span class="scam-tag">Online shopping fraud</span><span class="scam-tag">Investment scams</span></div>` },
+      { label: "Cybercrime report", content: `<strong>CCID (Cyber Crime Investigation Division):</strong> ccid.rmp.gov.my or call 03-2610 3500.` },
+      { label: "Financial fraud", content: `Bank Negara Malaysia: bnm.gov.my/contact or call 1-300-88-5465. Dispute bank fraud immediately.` },
+      { label: "Data protection", content: `<strong>PDPA 2010:</strong> File with PDPD (pdp.gov.my). Commissioner handles personal data complaints.` },
+      { label: "Emergency contacts", content: `Police: 999 · Cyber999 Helpline: 1-300-88-2999 (CyberSecurity Malaysia) · BNM: 1300-88-5465` },
+      { label: "Key agencies", content: `PDRM CCID · CyberSecurity Malaysia · MCMC · Bank Negara Malaysia · Securities Commission` },
+    ]
+  },
+  singapore: {
+    name: "Singapore",
+    subtitle: "Top scams, reporting paths, and legal resources",
+    rows: [
+      { label: "Top scams", content: `<div class="scam-tags"><span class="scam-tag">Government impersonation</span><span class="scam-tag">Job scams</span><span class="scam-tag">Phishing</span><span class="scam-tag">Investment scams</span><span class="scam-tag">Love scams</span></div>` },
+      { label: "Cybercrime report", content: `<strong>ScamShield / Police e-complaint:</strong> police.gov.sg/e-services. ScamShield app for blocking and reporting.` },
+      { label: "Financial fraud", content: `MAS (mas.gov.sg) for financial institution complaints. Contact your bank immediately for PayNow/FAST disputes.` },
+      { label: "Data protection", content: `<strong>PDPA:</strong> PDPC complaint portal at pdpc.gov.sg. Strong enforcement with significant penalties.` },
+      { label: "Emergency contacts", content: `Police: 999 · Anti-Scam Helpline: 1800-722-6688 · MAS: 1800-225-5577` },
+      { label: "Key agencies", content: `SPF Anti-Scam Centre · CSA (cybersecurity) · PDPC · MAS · CASE (consumer issues)` },
+    ]
+  },
+  uae: {
+    name: "United Arab Emirates",
+    subtitle: "Top scams, reporting paths, and legal resources",
+    rows: [
+      { label: "Top scams", content: `<div class="scam-tags"><span class="scam-tag">Fake job offers</span><span class="scam-tag">WhatsApp phishing</span><span class="scam-tag">Romance scams</span><span class="scam-tag">Investment fraud</span><span class="scam-tag">Rental scams</span></div>` },
+      { label: "Cybercrime report", content: `<strong>eCrime:</strong> ecrime.ae — Federal cybercrime reporting portal. Available in Arabic and English.` },
+      { label: "Financial fraud", content: `CBUAE (centralbank.ae) for banking complaints. Report fraud to your bank and local police.` },
+      { label: "Data protection", content: `<strong>UAE Federal Law No. 45/2021:</strong> TDRA (tdra.gov.ae) handles data protection complaints.` },
+      { label: "Emergency contacts", content: `Police: 999 (Abu Dhabi) / 901 (Dubai) · ADDA cybercrime hotline · Dubai Police: dubai.police.gov.ae` },
+      { label: "Key agencies", content: `UAE Cybercrime prosecution · TDRA · CBUAE · MoHRE (labour/recruitment)` },
+    ]
+  },
+  saudi: {
+    name: "Saudi Arabia",
+    subtitle: "Top scams, reporting paths, and legal resources",
+    rows: [
+      { label: "Top scams", content: `<div class="scam-tags"><span class="scam-tag">WhatsApp phishing</span><span class="scam-tag">Fake job offers</span><span class="scam-tag">Investment fraud</span><span class="scam-tag">Phone impersonation</span><span class="scam-tag">E-commerce fraud</span></div>` },
+      { label: "Cybercrime report", content: `<strong>Absher / MOI portal:</strong> moi.gov.sa. CITC cybercrime complaints: citc.gov.sa.` },
+      { label: "Financial fraud", content: `SAMA (sama.gov.sa) for banking complaints. 24/7 bank fraud line: contact your bank directly.` },
+      { label: "Data protection", content: `<strong>PDPL (Personal Data Protection Law, 2023):</strong> SDAIA (sdaia.gov.sa) handles complaints.` },
+      { label: "Emergency contacts", content: `Police: 999 · CITC Telecom helpline: 900 · SAMA financial consumer: 800 125 6666` },
+      { label: "Key agencies", content: `NCA (cybersecurity) · CITC · SAMA · SDAIA · MOI` },
+    ]
+  }
+};
+
+function showKit(country) {
+  const box = document.getElementById('kit-box');
+  const note = document.getElementById('note');
+  if (!country || !KITS[country]) {
+    box.classList.remove('visible');
+    note.style.display = 'none';
+    sendHeight();
+    return;
+  }
+  const kit = KITS[country];
+  let html = `<div class="kit-header"><h2>${kit.name} — Rapid Reference Kit</h2><p>${kit.subtitle}</p></div><div class="kit-body">`;
+  kit.rows.forEach(r => {
+    html += `<div class="kit-row"><div class="kit-label">${r.label}</div><div class="kit-content">${r.content}</div></div>`;
+  });
+  html += `</div>`;
+  box.innerHTML = html;
+  box.classList.add('visible');
+  note.style.display = 'block';
+  sendHeight();
+}
+
+function sendHeight() {
+  setTimeout(() => {
+    if (window.parent) window.parent.postMessage({ iframeHeight: document.documentElement.scrollHeight + 20 }, '*');
+  }, 60);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>The Recovery Landscape</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --font: 'Outfit', system-ui, sans-serif;
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --border: #E2E8F0;
+      --text: #0F172A;
+      --muted: #64748B;
+      --r: 14px;
+    }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      padding: 28px 20px 44px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    header p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .zones {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .zone {
+      border-radius: var(--r);
+      overflow: hidden;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+    }
+    .zone-header {
+      padding: 20px 24px 16px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .zone-title-group {}
+    .zone-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 6px;
+    }
+    .zone-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+    .zone-sub {
+      font-size: 0.82rem;
+      margin-top: 2px;
+    }
+    .zone-body {
+      padding: 0 24px 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 560px) {
+      .zone-body { grid-template-columns: 1fr; }
+    }
+    .zone-col {}
+    .col-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+    .col-items {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .col-item {
+      font-size: 0.84rem;
+      padding: 7px 10px;
+      border-radius: 8px;
+      line-height: 1.4;
+    }
+
+    /* Zone 1 - Blue */
+    .zone-1 { border-top: 4px solid #3B82F6; }
+    .zone-1 .zone-header { background: #EFF6FF; }
+    .zone-1 .zone-badge { background: #DBEAFE; color: #1D4ED8; }
+    .zone-1 .zone-title { color: #1E40AF; }
+    .zone-1 .zone-sub { color: #3B82F6; }
+    .zone-1 .col-label { color: #2563EB; }
+    .zone-1 .col-item { background: #F0F9FF; color: #0C4A6E; }
+
+    /* Zone 2 - Amber */
+    .zone-2 { border-top: 4px solid #F59E0B; }
+    .zone-2 .zone-header { background: #FFFBEB; }
+    .zone-2 .zone-badge { background: #FEF3C7; color: #92400E; }
+    .zone-2 .zone-title { color: #78350F; }
+    .zone-2 .zone-sub { color: #B45309; }
+    .zone-2 .col-label { color: #B45309; }
+    .zone-2 .col-item { background: #FFFBEB; color: #451A03; }
+
+    /* Zone 3 - Green */
+    .zone-3 { border-top: 4px solid #10B981; }
+    .zone-3 .zone-header { background: #ECFDF5; }
+    .zone-3 .zone-badge { background: #D1FAE5; color: #065F46; }
+    .zone-3 .zone-title { color: #064E3B; }
+    .zone-3 .zone-sub { color: #059669; }
+    .zone-3 .col-label { color: #059669; }
+    .zone-3 .col-item { background: #F0FDF4; color: #14532D; }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 4px;
+    }
+    .divider-line { flex: 1; height: 1px; background: var(--border); }
+    .divider-text { font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
+
+    .footer-note {
+      max-width: 720px;
+      margin: 28px auto 0;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r);
+      padding: 20px 24px;
+      text-align: center;
+    }
+    .footer-note p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.6;
+    }
+    .footer-note strong {
+      color: var(--text);
+      font-style: normal;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>The Recovery Landscape</h1>
+    <p>A visual map of what recovery from digital harm looks like - what is normal to feel, what helps, and where support fits at each stage.</p>
+  </header>
+
+  <div class="zones">
+
+    <!-- Zone 1 -->
+    <div class="zone zone-1">
+      <div class="zone-header">
+        <div class="zone-title-group">
+          <div class="zone-badge">Zone 1</div>
+          <div class="zone-title">Immediate</div>
+          <div class="zone-sub">Days 1 to 30</div>
+        </div>
+      </div>
+      <div class="zone-body">
+        <div class="zone-col">
+          <div class="col-label">What is normal here</div>
+          <div class="col-items">
+            <div class="col-item">Shock and disbelief</div>
+            <div class="col-item">Anger at yourself or others</div>
+            <div class="col-item">Checking accounts obsessively</div>
+            <div class="col-item">Replaying events in your mind</div>
+            <div class="col-item">Panic about what comes next</div>
+          </div>
+        </div>
+        <div class="zone-col">
+          <div class="col-label">Practical steps</div>
+          <div class="col-items">
+            <div class="col-item">Secure your accounts and change passwords</div>
+            <div class="col-item">Report to bank and police</div>
+            <div class="col-item">Tell one trusted person</div>
+            <div class="col-item">Focus only on urgent actions - ignore the rest for now</div>
+          </div>
+        </div>
+        <div class="zone-col">
+          <div class="col-label">Support available</div>
+          <div class="col-items">
+            <div class="col-item">Friends and family you trust</div>
+            <div class="col-item">Bank fraud team</div>
+            <div class="col-item">Cybercrime helpline</div>
+            <div class="col-item">Victim support services</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-text">Recovery is not linear - you can move between zones</div>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- Zone 2 -->
+    <div class="zone zone-2">
+      <div class="zone-header">
+        <div class="zone-title-group">
+          <div class="zone-badge">Zone 2</div>
+          <div class="zone-title">Middle Ground</div>
+          <div class="zone-sub">Weeks 4 to 12</div>
+        </div>
+      </div>
+      <div class="zone-body">
+        <div class="zone-col">
+          <div class="col-label">What is normal here</div>
+          <div class="col-items">
+            <div class="col-item">Shame and self-blame</div>
+            <div class="col-item">Social withdrawal</div>
+            <div class="col-item">Difficulty concentrating</div>
+            <div class="col-item">Distrusting messages and people</div>
+            <div class="col-item">Wondering if it will ever feel normal</div>
+          </div>
+        </div>
+        <div class="zone-col">
+          <div class="col-label">Practical steps</div>
+          <div class="col-items">
+            <div class="col-item">Follow up on reports and claims</div>
+            <div class="col-item">Explore financial recovery options</div>
+            <div class="col-item">Re-engage gradually with trusted contacts</div>
+            <div class="col-item">Begin rebuilding digital routines slowly</div>
+          </div>
+        </div>
+        <div class="zone-col">
+          <div class="col-label">Support available</div>
+          <div class="col-items">
+            <div class="col-item">GP or doctor (for sleep, anxiety)</div>
+            <div class="col-item">Financial counsellor</div>
+            <div class="col-item">Online support groups</div>
+            <div class="col-item">Victim support organisations</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-text">There is no fixed schedule for moving forward</div>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- Zone 3 -->
+    <div class="zone zone-3">
+      <div class="zone-header">
+        <div class="zone-title-group">
+          <div class="zone-badge">Zone 3</div>
+          <div class="zone-title">Longer Path</div>
+          <div class="zone-sub">Months 3 and beyond</div>
+        </div>
+      </div>
+      <div class="zone-body">
+        <div class="zone-col">
+          <div class="col-label">What is normal here</div>
+          <div class="col-items">
+            <div class="col-item">Gradual trust returning</div>
+            <div class="col-item">Finding meaning in what happened</div>
+            <div class="col-item">Good days and harder days coexisting</div>
+            <div class="col-item">Rebuilding routines that felt lost</div>
+          </div>
+        </div>
+        <div class="zone-col">
+          <div class="col-label">Practical steps</div>
+          <div class="col-items">
+            <div class="col-item">Complete identity and financial restoration</div>
+            <div class="col-item">Set healthy digital habits intentionally</div>
+            <div class="col-item">Consider sharing your story if helpful</div>
+            <div class="col-item">Close outstanding report loops</div>
+          </div>
+        </div>
+        <div class="zone-col">
+          <div class="col-label">Support available</div>
+          <div class="col-items">
+            <div class="col-item">Therapist or counsellor</div>
+            <div class="col-item">Peer support networks</div>
+            <div class="col-item">Fraud awareness communities</div>
+            <div class="col-item">Community organisations</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    <p><strong>Wherever you are in this journey, you are not behind schedule.</strong><br>
+    Recovery is not linear. Moving back into an earlier zone does not mean you have failed - it means something triggered a response that is worth paying attention to. The path forward exists even when it is not visible.</p>
+  </div>
+
+  <script>
+    function sendHeight() {
+      window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+    }
+    window.addEventListener('load', sendHeight);
+    window.addEventListener('resize', sendHeight);
+  </script>
+</body>
+</html>

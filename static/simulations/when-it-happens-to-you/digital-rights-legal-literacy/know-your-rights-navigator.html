@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Know Your Rights Navigator</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --font: 'Outfit', system-ui, sans-serif;
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --border: #E2E8F0;
+      --text: #0F172A;
+      --muted: #64748B;
+      --blue: #2563EB;
+      --blue-light: #EFF6FF;
+      --blue-mid: #DBEAFE;
+      --green: #059669;
+      --green-light: #ECFDF5;
+      --amber: #B45309;
+      --amber-light: #FFFBEB;
+      --red: #DC2626;
+      --red-light: #FEF2F2;
+      --purple: #7C3AED;
+      --purple-light: #F5F3FF;
+      --r: 12px;
+    }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      padding: 28px 20px 44px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    header h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: 6px; }
+    header p { font-size: 0.88rem; color: var(--muted); max-width: 500px; margin: 0 auto; }
+
+    .step-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 10px;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .btn-grid {
+      display: grid;
+      gap: 8px;
+      max-width: 680px;
+      margin: 0 auto 24px;
+    }
+    .btn-grid.countries { grid-template-columns: repeat(5, 1fr); }
+    .btn-grid.issues { grid-template-columns: repeat(5, 1fr); }
+    @media (max-width: 580px) {
+      .btn-grid.countries { grid-template-columns: repeat(3, 1fr); }
+      .btn-grid.issues { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 360px) {
+      .btn-grid.countries { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .sel-btn {
+      padding: 10px 6px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      font-family: var(--font);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .sel-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+    .sel-btn.selected { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .sel-btn .icon { font-size: 1.2rem; display: block; margin-bottom: 4px; }
+
+    .divider { height: 1px; background: var(--border); max-width: 680px; margin: 0 auto 24px; }
+
+    /* Results */
+    #results {
+      display: none;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .results-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .results-header h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .results-header .combo-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--blue);
+      background: var(--blue-light);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .result-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .result-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .result-card-header {
+      padding: 14px 18px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .result-card-header .card-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      margin-bottom: 4px;
+    }
+    .result-card-header .card-title {
+      font-size: 0.98rem;
+      font-weight: 700;
+    }
+    .result-card-body {
+      padding: 12px 18px 16px;
+      font-size: 0.86rem;
+      color: #334155;
+      line-height: 1.6;
+    }
+    .result-card-body strong { color: var(--text); }
+    .result-card-body a {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .card-right { border-left: 4px solid var(--blue); }
+    .card-right .card-label { color: var(--blue); }
+
+    .card-who { border-left: 4px solid var(--purple); }
+    .card-who .card-label { color: var(--purple); }
+
+    .card-expect { border-left: 4px solid var(--green); }
+    .card-expect .card-label { color: var(--green); }
+
+    .reset-btn {
+      display: block;
+      margin: 20px auto 0;
+      padding: 10px 24px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      font-family: var(--font);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .reset-btn:hover { border-color: var(--red); color: var(--red); }
+
+    .prompt-note {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 4px;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Know Your Rights Navigator</h1>
+    <p>Select your country and the type of issue to see your legal rights, who to contact, and what to expect.</p>
+  </header>
+
+  <!-- Step 1: Country -->
+  <div class="step-label">Step 1 - Select your country</div>
+  <div class="btn-grid countries">
+    <button class="sel-btn" onclick="selectCountry('india', this)">
+      <span class="icon">🇮🇳</span>India
+    </button>
+    <button class="sel-btn" onclick="selectCountry('uk', this)">
+      <span class="icon">🇬🇧</span>United Kingdom
+    </button>
+    <button class="sel-btn" onclick="selectCountry('eu', this)">
+      <span class="icon">🇪🇺</span>European Union
+    </button>
+    <button class="sel-btn" onclick="selectCountry('us', this)">
+      <span class="icon">🇺🇸</span>United States
+    </button>
+    <button class="sel-btn" onclick="selectCountry('au', this)">
+      <span class="icon">🇦🇺</span>Australia
+    </button>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Step 2: Issue -->
+  <div class="step-label">Step 2 - Select your issue</div>
+  <div class="btn-grid issues">
+    <button class="sel-btn" onclick="selectIssue('data', this)">
+      <span class="icon">🗂️</span>Data Misuse
+    </button>
+    <button class="sel-btn" onclick="selectIssue('fraud', this)">
+      <span class="icon">💸</span>Fraud Loss
+    </button>
+    <button class="sel-btn" onclick="selectIssue('image', this)">
+      <span class="icon">🖼️</span>Image-Based Abuse
+    </button>
+    <button class="sel-btn" onclick="selectIssue('surveillance', this)">
+      <span class="icon">👁️</span>Surveillance
+    </button>
+    <button class="sel-btn" onclick="selectIssue('account', this)">
+      <span class="icon">🚫</span>Account Wrongful Termination
+    </button>
+  </div>
+
+  <p class="prompt-note" id="prompt-note">Select both a country and an issue to see your rights.</p>
+
+  <!-- Results -->
+  <div id="results">
+    <div class="results-header">
+      <h2>Your Rights</h2>
+      <span class="combo-tag" id="combo-tag"></span>
+    </div>
+    <div class="result-cards">
+      <div class="result-card card-right">
+        <div class="result-card-header">
+          <div class="card-label">Your Right</div>
+          <div class="card-title" id="res-right-title"></div>
+        </div>
+        <div class="result-card-body" id="res-right-body"></div>
+      </div>
+      <div class="result-card card-who">
+        <div class="result-card-header">
+          <div class="card-label">Who to Contact</div>
+          <div class="card-title" id="res-who-title"></div>
+        </div>
+        <div class="result-card-body" id="res-who-body"></div>
+      </div>
+      <div class="result-card card-expect">
+        <div class="result-card-header">
+          <div class="card-label">What to Expect</div>
+          <div class="card-title" id="res-expect-title"></div>
+        </div>
+        <div class="result-card-body" id="res-expect-body"></div>
+      </div>
+    </div>
+    <button class="reset-btn" onclick="reset()">Reset and start over</button>
+  </div>
+
+  <script>
+    const DATA = {
+      india: {
+        data: {
+          right: { title: 'Right to Access, Correct, and Erase Your Data', body: 'India\'s <strong>Digital Personal Data Protection Act 2023 (DPDP Act)</strong> gives you the right to know what personal data a company holds on you, require corrections to inaccurate data, and request erasure when data is no longer needed. You can also withdraw consent to data processing at any time.' },
+          who: { title: 'Data Protection Board of India / cybercrime.gov.in', body: 'Send a written request to the company\'s Data Protection Officer (DPO) - usually listed in the privacy policy. If they do not respond within 30 days, file with the <strong>Data Protection Board of India</strong> once fully operational. For immediate digital harms: <strong>cybercrime.gov.in</strong> or call <strong>1930</strong>.' },
+          expect: { title: '30-Day Response Required', body: 'Companies must respond within <strong>30 days</strong>. Non-response is a violation. The Data Protection Board can investigate and impose fines. This law is relatively new - enforcement is still building, but filing a formal complaint creates a record and triggers investigation.' }
+        },
+        fraud: {
+          right: { title: 'Consumer Protection Act 2019 + RBI Ombudsman', body: 'The <strong>Consumer Protection Act 2019</strong> gives you the right to file complaints about deficient financial services. The <strong>RBI Banking Ombudsman Scheme</strong> covers unauthorised transactions, failed refunds, and fraudulent transfers. If money was taken from your account without authorisation, you have grounds for a formal complaint and potential reimbursement.' },
+          who: { title: 'RBI Banking Ombudsman + National Consumer Helpline', body: '<strong>RBI Banking Ombudsman:</strong> bankingombudsman.rbi.org.in<br><strong>National Consumer Disputes Redressal Commission</strong> for larger claims<br><strong>National Consumer Helpline:</strong> 1800-11-4000 (free)<br><strong>Cybercrime Portal:</strong> cybercrime.gov.in for online fraud reports' },
+          expect: { title: 'Free Complaint, Investigation Within 30 Days', body: 'Ombudsman complaints are <strong>free of charge</strong>. The RBI Ombudsman investigates and can direct banks to refund. Report the fraud to cybercrime.gov.in simultaneously - this creates a formal crime record that supports your bank claim. Response timelines are typically 30 to 90 days.' }
+        },
+        image: {
+          right: { title: 'IT Act Sections 66E and 67A - Criminal Offence', body: '<strong>Section 66E</strong> of the IT Act 2000 makes it a criminal offence to capture, publish, or transmit intimate images without consent - punishable by up to 3 years imprisonment and a fine. <strong>Section 67A</strong> covers publishing sexually explicit material electronically. The <strong>Protection of Children from Sexual Offences Act (POCSO)</strong> applies additionally if a minor is involved.' },
+          who: { title: 'Local Police + cybercrime.gov.in', body: 'File an FIR at your local police station. Also report at <strong>cybercrime.gov.in</strong> - select "Report Cyber Crime" then "Other Cyber Crimes." Request platform takedown simultaneously using the platform\'s abuse reporting tools. Keep screenshots of the content and any account details as evidence.' },
+          expect: { title: 'Criminal Investigation + Takedown Orders Possible', body: 'Police can investigate and make arrests under the IT Act. Courts can issue <strong>takedown orders</strong> requiring platforms to remove content. Timelines vary - the cybercrime portal typically acknowledges within a few days. Simultaneously pursuing platform removal is usually faster than waiting for legal orders.' }
+        },
+        surveillance: {
+          right: { title: 'IT Act 2000 + DPDP Act 2023 - Limited Private Protections', body: 'The <strong>DPDP Act 2023</strong> protects against unauthorised collection and processing of your personal data by private entities. Installing tracking software on someone\'s device without consent is covered by the <strong>IT Act Section 66</strong> (computer offences). Note: protections against <em>state surveillance</em> remain limited in India currently.' },
+          who: { title: 'Cyber Crime Cell + Local Police', body: 'File at <strong>cybercrime.gov.in</strong> or your local Cyber Crime Cell. For stalkerware or unauthorised device monitoring, bring the device to the cell for examination. The <strong>Data Protection Board of India</strong> handles complaints about private data collection violations once fully operational.' },
+          expect: { title: 'Investigation Under IT Act', body: 'Unauthorised device access is a criminal offence under Section 66 of the IT Act. Police can investigate and seize the device used for surveillance. Build a clear record of the surveillance - screenshots, dates, and how you discovered it - before reporting.' }
+        },
+        account: {
+          right: { title: 'Consumer Protection Act 2019 (for paid services)', body: 'If you paid for an account or subscription and it was terminated without valid reason, you may have a claim under the <strong>Consumer Protection Act 2019</strong> for deficient service. Free accounts have weaker protections as no commercial relationship exists. For financial accounts (bank, wallet, UPI), the RBI Ombudsman framework applies.' },
+          who: { title: 'National Consumer Helpline 1800-11-4000', body: '<strong>National Consumer Helpline:</strong> 1800-11-4000 (free)<br><strong>Consumer Forum:</strong> edaakhil.nic.in for formal complaints<br>For banking/fintech account closures: <strong>RBI Ombudsman</strong> at bankingombudsman.rbi.org.in<br>First step: send a formal grievance email to the platform and document the response.' },
+          expect: { title: 'Consumer Forum Investigation for Paid Services', body: 'Consumer forums can order reinstatement or compensation for wrongful termination of paid services. Resolution timelines vary from weeks to months. For unpaid services, your main leverage is formal complaint to the platform and, where applicable, to the regulator overseeing that sector.' }
+        }
+      },
+
+      uk: {
+        data: {
+          right: { title: 'UK GDPR - Right to Erasure, Access, and Portability', body: 'Under <strong>UK GDPR</strong> (retained post-Brexit), you have the right to access all personal data held about you (Article 15), request erasure of data that is no longer necessary (Article 17), and receive your data in a portable format (Article 20). Companies must respond within <strong>30 days</strong> at no charge.' },
+          who: { title: 'ICO - Information Commissioner\'s Office', body: '<strong>First:</strong> Send a Subject Access Request or erasure request to the company\'s Data Protection Officer (in their privacy policy).<br><strong>If no response in 30 days:</strong> File a complaint at <strong>ico.org.uk/make-a-complaint</strong>. The ICO is free to use and has real enforcement powers including fines.' },
+          expect: { title: 'ICO Investigates Within 3 Months - Fines Up to £17.5M', body: 'The ICO typically acknowledges complaints within 2 weeks and investigates within 3 months. They can issue fines up to <strong>£17.5 million or 4% of global turnover</strong> for serious violations. Many complaints result in the company complying before formal enforcement.' }
+        },
+        fraud: {
+          right: { title: 'APP Fraud Reimbursement Rights (from October 2024)', body: 'From October 2024, the <strong>Payment Systems Regulator (PSR)</strong> requires UK banks and payment firms to reimburse victims of Authorised Push Payment (APP) fraud - where you were tricked into sending money to a fraudster. Reimbursement of up to <strong>£415,000</strong> is possible. This is a significant new right that many victims do not yet know about.' },
+          who: { title: 'Financial Ombudsman Service + Action Fraud', body: '<strong>Financial Ombudsman Service:</strong> financial-ombudsman.org.uk (free, up to £415,000 decisions)<br><strong>Action Fraud:</strong> actionfraud.police.uk (national reporting, get crime reference number)<br><strong>Your bank\'s fraud team:</strong> Call immediately - faster reports improve reimbursement chances.' },
+          expect: { title: 'Up to £415,000 Reimbursement Possible', body: 'Report to your bank immediately - the bank is now obligated to investigate and reimburse eligible APP fraud. If they refuse, escalate to the <strong>Financial Ombudsman</strong> (free). Decisions are legally binding on the firm. The process typically takes 8 to 15 weeks with the Ombudsman.' }
+        },
+        image: {
+          right: { title: 'Criminal Offence Under Online Safety Act 2023', body: 'Sharing intimate images without consent is a <strong>criminal offence</strong> under the Online Safety Act 2023 and Section 66A of the Sexual Offences Act. This covers non-consensual sharing, threats to share, and deepfake intimate images. Platforms are legally required to remove such content promptly under the Online Safety Act.' },
+          who: { title: 'Action Fraud + Revenge Porn Helpline + NCSC', body: '<strong>Revenge Porn Helpline:</strong> 0345 600 0459 - specialist support and platform takedown assistance<br><strong>Action Fraud:</strong> 0300 123 2040 - to report the criminal offence<br><strong>Local Police:</strong> if you know who did it<br><strong>Platforms:</strong> use their specific intimate image abuse reporting path' },
+          expect: { title: 'Criminal Investigation + Fast Platform Removal', body: 'Police can arrest and prosecute. Platforms must act quickly under the Online Safety Act. The <strong>Revenge Porn Helpline</strong> has direct relationships with major platforms and can often achieve faster removal than individual reports. Seek their help first for speed.' }
+        },
+        surveillance: {
+          right: { title: 'Investigatory Powers Act (State) / Civil Claims (Private)', body: 'For <strong>private surveillance</strong> - a partner, employer, or stranger installing tracking software - this is a criminal offence under the Computer Misuse Act. You can report to police and pursue civil damages. For <strong>state surveillance</strong>, the Investigatory Powers Act 2016 governs lawful interception - challenge routes are limited and require specialist legal advice.' },
+          who: { title: 'Local Police + National Cyber Security Centre', body: '<strong>Local police</strong> for stalkerware or device tracking by a private individual<br><strong>NCSC:</strong> ncsc.gov.uk for technical guidance on detecting monitoring software<br><strong>Refuge:</strong> refuge.org.uk/tech-safety for domestic tech abuse support<br>If in immediate danger, call <strong>999</strong>' },
+          expect: { title: 'Criminal Prosecution for Unauthorised Device Access', body: 'Unauthorised computer access is an offence under the Computer Misuse Act. Police can investigate, seize devices, and prosecute. For domestic surveillance situations, specialist domestic abuse charities can help you safely remove monitoring software without alerting the perpetrator.' }
+        },
+        account: {
+          right: { title: 'Consumer Rights Act 2015 - Unfair Terms', body: 'Under the <strong>Consumer Rights Act 2015</strong>, terms allowing arbitrary account termination without notice may be considered unfair and therefore unenforceable. For <strong>financial accounts</strong> (bank accounts, payment services), there are additional protections - banks must give 2 months\' notice before closing a personal account without cause.' },
+          who: { title: 'Citizens Advice + Financial Ombudsman', body: '<strong>Citizens Advice:</strong> citizensadvice.org.uk for free legal guidance on consumer disputes<br><strong>Financial Ombudsman:</strong> financial-ombudsman.org.uk for bank and payment account closures<br><strong>Ofcom:</strong> for disputes with telecoms and internet providers<br>Always send a formal complaint to the company first and document their response.' },
+          expect: { title: 'Ombudsman Review for Financial Accounts', body: 'For bank account closures, the Financial Ombudsman can review and order reinstatement or compensation. For non-financial platforms, consumer law gives some protection but enforcement is harder. The strongest cases involve paid subscriptions terminated mid-period without refund.' }
+        }
+      },
+
+      eu: {
+        data: {
+          right: { title: 'GDPR Article 15 (Access) + Article 17 (Erasure)', body: '<strong>GDPR</strong> gives EU residents among the strongest data rights in the world. Article 15 gives you the right to a copy of all personal data held about you. Article 17 (right to erasure / "right to be forgotten") allows you to demand deletion when data is no longer needed for its original purpose. Companies must respond within <strong>30 days</strong> - free of charge.' },
+          who: { title: 'Your National Data Protection Authority (DPA)', body: 'File a complaint with your country\'s national DPA. Find them at <strong>edpb.europa.eu/about-edpb/board/members</strong>. Examples: Ireland - DPC (dataprotection.ie), France - CNIL (cnil.fr), Germany - state-level DPA. File after the company fails to respond within 30 days or refuses a valid request.' },
+          expect: { title: 'Fines Up to 4% of Global Revenue', body: 'DPAs investigate and can impose fines of up to <strong>€20 million or 4% of global annual turnover</strong> - whichever is higher. Major fines have been issued against Meta, Google, and others. Your complaint contributes to investigations even if you do not receive direct compensation. Most companies comply before formal enforcement reaches you.' }
+        },
+        fraud: {
+          right: { title: 'PSD2 Directive - Strong Consumer Payment Protections', body: 'The <strong>Payment Services Directive 2 (PSD2)</strong> requires banks to refund unauthorised payment transactions promptly - usually within 1 business day. For authorised payments where you were deceived, protections vary by country but are strengthening. Credit card chargeback rights also apply across the EU for goods and services not received.' },
+          who: { title: 'National Financial Regulator + Consumer Protection Body', body: 'Contact your national financial regulator (e.g. Bafin in Germany, AMF in France, FSMA in Belgium). For cross-border disputes: <strong>FIN-NET</strong> (fin-net.eu) connects EU financial ombudsman schemes. Also report to your national police cybercrime unit.' },
+          expect: { title: 'Banks Must Refund Unauthorised Transactions Quickly', body: 'Under PSD2, banks must refund unauthorised transactions within <strong>1 business day</strong> of being reported - and then investigate. If they refuse, escalate to the financial ombudsman in your country. Timelines for authorised-payment fraud recovery are longer and less certain.' }
+        },
+        image: {
+          right: { title: 'EU Directive on Violence Against Women (2024)', body: 'The <strong>EU Directive on combating violence against women (2024)</strong> requires all EU member states to criminalise non-consensual sharing of intimate images and deepfake intimate content. Platforms operating in the EU must have clear reporting mechanisms and must act on removal requests promptly.' },
+          who: { title: 'National Police + Platform Reporting', body: 'File a criminal report with your national police (cybercrime unit). Use the platform\'s intimate image abuse reporting path - EU law requires platforms to respond faster than general abuse reports. In many EU countries there are also specialist support organisations for image-based abuse - search "[your country] revenge porn helpline".' },
+          expect: { title: 'Criminal Proceedings + Mandatory Platform Removal', body: 'Member states must provide criminal penalties under the 2024 Directive. Platforms are required to remove content on request and under court orders. Timelines for criminal proceedings vary by country. Platform removal via the specialist path is usually faster than waiting for a court order.' }
+        },
+        surveillance: {
+          right: { title: 'GDPR + National Law on Private Surveillance', body: 'GDPR covers unlawful processing and tracking of personal data by private entities. Installing tracking software without consent on someone\'s device is illegal across EU member states. ePrivacy Directive protections also apply to electronic communications interception. State surveillance is governed by national security law and is harder to challenge.' },
+          who: { title: 'National DPA + Police', body: 'For private data surveillance: file with your <strong>national Data Protection Authority</strong>. For device tracking by a private individual: report to police. Cross-border issues: use the <strong>EDPB one-stop-shop mechanism</strong> to find the lead DPA for companies headquartered in another EU country.' },
+          expect: { title: 'DPA Investigation + Criminal Referral Possible', body: 'National DPAs can investigate companies for unlawful tracking and issue fines. Individual perpetrators can face criminal charges under national computer offence laws. Build a clear technical record of the surveillance before reporting.' }
+        },
+        account: {
+          right: { title: 'Digital Services Act - Platform Accountability', body: 'The <strong>Digital Services Act (DSA)</strong> requires large platforms to provide clear reasons for account suspensions and terminations, offer an internal appeal process, and enable out-of-court dispute resolution. Platforms with over 45 million EU users are classified as Very Large Online Platforms (VLOPs) and face stricter obligations.' },
+          who: { title: 'National DSA Coordinator', body: 'Each EU member state has a designated <strong>Digital Services Coordinator</strong> responsible for enforcing the DSA. Find yours through your national communications regulator. The European Commission directly oversees Very Large Online Platforms (Meta, Google, TikTok, X, etc.).' },
+          expect: { title: 'Mandatory Internal Appeal + Out-of-Court Dispute Resolution', body: 'Platforms must tell you why your account was terminated and give you at least 6 months to appeal internally. After that, you can use an accredited out-of-court dispute settlement body. The DSA is new (fully in force from 2024) - enforcement is still developing.' }
+        }
+      },
+
+      us: {
+        data: {
+          right: { title: 'No Federal Law - State Laws Apply (CCPA for California)', body: 'The US has no single federal data protection law. If you are a <strong>California resident</strong>, the California Consumer Privacy Act (CCPA) gives you rights to access, delete, and opt out of the sale of your personal data. Other states with privacy laws include Virginia, Colorado, Texas, and several others. Outside these states, protections are fragmented.' },
+          who: { title: 'FTC + State Attorney General', body: '<strong>FTC:</strong> ReportFraud.ftc.gov - report company data practices<br><strong>State AG:</strong> Your state Attorney General enforces state privacy laws<br><strong>California:</strong> California Privacy Protection Agency (cppa.ca.gov)<br>First step: send a data deletion request to the company\'s privacy team. Under CCPA they must respond within 45 days.' },
+          expect: { title: 'Depends on Your State - CCPA Enforcement is Active', body: 'California enforcement is active - the CPPA has issued enforcement actions and fines. Outside California, outcomes depend on which state law applies. The FTC can act against "unfair or deceptive practices" which gives some baseline protection. Federal privacy legislation has been proposed but not yet passed as of 2025.' }
+        },
+        fraud: {
+          right: { title: 'FCBA (Credit Cards) + EFTA (Debit) + FTC + CFPB', body: 'For <strong>credit card fraud</strong>: the Fair Credit Billing Act (FCBA) limits your liability to $50 for unauthorised charges - most card issuers offer zero liability. For <strong>debit card fraud</strong>: the Electronic Fund Transfer Act (EFTA) protects you but liability depends on how quickly you report. Chargebacks are available for goods or services not received.' },
+          who: { title: 'FTC ReportFraud.ftc.gov + FBI IC3 + CFPB', body: '<strong>FTC:</strong> ReportFraud.ftc.gov - generates a personalised recovery plan<br><strong>FBI IC3:</strong> ic3.gov for internet crime reports<br><strong>CFPB:</strong> consumerfinance.gov/complaint for financial product issues<br><strong>Your state AG:</strong> for fraud against state residents<br><strong>Your bank:</strong> call immediately for chargebacks' },
+          expect: { title: 'FTC Recovery Plan + Chargeback Rights', body: 'FTC ReportFraud generates a step-by-step personal recovery plan specific to your fraud type. Credit card chargebacks are typically resolved within 30 to 90 days. FBI IC3 reports contribute to federal investigations - individual recovery from IC3 reports alone is limited, but the reports matter for building criminal cases.' }
+        },
+        image: {
+          right: { title: 'STOP CSAM Act + Non-Consensual Porn Laws in 48 States', body: '<strong>48 US states</strong> now have non-consensual pornography laws making non-consensual sharing of intimate images a criminal offence. At the federal level, the STOP CSAM Act addresses child material. Deepfakes used for non-consensual intimate imagery are covered by laws in a growing number of states including California, Georgia, and New York.' },
+          who: { title: 'FBI IC3 + Local Police + CCRI', body: '<strong>FBI IC3:</strong> ic3.gov for federal-level reports<br><strong>Local police:</strong> file a report under your state\'s non-consensual pornography statute<br><strong>Cyber Civil Rights Initiative (CCRI):</strong> cybercivilrights.org - specialist helpline and legal resource list<br><strong>StopNCII:</strong> stopncii.org - creates hash fingerprints of images to prevent spread' },
+          expect: { title: 'Criminal Prosecution in 48 States', body: 'Most states treat this as a misdemeanor or felony. Local prosecutors vary in willingness to pursue cases - CCRI can advise on your state\'s track record. Platform removal requests are typically resolved faster than legal proceedings. StopNCII can prevent content from spreading to major platforms while legal action proceeds.' }
+        },
+        surveillance: {
+          right: { title: 'Fourth Amendment (Government Only) - Civil Claims for Private Surveillance', body: 'The <strong>Fourth Amendment</strong> protects against unreasonable government search and seizure - it does not apply to private individuals or companies. For <strong>private surveillance</strong> (stalkerware, hidden cameras, employer monitoring without disclosure), civil claims under the Electronic Communications Privacy Act (ECPA) and state wiretapping laws may apply.' },
+          who: { title: 'Local Police + EFF', body: '<strong>Local police</strong> for stalkerware or hidden device access - this is a federal crime under the Computer Fraud and Abuse Act (CFAA)<br><strong>EFF:</strong> eff.org/pages/surveillance-self-defense for resources<br><strong>National Domestic Violence Hotline:</strong> 1-800-799-7233 for tech abuse in domestic contexts<br><strong>FBI:</strong> for significant interstate surveillance cases' },
+          expect: { title: 'CFAA Criminal Charges for Unauthorised Computer Access', body: 'Unauthorised access to a computer or device to install surveillance software is a federal crime under the CFAA. FBI can investigate and federal prosecutors can charge. For domestic surveillance situations, prioritise your safety first - contact the domestic violence hotline for advice on safely removing spyware.' }
+        },
+        account: {
+          right: { title: 'First Amendment Does Not Apply to Private Platforms', body: 'Private platforms (Meta, Google, Twitter/X, etc.) are not bound by the First Amendment, which only restricts government action. They can set and enforce their own content policies. Limited legal recourse exists for free account terminations. For <strong>paid services</strong>, contract law and FTC consumer protection rules apply, as do refund rights for unused subscription periods.' },
+          who: { title: 'FTC for Patterns + State AG for Paid Service Disputes', body: '<strong>FTC:</strong> ReportFraud.ftc.gov if you believe the termination involved deceptive or unfair practices<br><strong>State AG</strong> for paid service refund disputes<br><strong>CFPB</strong> if the account was a financial product<br>For most free platform accounts: the company\'s internal appeal process is the primary route - document everything.' },
+          expect: { title: 'Limited Recourse for Free Accounts - Better Options for Paid', body: 'For free accounts, the practical recourse is the platform\'s internal appeal process. Document all communications. For paid subscriptions, you have stronger grounds - consumer protection law and credit card chargeback rights apply to mid-period terminations. State AG offices take patterns of complaints seriously.' }
+        }
+      },
+
+      au: {
+        data: {
+          right: { title: 'Privacy Act 1988 - Australian Privacy Principles', body: 'The <strong>Privacy Act 1988</strong> and its Australian Privacy Principles (APPs) give you the right to access personal information organisations hold about you and to request correction of inaccurate data. You can make a complaint to the OAIC if an organisation breaches the APPs. The Privacy Act is currently being strengthened with new amendments proposed in 2024-2025.' },
+          who: { title: 'OAIC - Office of the Australian Information Commissioner', body: '<strong>First:</strong> Send a written access or correction request to the organisation directly.<br><strong>If refused or ignored:</strong> File a complaint at <strong>oaic.gov.au</strong>. The OAIC is free to use and can investigate, conciliate, and determine complaints. The Commissioner can also make determinations and award compensation.' },
+          expect: { title: 'OAIC Investigates - Conciliation Common', body: 'The OAIC often resolves complaints through conciliation - a facilitated discussion between you and the organisation. This typically resolves within 3 to 6 months. Formal determinations take longer but can include compensation and compliance orders. Many organisations comply when an OAIC complaint is filed.' }
+        },
+        fraud: {
+          right: { title: 'Australian Consumer Law + AFCA for Financial Disputes', body: 'The <strong>Australian Consumer Law (ACL)</strong> protects against misleading conduct and unfair practices. For financial fraud, the <strong>Australian Financial Complaints Authority (AFCA)</strong> can handle complaints against banks, insurers, and financial services firms. Unauthorised transaction protections apply under the ePayments Code, which most banks subscribe to.' },
+          who: { title: 'AFCA + Scamwatch + Local Police', body: '<strong>AFCA:</strong> afca.org.au - free, binding decisions up to $1M for financial disputes<br><strong>Scamwatch:</strong> scamwatch.gov.au (ACCC) - report scams, access recovery guidance<br><strong>Local police</strong> for a crime reference number<br><strong>Your bank:</strong> call immediately - report within 30 days for best ePayments Code protection' },
+          expect: { title: 'AFCA Binding Decisions Up to $1M', body: 'AFCA decisions are <strong>binding on financial firms</strong> up to $1 million. The process typically takes 30 to 60 days for straightforward cases. Scamwatch reports feed into ACCC enforcement actions - individual recovery from Scamwatch reports is indirect, but the data helps target scam networks.' }
+        },
+        image: {
+          right: { title: 'Criminal Code Act 1995 + eSafety Commissioner Powers', body: 'Non-consensual sharing of intimate images is a <strong>criminal offence</strong> under the Criminal Code Act 1995. The <strong>eSafety Commissioner</strong> has specific powers to order removal of intimate images and can investigate complaints. Platforms operating in Australia must comply with removal orders within 24 hours or face significant fines.' },
+          who: { title: 'eSafety Commissioner + Local Police', body: '<strong>eSafety Commissioner:</strong> esafety.gov.au - free complaints process, can order platform removal within 24 hours<br><strong>Local police</strong> for criminal charges<br><strong>1800RESPECT:</strong> 1800 737 732 for support if the abuse is in a domestic context<br>Report to the platform simultaneously using their specific intimate image abuse path.' },
+          expect: { title: 'Fastest Removal Rights in the World', body: 'Australia\'s eSafety Commissioner has some of the <strong>strongest image removal powers globally</strong>. Platforms must act within 24 hours of a Commissioner order. Criminal charges under the Criminal Code can result in imprisonment. File with the eSafety Commissioner first for speed - it is free and effective.' }
+        },
+        surveillance: {
+          right: { title: 'Privacy Act 1988 for Private Entities + State Surveillance Laws', body: 'The Privacy Act protects against unlawful data collection by private organisations. Installing surveillance software on someone\'s device without consent may also be covered by state and territory surveillance device laws and the <strong>Telecommunications (Interception and Access) Act</strong>. Unauthorised computer access is an offence under the Criminal Code Act.' },
+          who: { title: 'OAIC + State Police', body: '<strong>OAIC:</strong> oaic.gov.au for Privacy Act complaints about data surveillance by organisations<br><strong>State police</strong> for tracking software, hidden cameras, or device access by private individuals<br><strong>eSafety Commissioner:</strong> esafety.gov.au for online tracking and abuse in digital contexts<br><strong>1800RESPECT</strong> for domestic tech abuse support' },
+          expect: { title: 'OAIC Investigation + State Criminal Proceedings', body: 'The OAIC can investigate and determine privacy complaints, including ordering remedies. State police can investigate device surveillance under criminal laws. For domestic surveillance situations, contact 1800RESPECT before taking action - removing spyware without planning can alert the perpetrator.' }
+        },
+        account: {
+          right: { title: 'Australian Consumer Law - Unfair Contract Terms', body: 'The <strong>Australian Consumer Law</strong> prohibits unfair contract terms, including terms that allow platforms to terminate accounts arbitrarily without giving reasons. For <strong>paid services</strong>, you have clear rights to refunds for unused subscription periods. The ACCC actively pursues cases involving unfair terms in standard-form consumer contracts.' },
+          who: { title: 'ACCC + State Fair Trading Office', body: '<strong>ACCC:</strong> accc.gov.au/consumers - for unfair contract terms and misleading conduct<br><strong>State Fair Trading offices:</strong> for local consumer complaints (e.g. NSW Fair Trading, Consumer Affairs Victoria)<br><strong>AFCA</strong> for financial account closures<br>Document the termination terms and your communications with the platform.' },
+          expect: { title: 'ACCC Can Pursue Unfair Terms - Refunds for Paid Services', body: 'The ACCC has taken action against major platforms for unfair terms. Individual complaints inform enforcement priorities. For paid services, Australian Consumer Law gives you clear refund rights. Small claims through state tribunals (NCAT, VCAT) are available for disputes under relevant thresholds and are relatively quick.' }
+        }
+      }
+    };
+
+    let selectedCountry = null;
+    let selectedIssue = null;
+
+    const countryNames = { india: 'India', uk: 'United Kingdom', eu: 'European Union', us: 'United States', au: 'Australia' };
+    const issueNames = { data: 'Data Misuse', fraud: 'Fraud Loss', image: 'Image-Based Abuse', surveillance: 'Surveillance', account: 'Account Wrongful Termination' };
+
+    function selectCountry(key, btn) {
+      document.querySelectorAll('.btn-grid.countries .sel-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedCountry = key;
+      tryShow();
+    }
+
+    function selectIssue(key, btn) {
+      document.querySelectorAll('.btn-grid.issues .sel-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedIssue = key;
+      tryShow();
+    }
+
+    function tryShow() {
+      if (!selectedCountry || !selectedIssue) {
+        document.getElementById('prompt-note').style.display = 'block';
+        document.getElementById('results').style.display = 'none';
+        sendHeight();
+        return;
+      }
+      document.getElementById('prompt-note').style.display = 'none';
+      const d = DATA[selectedCountry][selectedIssue];
+      document.getElementById('combo-tag').textContent = countryNames[selectedCountry] + ' + ' + issueNames[selectedIssue];
+      document.getElementById('res-right-title').textContent = d.right.title;
+      document.getElementById('res-right-body').innerHTML = d.right.body;
+      document.getElementById('res-who-title').textContent = d.who.title;
+      document.getElementById('res-who-body').innerHTML = d.who.body;
+      document.getElementById('res-expect-title').textContent = d.expect.title;
+      document.getElementById('res-expect-body').innerHTML = d.expect.body;
+      document.getElementById('results').style.display = 'block';
+      setTimeout(() => {
+        document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        sendHeight();
+      }, 80);
+    }
+
+    function reset() {
+      selectedCountry = null;
+      selectedIssue = null;
+      document.querySelectorAll('.sel-btn').forEach(b => b.classList.remove('selected'));
+      document.getElementById('results').style.display = 'none';
+      document.getElementById('prompt-note').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      sendHeight();
+    }
+
+    function sendHeight() {
+      window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+    }
+    window.addEventListener('load', sendHeight);
+    window.addEventListener('resize', sendHeight);
+  </script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Device Health Check</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B;
+      --blue: #2563EB; --blue-light: #EFF6FF;
+      --green: #059669; --green-light: #ECFDF5;
+      --red: #DC2626; --red-light: #FEF2F2;
+      --amber: #D97706; --amber-light: #FFFBEB;
+      --r: 12px;
+    }
+    body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px 16px 36px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .header { text-align: center; margin-bottom: 24px; }
+    .header h1 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .header p { font-size: 13.5px; color: var(--muted); max-width: 480px; margin: 0 auto; }
+    .wrap { max-width: 600px; margin: 0 auto; }
+    /* Device picker */
+    .picker { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
+    .device-btn { flex: 1; min-width: 120px; padding: 14px 10px; background: var(--surface); border: 2px solid var(--border); border-radius: var(--r); cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; color: var(--muted); text-align: center; transition: all 0.15s; }
+    .device-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .device-btn.active { border-color: var(--blue); background: var(--blue-light); color: var(--blue); }
+    .device-btn .icon { font-size: 22px; display: block; margin-bottom: 4px; }
+    /* Questions */
+    .questions-wrap { display: none; }
+    .questions-wrap.show { display: block; }
+    .q-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .q-num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 6px; }
+    .q-text { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+    .q-detail { font-size: 12.5px; color: var(--muted); margin-bottom: 12px; }
+    .yn-row { display: flex; gap: 8px; }
+    .yn-btn { flex: 1; padding: 9px; font-family: 'Outfit', sans-serif; font-size: 13.5px; font-weight: 600; border-radius: 8px; border: 1.5px solid var(--border); cursor: pointer; background: transparent; color: var(--muted); transition: all 0.15s; }
+    .yn-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .yn-btn.yes.active { background: var(--green); border-color: var(--green); color: #fff; }
+    .yn-btn.no.active { background: var(--red); border-color: var(--red); color: #fff; }
+    .btn { display: block; width: 100%; padding: 13px; background: var(--blue); color: #fff; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; margin-top: 18px; transition: background 0.15s; }
+    .btn:hover { background: #1D4ED8; }
+    /* Results */
+    .results { display: none; }
+    .results.show { display: block; }
+    .score-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 24px; text-align: center; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .score-big { font-size: 52px; font-weight: 800; line-height: 1; }
+    .score-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .status-text { font-size: 15px; font-weight: 600; margin-top: 10px; }
+    .fix-list { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .fix-title { font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+    .fix-item { display: flex; gap: 10px; padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 13px; line-height: 1.5; }
+    .fix-item.pass { background: var(--green-light); border: 1px solid #A7F3D0; }
+    .fix-item.fail { background: var(--red-light); border: 1px solid #FECACA; }
+    .fix-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+    .fix-dot.pass { background: var(--green); }
+    .fix-dot.fail { background: var(--red); }
+    .btn-reset { background: transparent; color: var(--muted); border: 1px solid var(--border); margin-top: 10px; }
+    .btn-reset:hover { background: var(--border); color: var(--text); }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>Device Health Check</h1>
+    <p>Select your device type, then answer 5 quick questions. You'll get a colour-coded result and the exact steps to fix any gaps.</p>
+  </div>
+
+  <div class="picker">
+    <button class="device-btn" onclick="selectDevice('android',this)"><span class="icon">🤖</span>Android</button>
+    <button class="device-btn" onclick="selectDevice('iphone',this)"><span class="icon">📱</span>iPhone</button>
+    <button class="device-btn" onclick="selectDevice('windows',this)"><span class="icon">🖥️</span>Windows</button>
+    <button class="device-btn" onclick="selectDevice('mac',this)"><span class="icon">💻</span>Mac</button>
+  </div>
+
+  <div class="questions-wrap" id="questions-wrap">
+    <div id="q-list"></div>
+    <button class="btn" onclick="showResults()">See My Results</button>
+  </div>
+
+  <div class="results" id="results">
+    <div class="score-box">
+      <div class="score-big" id="score-big">-</div>
+      <div class="score-sub">out of 5 checks passed</div>
+      <div class="status-text" id="status-text"></div>
+    </div>
+    <div class="fix-list">
+      <div class="fix-title">Your action list</div>
+      <div id="fix-items"></div>
+    </div>
+    <button class="btn btn-reset" onclick="reset()">Check Another Device</button>
+  </div>
+</div>
+
+<script>
+  const questions = {
+    android: [
+      { q: 'Is Android automatically set to update?', detail: 'Settings > System > Software update > Auto download and install.', fix: 'Turn on auto-updates: Settings > System > Software update > Schedule software updates.', key: 'auto-updates' },
+      { q: 'Do you have a screen lock enabled (PIN, pattern, or fingerprint)?', detail: 'Settings > Lock screen > Screen lock type.', fix: 'Set a screen lock: Settings > Lock screen > Screen lock type. Choose PIN or fingerprint.', key: 'screen-lock' },
+      { q: 'Is device encryption turned on?', detail: 'Most Android 6+ devices encrypt by default when you set a screen lock.', fix: 'Encryption is tied to your screen lock. Setting a lock (above) activates it on most modern Android devices.', key: 'encryption' },
+      { q: 'Do you only install apps from Google Play?', detail: 'Sideloading APK files from unknown sources bypasses Google\'s security checks.', fix: 'Go to Settings > Apps > Special app access > Install unknown apps. Disable for any browser or file manager.', key: 'play-store' },
+      { q: 'Have you wiped your last device before discarding or selling it?', detail: 'A factory reset removes your data from the device before it changes hands.', fix: 'For any device you plan to sell: Settings > General management > Reset > Factory data reset. Remove SD card first.', key: 'wipe' }
+    ],
+    iphone: [
+      { q: 'Is iOS set to update automatically?', detail: 'Settings > General > Software Update > Automatic Updates.', fix: 'Enable: Settings > General > Software Update > Automatic Updates > turn on both options.', key: 'auto-updates' },
+      { q: 'Is Face ID, Touch ID, or a passcode enabled?', detail: 'Without a lock, anyone who picks up your phone has full access.', fix: 'Set up: Settings > Face ID & Passcode (or Touch ID & Passcode) > Turn Passcode On.', key: 'screen-lock' },
+      { q: 'Is iCloud backup turned on?', detail: 'Settings > [your name] > iCloud > iCloud Backup.', fix: 'Enable: Settings > [your name] > iCloud > iCloud Backup > Back Up Now.', key: 'backup' },
+      { q: 'Have you reviewed which apps can track your activity?', detail: 'iOS lets you block all cross-app tracking in one place.', fix: 'Go to Settings > Privacy & Security > Tracking. Turn off "Allow Apps to Request to Track."', key: 'tracking' },
+      { q: 'Did you sign out of iCloud before selling or giving away your last iPhone?', detail: 'Failing to do this keeps Activation Lock on, but still leaves your data accessible.', fix: 'Always: Settings > [your name] > Sign Out. Then erase: Settings > General > Transfer or Reset iPhone > Erase All Content.', key: 'wipe' }
+    ],
+    windows: [
+      { q: 'Is Windows Update set to install updates automatically?', detail: 'Settings > Windows Update > Advanced Options > Automatic (recommended).', fix: 'Enable: Settings > Windows Update > Advanced Options. Set Active hours and ensure automatic updates are on.', key: 'auto-updates' },
+      { q: 'Is your Windows account protected by a PIN or Windows Hello?', detail: 'A strong PIN is more secure than a password on Windows 11.', fix: 'Set up: Settings > Accounts > Sign-in options > PIN (Windows Hello) > Add.', key: 'screen-lock' },
+      { q: 'Is BitLocker or Device Encryption turned on?', detail: 'This protects your data if the device is lost or stolen.', fix: 'Check: Settings > Privacy & Security > Device Encryption. If unavailable, search "BitLocker" in Start and enable it.', key: 'encryption' },
+      { q: 'Is Microsoft Defender (or equivalent antivirus) running and up to date?', detail: 'Windows Security > Virus & Threat Protection > check that protection is active.', fix: 'Open Windows Security from the Start menu. Check all green ticks under Virus & Threat Protection.', key: 'antivirus' },
+      { q: 'Have you removed your account and wiped the device before any sale?', detail: 'Go to Settings > System > Recovery > Reset this PC > Remove Everything.', fix: 'Use: Settings > System > Recovery > Reset this PC > Remove everything > Local reinstall.', key: 'wipe' }
+    ],
+    mac: [
+      { q: 'Is macOS set to install updates automatically?', detail: 'System Settings > General > Software Update > Automatic Updates.', fix: 'Enable: System Settings > General > Software Update > click the info icon > turn on all options.', key: 'auto-updates' },
+      { q: 'Is your Mac login protected by a password or Touch ID?', detail: 'System Settings > Touch ID & Password.', fix: 'Add a login password: System Settings > Touch ID & Password > Add Fingerprint or change login password.', key: 'screen-lock' },
+      { q: 'Is FileVault (disk encryption) turned on?', detail: 'System Settings > Privacy & Security > FileVault.', fix: 'Turn on FileVault: System Settings > Privacy & Security > FileVault > Turn On. Store the recovery key safely.', key: 'encryption' },
+      { q: 'Is the firewall enabled?', detail: 'System Settings > Network > Firewall.', fix: 'Enable: System Settings > Network > Firewall > turn it on.', key: 'firewall' },
+      { q: 'Did you sign out of your Apple ID and erase the Mac before selling or donating it?', detail: 'Apple menu > System Settings > [your name] > Sign Out, then erase via Recovery Mode.', fix: 'Sign out: System Settings > [your name] > Sign Out. Then: Apple menu > Shut Down. Restart holding Power, choose Erase Mac.', key: 'wipe' }
+    ]
+  };
+
+  let currentDevice = null;
+  let answers = [null, null, null, null, null];
+
+  function selectDevice(device, btn) {
+    currentDevice = device;
+    document.querySelectorAll('.device-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    answers = [null, null, null, null, null];
+    document.getElementById('results').classList.remove('show');
+    renderQuestions();
+    document.getElementById('questions-wrap').classList.add('show');
+    setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'), 200);
+  }
+
+  function renderQuestions() {
+    const qs = questions[currentDevice];
+    let html = '';
+    qs.forEach((q, i) => {
+      html += `<div class="q-card">
+        <div class="q-num">Check ${i+1} of 5</div>
+        <div class="q-text">${q.q}</div>
+        <div class="q-detail">${q.detail}</div>
+        <div class="yn-row">
+          <button class="yn-btn yes" onclick="setAnswer(${i},true,this)">Yes</button>
+          <button class="yn-btn no" onclick="setAnswer(${i},false,this)">No</button>
+        </div>
+      </div>`;
+    });
+    document.getElementById('q-list').innerHTML = html;
+  }
+
+  function setAnswer(i, val, btn) {
+    answers[i] = val;
+    const row = btn.closest('.yn-row');
+    row.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function showResults() {
+    const qs = questions[currentDevice];
+    const score = answers.filter(a => a === true).length;
+    document.getElementById('score-big').textContent = score;
+    const colors = { 0:'#DC2626', 1:'#DC2626', 2:'#D97706', 3:'#D97706', 4:'#059669', 5:'#059669' };
+    document.getElementById('score-big').style.color = colors[score];
+    const labels = { 0:'Several urgent gaps.', 1:'Several urgent gaps.', 2:'Some gaps to address.', 3:'Getting there - a few fixes needed.', 4:'Almost secure - one thing to fix.', 5:'Fully covered. Review again in 3 months.' };
+    document.getElementById('status-text').textContent = labels[score];
+    let html = '';
+    qs.forEach((q, i) => {
+      const passed = answers[i] === true;
+      html += `<div class="fix-item ${passed ? 'pass' : 'fail'}">
+        <div class="fix-dot ${passed ? 'pass' : 'fail'}"></div>
+        <div><strong>${q.q}</strong>${!passed ? '<br><span style="color:#64748B">' + q.fix + '</span>' : ''}</div>
+      </div>`;
+    });
+    document.getElementById('fix-items').innerHTML = html;
+    document.getElementById('results').classList.add('show');
+    setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'), 300);
+  }
+
+  function reset() {
+    currentDevice = null;
+    answers = [null,null,null,null,null];
+    document.querySelectorAll('.device-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('questions-wrap').classList.remove('show');
+    document.getElementById('results').classList.remove('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  window.addEventListener('load', () => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'));
+</script>
+</body>
+</html>

@@ -2,14 +2,225 @@
 sidebar_position: 1
 title: "Your Devices & Software"
 sidebar_label: "Your Devices & Software"
+description: "How to keep your devices secure through updates, encryption, screen locks, and safe disposal practices."
+tags: [device-security, software-updates, encryption, screen-lock, factory-reset, digital-hygiene]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Your Devices & Software
 
-## Sub-topics
+Your device is the gateway to everything else. Every account, every message, every payment flows through it. Securing the device is the foundation all other habits depend on.
 
-- Keeping your OS and apps updated — why updates are security fixes, not just new features
-- Device encryption — what it is and why it matters if your phone is lost or stolen
-- Locking your screen — the simplest protection most people skip
-- What to do before selling, donating, or discarding a device — factory reset is not enough
-- Public computers and shared devices — what you should never do on them
+---
+
+## The Sold Phone
+
+James upgraded his phone and sold his old one to a buyer on OLX.
+
+He deleted all his photos and apps. He removed his SIM card. He thought that was enough.
+
+**What he did not do was factory reset the device.**
+
+The buyer, a tech-savvy student, used a free recovery tool to restore James' deleted files. **His photos, banking app session data, and WhatsApp message history were all recoverable.** The buyer found James' employer, home neighbourhood, and two family members' contact details within 20 minutes.
+
+James never knew. He had done what felt right - delete and sell. The gap was one step he didn't know existed.
+
+---
+
+## What Is Actually Happening: Device Security
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>43%</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>of smartphone users delay or skip OS updates, leaving known vulnerabilities unpatched.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Updates are not just new features. They are patches for active security exploits.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Lookout Mobile Security Report, 2024</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Updates</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>60% of Breaches Use Known Vulnerabilities</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}><b>Nearly 6 in 10 breaches</b> exploit vulnerabilities that already had a patch available. The attack worked because the patch was not applied.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Verizon DBIR, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Lost Devices</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>70 Million Phones Lost Each Year</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Globally, an estimated <b>70 million smartphones</b> are lost annually. Only 7% are recovered. A screen lock is the only thing between a finder and your data.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Kensington Mobility Report, 2024</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #3B82F6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#3B82F6', fontWeight: 'bold' }}>Encryption</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Encryption Makes Stolen Data Unreadable</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Modern phones encrypt storage when a screen lock is set. Without the PIN, <b>the data on a stolen device cannot be read</b> - even by connecting it to a computer.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: NIST Device Security Guidelines, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #10B981', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#10B981', fontWeight: 'bold' }}>Disposal</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Deleted Files Are Recoverable Without a Wipe</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Deleting files marks storage space as available - but does not overwrite the data. <b>Free recovery tools</b> can restore deleted photos, messages, and app data within minutes.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Digital Forensics Research Workshop, 2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## Why Updates Are Security Fixes
+
+Every software update patches specific vulnerabilities. When a security flaw is discovered, it is publicly disclosed - which means attackers know about it too.
+
+The window between public disclosure and your device applying the patch is when you are most exposed. **Automatic updates close this window.** Delaying updates extends it.
+
+The update you skipped because it felt inconvenient may be the one that blocks the attack running that week.
+
+---
+
+## Screen Lock and Encryption
+
+A screen lock does more than keep curious people out.
+
+On modern smartphones, setting a PIN or biometric lock activates the device's storage encryption. **Without the lock, your device's storage is unencrypted** - readable by anyone with physical access and the right tools.
+
+This matters most when a device is lost, left unattended, or sold.
+
+### What screen lock types offer
+
+| Lock type | Protection level | Note |
+|---|---|---|
+| No lock | None | Any finder has full access |
+| Pattern | Weak | Patterns are visually traceable |
+| 4-digit PIN | Moderate | 10,000 possible combinations |
+| 6-digit PIN | Strong | 1 million possible combinations |
+| Fingerprint or Face ID | Strong | Combined with PIN as backup |
+
+---
+
+## Public and Shared Devices
+
+Public computers - at libraries, airports, hotels, or internet cafes - have a fundamental problem. **You do not know what software is running on them.** Keyloggers that record everything typed are common on high-traffic shared devices.
+
+Rules for shared devices:
+- Never log into banking, email, or any personal account.
+- If you must log in, use incognito mode and sign out completely before leaving.
+- Never save passwords when prompted.
+- Assume the session is being recorded.
+
+---
+
+## Before Selling or Donating a Device
+
+Deleting files is not enough. The correct sequence is:
+
+1. Back up anything you need to keep.
+2. Sign out of all accounts on the device.
+3. Remove your SIM card and any memory cards.
+4. Perform a factory reset through the device settings.
+5. For iPhones: disable Activation Lock before handing over.
+6. For Android: confirm the device is fully erased by checking that the setup wizard appears.
+
+**A factory reset overwrites the storage**, making previous data unrecoverable through standard means.
+
+---
+
+## Try It: Device Health Check
+
+Select your device type and answer 5 questions. You'll get a colour-coded health score and the exact menu path to fix each gap.
+
+<iframe
+  id="device-health-iframe"
+  src="/simulations/your-digital-protection-habits/your-devices-software/device-health-check.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Device Health Check"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('device-health-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._deviceHealthHandler);
+    window._deviceHealthHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. Updates, locks, and wipes are the non-negotiable three.**
+Everything else in device security builds on these. They take minutes to set up and require no technical knowledge.
+
+**2. Encryption is automatic when a lock is in place.**
+You do not need to activate encryption separately on modern devices. Setting a screen lock turns it on.
+
+**3. "I deleted it" is not the same as "it is gone."**
+Data persists until storage space is actively overwritten. A factory reset does this. Deleting files does not.
+
+**4. Public device rules are simple: do not log in.**
+No convenience justifies entering credentials on a device you cannot trust.
+
+---
+
+## Three Things Worth Doing
+
+**1. Turn on automatic updates right now.**
+Settings > Software Update on both Android and iPhone. This single change closes the most common attack surface on your device.
+
+**2. Set a 6-digit PIN if you use a 4-digit one.**
+The jump from 4 to 6 digits increases possible combinations by 100x. Takes 30 seconds to change.
+
+**3. Before your next device handoff, factory reset.**
+Whether selling, donating, or handing to a family member: Settings > General > Reset (iPhone) or Settings > System > Reset (Android). Remove accounts first.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="James deleted all his files and removed his SIM before selling his phone. What did the buyer use to recover his data?"
+  options={[
+    {
+      label: "A physical SIM card from James.",
+      correct: false,
+      explanation: "James removed the SIM. The data recovered was stored in the phone's internal storage, not the SIM."
+    },
+    {
+      label: "A free data recovery tool that restored files from unwiped storage.",
+      correct: true,
+      explanation: "Correct. Deleting files marks storage space as available but does not overwrite it. Recovery tools read the underlying storage and restore files that were 'deleted' but not erased. A factory reset would have prevented this."
+    },
+    {
+      label: "James' cloud account, which was still signed in.",
+      correct: false,
+      explanation: "Cloud account access is a separate risk. The data recovered here came from the device's local storage, not a cloud backup."
+    },
+    {
+      label: "A vulnerability in the phone's operating system.",
+      correct: false,
+      explanation: "No software exploit was needed. Standard consumer recovery tools can restore deleted files from unwiped storage without any hacking knowledge."
+    }
+  ]}
+/>

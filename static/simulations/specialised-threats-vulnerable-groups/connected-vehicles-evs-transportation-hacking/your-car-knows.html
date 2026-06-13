@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Your Car Knows</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B;
+      --blue: #2563EB; --blue-light: #EFF6FF;
+      --red: #DC2626; --red-light: #FEF2F2;
+      --amber: #D97706; --amber-light: #FFFBEB;
+      --green: #059669; --green-light: #ECFDF5;
+      --r: 14px;
+    }
+    body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px 16px 36px; -webkit-font-smoothing: antialiased; line-height: 1.6; }
+    h1 { font-size: 20px; font-weight: 800; text-align: center; margin-bottom: 6px; }
+    .subtitle { font-size: 13px; color: var(--muted); text-align: center; max-width: 520px; margin: 0 auto 24px; }
+
+    .car-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; max-width: 660px; margin: 0 auto 20px; }
+    @media(max-width:480px) { .car-grid { grid-template-columns: 1fr; } }
+
+    .data-node { background: var(--surface); border: 2px solid var(--border); border-radius: var(--r); padding: 14px 16px; cursor: pointer; transition: border-color .2s, background .2s; }
+    .data-node:hover { border-color: var(--blue); }
+    .data-node.open { border-color: var(--blue); background: var(--blue-light); }
+    .dn-header { display: flex; align-items: center; gap: 10px; margin-bottom: 2px; }
+    .dn-icon { font-size: 22px; }
+    .dn-title { font-size: 13.5px; font-weight: 700; }
+    .dn-sub { font-size: 11.5px; color: var(--muted); margin-left: 32px; }
+    .dn-detail { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .data-node.open .dn-detail { display: block; }
+
+    .access-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+    .access-item { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+    .access-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .access-dot.maker { background: var(--blue); }
+    .access-dot.insurer { background: var(--amber); }
+    .access-dot.law { background: var(--red); }
+    .access-dot.broker { background: #8B5CF6; }
+    .access-legend { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+    .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
+
+    .case-note { background: var(--amber-light); border-left: 3px solid var(--amber); border-radius: 8px; padding: 10px 12px; font-size: 12.5px; line-height: 1.5; margin-top: 8px; }
+    .case-note strong { display: block; font-size: 11px; color: var(--amber); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 3px; }
+
+    .protect-box { max-width: 660px; margin: 0 auto; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 18px 20px; }
+    .protect-box h3 { font-size: 15px; font-weight: 800; margin-bottom: 12px; }
+    .protect-list { display: flex; flex-direction: column; gap: 8px; }
+    .protect-item { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 11px 14px; font-size: 13px; line-height: 1.5; }
+    .protect-item strong { color: var(--blue); display: block; font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px; }
+  </style>
+</head>
+<body>
+<h1>Your Car Knows</h1>
+<p class="subtitle">Modern connected vehicles collect data from every system on board. Tap each data point to see who has access and one documented real-world case.</p>
+
+<div style="max-width:660px;margin:0 auto 14px;">
+  <div class="access-legend">
+    <div class="legend-item"><div class="access-dot maker"></div> Manufacturer</div>
+    <div class="legend-item"><div class="access-dot insurer"></div> Insurer</div>
+    <div class="legend-item"><div class="access-dot law"></div> Law Enforcement</div>
+    <div class="legend-item"><div class="access-dot broker"></div> Data Broker</div>
+  </div>
+</div>
+
+<div class="car-grid">
+  <div class="data-node" onclick="toggle(this)">
+    <div class="dn-header"><span class="dn-icon">📍</span><span class="dn-title">GPS Location History</span></div>
+    <div class="dn-sub">Every journey, timestamped</div>
+    <div class="dn-detail">
+      <div class="access-list">
+        <div class="access-item"><div class="access-dot maker"></div> Manufacturer (real-time and stored)</div>
+        <div class="access-item"><div class="access-dot insurer"></div> Insurer (with telematics policy)</div>
+        <div class="access-item"><div class="access-dot law"></div> Law enforcement (via warrant)</div>
+        <div class="access-item"><div class="access-dot broker"></div> Data brokers (sold by app partners)</div>
+      </div>
+      <div class="case-note"><strong>Documented case</strong>In 2023, US law enforcement used GM OnStar location data to track and charge a suspect in a murder case, without the suspect knowing their car had reported real-time GPS coordinates. No warrant was required at the time of initial data collection.</div>
+    </div>
+  </div>
+
+  <div class="data-node" onclick="toggle(this)">
+    <div class="dn-header"><span class="dn-icon">🔵</span><span class="dn-title">Bluetooth Pairing Logs</span></div>
+    <div class="dn-sub">Every device ever connected</div>
+    <div class="dn-detail">
+      <div class="access-list">
+        <div class="access-item"><div class="access-dot maker"></div> Manufacturer (stored in infotainment system)</div>
+        <div class="access-item"><div class="access-dot law"></div> Law enforcement (forensic extraction)</div>
+      </div>
+      <div class="case-note"><strong>Documented case</strong>Forensic extraction of Bluetooth logs from a rental car identified all phones connected during the rental period — used in a 2022 criminal investigation to place specific individuals in the vehicle at specific times, without any consent from those individuals.</div>
+    </div>
+  </div>
+
+  <div class="data-node" onclick="toggle(this)">
+    <div class="dn-header"><span class="dn-icon">📷</span><span class="dn-title">Dashcam & In-Cabin Footage</span></div>
+    <div class="dn-sub">Video of driver, passengers, surroundings</div>
+    <div class="dn-detail">
+      <div class="access-list">
+        <div class="access-item"><div class="access-dot maker"></div> Manufacturer (Tesla stores clips cloud-side)</div>
+        <div class="access-item"><div class="access-dot law"></div> Law enforcement (incident investigation)</div>
+        <div class="access-item"><div class="access-dot insurer"></div> Insurer (accident reconstruction)</div>
+      </div>
+      <div class="case-note"><strong>Documented case</strong>Tesla's "Sentry Mode" footage has been subpoenaed in multiple criminal cases. In 2023, a Tesla owner discovered their vehicle had recorded and uploaded footage of nearby protests without their active knowledge, raising questions about consent for ambient recording.</div>
+    </div>
+  </div>
+
+  <div class="data-node" onclick="toggle(this)">
+    <div class="dn-header"><span class="dn-icon">⚡</span><span class="dn-title">EV Charging Station Records</span></div>
+    <div class="dn-sub">Location, time, account identity</div>
+    <div class="dn-detail">
+      <div class="access-list">
+        <div class="access-item"><div class="access-dot maker"></div> Charging network operator</div>
+        <div class="access-item"><div class="access-dot broker"></div> Data brokers (charging data has been sold)</div>
+        <div class="access-item"><div class="access-dot law"></div> Law enforcement (via warrant)</div>
+      </div>
+      <div class="case-note"><strong>Documented case</strong>A 2023 investigation found that major US EV charging networks were selling location data to data brokers. This data included charging timestamps and precise coordinates, creating a movement history independent of the vehicle manufacturer's systems.</div>
+    </div>
+  </div>
+
+  <div class="data-node" onclick="toggle(this)">
+    <div class="dn-header"><span class="dn-icon">📊</span><span class="dn-title">Speed & Braking Telemetry</span></div>
+    <div class="dn-sub">Driving behaviour, hard braking events</div>
+    <div class="dn-detail">
+      <div class="access-list">
+        <div class="access-item"><div class="access-dot insurer"></div> Insurer (usage-based pricing programmes)</div>
+        <div class="access-item"><div class="access-dot maker"></div> Manufacturer (safety and warranty analysis)</div>
+        <div class="access-item"><div class="access-dot law"></div> Law enforcement (accident reconstruction)</div>
+      </div>
+      <div class="case-note"><strong>Documented case</strong>Multiple US insurers used telematics data from connected cars to retroactively raise premiums for customers who had not opted into monitoring programmes — the data was obtained via OEM data-sharing agreements the customer never directly consented to.</div>
+    </div>
+  </div>
+
+  <div class="data-node" onclick="toggle(this)">
+    <div class="dn-header"><span class="dn-icon">🎙️</span><span class="dn-title">In-Cabin Voice Activation</span></div>
+    <div class="dn-sub">Voice assistant activation logs</div>
+    <div class="dn-detail">
+      <div class="access-list">
+        <div class="access-item"><div class="access-dot maker"></div> Manufacturer (voice assistant provider)</div>
+        <div class="access-item"><div class="access-dot broker"></div> Third-party AI platform (if Alexa/Google integrated)</div>
+      </div>
+      <div class="case-note"><strong>What's collected</strong>Wake-word detection means the microphone monitors continuously before activation. Some manufacturers confirmed that a small percentage of audio clips captured before the wake word are reviewed by human staff for accuracy improvement — without user notification in original privacy policies.</div>
+    </div>
+  </div>
+
+  <div class="data-node" onclick="toggle(this)">
+    <div class="dn-header"><span class="dn-icon">📱</span><span class="dn-title">Linked App Identity</span></div>
+    <div class="dn-sub">Phone contacts, calendar, music preferences</div>
+    <div class="dn-detail">
+      <div class="access-list">
+        <div class="access-item"><div class="access-dot maker"></div> Manufacturer (infotainment data)</div>
+        <div class="access-item"><div class="access-dot broker"></div> Data brokers (app integration data)</div>
+      </div>
+      <div class="case-note"><strong>Documented case</strong>When a used car is sold, the infotainment system often retains the previous owner's phone contacts, call history, home and work addresses, and linked app accounts. Privacy researchers found this data present in 90%+ of tested used vehicles in 2023 (Mozilla Foundation research).</div>
+    </div>
+  </div>
+
+  <div class="data-node" onclick="toggle(this)">
+    <div class="dn-header"><span class="dn-icon">🚖</span><span class="dn-title">Ride-Share App Data</span></div>
+    <div class="dn-sub">Pickup, drop-off, payment, rating history</div>
+    <div class="dn-detail">
+      <div class="access-list">
+        <div class="access-item"><div class="access-dot maker"></div> Ride-share platform (journey history)</div>
+        <div class="access-item"><div class="access-dot law"></div> Law enforcement (via legal process)</div>
+        <div class="access-item"><div class="access-dot broker"></div> Data brokers (aggregate movement patterns)</div>
+      </div>
+      <div class="case-note"><strong>Documented case</strong>Uber and Lyft have both complied with thousands of law enforcement data requests annually, disclosing trip origin/destination, timestamps, and account identity. In some cases, this data was provided without a warrant under emergency disclosure provisions.</div>
+    </div>
+  </div>
+</div>
+
+<div class="protect-box">
+  <h3>What you can actually do</h3>
+  <div class="protect-list">
+    <div class="protect-item"><strong>Factory reset before selling</strong>Always factory reset infotainment systems before selling a car. Check the owner manual — most systems store far more than just music preferences.</div>
+    <div class="protect-item"><strong>Review telematics consent</strong>If your insurance offers usage-based pricing, read what data is collected and who it is shared with before opting in.</div>
+    <div class="protect-item"><strong>Opt out of manufacturer data sharing</strong>Most manufacturers offer a data sharing opt-out in the connected services settings. It may reduce some features but significantly reduces your data exposure.</div>
+    <div class="protect-item"><strong>Delete ride-share history</strong>Uber and Lyft allow manual deletion of trip history in account settings. Do this periodically.</div>
+  </div>
+</div>
+
+<script>
+function toggle(node) {
+  const wasOpen = node.classList.contains('open');
+  document.querySelectorAll('.data-node.open').forEach(n => n.classList.remove('open'));
+  if (!wasOpen) node.classList.add('open');
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+window.addEventListener('load', () => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'));
+</script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>The Public Wi-Fi Test</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B;
+      --blue: #2563EB; --blue-light: #EFF6FF;
+      --green: #059669; --green-light: #ECFDF5;
+      --red: #DC2626; --red-light: #FEF2F2;
+      --amber: #D97706; --amber-light: #FFFBEB;
+      --r: 12px;
+    }
+    body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px 16px 36px; -webkit-font-smoothing: antialiased; }
+    .wrap { max-width: 600px; margin: 0 auto; }
+    .header { text-align: center; margin-bottom: 22px; }
+    .header h1 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .header p { font-size: 13.5px; color: var(--muted); max-width: 480px; margin: 0 auto; }
+    /* Wifi banner */
+    .wifi-banner { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 14px 18px; display: flex; align-items: center; gap: 12px; margin-bottom: 22px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .wifi-icon { font-size: 22px; }
+    .wifi-text strong { display: block; font-size: 13.5px; font-weight: 700; }
+    .wifi-text span { font-size: 12.5px; color: var(--muted); }
+    .wifi-dot { margin-left: auto; width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); }
+    /* Tasks */
+    .task-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .task-num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 6px; }
+    .task-icon { font-size: 22px; margin-bottom: 8px; display: block; }
+    .task-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .task-desc { font-size: 13px; color: var(--muted); margin-bottom: 14px; line-height: 1.5; }
+    .choice-row { display: flex; gap: 8px; }
+    .c-btn { flex: 1; padding: 9px 6px; font-family: 'Outfit', sans-serif; font-size: 12.5px; font-weight: 600; border-radius: 8px; border: 1.5px solid var(--border); cursor: pointer; background: transparent; color: var(--muted); transition: all 0.15s; line-height: 1.3; }
+    .c-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .c-btn.safe.active { background: var(--green); border-color: var(--green); color: #fff; }
+    .c-btn.unsafe.active { background: var(--red); border-color: var(--red); color: #fff; }
+    .c-btn.caution.active { background: var(--amber); border-color: var(--amber); color: #fff; }
+    /* Results */
+    .btn { display: block; width: 100%; padding: 13px; background: var(--blue); color: #fff; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; margin-top: 18px; transition: background 0.15s; }
+    .btn:hover { background: #1D4ED8; }
+    .results { display: none; margin-top: 6px; }
+    .results.show { display: block; }
+    .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px 18px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .rc-top { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+    .rc-icon { font-size: 18px; flex-shrink: 0; }
+    .rc-title { font-size: 14px; font-weight: 700; }
+    .verdict-badge { margin-left: auto; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 99px; flex-shrink: 0; }
+    .verdict-badge.correct { background: var(--green-light); color: var(--green); }
+    .verdict-badge.wrong { background: var(--red-light); color: var(--red); }
+    .rc-explain { font-size: 13px; color: var(--muted); line-height: 1.55; }
+    .rc-rule { margin-top: 8px; font-size: 12.5px; font-weight: 600; padding: 8px 10px; border-radius: 7px; background: var(--blue-light); border: 1px solid #BFDBFE; color: var(--blue); }
+    .score-box { text-align: center; padding: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .score-big { font-size: 52px; font-weight: 800; line-height: 1; }
+    .score-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .btn-reset { background: transparent; color: var(--muted); border: 1px solid var(--border); margin-top: 8px; }
+    .btn-reset:hover { background: var(--border); color: var(--text); }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>The Public Wi-Fi Test</h1>
+    <p>You're in a coffee shop on free Wi-Fi. Decide which of these 5 tasks are safe to do here.</p>
+  </div>
+
+  <div class="wifi-banner">
+    <span class="wifi-icon">📶</span>
+    <div class="wifi-text">
+      <strong>CafeBlend_FREE</strong>
+      <span>Open network - no password required</span>
+    </div>
+    <div class="wifi-dot"></div>
+  </div>
+
+  <div id="tasks-list"></div>
+
+  <button class="btn" onclick="showResults()">See My Results</button>
+
+  <div class="results" id="results">
+    <div class="score-box">
+      <div class="score-big" id="score-big">-</div>
+      <div class="score-sub">correct answers</div>
+    </div>
+    <div id="result-cards"></div>
+    <button class="btn btn-reset" onclick="reset()">Try Again</button>
+  </div>
+</div>
+
+<script>
+  const tasks = [
+    {
+      icon: '📧', title: 'Check your email',
+      desc: 'You want to catch up on work emails while waiting for your order.',
+      answer: 'caution',
+      explain: 'Reading emails on public Wi-Fi is low risk if you use HTTPS (Gmail, Outlook). The bigger risk: typing passwords on a network where others could intercept traffic. Use your mobile data if logging in for the first time.',
+      rule: 'Use mobile data for any new login. Email reading on a saved session is generally low risk.'
+    },
+    {
+      icon: '💳', title: 'Pay a bill',
+      desc: 'Your electricity bill is due. You want to enter your card details to pay it now.',
+      answer: 'unsafe',
+      explain: 'Entering card numbers or payment credentials on public Wi-Fi is high risk. A man-in-the-middle attacker on the same network can intercept unencrypted data. Even HTTPS provides limited protection against a compromised router.',
+      rule: 'Never enter card details on public Wi-Fi. Switch to mobile data or wait until you are on a trusted network.'
+    },
+    {
+      icon: '🗺️', title: 'Look up directions',
+      desc: 'You need to find the address of your next meeting.',
+      answer: 'safe',
+      explain: 'Looking up public information like maps or addresses carries minimal risk. No sensitive credentials are involved, and the data is not valuable to intercept.',
+      rule: 'Public information lookups are generally safe on any network.'
+    },
+    {
+      icon: '🏢', title: 'Log into your work system',
+      desc: 'A colleague asks you to check something in the company dashboard.',
+      answer: 'unsafe',
+      explain: 'Corporate systems contain sensitive data. Logging in from an open network can expose your work credentials, and some corporate networks ban it entirely for compliance reasons. Use your company VPN if you must.',
+      rule: 'Work systems require either mobile data or a company-approved VPN on public networks.'
+    },
+    {
+      icon: '🎵', title: 'Stream a video',
+      desc: 'You want to watch a show while you eat.',
+      answer: 'safe',
+      explain: 'Streaming content does not involve credentials or sensitive data. The worst case is someone seeing what you are watching. No personal or financial information is at risk.',
+      rule: 'Streaming media is safe on public Wi-Fi. Your viewing history is not a meaningful target.'
+    }
+  ];
+
+  let answers = Array(5).fill(null);
+
+  function init() {
+    let html = '';
+    tasks.forEach((t, i) => {
+      html += `<div class="task-card">
+        <div class="task-num">Task ${i+1} of 5</div>
+        <span class="task-icon">${t.icon}</span>
+        <div class="task-title">${t.title}</div>
+        <div class="task-desc">${t.desc}</div>
+        <div class="choice-row">
+          <button class="c-btn safe" onclick="setAns(${i},'safe',this)">Safe here</button>
+          <button class="c-btn caution" onclick="setAns(${i},'caution',this)">Use caution</button>
+          <button class="c-btn unsafe" onclick="setAns(${i},'unsafe',this)">Unsafe - wait</button>
+        </div>
+      </div>`;
+    });
+    document.getElementById('tasks-list').innerHTML = html;
+  }
+
+  function setAns(i, val, btn) {
+    answers[i] = val;
+    const row = btn.closest('.choice-row');
+    row.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function showResults() {
+    let correct = 0;
+    let html = '';
+    tasks.forEach((t, i) => {
+      const userAns = answers[i];
+      const isCorrect = userAns === t.answer || (t.answer === 'caution' && userAns === 'safe') || (t.answer === 'safe' && userAns === 'caution');
+      const strictCorrect = userAns === t.answer;
+      if (strictCorrect) correct++;
+      html += `<div class="result-card">
+        <div class="rc-top">
+          <span class="rc-icon">${t.icon}</span>
+          <span class="rc-title">${t.title}</span>
+          <span class="verdict-badge ${strictCorrect ? 'correct' : 'wrong'}">${strictCorrect ? 'Correct' : 'Review'}</span>
+        </div>
+        <div class="rc-explain">${t.explain}</div>
+        <div class="rc-rule">${t.rule}</div>
+      </div>`;
+    });
+    document.getElementById('score-big').textContent = correct + '/5';
+    const colors = {0:'#DC2626',1:'#DC2626',2:'#D97706',3:'#D97706',4:'#059669',5:'#059669'};
+    document.getElementById('score-big').style.color = colors[correct];
+    document.getElementById('result-cards').innerHTML = html;
+    document.getElementById('results').classList.add('show');
+    setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'), 300);
+  }
+
+  function reset() {
+    answers = Array(5).fill(null);
+    document.querySelectorAll('.c-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('results').classList.remove('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  init();
+  window.addEventListener('load', () => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'));
+</script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Leak Scenario</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f9f7f4;
+    color: #1a1a1a;
+    padding: 1.5rem 1rem 2.5rem;
+  }
+
+  .wrap { max-width: 680px; margin: 0 auto; }
+
+  .header { margin-bottom: 1.5rem; }
+  .header h1 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .header p { font-size: 14px; color: #555; line-height: 1.6; }
+
+  /* Scenario card */
+  .scenario-card {
+    background: #fff;
+    border: 1px solid #e0dcd5;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 1.25rem;
+  }
+  .scenario-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: #888; font-weight: 600; margin-bottom: 8px; }
+  .scenario-text { font-size: 14px; line-height: 1.7; color: #333; }
+  .screenshot-mock {
+    background: #f5f2ee;
+    border: 1px solid #ddd9d2;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: #444;
+    font-style: italic;
+    line-height: 1.55;
+  }
+  .screenshot-mock::before { content: '📸 Screenshot circulating: '; font-style: normal; font-weight: 600; color: #888; }
+
+  /* Options */
+  .options-label { font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+  .option-list { display: flex; flex-direction: column; gap: 8px; }
+  .option-btn {
+    background: #fff;
+    border: 1.5px solid #e0dcd5;
+    border-radius: 9px;
+    padding: 13px 15px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a1a;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    line-height: 1.45;
+  }
+  .option-btn:hover { border-color: #b05020; background: #fdf9f6; }
+
+  /* Outcome */
+  .outcome-panel {
+    display: none;
+    background: #fff;
+    border: 1px solid #e0dcd5;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 1rem;
+  }
+  .outcome-panel.visible { display: block; }
+  .outcome-header { padding: 12px 16px; font-size: 13px; font-weight: 700; background: #f5f2ee; border-bottom: 1px solid #e0dcd5; }
+  .timeline-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0ece6;
+    align-items: flex-start;
+    font-size: 13px;
+  }
+  .timeline-item:last-child { border-bottom: none; }
+  .t-time { min-width: 60px; font-weight: 600; color: #888; font-size: 12px; padding-top: 2px; }
+  .t-content { line-height: 1.6; color: #333; }
+  .verdict-row { padding: 14px 16px; background: #fdf9f6; border-top: 1px solid #e0dcd5; }
+  .verdict-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #888; font-weight: 600; margin-bottom: 5px; }
+  .verdict-text { font-size: 14px; line-height: 1.6; color: #1a1a1a; }
+
+  .reset-btn {
+    display: block;
+    margin-top: 1rem;
+    font-size: 13px;
+    color: #555;
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 7px 16px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .reset-btn:hover { background: #f0ece6; color: #1a1a1a; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>The Leak Scenario</h1>
+    <p>A private message from years ago is circulating online, taken out of context. Choose how you respond - then see how that choice plays out over 72 hours.</p>
+  </div>
+
+  <div class="scenario-card">
+    <div class="scenario-label">The situation</div>
+    <div class="scenario-text">
+      You are Priya, a mid-level marketing manager at a company in Bengaluru. It is Monday morning. A former colleague has posted a screenshot of a private WhatsApp message you sent three years ago, in which you made a joke that, stripped of context, reads as dismissive of a colleague's complaint.
+    </div>
+    <div class="screenshot-mock">"Honestly she complains about everything, just ignore it lol" - Priya, 2022</div>
+    <div class="scenario-text">
+      The post has 200 shares by 9am. Your phone is buzzing. You do not know if your employer has seen it yet. You have four minutes before your team call.
+    </div>
+  </div>
+
+  <div id="choice-screen">
+    <div class="options-label">What do you do first?</div>
+    <div class="option-list">
+      <button class="option-btn" onclick="choose('ignore')">Ignore it and say nothing publicly</button>
+      <button class="option-btn" onclick="choose('respond')">Post a public response explaining the context</button>
+      <button class="option-btn" onclick="choose('contact')">Contact the person who posted it directly</button>
+      <button class="option-btn" onclick="choose('statement')">Issue a brief public statement acknowledging it</button>
+      <button class="option-btn" onclick="choose('lawyer')">Consult a lawyer before doing anything</button>
+    </div>
+  </div>
+
+  <div class="outcome-panel" id="outcome"></div>
+  <button class="reset-btn" id="reset-btn" style="display:none" onclick="reset()">Try a different response</button>
+
+</div>
+
+<script>
+const OUTCOMES = {
+  ignore: {
+    label: "You chose: Ignore it",
+    timeline: [
+      { time: "Hour 2", content: "The post continues to spread. Without a response, speculation fills the gap. Some commenters assume silence means guilt." },
+      { time: "Hour 8", content: "A journalist picks up the screenshot and mentions it in a piece about 'workplace culture.' Your name is now searchable in connection with the story." },
+      { time: "Hour 24", content: "HR calls you in for a conversation. They had not been informed beforehand. The gap between discovery and conversation is now a separate issue." },
+      { time: "Hour 72", content: "The post has faded from active circulation. But the journalist's article remains indexed. Silence did not speed up the cycle." }
+    ],
+    verdict: "Ignoring works when reach is low and content fades on its own. Here the reach was significant before you woke up. Silence can signal guilt - and getting ahead of your employer would have changed the HR conversation."
+  },
+  respond: {
+    label: "You chose: Public response explaining context",
+    timeline: [
+      { time: "Hour 1", content: "Your response is up. Some people engage positively. Others use your response as new content to criticise - each reply extends the algorithm's reach." },
+      { time: "Hour 6", content: "The original post and your response are being shared side by side. People who would never have seen it are now seeing both. Your name's reach has tripled." },
+      { time: "Hour 24", content: "The conversation has evolved into a debate about the topic in your original message - not about you, but you are the centre of it." },
+      { time: "Hour 72", content: "It has largely settled. But the extended conversation means more content is now indexed under your name." }
+    ],
+    verdict: "Public responses before consulting anyone are almost always the most expansive option - they add fuel. A response may be necessary eventually, but the first instinct to explain yourself publicly usually extends the situation. Talking to HR and a trusted advisor first costs two hours and saves weeks."
+  },
+  contact: {
+    label: "You chose: Contact the poster directly",
+    timeline: [
+      { time: "Hour 1", content: "You send a private message. The person does not respond immediately." },
+      { time: "Hour 4", content: "The conversation leaks. The poster shares your private message publicly, framing it as pressure or an attempt to silence them." },
+      { time: "Hour 24", content: "There are now two storylines: the original screenshot and 'Priya tried to silence me.' The second is more damaging than the first." },
+      { time: "Hour 72", content: "HR is dealing with two issues. Legal has been mentioned. What began as a context problem is now a process problem." }
+    ],
+    verdict: "Direct contact almost always gives the poster more shareable content. If legal action is later relevant, a private message can complicate it. The impulse to resolve it directly is the most dangerous first move."
+  },
+  statement: {
+    label: "You chose: Brief public statement",
+    timeline: [
+      { time: "Hour 1", content: "A short, calm statement goes up. You acknowledge the message exists, note it is out of context, and say you take communication in the workplace seriously." },
+      { time: "Hour 4", content: "HR sees it. They appreciate you handled it directly. They ask for a brief conversation - it is clarifying, not disciplinary." },
+      { time: "Hour 24", content: "The story has largely stopped moving. There is nothing new to amplify. The statement sits between the original post in searches - limiting the single-sided narrative." },
+      { time: "Hour 72", content: "It has settled. Some residual commentary remains but the situation has not escalated." }
+    ],
+    verdict: "A brief, calm statement can interrupt spread without adding fuel. Anything longer reads as defensive; anything emotional becomes new content. Inform HR before or immediately after - never after they find it independently."
+  },
+  lawyer: {
+    label: "You chose: Consult a lawyer first",
+    timeline: [
+      { time: "Hour 2", content: "You reach a legal contact. They advise: do not respond publicly, do not contact the poster, preserve all screenshots, and they will review your options." },
+      { time: "Hour 8", content: "The post is still circulating. You have said nothing. The lawyer reviews and advises a short, factual statement is appropriate. You post it." },
+      { time: "Hour 24", content: "You have options. Depending on jurisdiction, a private message shared without consent may constitute a breach of privacy. A cease-and-desist is available if the situation escalates." },
+      { time: "Hour 72", content: "The situation is contained. You have a legal record if it resurfaces. The delay cost you some narrative control - but the advice prevented two mistakes." }
+    ],
+    verdict: "The slowest first move is often the most protective. Two hours of legal counsel changed the available options and prevented likely mistakes. The cost - some early narrative control - is recoverable."
+  }
+};
+
+function choose(key) {
+  const data = OUTCOMES[key];
+  document.getElementById('choice-screen').style.display = 'none';
+  const panel = document.getElementById('outcome');
+  panel.innerHTML = `
+    <div class="outcome-header">${data.label} - what happens over 72 hours</div>
+    ${data.timeline.map(t => `<div class="timeline-item"><div class="t-time">${t.time}</div><div class="t-content">${t.content}</div></div>`).join('')}
+    <div class="verdict-row">
+      <div class="verdict-label">What this path shows</div>
+      <div class="verdict-text">${data.verdict}</div>
+    </div>
+  `;
+  panel.classList.add('visible');
+  document.getElementById('reset-btn').style.display = 'block';
+  sendHeight();
+}
+
+function reset() {
+  document.getElementById('choice-screen').style.display = 'block';
+  document.getElementById('outcome').classList.remove('visible');
+  document.getElementById('reset-btn').style.display = 'none';
+  sendHeight();
+}
+
+function sendHeight() {
+  setTimeout(() => {
+    if (window.parent) window.parent.postMessage({ iframeHeight: document.documentElement.scrollHeight + 20 }, '*');
+  }, 50);
+}
+
+sendHeight();
+</script>
+</body>
+</html>

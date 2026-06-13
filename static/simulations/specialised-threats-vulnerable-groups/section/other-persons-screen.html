@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>The Other Person's Screen</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B;
+      --blue: #2563EB; --blue-light: #EFF6FF;
+      --red: #DC2626; --red-light: #FEF2F2;
+      --green: #059669; --green-light: #ECFDF5;
+      --amber: #D97706; --amber-light: #FFFBEB;
+      --r: 14px;
+    }
+    body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px 16px 36px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    h1 { font-size: 20px; font-weight: 800; text-align: center; margin-bottom: 6px; letter-spacing: -0.02em; }
+    .subtitle { font-size: 13.5px; color: var(--muted); text-align: center; max-width: 500px; margin: 0 auto 24px; }
+
+    /* PROFILES */
+    .profile-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 680px; margin: 0 auto 24px; }
+    .profile-card { background: var(--surface); border: 2px solid var(--border); border-radius: var(--r); padding: 16px 14px; cursor: pointer; transition: border-color .2s, box-shadow .2s; text-align: center; }
+    .profile-card:hover { border-color: var(--blue); box-shadow: 0 4px 16px rgba(37,99,235,.1); }
+    .profile-card.selected { border-color: var(--blue); background: var(--blue-light); }
+    .profile-emoji { font-size: 32px; margin-bottom: 8px; display: block; }
+    .profile-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .profile-desc { font-size: 11.5px; color: var(--muted); line-height: 1.4; }
+
+    /* SCENARIO */
+    .scenario-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); max-width: 640px; margin: 0 auto; overflow: hidden; display: none; }
+    .scenario-box.active { display: block; }
+    .scenario-header { padding: 16px 20px; background: var(--bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+    .scenario-step-badge { background: var(--blue); color: white; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: .05em; }
+    .scenario-title { font-size: 14px; font-weight: 700; }
+    .scenario-body { padding: 20px; }
+    .scenario-context { font-size: 13px; color: var(--muted); margin-bottom: 14px; line-height: 1.6; }
+    .message-bubble { background: #F1F5F9; border-radius: 12px 12px 12px 4px; padding: 12px 14px; margin-bottom: 14px; font-size: 13.5px; line-height: 1.5; border-left: 3px solid #CBD5E1; }
+    .message-bubble.alert { background: var(--amber-light); border-left-color: var(--amber); }
+    .message-sender { font-size: 11px; font-weight: 700; color: var(--muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: .05em; }
+
+    .choices { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+    .choice-btn { background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; padding: 11px 16px; font-size: 13.5px; font-family: inherit; cursor: pointer; text-align: left; transition: border-color .15s, background .15s; font-weight: 500; }
+    .choice-btn:hover { border-color: var(--blue); background: var(--blue-light); }
+
+    /* FEEDBACK */
+    .feedback { border-radius: var(--r); padding: 16px 18px; margin-top: 16px; display: none; }
+    .feedback.correct { background: var(--green-light); border-left: 4px solid var(--green); }
+    .feedback.partial { background: var(--amber-light); border-left: 4px solid var(--amber); }
+    .feedback.wrong { background: var(--red-light); border-left: 4px solid var(--red); }
+    .feedback-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+    .feedback.correct .feedback-label { color: var(--green); }
+    .feedback.partial .feedback-label { color: var(--amber); }
+    .feedback.wrong .feedback-label { color: var(--red); }
+    .feedback-text { font-size: 13px; line-height: 1.6; }
+    .next-btn { display: none; background: var(--blue); color: white; border: none; border-radius: 10px; padding: 11px 22px; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; margin-top: 14px; width: 100%; }
+    .next-btn:hover { background: #1D4ED8; }
+
+    /* PROGRESS */
+    .progress-bar-wrap { background: var(--border); border-radius: 6px; height: 6px; max-width: 640px; margin: 0 auto 20px; }
+    .progress-bar-fill { background: var(--blue); height: 6px; border-radius: 6px; transition: width .4s; }
+
+    /* RESULT */
+    .result-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); max-width: 640px; margin: 0 auto; padding: 28px 24px; display: none; text-align: center; }
+    .result-box.active { display: block; }
+    .result-score { font-size: 48px; font-weight: 800; color: var(--blue); margin: 8px 0; }
+    .result-label { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+    .insight-list { text-align: left; display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .insight-item { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 13px; line-height: 1.5; }
+    .insight-item strong { display: block; font-size: 12px; color: var(--blue); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
+    .restart-btn { background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 22px; font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; }
+    .restart-btn:hover { border-color: var(--blue); }
+
+    @media(max-width:520px) { .profile-grid { grid-template-columns: repeat(2,1fr); } }
+  </style>
+</head>
+<body>
+
+<h1>The Other Person's Screen</h1>
+<p class="subtitle">Pick a profile different from your own. Navigate a day in their digital life. Identify the threat at each moment.</p>
+
+<div id="profile-section">
+  <div class="profile-grid">
+    <div class="profile-card" onclick="selectProfile('elder')">
+      <span class="profile-emoji">👴</span>
+      <div class="profile-name">Ramesh, 68</div>
+      <div class="profile-desc">Retired teacher managing pension savings online</div>
+    </div>
+    <div class="profile-card" onclick="selectProfile('teen')">
+      <span class="profile-emoji">🎮</span>
+      <div class="profile-name">Zara, 14</div>
+      <div class="profile-desc">High schooler active on gaming platforms and TikTok</div>
+    </div>
+    <div class="profile-card" onclick="selectProfile('migrant')">
+      <span class="profile-emoji">🌍</span>
+      <div class="profile-name">Olusegun, 32</div>
+      <div class="profile-desc">Recent migrant worker, unfamiliar with local systems</div>
+    </div>
+    <div class="profile-card" onclick="selectProfile('distress')">
+      <span class="profile-emoji">💙</span>
+      <div class="profile-name">Priya, 27</div>
+      <div class="profile-desc">In financial distress after job loss, searching for help online</div>
+    </div>
+    <div class="profile-card" onclick="selectProfile('survivor')">
+      <span class="profile-emoji">🏠</span>
+      <div class="profile-name">Anita, 38</div>
+      <div class="profile-desc">Domestic abuse survivor, recently moved to a new home</div>
+    </div>
+    <div class="profile-card" onclick="selectProfile('journalist')">
+      <span class="profile-emoji">📰</span>
+      <div class="profile-name">Karim, 44</div>
+      <div class="profile-desc">Journalist covering organised crime in a high-risk context</div>
+    </div>
+  </div>
+  <p style="text-align:center;font-size:12.5px;color:var(--muted);">Select a profile to begin</p>
+</div>
+
+<div class="progress-bar-wrap" id="progress-wrap" style="display:none;">
+  <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+</div>
+
+<div class="scenario-box" id="scenario-box"></div>
+<div class="result-box" id="result-box"></div>
+
+<script>
+const profiles = {
+  elder: {
+    name: "Ramesh, 68",
+    scenarios: [
+      {
+        step: "Morning — Phone rings",
+        title: "Pension Account Call",
+        context: "Ramesh gets a call at 9 AM. The caller introduces himself as a representative from the Pension Fund Authority and says there's a problem with Ramesh's account that must be resolved today or his monthly payment will be delayed.",
+        message: '"Sir, your pension account has been flagged for a security audit. I need to verify your bank account number and Aadhaar number to prevent your next payment from being blocked. This will only take two minutes."',
+        alert: true,
+        choices: [
+          { text: "Provide the details — I don't want to miss my pension payment.", result: "wrong", fb: "Pension authorities never call asking for bank details over the phone. Ramesh has no digital literacy training and no way to verify the caller. This is a voice phishing (vishing) attack exploiting his financial dependency. Hanging up and calling the pension office directly on their official number is the only safe response." },
+          { text: "Ask for the caller's employee ID and tell them you'll call back on the official number.", result: "correct", fb: "Correct. Any legitimate authority will accept a callback on their published number. The request for Aadhaar and bank details over a cold call is the scam itself. Ramesh's constraint: he may not know the official number — but that's exactly where a trusted family member or a printed reference card helps." },
+          { text: "Hang up — it sounds suspicious.", result: "correct", fb: "A safe choice. Cold calls demanding account details under urgency are almost never legitimate. Hanging up and checking with a family member or the pension office directly is the right move." }
+        ]
+      },
+      {
+        step: "Afternoon — WhatsApp message",
+        title: "Lottery Win Notification",
+        context: "A WhatsApp message arrives with a golden image and congratulations text.",
+        message: '"Congratulations! You have been selected for the Senior Citizens Lucky Draw 2025. You have WON ₹3,50,000. To claim your prize, click the link and pay a processing fee of ₹2,500 before 5 PM today. Offer expires."',
+        alert: true,
+        choices: [
+          { text: "Pay the processing fee — it's a small amount for a big prize.", result: "wrong", fb: "This is a classic advance-fee scam. There is no prize. The ₹2,500 is the entire scam. Ramesh's vulnerability: he has no exposure to lottery fraud awareness and limited digital literacy. No legitimate lottery charges a processing fee." },
+          { text: "Forward to family first and ask if it looks real.", result: "correct", fb: "Good instinct. Checking with a trusted person before acting is one of the most effective protections against elder fraud. The message has every hallmark of a scam: unsolicited win, urgency, and a fee." },
+          { text: "Ignore and delete.", result: "correct", fb: "The right call. You cannot win a prize from a competition you never entered." }
+        ]
+      },
+      {
+        step: "Evening — Email",
+        title: "Remote Access Request",
+        context: "An email arrives claiming to be from Ramesh's bank, saying unusual activity has been detected and a technician needs remote access to his computer to secure the account.",
+        message: '"Dear Customer, suspicious login attempts have been detected on your account. Please download our Security Agent software immediately and allow our technician access to protect your funds. Failure to act in 24 hours may result in account freeze."',
+        alert: true,
+        choices: [
+          { text: "Download the software — my savings are at risk.", result: "wrong", fb: "This is a remote access scam. Once the software is installed, the 'technician' controls the computer and can transfer funds, steal passwords, and install persistent malware. Banks never request remote access via unsolicited email." },
+          { text: "Call the bank directly on the number on the back of your card.", result: "correct", fb: "Correct. The number on your physical bank card goes to the real bank. The email's link, number, or software are all attacker-controlled. Ramesh's constraint: he may struggle to find the official number — printed bank card is the anchor." },
+          { text: "Reply to the email asking for verification.", result: "wrong", fb: "Replying to a phishing email confirms your address is active and puts you in contact with the attacker. Call the bank directly using a number you already have." }
+        ]
+      }
+    ]
+  },
+  teen: {
+    name: "Zara, 14",
+    scenarios: [
+      {
+        step: "After school — Gaming platform",
+        title: "Free Skin Trade",
+        context: "Zara is playing an online game. A player with a high-level account offers to trade a rare character skin — worth hundreds in the game — for one of Zara's common items. They say she needs to verify her account on an external site first.",
+        message: '"Hey! I\'ll give you the Legendary Phoenix skin for your common sword. You just need to verify your account at [game-trade-verify.net] first so the system records the transfer. Takes 30 seconds."',
+        alert: true,
+        choices: [
+          { text: "Go to the site and log in — it's just verification.", result: "wrong", fb: "The external site steals credentials. Zara's constraint: she has no framework for evaluating whether a site is legitimate, and the trade feels like a fair deal. Legitimate in-game trades never require external site logins." },
+          { text: "Report the player and ignore the offer.", result: "correct", fb: "Correct. Off-platform trade requests are the standard approach for gaming account theft. The more attractive the offer, the more suspicious you should be." },
+          { text: "Ask a parent or trusted adult before clicking anything.", result: "correct", fb: "Good instinct. Zara's best protection is an adult who knows what off-platform trade scams look like. The offer being 'too good' is the first signal." }
+        ]
+      },
+      {
+        step: "Evening — DM on social platform",
+        title: "Stranger's Flattery",
+        context: "Someone with 50k followers messages Zara, saying they saw her gaming clips and want to feature her in their content. They ask for her phone number to send a contract.",
+        message: '"Your gameplay is incredible. I run a gaming talent network and I think you\'d be perfect for our next collab. Send me your WhatsApp number so I can send the details and a small talent form."',
+        alert: true,
+        choices: [
+          { text: "Share my number — this could be a big opportunity.", result: "wrong", fb: "Sharing a phone number with an unverified stranger opens contact across all messaging platforms. This is a common first step in grooming and data harvesting targeting minors. High follower counts can be bought." },
+          { text: "Ask them to send any details via the platform's DM first.", result: "correct", fb: "Keeping contact on the platform where messages are logged and can be reported is safer. Any legitimate opportunity can begin with a conversation on-platform." },
+          { text: "Block and report the account.", result: "correct", fb: "A valid response. Unsolicited recruitment of minors via DM is a recognized grooming pattern, regardless of follower count." }
+        ]
+      },
+      {
+        step: "Night — Group chat",
+        title: "Screenshot Sharing",
+        context: "Zara's friend group chat is sharing a screenshot of another classmate from a private account. The message says 'share to everyone before she deletes it.'",
+        message: '"Look what I found on her private account. Share before she takes it down! She\'d be so embarrassed 😂"',
+        alert: true,
+        choices: [
+          { text: "Share it — everyone else is sharing it too.", result: "wrong", fb: "Forwarding the image makes Zara a participant in cyberbullying, regardless of whether she started it. Viral shaming causes real harm. Zara's constraint: social pressure in peer groups is intense, and non-participation risks social exclusion." },
+          { text: "Don't share it, and privately tell the person being targeted.", result: "correct", fb: "Not participating is the minimum. Telling the target gives them the chance to report and respond. This is harder but it's the right call." },
+          { text: "Leave the group chat.", result: "partial", fb: "Leaving avoids complicity but doesn't help the person being targeted. It's better than sharing, but the most protective action is also telling them." }
+        ]
+      }
+    ]
+  },
+  migrant: {
+    name: "Olusegun, 32",
+    scenarios: [
+      {
+        step: "Morning — WhatsApp",
+        title: "Job Offer Message",
+        context: "Olusegun receives a WhatsApp message from an unknown number offering a factory job with double his current wage. The message says to pay a registration fee to secure his spot.",
+        message: '"Hi Segun! We have 5 positions open at Allied Manufacturing. Starting pay ₹22,000/month. To secure your slot, transfer ₹3,500 registration to this account before tomorrow. Only 2 spots left."',
+        alert: true,
+        choices: [
+          { text: "Transfer the fee — jobs are scarce and this pays well.", result: "wrong", fb: "Advance-fee job scams are extremely common targeting migrant workers. No legitimate employer charges a registration fee. Olusegun's vulnerability: language barriers and unfamiliarity with local labour market norms reduce his ability to spot the pattern." },
+          { text: "Ask for the company's official name and check it with a local NGO or labour union.", result: "correct", fb: "Correct. Migrant support organisations and labour unions can quickly verify whether a company is legitimate. This is exactly the kind of resource gap that makes migrant workers more vulnerable." },
+          { text: "Ignore it — any legitimate company wouldn't message this way.", result: "correct", fb: "Good instinct. Legitimate employers advertise through official channels and never charge candidates for the right to apply." }
+        ]
+      },
+      {
+        step: "Afternoon — Bank branch visit",
+        title: "Visa Document Scam",
+        context: "A man outside the bank approaches Olusegun and says he can help extend his work visa for a fee, handling all the paperwork. He looks professional and has a printed form.",
+        message: '"Friend, I know how long the official visa process takes. I have connections at the immigration office. ₹8,000 cash and I can get your extension processed in 3 days. No queue."',
+        alert: true,
+        choices: [
+          { text: "Pay him — official channels take months and my visa expires soon.", result: "wrong", fb: "This is a document fraud scam. Olusegun's constraint: genuine visa urgency creates pressure to act. The 'fixer' takes the money and either disappears or produces fraudulent documents that create legal risk." },
+          { text: "Take his card and check with a migrant rights organisation first.", result: "correct", fb: "Correct. Migrant rights organisations can identify known document scammers and direct to legitimate visa services. The urgency is real, but fake documents make the situation worse, not better." },
+          { text: "Walk away — it sounds too easy.", result: "correct", fb: "Sound instinct. If official processes take months, a 3-day shortcut involving cash to a stranger outside a bank is almost certainly fraud." }
+        ]
+      },
+      {
+        step: "Evening — Phone call",
+        title: "Immigration Threat Call",
+        context: "A call claims to be from the Immigration Department saying Olusegun's visa has a discrepancy and he must pay a fine immediately or face deportation.",
+        message: '"This is the Immigration Compliance Division. Your visa application has a critical error. You must pay ₹15,000 fine by end of day to avoid detention. I am giving you a direct payment link now."',
+        alert: true,
+        choices: [
+          { text: "Pay immediately — I can't afford deportation.", result: "wrong", fb: "Governments never demand immediate payments via phone calls with links. This is a digital arrest scam variant targeting migrants, exploiting the fear of deportation. Olusegun's constraint: this fear is entirely legitimate, making the scam particularly effective." },
+          { text: "Hang up and call the official immigration helpline from the government website.", result: "correct", fb: "Correct. Official immigration issues arrive via written notices at your registered address, not urgent calls demanding immediate payment. Call the official line using a number you find yourself." },
+          { text: "Tell the caller to contact your employer's legal team.", result: "correct", fb: "Involving a third party with legal knowledge is a strong defensive move. The attacker relies on isolation — involving any legitimate institution disrupts the scam." }
+        ]
+      }
+    ]
+  },
+  distress: {
+    name: "Priya, 27",
+    scenarios: [
+      {
+        step: "Morning — Google search",
+        title: "Emergency Loan App",
+        context: "Priya searches for 'instant loan no documents' after being rejected by two banks. A sponsored result leads to an app that promises ₹50,000 in 15 minutes.",
+        message: "App store listing: 'FastCash — Instant Loan. No CIBIL check. No income proof. ₹10,000–₹2,00,000 disbursed in 15 minutes. Download now. 4.2 stars.'",
+        alert: true,
+        choices: [
+          { text: "Download and apply — I need money urgently.", result: "wrong", fb: "Predatory loan apps harvest contacts, photos, and private data. They disburse small amounts then immediately use the collected data for harassment and coercion. Priya's vulnerability: genuine financial desperation significantly reduces the friction to act." },
+          { text: "Check the app developer's details and look for RBI registration before downloading.", result: "correct", fb: "Correct. Legitimate lenders in India must be RBI-registered. Any app that claims no documents and no CIBIL check is either predatory or illegal — usually both." },
+          { text: "Look for government-backed emergency financial assistance instead.", result: "correct", fb: "Good direction. Jan Samarth Portal, PM SVANidhi, and state-specific welfare schemes offer legitimate emergency credit. Slower than an app, but without the data theft and harassment." }
+        ]
+      },
+      {
+        step: "Afternoon — Email",
+        title: "Work From Home Scam",
+        context: "An email says a company is hiring home-based data entry workers. Pay is ₹800 per hour, no experience needed, work immediately.",
+        message: '"Hiring NOW: Work From Home Data Entry Agents. No experience needed. ₹800/hour, flexible hours. To register, complete the paid training module for ₹1,200 — this fee is refunded with your first paycheck."',
+        alert: true,
+        choices: [
+          { text: "Pay the training fee — it's refunded anyway.", result: "wrong", fb: "The training fee is the scam. There is no job and no refund. Priya's vulnerability: legitimate-sounding employment with a refundable fee feels low-risk when you're desperate for income." },
+          { text: "Ask for the company's GST registration and contact address before paying anything.", result: "correct", fb: "Correct. Any company paying ₹800/hour would have a verifiable legal existence. The request for an upfront fee eliminates any legitimacy claim immediately." },
+          { text: "Ignore it — ₹800 per hour for data entry is unrealistic.", result: "correct", fb: "Good calibration. Rates that far exceed market rates are engineered to bypass scepticism. The attraction is the manipulation." }
+        ]
+      },
+      {
+        step: "Evening — Instagram DM",
+        title: "Crypto Investment Pitch",
+        context: "An acquaintance Priya hasn't spoken to in years messages her with an investment opportunity that 'changed my life' after their own job loss.",
+        message: '"Hey, I know things have been hard for you. I was in the same situation last year. I started with just ₹5,000 on this platform and now I earn ₹40,000/month passively. I can add you to my mentor\'s group."',
+        alert: true,
+        choices: [
+          { text: "Join the group — she seems like a real person who cares.", result: "wrong", fb: "This is a pig-butchering scam opening. The outreach deliberately targets people in financial distress. The 'acquaintance' account may have been compromised, or may be a fake profile that studied Priya's connections." },
+          { text: "Call the acquaintance directly on her actual number to verify.", result: "correct", fb: "Correct. If the message came from a real person, she would confirm by call. If her account was hacked or cloned, the call reveals that. This one step breaks almost every social media impersonation." },
+          { text: "Don't engage — unsolicited investment pitches are almost always scams.", result: "correct", fb: "Sound policy. The framing of 'I know things are hard for you' is designed to exploit distress. Legitimate investment opportunities don't arrive via unsolicited DMs." }
+        ]
+      }
+    ]
+  },
+  survivor: {
+    name: "Anita, 38",
+    scenarios: [
+      {
+        step: "Morning — Smart speaker alert",
+        title: "Device Left Behind",
+        context: "Anita moved two weeks ago. While setting up her new home, she finds a smart home device she didn't notice — it was in a box that came with the house. It appears to still be on and connected to a network.",
+        message: "The device is blinking. Its app is installed on the previous owner's phone. It has recorded audio from the home. A notification on a nearby old tablet reads: 'Living room recording ready.'",
+        alert: true,
+        choices: [
+          { text: "Leave it — it's probably just a smart speaker, harmless.", result: "wrong", fb: "Smart home devices can be used for covert surveillance by previous occupants or abusers. Anita's context makes this a genuine safety risk. Any unknown connected device in a new home should be factory reset or physically removed." },
+          { text: "Unplug and factory reset the device, then check all rooms for other connected devices.", result: "correct", fb: "Correct. For domestic abuse survivors, unknown IoT devices are a real surveillance risk. Full room audit and factory reset of any device not brought in personally is the right response." },
+          { text: "Contact a digital safety helpline — they can advise on IoT security in this context.", result: "correct", fb: "Excellent. Organisations like Chayn India, iCall, and the National Commission for Women have tech safety resources specifically for survivors." }
+        ]
+      },
+      {
+        step: "Afternoon — Unexpected location ping",
+        title: "Location Sharing Still Active",
+        context: "Anita's phone shows a notification that her location is still being shared with a contact she blocked three weeks ago. She doesn't remember setting this up.",
+        message: "Google Maps notification: 'Your location is currently being shared with [blocked contact]. They can see your real-time location.'",
+        alert: true,
+        choices: [
+          { text: "Ignore it — she blocked him, so it should be fine.", result: "wrong", fb: "Blocking a contact does not stop location sharing if it was set up separately. This is a real-time safety issue. Anita's constraint: the notification is unfamiliar and may be dismissed as a glitch." },
+          { text: "Go to Google Maps settings and immediately stop all location sharing, then audit other apps.", result: "correct", fb: "Correct. Coercive partners frequently set up persistent location tracking. Google Maps, Find My Friends, Life360, and phone account family sharing are all vectors. Each needs to be checked separately." },
+          { text: "Contact the police safety liaison — persistent tracking may be a protection order violation.", result: "correct", fb: "Valid response. Continued location monitoring after a separation may constitute stalking under relevant law. A digital evidence record of the notification is worth preserving." }
+        ]
+      },
+      {
+        step: "Evening — New account contact",
+        title: "Unknown Account Message",
+        context: "A message arrives from an account Anita doesn't recognise, with no profile photo. The message asks if she's settled into her new place and mentions a nearby street by name.",
+        message: '"Hey, hope you\'re settling in ok at the new place. I heard it\'s near [street name]. Let me know if you need anything :)"',
+        alert: true,
+        choices: [
+          { text: "Reply to find out who it is.", result: "wrong", fb: "Replying confirms the contact reached the right person and that the location information is accurate. Any message that demonstrates knowledge of a new address when that information should be private is a safety concern." },
+          { text: "Do not reply. Screenshot and report to police. Check how the address became known.", result: "correct", fb: "Correct. The message demonstrates specific location knowledge that should not be accessible. This is evidence. Non-response preserves safety. Identifying how the address was obtained is the investigative priority." },
+          { text: "Block and change all address-linked accounts and subscriptions.", result: "correct", fb: "Good protective action. Address information can leak through delivery accounts, bank records, utility registrations, or compromised family members' contacts." }
+        ]
+      }
+    ]
+  },
+  journalist: {
+    name: "Karim, 44",
+    scenarios: [
+      {
+        step: "Morning — Encrypted app",
+        title: "New Source Contact",
+        context: "A Signal message arrives from an unknown number. The person claims to be a whistleblower inside a criminal organisation and wants to share documents. They ask Karim to install a 'secure viewer' app to open them.",
+        message: '"I have evidence that will change everything. I can\'t share it on regular apps. Install this viewer: [link]. It\'s encrypted. Open it only on your work device."',
+        alert: true,
+        choices: [
+          { text: "Install the app — sources need to trust that you'll protect them.", result: "wrong", fb: "Asking a journalist to install unknown software on their work device is a classic spyware delivery method. Karim's risk: a compromised work device exposes all active sources, not just this contact." },
+          { text: "Ask the source to send documents via SecureDrop or OnionShare instead.", result: "correct", fb: "Correct. Established secure submission tools like SecureDrop are designed for exactly this scenario. A legitimate source concerned about security would accept this alternative." },
+          { text: "Verify the contact through your editor and a trusted digital security colleague before any action.", result: "correct", fb: "Good operational security. Isolated source contact without internal verification is a vector for honeypot operations. Verification protects Karim and the organisation." }
+        ]
+      },
+      {
+        step: "Afternoon — Border crossing",
+        title: "Device Search",
+        context: "Karim is crossing a border. An officer asks him to unlock his phone and laptop so they can conduct a 'security check' on his devices. He has confidential source communications on both.",
+        message: "Border officer: 'Standard procedure. Please unlock all devices. It will only take 10 minutes and you can be on your way.'",
+        alert: true,
+        choices: [
+          { text: "Unlock both — it's a legal instruction and I don't want trouble.", result: "partial", fb: "This is a situation with no perfect answer. Compliance may be legally required but puts sources at risk. The journalist's constraint: high-risk border crossings should be prepared for in advance, not managed in the moment." },
+          { text: "Assert your right to consult a lawyer before complying, and contact your organisation's legal team.", result: "correct", fb: "Correct. In many jurisdictions journalists have grounds to request legal advice before device searches. The key is that this should be prepared in advance — with clean travel devices, no stored source data, and a legal contact pre-loaded." },
+          { text: "State that the devices contain confidential journalistic material protected under press freedom law.", result: "correct", fb: "Formally asserting press freedom protection creates a legal record. The practical standard: travel devices for high-risk border crossings should contain no source data, as a precaution." }
+        ]
+      },
+      {
+        step: "Evening — Social media",
+        title: "Coordinated Harassment",
+        context: "Karim's published story has triggered a coordinated attack. Hundreds of accounts are tagging him in threatening messages, sharing his home city, and posting his photo with altered captions claiming he is paid by foreign governments.",
+        message: "Twitter/X: 246 new mentions in 2 hours. Most include his photo, location (city level), and variations of the claim: 'Karim [surname] is a paid foreign agent targeting our national institutions.'",
+        alert: true,
+        choices: [
+          { text: "Respond publicly to correct the false claims.", result: "wrong", fb: "Responding amplifies the campaign and gives it more reach. Karim's constraint: the instinct to correct false information is professionally strong. Coordinated harassment campaigns are designed to provoke responses that extend their life." },
+          { text: "Document everything, report the coordinated behaviour to the platform, and tell your editor.", result: "correct", fb: "Correct. Documentation is evidence. Coordinated harassment may violate platform policy and local law. Organisational support is essential — journalists should not manage this alone." },
+          { text: "Temporarily reduce your public digital footprint and notify your family of the elevated risk.", result: "correct", fb: "Appropriate personal security response. Campaigns that escalate from digital to physical threat require safety planning. This is where the TOFU threat model is insufficient — physical safety becomes part of the picture." }
+        ]
+      }
+    ]
+  }
+};
+
+let currentProfile = null;
+let currentStep = 0;
+let score = 0;
+let answered = false;
+
+function selectProfile(id) {
+  document.querySelectorAll('.profile-card').forEach(c => c.classList.remove('selected'));
+  document.querySelector(`.profile-card[onclick="selectProfile('${id}')"]`).classList.add('selected');
+  currentProfile = profiles[id];
+  currentStep = 0;
+  score = 0;
+  answered = false;
+  document.getElementById('progress-wrap').style.display = 'block';
+  document.getElementById('result-box').classList.remove('active');
+  renderScenario();
+}
+
+function renderScenario() {
+  const s = currentProfile.scenarios[currentStep];
+  const total = currentProfile.scenarios.length;
+  document.getElementById('progress-fill').style.width = (currentStep / total * 100) + '%';
+
+  const box = document.getElementById('scenario-box');
+  box.classList.add('active');
+
+  box.innerHTML = `
+    <div class="scenario-header">
+      <span class="scenario-step-badge">Threat ${currentStep + 1} of ${total}</span>
+      <span class="scenario-title">${s.step} — ${s.title}</span>
+    </div>
+    <div class="scenario-body">
+      <p class="scenario-context">${s.context}</p>
+      <div class="message-bubble ${s.alert ? 'alert' : ''}">
+        <div class="message-sender">Message received</div>
+        ${s.message}
+      </div>
+      <div class="choices" id="choices">
+        ${s.choices.map((c, i) => `<button class="choice-btn" onclick="choose(${i})">${c.text}</button>`).join('')}
+      </div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="next-btn" onclick="nextStep()">
+        ${currentStep < currentProfile.scenarios.length - 1 ? 'Next Threat →' : 'See Results'}
+      </button>
+    </div>
+  `;
+  answered = false;
+}
+
+function choose(idx) {
+  if (answered) return;
+  answered = true;
+  const s = currentProfile.scenarios[currentStep];
+  const choice = s.choices[idx];
+  const fb = document.getElementById('feedback');
+  const btns = document.querySelectorAll('.choice-btn');
+
+  btns.forEach(b => b.style.opacity = '0.5');
+  btns[idx].style.opacity = '1';
+  btns[idx].style.fontWeight = '700';
+
+  fb.style.display = 'block';
+  fb.className = 'feedback ' + choice.result;
+  fb.innerHTML = `<div class="feedback-label">${choice.result === 'correct' ? 'Good call' : choice.result === 'partial' ? 'Partially right' : 'Risky choice'}</div><div class="feedback-text">${choice.fb}</div>`;
+
+  if (choice.result === 'correct') score++;
+  document.getElementById('next-btn').style.display = 'block';
+
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function nextStep() {
+  currentStep++;
+  if (currentStep >= currentProfile.scenarios.length) {
+    showResult();
+  } else {
+    renderScenario();
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+  }
+}
+
+function showResult() {
+  document.getElementById('scenario-box').classList.remove('active');
+  document.getElementById('progress-fill').style.width = '100%';
+
+  const pct = Math.round(score / currentProfile.scenarios.length * 100);
+  let label = pct === 100 ? 'Strong protective awareness.' : pct >= 66 ? 'Solid, with a gap to close.' : 'This profile has real vulnerabilities.';
+
+  const insights = [
+    { title: "Constraints shape decisions", text: "Each profile's vulnerabilities are structural, not personal failings — language barriers, financial desperation, age, or safety fear all compress the space of 'safe' responses." },
+    { title: "The attacker picks the profile", text: "People in these situations receive more targeted attacks, not fewer. Awareness of your own constraints is the first line of protection." },
+    { title: "Protective networks matter", text: "In every scenario, access to one trusted person — a family member, an NGO, a colleague — was the difference between a safe and an unsafe outcome." }
+  ];
+
+  const r = document.getElementById('result-box');
+  r.classList.add('active');
+  r.innerHTML = `
+    <div style="font-size:13px;color:var(--muted);margin-bottom:6px;">Profile: ${currentProfile.name}</div>
+    <div class="result-score">${score}/${currentProfile.scenarios.length}</div>
+    <div class="result-label">${label}</div>
+    <div class="insight-list">
+      ${insights.map(i => `<div class="insight-item"><strong>${i.title}</strong>${i.text}</div>`).join('')}
+    </div>
+    <button class="restart-btn" onclick="restart()">Try Another Profile</button>
+  `;
+
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function restart() {
+  document.getElementById('result-box').classList.remove('active');
+  document.getElementById('scenario-box').classList.remove('active');
+  document.getElementById('progress-wrap').style.display = 'none';
+  document.querySelectorAll('.profile-card').forEach(c => c.classList.remove('selected'));
+  currentProfile = null;
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+window.addEventListener('load', () => {
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+});
+</script>
+</body>
+</html>

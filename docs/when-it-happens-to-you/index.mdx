@@ -2,13 +2,199 @@
 sidebar_position: 0
 title: "When It Happens to You"
 sidebar_label: "Section Overview"
+description: "Practical steps, legal options, and emotional support when you have been targeted."
+tags: [incident-response, recovery, digital-harm, account-compromise, scam-recovery, identity-theft, harassment, legal-rights, digital-estate]
 ---
 
 import DocCardList from '@theme/DocCardList';
+import Quiz from '@site/src/components/Quiz';
 
 # When It Happens to You
 
-Practical steps, legal options, and emotional support when you have been targeted
+*Knowing what to do before something goes wrong is the difference between recovery and prolonged damage. This section is your reference when a digital incident is already happening.*
+
+---
+
+## Monday Morning
+
+Meera is a 34-year-old marketing manager. She opened her laptop at 7:42am on a Monday.
+
+Her inbox had 47 new messages. Not newsletters. Not work emails. **Replies to messages she had not sent.**
+
+Her email had been accessed overnight. A password reset link had been used on her banking app. Three of her contacts had received emails, in her name, with a link asking them to urgently verify a shared document.
+
+She did not know what to do first. **Call the bank? Change the password? Tell her contacts? File a report?**
+
+She did all four at once, in the wrong order, on the compromised device.
+
+Her bank's fraud team told her later: **if she had called them within the first hour, the transfer might have been reversed.** She called at hour three. It was not.
+
+This section exists to give you the plan Meera did not have.
+
+---
+
+## The Numbers Behind Why This Section Matters
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>1 in 7</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>cybercrime victims in the UK reported to police in 2024.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>The six who did not report missed the window for legal action, insurance claims, and financial recovery.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: Action Fraud, 2025</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Financial Scams</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Average Loss Exceeds $10,000</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>The average victim of a financial scam in the US loses <b>more than $10,000 per incident.</b> For investment fraud, the median loss is over $40,000. Most of those losses are avoidable with a fast, correct first response.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: FTC Consumer Sentinel Network, 2025</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Identity Theft</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>63% Take Over a Year to Recover</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Identity theft resolution is slow. <b>63% of victims say full recovery took more than a year.</b> Victims who filed early fraud alerts and credit freezes resolved cases 4x faster than those who waited.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Identity Theft Resource Center, 2025</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Image-Based Abuse</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>3x Longer Without a Plan</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Recovery from sextortion without a response plan takes <b>three times longer</b> than for victims who had clear steps in place. Knowing which platforms to contact and in what order is the single most effective preparation.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: NCMEC, 2025</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #10B981', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#10B981', fontWeight: 'bold' }}>Reporting Gap</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Most Victims Do Not Know Where to Report</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>The most common reason victims do not report is not shame. It is <b>not knowing who to contact or whether it will help.</b> Each module in this section includes specific reporting contacts by country.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Action Fraud / FTC Consumer Research, 2025</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## What This Section Covers
+
+Each module covers a specific type of incident. The advice in each one is structured around time - what to do in the first hour, first day, and first week.
+
+### The modules work in sequence for most incidents:
+
+**Account Compromised or Hacked** - Stop ongoing access. Assess damage. Rebuild authentication.
+
+**Money Stolen or Lost to Scam** - First 24 hours. Chargebacks and reversals. Credit monitoring.
+
+**Identity Stolen or Impersonated** - Fraud alerts. Credit freezes. Correcting false records.
+
+**Harassed, Stalked or Threatened** - Documentation. Platform reporting. Law enforcement escalation.
+
+**Intimate Images Shared or Deepfake Created** - Immediate takedown. Legal options. Support organisations.
+
+**Child Groomed, Exploited or Victimised** - Reporting to NCMEC and police. Platform removal. Support services.
+
+**Digital Rights and Legal Literacy** - What your rights actually are. How to use them.
+
+**Living With the Digital Aftermath** - Psychological recovery. Long-term monitoring.
+
+**Digital Estate and Post-Mortem Exploitation** - Planning ahead. What happens to accounts after death.
+
+---
+
+## Try It: Your Personal Response Plan Builder
+
+This tool takes two minutes to complete. It creates a personalised response card with your specific bank fraud line, cybercrime reporting portal, and three highest-risk accounts. Save it or print it before you need it.
+
+<iframe
+  id="response-plan-iframe"
+  src="/simulations/when-it-happens-to-you/section/response-plan-builder.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Your Personal Response Plan Builder"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('response-plan-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._responsePlanHandler);
+    window._responsePlanHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. Most people cannot name their bank's 24-hour fraud line from memory.**
+The number is available on the back of your card. If you do not have your card, finding it takes minutes you may not have during a fraud incident.
+
+**2. Your three highest-risk accounts are probably not what you think.**
+Most people name social media. But the highest-risk accounts are usually email (used to reset everything else), password managers, and banking apps. Losing access to email alone can cascade across every other account.
+
+**3. A cybercrime reporting portal is not the same as a police station.**
+In India, it is cybercrime.gov.in and the 1930 helpline. In the UK, it is Action Fraud. In the US, it is the FBI's IC3. Filing via the correct portal routes your case correctly and creates an official record faster.
+
+**4. Your trusted contact matters more than you expect.**
+During an incident, your own judgment is impaired by stress. A trusted contact who is calm, not panicking, and not affected by the same incident is often the most useful resource you have.
+
+---
+
+## Three Things Worth Doing Now
+
+1. **Save your bank's 24-hour fraud line in your phone as a contact.** Not in notes. In your phone contacts, labelled clearly.
+
+2. **Write down (on paper) the recovery email address for your primary email account.** If your phone and email are both compromised, this is what you use.
+
+3. **Bookmark your country's cybercrime reporting portal.** India: cybercrime.gov.in. UK: actionfraud.police.uk. US: ic3.gov. Australia: cyber.gov.au.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="You discover at 8am that your email has been accessed overnight by someone else. What is the first thing you should do?"
+  options={[
+    {
+      label: "Post a warning to all your contacts so they know your email may have been used.",
+      correct: false,
+      explanation: "Notifying contacts is important but not the first step. Your account may still be accessible to the attacker while you post. Securing the account comes first - then you notify people from a position of control rather than continued exposure."
+    },
+    {
+      label: "Change your email password from the device you are currently using.",
+      correct: false,
+      explanation: "Changing the password is necessary but the device matters. If the device was used to access the account, it may have malware that captures the new password too. Use a different trusted device - a phone on mobile data, or another person's device."
+    },
+    {
+      label: "End all active sessions from account security settings on a trusted device, then change the password.",
+      correct: true,
+      explanation: "Correct. Ending all active sessions terminates any ongoing access immediately, including sessions on devices you do not control. Doing this from a trusted device (not the potentially compromised one) means the new credentials are not captured by anything on the original device. This is the correct first move."
+    },
+    {
+      label: "Call the police before taking any action yourself.",
+      correct: false,
+      explanation: "Police involvement matters but it is not the first step. Every minute of delay while the account remains accessible is another minute the attacker can use it. Secure the account first. Then report - to police and to the platform."
+    }
+  ]}
+/>
 
 ---
 

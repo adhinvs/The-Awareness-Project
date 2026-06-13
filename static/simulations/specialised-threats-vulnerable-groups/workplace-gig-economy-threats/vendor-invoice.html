@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>The Vendor Invoice</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B;
+      --blue: #2563EB; --blue-light: #EFF6FF;
+      --red: #DC2626; --red-light: #FEF2F2;
+      --green: #059669; --green-light: #ECFDF5;
+      --amber: #D97706; --amber-light: #FFFBEB;
+      --r: 14px;
+    }
+    body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px 16px 36px; -webkit-font-smoothing: antialiased; line-height: 1.6; }
+    h1 { font-size: 20px; font-weight: 800; text-align: center; margin-bottom: 6px; }
+    .subtitle { font-size: 13px; color: var(--muted); text-align: center; max-width: 500px; margin: 0 auto 22px; }
+
+    .context-bar { background: var(--blue-light); border: 1px solid #BFDBFE; border-radius: 10px; padding: 12px 16px; font-size: 13px; max-width: 640px; margin: 0 auto 18px; }
+    .context-bar strong { color: var(--blue); }
+
+    /* Email mockup */
+    .email-wrap { max-width: 640px; margin: 0 auto 20px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+    .email-toolbar { background: #F1F5F9; border-bottom: 1px solid var(--border); padding: 10px 16px; display: flex; gap: 10px; align-items: center; }
+    .email-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .email-fields { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 5px; }
+    .email-field { display: flex; gap: 10px; font-size: 13px; }
+    .email-field-label { color: var(--muted); font-weight: 600; min-width: 60px; flex-shrink: 0; }
+    .email-field-value { color: var(--text); }
+    .red-flag-inline { background: var(--red-light); color: var(--red); font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 20px; margin-left: 6px; }
+    .email-body { padding: 16px 18px; font-size: 13.5px; line-height: 1.7; }
+    .email-body p { margin-bottom: 12px; }
+    .email-sig { border-top: 1px solid var(--border); padding-top: 12px; font-size: 12.5px; color: var(--muted); }
+    .email-sig strong { color: var(--text); }
+
+    .choices-wrap { max-width: 640px; margin: 0 auto; }
+    .choices-label { font-size: 13px; font-weight: 700; margin-bottom: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+    .choices { display: flex; flex-direction: column; gap: 8px; }
+    .choice-btn { background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; padding: 12px 16px; font-size: 13.5px; font-family: inherit; cursor: pointer; text-align: left; transition: border-color .15s, background .15s; font-weight: 500; }
+    .choice-btn:hover { border-color: var(--blue); background: var(--blue-light); }
+
+    .outcome { max-width: 640px; margin: 16px auto 0; border-radius: var(--r); padding: 20px 22px; display: none; }
+    .outcome.active { display: block; }
+    .outcome.correct { background: var(--green-light); border-left: 4px solid var(--green); }
+    .outcome.partial { background: var(--amber-light); border-left: 4px solid var(--amber); }
+    .outcome.wrong { background: var(--red-light); border-left: 4px solid var(--red); }
+    .outcome-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+    .outcome.correct .outcome-label { color: var(--green); }
+    .outcome.partial .outcome-label { color: var(--amber); }
+    .outcome.wrong .outcome-label { color: var(--red); }
+    .outcome-text { font-size: 13.5px; line-height: 1.6; margin-bottom: 14px; }
+
+    .bec-anatomy { margin-top: 16px; }
+    .bec-anatomy h3 { font-size: 14px; font-weight: 800; margin-bottom: 10px; }
+    .flag-list { display: flex; flex-direction: column; gap: 8px; }
+    .flag { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 13px; line-height: 1.5; }
+    .flag strong { display: block; font-size: 11px; color: var(--red); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 3px; }
+
+    .try-again { background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 20px; font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; margin-top: 14px; }
+    .try-again:hover { border-color: var(--blue); }
+  </style>
+</head>
+<body>
+<h1>The Vendor Invoice</h1>
+<p class="subtitle">You are a finance team member. A familiar supplier has emailed about updated bank details. What do you do?</p>
+
+<div class="context-bar"><strong>Your role:</strong> Finance Coordinator at a mid-size company. You regularly process supplier invoices. The next payment run is Friday — two days away.</div>
+
+<div class="email-wrap">
+  <div class="email-toolbar">
+    <div class="email-dot" style="background:#FF6B6B"></div>
+    <div class="email-dot" style="background:#FFD93D"></div>
+    <div class="email-dot" style="background:#6BCB77"></div>
+    <span style="margin-left:8px;font-size:12px;color:var(--muted);font-weight:600;">Inbox — Company Mail</span>
+  </div>
+  <div class="email-fields">
+    <div class="email-field">
+      <span class="email-field-label">From:</span>
+      <span class="email-field-value">Arjun Mehta &lt;accounts@technova-solutions.net&gt;<span class="red-flag-inline">⚠ .net not .com</span></span>
+    </div>
+    <div class="email-field">
+      <span class="email-field-label">To:</span>
+      <span class="email-field-value">finance@yourcompany.com</span>
+    </div>
+    <div class="email-field">
+      <span class="email-field-label">Subject:</span>
+      <span class="email-field-value">Updated Bank Details — Please Update Before Friday Payment</span>
+    </div>
+    <div class="email-field">
+      <span class="email-field-label">Date:</span>
+      <span class="email-field-value">Wednesday, 11 June 2025, 9:14 AM</span>
+    </div>
+  </div>
+  <div class="email-body">
+    <p>Dear Finance Team,</p>
+    <p>I hope this message finds you well. Please be advised that TechNova Solutions has recently changed our banking provider. Effective immediately, all payments should be directed to the following account:</p>
+    <p style="background:#F8FAFC;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-family:monospace;font-size:13px;">
+      Bank: Horizon Bank India Ltd<br>
+      Account Name: TechNova Solutions Pvt Ltd<br>
+      Account Number: 9847362910<br>
+      IFSC Code: HZNB0002341
+    </p>
+    <p>Kindly update your records before the Friday payment run to avoid any delays. Please do not process any payments to our previous account as it has been deactivated.</p>
+    <p>If you have any questions, please reply to this email. Do not contact our old office number as it is no longer active.</p>
+    <div class="email-sig">
+      <strong>Arjun Mehta</strong><br>
+      Accounts Manager, TechNova Solutions<br>
+      accounts@technova-solutions.net
+    </div>
+  </div>
+</div>
+
+<div class="choices-wrap">
+  <div class="choices-label">What do you do?</div>
+  <div class="choices" id="choices">
+    <button class="choice-btn" onclick="choose('process')">Update the bank details and process Friday's payment as usual.</button>
+    <button class="choice-btn" onclick="choose('verify')">Call TechNova on the phone number already saved in your records to verify.</button>
+    <button class="choice-btn" onclick="choose('escalate')">Forward to your manager and flag it as a possible BEC attempt before taking any action.</button>
+    <button class="choice-btn" onclick="choose('reply')">Reply to the email to ask for confirmation before updating anything.</button>
+  </div>
+</div>
+
+<div class="outcome" id="outcome"></div>
+
+<script>
+const outcomes = {
+  process: {
+    type: 'wrong',
+    label: 'Payment sent — funds unrecoverable',
+    text: 'You updated the records and processed the payment. The money went to an attacker-controlled account. TechNova never received it. Bank transfer fraud recovery rates are extremely low — especially after 24 hours. The actual TechNova accounts team had no idea this email was sent.',
+    showAnatomy: true
+  },
+  verify: {
+    type: 'correct',
+    label: 'Correct — the one step that catches this every time',
+    text: 'You called TechNova on a number already saved in your system — not any number in the email. The accounts team confirmed they had sent no such request. The email domain (technova-solutions.net vs the real technova-solutions.com) was a spoofed lookalike. The attack was stopped at the verification step. This is the single action that defeats BEC every time.',
+    showAnatomy: true
+  },
+  escalate: {
+    type: 'correct',
+    label: 'Good call — escalation is always the right move for unusual payment requests',
+    text: 'Flagging this to your manager before acting is exactly right. No finance team member should action an unsolicited bank detail change alone. The manager can initiate the verification call and document the incident. Even if the email turned out to be legitimate, this process protects everyone involved.',
+    showAnatomy: true
+  },
+  reply: {
+    type: 'wrong',
+    label: 'This confirms your address to the attacker — and changes nothing',
+    text: 'Replying to the email means any confirmation goes back to the attacker, not to TechNova. They will simply confirm "yes, please update." The reply creates a false paper trail that looks like due diligence but provides zero actual verification. Only a call to a number you already have can confirm this.',
+    showAnatomy: true
+  }
+};
+
+const anatomy = [
+  { label: 'Domain lookalike', text: 'technova-solutions.net vs the real .com. A one-character difference that passes a quick glance. The attacker registered a nearly identical domain weeks before sending.' },
+  { label: 'Correct name used', text: '"Arjun Mehta" is the real accounts manager. The attacker found this from LinkedIn or a previous invoice. The name is real — only the email address is fake.' },
+  { label: '"Do not use old contact details"', text: 'This line exists to prevent you from calling the number you already have. Legitimate bank detail updates do not require destroying your existing contact paths.' },
+  { label: 'Deadline pressure', text: '"Before Friday\'s payment run" manufactures urgency. The two-day window is designed to compress verification time and make delay feel costly.' },
+  { label: 'Plausible business context', text: 'Bank changes are real events. A finance coordinator who has processed dozens of legitimate invoices has no automatic reason to doubt this one.' }
+];
+
+let answered = false;
+
+function choose(key) {
+  if (answered) return;
+  answered = true;
+  const o = outcomes[key];
+  document.querySelectorAll('.choice-btn').forEach(b => {
+    b.style.opacity = b.getAttribute('onclick') === `choose('${key}')` ? '1' : '0.45';
+    if (b.getAttribute('onclick') === `choose('${key}')`) b.style.fontWeight = '700';
+  });
+  const el = document.getElementById('outcome');
+  el.className = 'outcome active ' + o.type;
+  el.innerHTML = `
+    <div class="outcome-label">${o.label}</div>
+    <div class="outcome-text">${o.text}</div>
+    ${o.showAnatomy ? `
+    <div class="bec-anatomy">
+      <h3>BEC Attack Anatomy — What Made This Look Real</h3>
+      <div class="flag-list">
+        ${anatomy.map(a => `<div class="flag"><strong>${a.label}</strong>${a.text}</div>`).join('')}
+      </div>
+    </div>` : ''}
+    <button class="try-again" onclick="reset()">Try Again</button>
+  `;
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function reset() {
+  answered = false;
+  document.querySelectorAll('.choice-btn').forEach(b => { b.style.opacity = '1'; b.style.fontWeight = '500'; });
+  document.getElementById('outcome').className = 'outcome';
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+window.addEventListener('load', () => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'));
+</script>
+</body>
+</html>

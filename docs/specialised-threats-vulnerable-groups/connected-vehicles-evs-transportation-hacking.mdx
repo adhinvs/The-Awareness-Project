@@ -2,14 +2,179 @@
 sidebar_position: 5
 title: "Connected Vehicles, EVs & Transportation Hacking"
 sidebar_label: "Connected Vehicles, EVs & Transportation Hacking"
+description: "How connected cars collect and share GPS history, dashcam footage, Bluetooth logs, and charging data - and who has access."
+tags: [connected-vehicles, ev-charging, location-tracking, vehicle-data, dashcam, telematics, ride-sharing, transportation-privacy, gps-tracking]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Connected Vehicles, EVs & Transportation Hacking
 
-## Sub-topics
+*Modern cars are data centres on wheels. They collect location, behaviour, identity, and audio, and share it with parties most drivers have never heard of.*
 
-- EV charging data and location tracking
-- Dashcam and telemetry data exposure
-- Location history from connected and autonomous vehicles
-- Ride-sharing app vulnerabilities
-- Physical danger from vehicle compromise
+---
+
+## The Car That Stayed Behind
+
+Mariam sold her car after a separation. She wiped her phone and changed her social media passwords. She felt like she had covered her tracks.
+
+Three weeks later, her ex-partner knew she was visiting a friend in another city. She had told no one.
+
+A digital safety advocate helped her trace the leak. **Her old car's infotainment system still had her Google account logged in.** The new owner had not reset it, and her location history was still syncing.
+
+The car she no longer owned was reporting her movements.
+
+---
+
+## What Is Actually Happening
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>92%</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>of tested used vehicles retained personal data from the previous owner, including contacts, location history, and linked accounts.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Selling or renting a car without a factory reset is equivalent to handing over a memory stick with your travel history on it.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: Mozilla Foundation "Privacy Not Included" Car Study, 2023</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Manufacturer Data Sharing</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>All Major Brands Collect Location Data</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Mozilla's 2023 study found that <b>every major car manufacturer collects more data than necessary</b> and most share or sell it. 76% have unclear data deletion policies. Tesla, Volkswagen, and GM each received failing privacy grades.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Mozilla Foundation Car Privacy Study, 2023</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Insurance Telematics</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Driving Data Used to Raise Premiums</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Multiple US insurers used telematics data from connected cars to <b>retroactively raise premiums</b> for customers who had not opted into monitoring programmes, the data was obtained via manufacturer data-sharing agreements the driver never directly consented to.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: The Markup / Consumer Reports Investigation, 2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## Five Vehicle Data Risks
+
+### GPS Location History and Surveillance
+
+Every journey is timestamped and stored. Manufacturers retain this data, often indefinitely. Law enforcement accesses it via warrant, and in documented cases, without one at the point of initial collection. **Charging station logs from EV networks have been separately sold to data brokers**, creating a movement history independent of the vehicle manufacturer.
+
+### Dashcam and In-Cabin Footage
+
+Dashcams and in-cabin cameras record driver and passengers. Some manufacturers store clips server-side. Tesla's Sentry Mode footage has been subpoenaed in criminal cases. A 2023 case documented a vehicle recording footage of nearby protests and uploading it without active user knowledge.
+
+### Bluetooth Pairing Logs
+
+Every device ever connected to a car's infotainment system is logged. Forensic extraction of Bluetooth logs from rental and sold cars has been used to place specific individuals in vehicles at specific times. **This data survives after the phone is disconnected and persists unless the system is reset.**
+
+### Ride-Sharing App Vulnerabilities
+
+Uber, Lyft, and similar platforms retain journey origin and destination, timestamps, account identity, and payment information. Both have complied with thousands of law enforcement data requests annually, in some cases without a warrant under emergency disclosure provisions.
+
+### Physical Danger from Vehicle Compromise
+
+Researchers have demonstrated remote access exploits on multiple connected vehicle platforms, including the ability to disable brakes, control steering, and remotely unlock doors. While mass exploitation remains rare, targeted attacks on high-profile individuals are documented. **Vehicle software patching is as important as phone patching** and is frequently neglected.
+
+---
+
+## Try It: Your Car Knows
+
+Tap each data point to see who has access, whether you consented, and one documented real-world case.
+
+<iframe
+  id="car-knows-iframe"
+  src="/simulations/specialised-threats-vulnerable-groups/connected-vehicles-evs-transportation-hacking/your-car-knows.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Your Car Knows"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('car-knows-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._carKnowsHandler);
+    window._carKnowsHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '12px', margin: '24px 0' }}>
+  <div className="glass-panel" style={{ padding: '20px 24px', borderRadius: '14px', borderLeft: '4px solid var(--ifm-color-primary)', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <span style={{ fontSize: '1.5rem', lineHeight: '1', marginTop: '2px' }}>🗺️</span>
+    <div>
+      <p style={{ fontWeight: '700', margin: '0 0 6px 0', fontSize: '1rem' }}>Every data type has a different recipient.</p>
+      <p style={{ margin: '0', fontSize: '0.9rem', opacity: '0.85', lineHeight: '1.55' }}>GPS goes to the manufacturer and potentially law enforcement. Charging data goes to the network operator. Bluetooth logs stay on the device. Insurance telematics goes to the insurer via separate agreement. There is no single point of control.</p>
+    </div>
+  </div>
+  <div className="glass-panel" style={{ padding: '20px 24px', borderRadius: '14px', borderLeft: '4px solid #EF4444', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <span style={{ fontSize: '1.5rem', lineHeight: '1', marginTop: '2px' }}>🤝</span>
+    <div>
+      <p style={{ fontWeight: '700', margin: '0 0 6px 0', fontSize: '1rem' }}>Most sharing happens without your direct consent.</p>
+      <p style={{ margin: '0', fontSize: '0.9rem', opacity: '0.85', lineHeight: '1.55' }}>Manufacturer-to-insurer data sharing is governed by contracts between those companies, not by a choice you made. Drivers who never opted into telematics programmes have had their premiums raised using data obtained this way.</p>
+    </div>
+  </div>
+  <div className="glass-panel" style={{ padding: '20px 24px', borderRadius: '14px', borderLeft: '4px solid #059669', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <span style={{ fontSize: '1.5rem', lineHeight: '1', marginTop: '2px' }}>🔄</span>
+    <div>
+      <p style={{ fontWeight: '700', margin: '0 0 6px 0', fontSize: '1rem' }}>The factory reset gap is the most common oversight.</p>
+      <p style={{ margin: '0', fontSize: '0.9rem', opacity: '0.85', lineHeight: '1.55' }}>92% of tested second-hand vehicles retained the previous owner's personal data. It is not a rare edge case — it is the default outcome when a car changes hands without a deliberate reset step.</p>
+    </div>
+  </div>
+</div>
+
+---
+
+## Three Things Worth Doing
+
+**1. Factory reset the infotainment system before selling, trading, or returning a rental.**
+This removes accounts, contacts, and location history. Check the owner's manual for your specific model.
+
+**2. Review your manufacturer's connected services settings.**
+Most manufacturers offer a data sharing opt-out in vehicle settings or the companion app. It may reduce some features but significantly reduces your data exposure.
+
+**3. Delete your ride-share trip history periodically.**
+Uber and Lyft allow manual trip history deletion from account settings. Do this regularly.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Mariam factory-reset her phone and changed her social media passwords after her separation. But her ex-partner still knew her location. What did she miss?"
+  options={[
+    {
+      label: "Her phone was still secretly installed with stalkerware.",
+      correct: false,
+      explanation: "The phone was reset. The tracking vector was the car's infotainment system, an account she had never thought to disconnect. This illustrates why digital safety after separation requires auditing every connected system, not just phones."
+    },
+    {
+      label: "Her old car's infotainment system retained her Google account, continuing to share her location with anyone who had access to that account.",
+      correct: true,
+      explanation: "Correct. Car infotainment systems retain linked accounts until manually removed or factory reset. A new owner who had not reset the system could see her account's location data. This is a documented risk for domestic abuse survivors that safety advocates specifically flag."
+    },
+    {
+      label: "She should not have sold the car, keeping it would have been safer.",
+      correct: false,
+      explanation: "Keeping the car would not have removed the risk, the account linkage existed regardless of who owned the vehicle. The protective action was a factory reset before transfer, which would have removed all stored accounts and data."
+    },
+    {
+      label: "Modern cars do not retain data after the ignition is off.",
+      correct: false,
+      explanation: "This is false. Connected vehicles retain data in persistent storage that survives ignition cycles, battery disconnection, and ownership transfer. A factory reset is the only way to reliably remove personal data from a vehicle's infotainment system."
+    }
+  ]}
+/>

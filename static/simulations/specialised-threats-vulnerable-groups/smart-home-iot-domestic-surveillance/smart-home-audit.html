@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Smart Home Security Audit</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B;
+      --blue: #2563EB; --blue-light: #EFF6FF;
+      --red: #DC2626; --red-light: #FEF2F2;
+      --amber: #D97706; --amber-light: #FFFBEB;
+      --green: #059669; --green-light: #ECFDF5;
+      --r: 14px;
+    }
+    body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px 16px 36px; -webkit-font-smoothing: antialiased; line-height: 1.6; }
+    h1 { font-size: 20px; font-weight: 800; text-align: center; margin-bottom: 6px; }
+    .subtitle { font-size: 13px; color: var(--muted); text-align: center; max-width: 520px; margin: 0 auto 22px; }
+
+    .progress-wrap { max-width: 640px; margin: 0 auto 16px; }
+    .progress-header { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted); margin-bottom: 6px; }
+    .progress-bar { background: var(--border); border-radius: 6px; height: 8px; }
+    .progress-fill { background: var(--blue); height: 8px; border-radius: 6px; transition: width .4s; }
+
+    .device-tabs { display: flex; gap: 6px; max-width: 640px; margin: 0 auto 16px; flex-wrap: wrap; }
+    .dtab { background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; padding: 8px 12px; font-size: 12.5px; font-weight: 600; cursor: pointer; transition: all .15s; white-space: nowrap; }
+    .dtab.active { background: var(--blue); color: white; border-color: var(--blue); }
+
+    .device-panel { max-width: 640px; margin: 0 auto; display: none; }
+    .device-panel.active { display: block; }
+
+    .device-header { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r) var(--r) 0 0; padding: 16px 18px; display: flex; align-items: center; gap: 12px; border-bottom: none; }
+    .device-icon { font-size: 28px; }
+    .device-name { font-size: 16px; font-weight: 800; }
+    .device-sub { font-size: 12px; color: var(--muted); }
+
+    .checks { background: var(--surface); border: 1px solid var(--border); border-radius: 0 0 var(--r) var(--r); }
+    .check-item { border-top: 1px solid var(--border); padding: 14px 18px; }
+    .check-item:first-child { border-top: none; }
+    .check-row { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; }
+    .checkbox { width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 5px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 2px; transition: all .15s; }
+    .checkbox.checked { background: var(--green); border-color: var(--green); }
+    .checkbox.checked::after { content: '✓'; color: white; font-size: 12px; font-weight: 700; }
+    .check-label { font-size: 13.5px; font-weight: 600; flex: 1; }
+    .check-detail { font-size: 12.5px; color: var(--muted); margin-top: 4px; line-height: 1.5; margin-left: 32px; }
+    .check-where { background: var(--blue-light); border-radius: 8px; padding: 8px 12px; font-size: 12px; margin-top: 8px; margin-left: 32px; color: var(--blue); }
+    .check-where strong { font-weight: 700; }
+
+    .summary-box { max-width: 640px; margin: 16px auto 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; }
+    .summary-box h3 { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+    .summary-sub { font-size: 12.5px; color: var(--muted); margin-bottom: 14px; }
+    .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
+    @media(max-width:500px) { .summary-grid { grid-template-columns: repeat(2,1fr); } }
+    .summary-cell { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px 10px; text-align: center; }
+    .summary-cell-num { font-size: 22px; font-weight: 800; color: var(--blue); }
+    .summary-cell-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .summary-note { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+  </style>
+</head>
+<body>
+<h1>Smart Home Security Audit</h1>
+<p class="subtitle">Work through each device type. Check off security actions as you complete them. See your coverage summary at the bottom.</p>
+
+<div class="progress-wrap">
+  <div class="progress-header"><span>Checks completed</span><span id="progress-label">0 / 24</span></div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+</div>
+
+<div class="device-tabs">
+  <div class="dtab active" onclick="showDevice('router')">🌐 Router</div>
+  <div class="dtab" onclick="showDevice('speaker')">🔊 Smart Speaker</div>
+  <div class="dtab" onclick="showDevice('camera')">📷 Doorbell / Camera</div>
+  <div class="dtab" onclick="showDevice('baby')">👶 Baby Monitor</div>
+  <div class="dtab" onclick="showDevice('tv')">📺 Smart TV</div>
+  <div class="dtab" onclick="showDevice('lock')">🔒 Smart Lock</div>
+  <div class="dtab" onclick="showDevice('thermostat')">🌡️ Thermostat</div>
+  <div class="dtab" onclick="showDevice('appliances')">🏠 Other Devices</div>
+</div>
+
+<div id="device-area"></div>
+
+<div class="summary-box">
+  <h3>Audit Summary</h3>
+  <p class="summary-sub">Your progress across all device categories</p>
+  <div class="summary-grid">
+    <div class="summary-cell"><div class="summary-cell-num" id="s-done">0</div><div class="summary-cell-label">Completed</div></div>
+    <div class="summary-cell"><div class="summary-cell-num" id="s-left">24</div><div class="summary-cell-label">Remaining</div></div>
+    <div class="summary-cell"><div class="summary-cell-num" id="s-pct">0%</div><div class="summary-cell-label">Coverage</div></div>
+    <div class="summary-cell"><div class="summary-cell-num" id="s-devices">8</div><div class="summary-cell-label">Device types</div></div>
+  </div>
+  <p class="summary-note">Each check addresses a documented security gap. Default passwords, unencrypted transmission, and third-party data sharing account for the majority of smart home security incidents.</p>
+</div>
+
+<script>
+const devices = {
+  router: {
+    icon: '🌐', name: 'Router', sub: 'Your network gateway — the most important device to secure',
+    checks: [
+      { id: 'r1', label: 'Change default admin password', detail: 'Default passwords (admin/admin, admin/password) are publicly listed. Any device on your network can access the router interface.', where: 'Where: Type 192.168.1.1 or 192.168.0.1 in your browser. Log in and go to Administration > Password.' },
+      { id: 'r2', label: 'Enable WPA3 (or WPA2) encryption', detail: 'WEP is broken. WPA is weak. WPA2 is minimum. WPA3 is current standard.', where: 'Where: Router admin panel > Wireless Settings > Security Mode.' },
+      { id: 'r3', label: 'Create a guest network for IoT devices', detail: 'Isolating smart devices on a separate network prevents a compromised device from reaching your phones and computers.', where: 'Where: Router admin > Wireless > Guest Network. Enable and set a separate password.' }
+    ]
+  },
+  speaker: {
+    icon: '🔊', name: 'Smart Speaker', sub: 'Always-on microphone listening for wake words',
+    checks: [
+      { id: 'sp1', label: 'Review and delete your voice history', detail: 'Amazon, Google, and Apple store voice recordings. You can review and delete them from account settings.', where: 'Where: Alexa App > Settings > Alexa Privacy > Review Voice History. Google: myactivity.google.com.' },
+      { id: 'sp2', label: 'Disable microphone when not in use', detail: 'All major smart speakers have a physical mute button that disconnects the microphone hardware.', where: 'Where: Physical button on the device — usually on top. Orange ring = muted on Echo devices.' },
+      { id: 'sp3', label: 'Disable voice purchasing if not needed', detail: 'Voice purchasing allows orders without a PIN. Disable it unless you actively use this feature.', where: 'Where: Alexa App > Settings > Account Settings > Voice Purchasing > toggle off.' }
+    ]
+  },
+  camera: {
+    icon: '📷', name: 'Doorbell Camera & Security Camera', sub: 'Video surveillance of your home exterior and interior',
+    checks: [
+      { id: 'c1', label: 'Change default camera credentials', detail: 'Most cameras ship with default admin credentials. These are searchable and commonly exploited.', where: 'Where: Camera manufacturer app > Device Settings > Account / Password.' },
+      { id: 'c2', label: 'Enable two-factor authentication on the account', detail: 'Camera accounts with 2FA are significantly harder to take over remotely.', where: 'Where: Manufacturer app > Account Settings > Security > Two-Factor Authentication.' },
+      { id: 'c3', label: 'Review who has account access', detail: 'Shared accounts from previous relationships or cohabitants may still have active access to camera feeds.', where: 'Where: App > Household Members or Shared Users — remove anyone who should not have access.' }
+    ]
+  },
+  baby: {
+    icon: '👶', name: 'Baby Monitor', sub: 'Often the least-secured device in a home',
+    checks: [
+      { id: 'b1', label: 'Change default username and password immediately', detail: 'Baby monitors are among the most commonly exploited devices — default credentials are frequently unchanged.', where: 'Where: Monitor\'s web interface (IP shown in app) or manufacturer app > Settings > Security.' },
+      { id: 'b2', label: 'Disable remote access if you don\'t need it', detail: 'Remote viewing capability is a security surface. If you only need local monitoring, turn off cloud access entirely.', where: 'Where: Manufacturer app > Settings > Remote Access or Cloud Viewing > disable.' },
+      { id: 'b3', label: 'Keep firmware updated', detail: 'Baby monitor manufacturers patch security vulnerabilities in firmware updates. Outdated firmware is the most common exploit vector.', where: 'Where: App > Device Settings > Firmware Update, or check manufacturer website for your model.' }
+    ]
+  },
+  tv: {
+    icon: '📺', name: 'Smart TV', sub: 'Microphone, camera, and extensive data collection',
+    checks: [
+      { id: 'tv1', label: 'Disable ACR (Automatic Content Recognition)', detail: 'ACR monitors everything displayed on screen — not just streaming apps — and sends viewing data to the manufacturer and advertisers.', where: 'Where: Samsung: Settings > Terms & Privacy > Viewing Information Services. LG: Settings > General > About This TV > Live Plus.' },
+      { id: 'tv2', label: 'Disable built-in microphone if not using voice control', detail: 'Smart TV microphones are always on when voice features are enabled. Disable them if you use a separate remote or phone control.', where: 'Where: Settings > Voice or Accessibility > Microphone > turn off.' },
+      { id: 'tv3', label: 'Review app permissions on streaming apps', detail: 'Streaming apps on smart TVs often request more permissions than necessary — including location and contacts.', where: 'Where: TV Settings > Apps > select each app > Permissions.' }
+    ]
+  },
+  lock: {
+    icon: '🔒', name: 'Smart Lock', sub: 'Physical access control — highest security priority',
+    checks: [
+      { id: 'l1', label: 'Remove access for people who no longer live with you', detail: 'Smart lock access persists unless manually revoked. Former partners, housemates, or contractors may retain access indefinitely.', where: 'Where: Lock app > Users / Access Management > remove all entries that should not have access.' },
+      { id: 'l2', label: 'Enable access logs and notifications', detail: 'Lock access logs tell you who entered and when. Unexplained access is detectable before it becomes a safety issue.', where: 'Where: Lock app > Activity Log or Notifications > enable all unlock alerts.' },
+      { id: 'l3', label: 'Set guest access to expire automatically', detail: 'Timed access codes for contractors, cleaners, or visitors automatically expire. Indefinite guest codes are a persistent vulnerability.', where: 'Where: Lock app > Add User > set expiry date and time for any non-household member.' }
+    ]
+  },
+  thermostat: {
+    icon: '🌡️', name: 'Smart Thermostat', sub: 'Reveals occupancy patterns and home routines',
+    checks: [
+      { id: 'th1', label: 'Review data sharing settings in the app', detail: 'Nest, Ecobee, and other thermostats share occupancy and usage data with energy partners by default. Your "home/away" pattern is movement data.', where: 'Where: App > Account > Privacy or Data Sharing > review and disable third-party sharing.' },
+      { id: 'th2', label: 'Enable two-factor authentication', detail: 'A compromised thermostat account reveals when your home is occupied — useful for burglars, abusers, or stalkers.', where: 'Where: Thermostat app > Account Settings > Security > Two-Factor Authentication.' },
+      { id: 'th3', label: 'Connect thermostat to guest network, not main network', detail: 'Isolating on guest network limits lateral movement if the device is compromised.', where: 'Where: Thermostat app > Settings > Wi-Fi > connect to guest network you set up on the router.' }
+    ]
+  },
+  appliances: {
+    icon: '🏠', name: 'Other Connected Devices', sub: 'Dishwashers, fridges, washing machines, vacuums',
+    checks: [
+      { id: 'a1', label: 'Move all IoT appliances to the guest/IoT network', detail: 'Connected appliances rarely need access to your main network. Isolating them limits breach exposure from poorly secured devices.', where: 'Where: Each device\'s Wi-Fi settings > connect to your guest network instead of main network.' },
+      { id: 'a2', label: 'Disable unnecessary cloud features', detail: 'Many smart appliances have cloud-based features you never use. Disabling them reduces the data transmitted to manufacturer servers.', where: 'Where: Device manufacturer app > Settings > Cloud Services or Remote Access > turn off unused features.' },
+      { id: 'a3', label: 'Check for firmware updates on all devices', detail: 'Smart appliances receive security patches via firmware. Out-of-date firmware is a persistent vulnerability, especially on devices set-and-forgotten.', where: 'Where: Manufacturer app for each device > Settings > Firmware or Software Update.' }
+    ]
+  }
+};
+
+let checked = new Set();
+const total = 24;
+
+function showDevice(id) {
+  document.querySelectorAll('.dtab').forEach((t, i) => {
+    t.classList.toggle('active', t.getAttribute('onclick') === `showDevice('${id}')`);
+  });
+  const d = devices[id];
+  document.getElementById('device-area').innerHTML = `
+    <div class="device-header">
+      <span class="device-icon">${d.icon}</span>
+      <div><div class="device-name">${d.name}</div><div class="device-sub">${d.sub}</div></div>
+    </div>
+    <div class="checks">
+      ${d.checks.map(c => `
+        <div class="check-item">
+          <div class="check-row" onclick="toggleCheck('${c.id}')">
+            <div class="checkbox${checked.has(c.id) ? ' checked' : ''}" id="cb-${c.id}"></div>
+            <div class="check-label">${c.label}</div>
+          </div>
+          <div class="check-detail">${c.detail}</div>
+          <div class="check-where"><strong>Where to find it:</strong> ${c.where}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function toggleCheck(id) {
+  if (checked.has(id)) { checked.delete(id); }
+  else { checked.add(id); }
+  const cb = document.getElementById('cb-' + id);
+  if (cb) cb.className = 'checkbox' + (checked.has(id) ? ' checked' : '');
+  updateProgress();
+}
+
+function updateProgress() {
+  const done = checked.size;
+  const pct = Math.round(done / total * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = `${done} / ${total}`;
+  document.getElementById('s-done').textContent = done;
+  document.getElementById('s-left').textContent = total - done;
+  document.getElementById('s-pct').textContent = pct + '%';
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+showDevice('router');
+window.addEventListener('load', () => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'));
+</script>
+</body>
+</html>

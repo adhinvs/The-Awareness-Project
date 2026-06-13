@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>The Curated Life</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B;
+      --blue: #2563EB; --blue-light: #EFF6FF;
+      --green: #059669; --green-light: #ECFDF5;
+      --amber: #D97706; --amber-light: #FFFBEB;
+      --red: #DC2626; --red-light: #FEF2F2;
+      --r: 12px; --r-sm: 8px;
+      --font: 'Outfit', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); padding: 24px 16px 36px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+
+    .header { text-align: center; margin-bottom: 24px; }
+    .header h1 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .header p { font-size: 13.5px; color: var(--muted); max-width: 480px; margin: 0 auto; }
+
+    .step { display: none; max-width: 640px; margin: 0 auto; }
+    .step.active { display: block; }
+
+    /* Profile card */
+    .profile-header { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; margin-bottom: 14px; display: flex; align-items: center; gap: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .avatar { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 18px; flex-shrink: 0; }
+    .profile-info h3 { font-size: 15px; font-weight: 700; }
+    .profile-info p { font-size: 13px; color: var(--muted); margin-top: 2px; }
+    .profile-stats { display: flex; gap: 16px; margin-top: 8px; }
+    .stat { text-align: center; }
+    .stat-n { font-size: 14px; font-weight: 800; }
+    .stat-l { font-size: 11px; color: var(--muted); }
+
+    .post-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.04); }
+    .post-category { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--blue); margin-bottom: 8px; }
+    .post-text { font-size: 14px; line-height: 1.6; margin-bottom: 12px; }
+    .post-meta { font-size: 12px; color: var(--muted); display: flex; gap: 14px; }
+
+    /* Sliders */
+    .rate-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; margin-bottom: 14px; }
+    .rate-section h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .rate-section p { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+    .slider-row { margin-bottom: 14px; }
+    .slider-label { font-size: 13px; font-weight: 600; margin-bottom: 6px; display: flex; justify-content: space-between; }
+    .slider-label span { color: var(--blue); font-size: 13px; }
+    input[type=range] { width: 100%; accent-color: var(--blue); cursor: pointer; }
+    .slider-ends { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+    /* Reveal */
+    .reveal-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .reveal-tag { padding: 10px 16px; background: var(--red-light); border-bottom: 1px solid #FECACA; font-size: 12px; font-weight: 700; color: var(--red); text-transform: uppercase; letter-spacing: 0.06em; }
+    .reveal-body { padding: 16px; }
+    .reveal-post { font-size: 14px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+    .reveal-truth { font-size: 13.5px; color: #7C2D12; background: #FFF7ED; border-left: 3px solid var(--amber); padding: 10px 12px; border-radius: 0 var(--r-sm) var(--r-sm) 0; }
+
+    .gap-card { background: var(--blue-light); border: 1px solid #BFDBFE; border-radius: var(--r); padding: 18px; margin-bottom: 14px; text-align: center; }
+    .gap-card h3 { font-size: 22px; font-weight: 800; color: var(--blue); margin-bottom: 6px; }
+    .gap-card p { font-size: 13.5px; color: #1E40AF; line-height: 1.5; }
+
+    .btn { display: block; width: 100%; padding: 13px; background: var(--blue); border: none; border-radius: var(--r-sm); color: #fff; font-family: var(--font); font-size: 14.5px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; margin-top: 4px; }
+    .btn:hover { opacity: 0.88; }
+    .btn-outline { background: transparent; border: 1.5px solid var(--blue); color: var(--blue); margin-top: 10px; }
+
+    .insight { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; margin-bottom: 12px; }
+    .insight h3 { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+    .insight p { font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+  </style>
+</head>
+<body>
+<div class="header">
+  <h1>The Curated Life</h1>
+  <p>Browse Meera's profile. Rate your own life. Then see what was real.</p>
+</div>
+
+<!-- Step 1: Browse Profile -->
+<div class="step active" id="step1">
+  <div class="profile-header">
+    <div class="avatar">M</div>
+    <div class="profile-info">
+      <h3>Meera Krishnan</h3>
+      <p>Product Manager · Bangalore</p>
+      <div class="profile-stats">
+        <div class="stat"><div class="stat-n">12.4K</div><div class="stat-l">followers</div></div>
+        <div class="stat"><div class="stat-n">847</div><div class="stat-l">posts</div></div>
+        <div class="stat"><div class="stat-n">4.9★</div><div class="stat-l">rated life</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="post-card">
+    <div class="post-category">Career</div>
+    <div class="post-text">Just got promoted to Senior PM at 27! Hard work and consistency really do pay off. So grateful for this team and this journey. If I can do it, so can you.</div>
+    <div class="post-meta"><span>3,241 likes</span><span>2 days ago</span></div>
+  </div>
+
+  <div class="post-card">
+    <div class="post-category">Travel</div>
+    <div class="post-text">Santorini sunsets hit differently. Took 3 days off to recharge before the next sprint. Work-life balance is not a luxury - it's a strategy.</div>
+    <div class="post-meta"><span>5,108 likes</span><span>1 week ago</span></div>
+  </div>
+
+  <div class="post-card">
+    <div class="post-category">Relationships</div>
+    <div class="post-text">5 years with this person. He still surprises me. We don't post much but when we do, it's real. Grateful every day.</div>
+    <div class="post-meta"><span>7,892 likes</span><span>3 weeks ago</span></div>
+  </div>
+
+  <div class="post-card">
+    <div class="post-category">Fitness</div>
+    <div class="post-text">6am run complete. 5km in 22 minutes. Slow progress but I never miss a Monday. Consistency over intensity.</div>
+    <div class="post-meta"><span>1,654 likes</span><span>1 month ago</span></div>
+  </div>
+
+  <div class="post-card">
+    <div class="post-category">Finances</div>
+    <div class="post-text">Just hit my first Rs. 10L in investments at 27. Started with Rs. 5,000/month SIP 4 years ago. No shortcuts - just patience and index funds.</div>
+    <div class="post-meta"><span>9,341 likes</span><span>2 months ago</span></div>
+  </div>
+
+  <button class="btn" onclick="goStep(2)">Rate your own life against this</button>
+</div>
+
+<!-- Step 2: Rate yourself -->
+<div class="step" id="step2">
+  <div class="rate-section">
+    <h3>How does your life compare?</h3>
+    <p>Move the sliders honestly. No one sees your answers.</p>
+
+    <div class="slider-row">
+      <div class="slider-label">Career progress <span id="v-career">5</span>/10</div>
+      <input type="range" min="1" max="10" value="5" oninput="updateVal('career',this.value)">
+      <div class="slider-ends"><span>Behind</span><span>Ahead</span></div>
+    </div>
+    <div class="slider-row">
+      <div class="slider-label">Travel and experiences <span id="v-travel">5</span>/10</div>
+      <input type="range" min="1" max="10" value="5" oninput="updateVal('travel',this.value)">
+      <div class="slider-ends"><span>Much less</span><span>Much more</span></div>
+    </div>
+    <div class="slider-row">
+      <div class="slider-label">Relationship quality <span id="v-relationship">5</span>/10</div>
+      <input type="range" min="1" max="10" value="5" oninput="updateVal('relationship',this.value)">
+      <div class="slider-ends"><span>Far behind</span><span>Similar</span></div>
+    </div>
+    <div class="slider-row">
+      <div class="slider-label">Fitness and health <span id="v-fitness">5</span>/10</div>
+      <input type="range" min="1" max="10" value="5" oninput="updateVal('fitness',this.value)">
+      <div class="slider-ends"><span>Far behind</span><span>Similar</span></div>
+    </div>
+    <div class="slider-row">
+      <div class="slider-label">Financial position <span id="v-finance">5</span>/10</div>
+      <input type="range" min="1" max="10" value="5" oninput="updateVal('finance',this.value)">
+      <div class="slider-ends"><span>Far behind</span><span>Similar</span></div>
+    </div>
+  </div>
+  <button class="btn" onclick="calcAndReveal()">See what was actually real</button>
+</div>
+
+<!-- Step 3: Reveal -->
+<div class="step" id="step3">
+  <div class="reveal-card">
+    <div class="reveal-tag">The Reality Behind Each Post</div>
+    <div class="reveal-body">
+      <div style="margin-bottom:12px">
+        <div class="reveal-post">The promotion post</div>
+        <div class="reveal-truth">She was passed over twice before this. Two years of rejection are invisible. The post went up the day the news arrived.</div>
+      </div>
+      <div style="margin-bottom:12px">
+        <div class="reveal-post">The Santorini trip</div>
+        <div class="reveal-truth">A paid influencer press trip. She was contracted to post 4 times. The "work-life balance" caption was written by the agency.</div>
+      </div>
+      <div style="margin-bottom:12px">
+        <div class="reveal-post">The relationship post</div>
+        <div class="reveal-truth">They were in couples therapy at the time. The caption was written together to maintain a public image both felt pressure to keep up.</div>
+      </div>
+      <div style="margin-bottom:12px">
+        <div class="reveal-post">The fitness post</div>
+        <div class="reveal-truth">She runs once a week, not every Monday. The photo is 3 months old. The caption is the aspiration, not the habit.</div>
+      </div>
+      <div>
+        <div class="reveal-post">The investment post</div>
+        <div class="reveal-truth">Accurate - but her rent is paid by her parents. That context is absent. The post generated six paid finance app partnerships the following week.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gap-card" id="gap-result"></div>
+
+  <div class="insight">
+    <h3>Why this matters for security</h3>
+    <p>Manufactured FOMO is a direct attack vector. Flash investment offers and "exclusive opportunity" deals exploit the gap between your self-perception and curated success. The bigger that gap feels, the more persuasive the promise of closing it becomes.</p>
+  </div>
+
+  <button class="btn btn-outline" onclick="restart()">Start over</button>
+</div>
+
+<script>
+const vals = { career: 5, travel: 5, relationship: 5, fitness: 5, finance: 5 };
+function updateVal(k, v) { vals[k] = parseInt(v); document.getElementById('v-' + k).textContent = v; }
+function goStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+  notifyHeight();
+}
+function calcAndReveal() {
+  const avg = (Object.values(vals).reduce((a,b) => a+b, 0) / 5).toFixed(1);
+  const gap = (7.5 - parseFloat(avg)).toFixed(1);
+  const el = document.getElementById('gap-result');
+  if (parseFloat(gap) > 0) {
+    el.innerHTML = `<h3>You rated yourself ${avg}/10 on average</h3><p>Meera's profile signals roughly 7.5/10 across all five areas. The gap you felt - <strong>${gap} points</strong> - is the feeling platforms are engineered to produce. That feeling drives spending, status purchases, and susceptibility to "opportunity" offers.</p>`;
+  } else {
+    el.innerHTML = `<h3>You rated yourself ${avg}/10 on average</h3><p>You held your own against a curated profile - a good sign. But remember: the profile was all highlight reel. The real comparison would look very different if both sides showed the full picture.</p>`;
+  }
+  goStep(3);
+}
+function restart() { goStep(1); Object.keys(vals).forEach(k => vals[k] = 5); }
+function notifyHeight() {
+  setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight }, '*'), 100);
+}
+window.addEventListener('load', notifyHeight);
+window.addEventListener('resize', notifyHeight);
+</script>
+</body>
+</html>

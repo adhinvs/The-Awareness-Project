@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>The Variable Reward Engine</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B;
+      --blue: #2563EB; --blue-light: #EFF6FF;
+      --purple: #7C3AED; --purple-light: #F5F3FF;
+      --green: #059669; --green-light: #ECFDF5;
+      --amber: #D97706; --amber-light: #FFFBEB;
+      --red: #DC2626; --red-light: #FEF2F2;
+      --r: 12px; --r-sm: 8px;
+      --font: 'Outfit', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); padding: 24px 16px 36px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+    .header { text-align: center; margin-bottom: 24px; }
+    .header h1 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .header p { font-size: 13.5px; color: var(--muted); max-width: 480px; margin: 0 auto; }
+
+    .intro-note { max-width: 640px; margin: 0 auto 20px; background: var(--blue-light); border: 1px solid #BFDBFE; border-radius: var(--r); padding: 13px 16px; font-size: 13.5px; color: #1E40AF; }
+
+    /* Cycle diagram */
+    .cycle-wrap { max-width: 640px; margin: 0 auto 20px; }
+    .cycle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .stage-card { background: var(--surface); border: 2px solid var(--border); border-radius: var(--r); padding: 16px 14px; cursor: pointer; transition: all 0.18s; position: relative; }
+    .stage-card:hover { border-color: var(--purple); }
+    .stage-card.active { border-color: var(--purple); background: var(--purple-light); }
+    .stage-num { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 6px; }
+    .stage-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .stage-sub { font-size: 12.5px; color: var(--muted); }
+    .stage-card.active .stage-sub { color: var(--purple); }
+
+    .arrow-row { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .arrow { font-size: 18px; color: var(--muted); }
+
+    /* Detail panel */
+    .detail-panel { max-width: 640px; margin: 0 auto 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); min-height: 120px; }
+    .detail-tag { padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+    .detail-badge { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+    .detail-body { padding: 16px; }
+    .detail-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .detail-neurosci { font-size: 13px; color: var(--muted); margin-bottom: 10px; line-height: 1.55; }
+    .detail-design { font-size: 13.5px; background: var(--amber-light); border: 1px solid #FDE68A; border-radius: var(--r-sm); padding: 10px 12px; line-height: 1.55; }
+    .detail-design b { color: var(--amber); }
+
+    /* AB testing strip */
+    .ab-strip { max-width: 640px; margin: 0 auto 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; }
+    .ab-strip h3 { font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+    .ab-row { display: flex; gap: 10px; margin-bottom: 8px; align-items: stretch; }
+    .ab-label { font-size: 12px; font-weight: 700; width: 36px; text-align: center; padding-top: 8px; color: var(--muted); flex-shrink: 0; }
+    .ab-bar-wrap { flex: 1; }
+    .ab-bar { height: 30px; border-radius: var(--r-sm); display: flex; align-items: center; padding: 0 12px; font-size: 12.5px; font-weight: 600; color: #fff; transition: width 0.6s ease; }
+    .ab-note { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    .stat-note { max-width: 640px; margin: 0 auto 14px; background: var(--green-light); border: 1px solid #A7F3D0; border-radius: var(--r); padding: 14px 16px; }
+    .stat-note b { color: var(--green); }
+    .stat-note p { font-size: 13.5px; line-height: 1.55; color: #065F46; }
+    .stat-source { font-size: 11px; opacity: 0.7; margin-top: 6px; }
+  </style>
+</head>
+<body>
+<div class="header">
+  <h1>The Variable Reward Engine</h1>
+  <p>Click each stage to see the neuroscience and the design feature that triggers it.</p>
+</div>
+
+<div class="intro-note">
+  Social apps are not addictive by accident. Each stage below is an engineered choice. Tap any stage to see how the biology and the product decision connect.
+</div>
+
+<div class="cycle-wrap">
+  <div class="cycle-grid">
+    <div class="stage-card active" id="s1" onclick="showStage(1)">
+      <div class="stage-num">Stage 1</div>
+      <div class="stage-title">Action</div>
+      <div class="stage-sub">You post, scroll, or message</div>
+    </div>
+    <div class="stage-card" id="s2" onclick="showStage(2)">
+      <div class="stage-num">Stage 2</div>
+      <div class="stage-title">Uncertain Outcome</div>
+      <div class="stage-sub">Will it get a response?</div>
+    </div>
+    <div class="stage-card" id="s3" onclick="showStage(3)">
+      <div class="stage-num">Stage 3</div>
+      <div class="stage-title">Reward Signal</div>
+      <div class="stage-sub">Notification arrives</div>
+    </div>
+    <div class="stage-card" id="s4" onclick="showStage(4)">
+      <div class="stage-num">Stage 4</div>
+      <div class="stage-title">Dopamine Release</div>
+      <div class="stage-sub">Brief pleasure spike</div>
+    </div>
+    <div class="stage-card" id="s5" onclick="showStage(5)">
+      <div class="stage-num">Stage 5</div>
+      <div class="stage-title">Craving</div>
+      <div class="stage-sub">You want that feeling again</div>
+    </div>
+    <div class="stage-card" id="s6" onclick="showStage(6)">
+      <div class="stage-num">Stage 6</div>
+      <div class="stage-title">Tolerance</div>
+      <div class="stage-sub">More needed for the same hit</div>
+    </div>
+  </div>
+</div>
+
+<div class="detail-panel" id="detail-panel">
+  <div class="detail-tag">
+    <span class="detail-badge" style="background:var(--purple-light);color:var(--purple)">Stage 1</span>
+    <span style="font-size:12px;color:var(--muted);margin-left:auto">Tap other stages to explore</span>
+  </div>
+  <div class="detail-body">
+    <div class="detail-title">Action: You post, scroll, or tap</div>
+    <div class="detail-neurosci">Before any reward arrives, your brain's dopamine system is already activated by the anticipation of a possible reward. This is identical to the moment a gambler pulls a slot machine lever.</div>
+    <div class="detail-design"><b>Design feature:</b> The infinite scroll removes all natural stopping points. No page breaks, no "you have reached the end." The action of scrolling is designed to continue indefinitely.</div>
+  </div>
+</div>
+
+<div class="ab-strip">
+  <h3>How platforms optimise for compulsion</h3>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">A/B tests run continuously. The variant that keeps users engaged longer wins.</p>
+  <div class="ab-row">
+    <div class="ab-label">A</div>
+    <div class="ab-bar-wrap">
+      <div class="ab-bar" style="width:40%;background:#94a3b8;">Immediate like count visible</div>
+      <div class="ab-note">Avg. session: 7 min</div>
+    </div>
+  </div>
+  <div class="ab-row">
+    <div class="ab-label">B</div>
+    <div class="ab-bar-wrap">
+      <div class="ab-bar" style="width:78%;background:var(--purple);">Like count hidden, shown later</div>
+      <div class="ab-note">Avg. session: 13.5 min - winner deployed globally</div>
+    </div>
+  </div>
+  <div class="ab-row">
+    <div class="ab-label">A</div>
+    <div class="ab-bar-wrap">
+      <div class="ab-bar" style="width:35%;background:#94a3b8;">Notifications batched hourly</div>
+      <div class="ab-note">Avg. opens: 4/day</div>
+    </div>
+  </div>
+  <div class="ab-row">
+    <div class="ab-label">B</div>
+    <div class="ab-bar-wrap">
+      <div class="ab-bar" style="width:85%;background:var(--purple);">Notifications sent individually</div>
+      <div class="ab-note">Avg. opens: 11/day - winner deployed globally</div>
+    </div>
+  </div>
+</div>
+
+<div class="stat-note">
+  <p><b>96 phone checks per day</b> on average. 61% of adults feel anxious when unable to check. Both are outcomes of deliberate design - not personal weakness.</p>
+  <div class="stat-source">Source: Asurion Device Usage Report, 2025; APA Stress in America Survey, 2025</div>
+</div>
+
+<script>
+const stages = {
+  1: {
+    badge: 'Stage 1', color: 'var(--purple)',
+    title: 'Action: You post, scroll, or tap',
+    neuro: 'Dopamine activates in anticipation of a possible reward - before anything arrives. Same mechanism as pulling a slot machine lever.',
+    design: 'Infinite scroll removes all natural stopping points. No page breaks, no end. Scrolling is designed to continue indefinitely.'
+  },
+  2: {
+    badge: 'Stage 2', color: 'var(--blue)',
+    title: 'Uncertain Outcome: Will anything happen?',
+    neuro: 'Unpredictable rewards produce stronger dopamine response than predictable ones. Uncertainty is the engine, not the reward itself.',
+    design: 'Delayed like counts and staggered notifications maximise the uncertainty window. Knowing when a response will arrive reduces compulsion - so platforms avoid it.'
+  },
+  3: {
+    badge: 'Stage 3', color: 'var(--amber)',
+    title: 'Reward Signal: The notification arrives',
+    neuro: 'The sound, badge, and vibration become conditioned stimuli. The signal produces dopamine before you even know what the notification says.',
+    design: 'Notification tones use the same design principles as casino alerts. Individual notifications outperform batched ones - each is a separate reward signal.'
+  },
+  4: {
+    badge: 'Stage 4', color: 'var(--green)',
+    title: 'Dopamine Release: The brief hit',
+    neuro: 'Dopamine spikes then drops. The drop creates a mild withdrawal that drives the next check - often within minutes.',
+    design: 'Like animations and milestone notifications are calibrated to feel meaningful even for small numbers.'
+  },
+  5: {
+    badge: 'Stage 5', color: 'var(--red)',
+    title: 'Craving: You want that feeling again',
+    neuro: 'Dopamine is a wanting system, not a liking system. The craving arrives before the previous reward has faded.',
+    design: 'Streaks, drip notifications, and daily check-ins sustain craving between sessions. Each is a cue that a reward may be waiting.'
+  },
+  6: {
+    badge: 'Stage 6', color: '#64748B',
+    title: 'Tolerance: More is needed for the same effect',
+    neuro: 'Repeated stimulation reduces sensitivity. The same 100 likes produces less response over time.',
+    design: 'Platforms add new reward dimensions - shares, reactions, follower counts - as older metrics stop sustaining engagement.'
+  }
+};
+
+function showStage(n) {
+  document.querySelectorAll('.stage-card').forEach(c => c.classList.remove('active'));
+  document.getElementById('s' + n).classList.add('active');
+  const s = stages[n];
+  document.getElementById('detail-panel').innerHTML = `
+    <div class="detail-tag">
+      <span class="detail-badge" style="background:var(--purple-light);color:var(--purple)">${s.badge}</span>
+    </div>
+    <div class="detail-body">
+      <div class="detail-title">${s.title}</div>
+      <div class="detail-neurosci">${s.neuro}</div>
+      <div class="detail-design"><b>Design feature:</b> ${s.design}</div>
+    </div>
+  `;
+  notifyHeight();
+}
+
+function notifyHeight() {
+  setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight }, '*'), 100);
+}
+window.addEventListener('load', notifyHeight);
+window.addEventListener('resize', notifyHeight);
+</script>
+</body>
+</html>

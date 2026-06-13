@@ -2,14 +2,185 @@
 sidebar_position: 5
 title: "Normalised Behaviour & Gradual Boundary Erosion"
 sidebar_label: "Normalised Behaviour & Gradual Boundary Erosion"
+description: "How incremental permission requests, slow-moving surveillance, and habituation gradually erode safety boundaries without triggering resistance."
+tags: [normalisation, boundary-erosion, boiling-frog, habituation, surveillance, data-privacy, permissions, gradual-change, manipulation]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Normalised Behaviour & Gradual Boundary Erosion
 
-## Sub-topics
+The most effective manipulation does not feel like manipulation. It arrives in steps small enough that no single one triggers resistance.
 
-- Slowly normalising worse behaviour over time
-- Boiling frog scenario — gradual, invisible change
-- Habituation to surveillance and manipulation
-- Normalising data sharing and privacy loss
-- Recognising incremental erosion of safety
+---
+
+## The App That Grew
+
+Two years ago, Sanjana downloaded a free fitness tracker. She gave it her name and allowed it to access her step count.
+
+A month later: heart rate monitoring. Then sleep tracking. Then it asked for her location to log outdoor runs. Then location always-on. Then microphone, for voice-activated logging. Then contacts, to connect with friends. Then her camera, for meal photo tracking.
+
+<figure style={{ margin: '32px 0', textAlign: 'center' }}>
+  <img
+    src="/img/psychological-behavioural-manipulation/normalised-behaviour/normalised.webp"
+    alt="A simplified timeline illustration showing small permission requests accumulating over time."
+  />
+</figure>
+
+Each request came weeks apart. Each was framed as a feature improvement. Each seemed reasonable in context.
+
+Two years later, the app had continuous access to her location, microphone, camera, contacts, sleep patterns, exercise data, and heart rate. It had sold anonymised health data to two insurance data brokers and one advertising network.
+
+**Sanjana had not consented to a surveillance package. She had consented to twelve individual features over two years. The result was the same.**
+
+---
+
+## What Is Actually Happening: The Boiling Frog Effect
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>68%</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>of users grant all permissions requested by an app they use regularly, regardless of what those permissions are.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Trust built through habitual use is the mechanism. The app earned that trust through the step-by-step approach.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: Privacy International App Permissions Study, 2025</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Habituation</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Familiarity Replaces Scrutiny</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Regular use builds trust. Each permission that came after a period of ordinary use arrived inside an established relationship. <b>The brain evaluates the request against the trusted source, not against the objective data access it enables.</b></p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Cialdini, R.B., Influence: The Psychology of Persuasion, 2021</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Incremental Normalisation</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Each Step Sets the New Normal</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Once a permission is granted, it becomes the baseline. The next request is evaluated against the new baseline, not against the original starting point. <b>Granting location-while-using makes always-on location feel like a small additional step.</b> It is not.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Acquisti, A., Carnegie Mellon Privacy Research, 2023</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Surveillance Normalisation</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Surveillance Becomes Invisible</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Continuous location tracking, always-on microphones, and contact harvesting are now standard features of consumer apps. <b>Normalisation means people stop noticing what they have already accepted.</b> The absence of visible harm feels like the absence of harm.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Zuboff, S., Surveillance Capitalism, 2019; updated in FTC Data Broker Report, 2025</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #3B82F6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#3B82F6', fontWeight: 'bold' }}>The Safety Equivalent</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Same Pattern, Different Context</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Gradual boundary erosion is also the mechanism in coercive relationships, workplace harassment, and financial exploitation. <b>Recognising the pattern - each step small, each step normalising the next - transfers across contexts.</b></p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: National Domestic Violence Hotline, Coercive Control Research, 2025</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## Recognising Incremental Erosion
+
+The difficulty with gradual change is that it is invisible at each step. The way to see it is to compare against the original baseline - not against the most recent step.
+
+**Useful questions:**
+- If this app had asked for all its current permissions on day one, would I have granted them?
+- What am I now comfortable with that I would have refused 12 months ago?
+- Which data-sharing behaviours do I no longer think about - and when did I stop thinking about them?
+
+The goal is not to refuse every request. It is to make each decision deliberately rather than by default.
+
+---
+
+## Try It: The Boiling Frog Timeline
+
+A new app requests permissions month by month over 12 months. Each request looks reasonable. Decide at each step: allow or deny.
+
+<iframe
+  id="boiling-frog-iframe"
+  src="/simulations/psychological-behavioural-manipulation/normalised-behaviour-gradual-boundary-erosion/boiling-frog-timeline.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="The Boiling Frog Timeline"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('boiling-frog-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._boilingFrogHandler);
+    window._boilingFrogHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. The end state is not visible from any single step.**
+Each permission request was framed as a feature. No single request seemed unreasonable. Together, they produce a comprehensive data collection profile that most people would refuse if asked for it all at once.
+
+**2. Trust built through use is systematically exploited.**
+The longer you have used an app, the more likely you are to grant new permissions. This is not a coincidence - it is why the requests are spaced across months rather than asked upfront.
+
+**3. The correct evaluation unit is the total, not the marginal step.**
+When deciding on a new permission, the right question is not "is this a reasonable addition to what I have already given?" - it is "is this permission something I want this company to have?"
+
+---
+
+## Three Things Worth Doing
+
+**1. Do a quarterly permission audit.**
+Open your phone settings and review what each app currently has access to. The question for each permission: "Is this active access necessary, or is it a past grant I never revisited?" Remove what is not actively needed.
+
+**2. Evaluate new permissions against the full data profile, not the marginal step.**
+Before granting a new permission to an established app, list what it already has. Then ask: "Does this additional access feel appropriate given what they can already do with what I have given them?"
+
+**3. Apply the day-one test.**
+For any permission request, ask: "If this app had asked for this on the day I downloaded it, would I have granted it?" If the answer is no, the only thing that has changed is normalisation - not the actual risk of the permission.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Sanjana ended up with an app that had comprehensive surveillance access, despite never intending to consent to surveillance. What made this possible?"
+  options={[
+    {
+      label: "She did not read the terms of service carefully enough.",
+      correct: false,
+      explanation: "Terms of service are typically thousands of words long and written in legal language. The mechanism was not careless reading - it was the incremental permission structure that bypasses the resistance a single comprehensive request would produce."
+    },
+    {
+      label: "Each permission was requested individually over time, making the cumulative result invisible at any single step.",
+      correct: true,
+      explanation: "Correct. No single step felt like a significant decision. The cumulative result - comprehensive access to location, microphone, camera, contacts, sleep, and health data - would have been refused if asked for upfront. The incremental approach is specifically designed to avoid that refusal."
+    },
+    {
+      label: "The app used hidden data collection techniques that bypassed her phone's settings.",
+      correct: false,
+      explanation: "The story describes legitimate permission requests through normal channels. The mechanism was psychological - gradual normalisation - not technical circumvention. The permissions were granted; they were not taken without consent."
+    },
+    {
+      label: "She was unaware that fitness apps collect health data.",
+      correct: false,
+      explanation: "The story does not describe ignorance about data collection generally. The specific mechanism was the gradual erosion of her starting position through individually reasonable requests over two years."
+    }
+  ]}
+/>

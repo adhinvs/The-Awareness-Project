@@ -2,14 +2,259 @@
 sidebar_position: 1
 title: "Account Compromised or Hacked"
 sidebar_label: "Account Compromised or Hacked"
+description: "Step-by-step actions to stop ongoing access, assess damage, and rebuild secure authentication after an account is hacked."
+tags: [account-compromise, hacking, password-reset, two-factor-authentication, incident-response, account-recovery, session-termination]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Account Compromised or Hacked
 
-## Sub-topics
+*Finding out your account was accessed by someone else is disorienting. The order in which you respond determines how much damage gets done.*
 
-- Immediate actions to stop ongoing access
-- Assessing what the attacker can see and has accessed
-- Securing other accounts using the same password
-- Notifying services and reversing unauthorised changes
-- Rebuilding authentication and recovery options
+---
+
+## The Sent Folder
+
+Anika opened her email on a Tuesday evening and saw 23 messages in her sent folder that she had not sent.
+
+Each one was addressed to a different contact. Each one asked them to click a link to verify a shared document. The links were phishing pages.
+
+**Her contacts had already started clicking.** Her colleague had entered her work login. Her mother had entered her bank details. Two other friends had responded asking what the document was for.
+
+Anika's email password was the same one she used for her banking app.
+
+She had received no notification that anyone else had logged in. **The attacker had been in her account for eleven hours before she noticed.**
+
+---
+
+## What Is Actually Happening
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>197 days</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>average time to detect a compromised account.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Most account compromises are discovered by the victim noticing something wrong - not by the platform detecting it.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: IBM Cost of a Data Breach Report, 2024</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Data Breaches</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>3 Billion Credentials Exposed in 2024</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Over <b>3 billion credentials were exposed in data breaches in 2024.</b> These credentials are sold on dark web markets and tested against other services automatically. If you reuse passwords, a breach at one site exposes every other site that shares that password.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Cybernews Research, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Password Reuse</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>65% of People Reuse Passwords</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>**65% of people reuse passwords across multiple sites.** This is why attackers target low-security sites first - a breach at a forum yields credentials that work on banking apps. Password reuse turns every breach into a potential account takeover everywhere.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: LastPass Global Password Security Report, 2025</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Account Takeover</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>354% Increase in Account Takeover Attacks</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Account takeover attacks increased by <b>354% between 2023 and 2024.</b> Email accounts are the highest-value target because they are used to reset every other account, giving attackers a secondary attack surface.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Sift Q1 2025 Digital Trust and Safety Index</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #06B6D4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>Detection Gap</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>You Are Your Own Best Detector</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Platform security systems detect large-scale breaches but often miss individual account takeovers. <b>Unusual login locations, sent messages you did not write, and changed account details</b> are the most common first signals - noticed by the account owner, not the platform.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: IBM Cost of a Data Breach Report, 2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## Immediate Actions - Stop Ongoing Access
+
+Speed matters here. Every minute of delay is another minute the attacker can use your account.
+
+### Step 1 - Use a trusted device
+
+Do not use the device that was logged into the compromised account. Use your phone on mobile data, or another person's device. If your device has malware, any password you type on it may be captured.
+
+### Step 2 - End all active sessions
+
+Every major platform has a "sign out of all devices" option in security settings. This terminates any open sessions immediately - including the attacker's. Find it before you change the password, because a session can stay open even after a password change on some platforms.
+
+- **Gmail:** Security > Your devices > Manage devices > sign out all
+- **Outlook:** Security > sign-in activity > terminate sessions
+- **Facebook:** Settings > Security and Login > Where you're logged in > Log out of all sessions
+- **Apple ID:** Settings > your name > scroll to devices > remove each unknown one
+
+### Step 3 - Change the password from the trusted device
+
+Use a password that is long, unique to this account, and not used anywhere else. A password manager can generate and store this. Do this after ending sessions, not before - otherwise the attacker's session may persist.
+
+### Step 4 - Check recovery options
+
+Attackers frequently change recovery email addresses and phone numbers immediately after gaining access. This is how they lock you out permanently. Go to security settings and check:
+- Recovery email address
+- Recovery phone number
+- Backup codes (regenerate them)
+- Any apps with access to the account
+
+Remove anything you did not add.
+
+---
+
+## Assessing What the Attacker Accessed
+
+Once the account is secured, assess what was visible and what may have been taken.
+
+**For email accounts:**
+- Check the sent folder for phishing sent in your name
+- Check forwarding rules - attackers often set up forwarding to monitor your inbox even after a password change
+- Check what services used this email for sign-in (look for verification emails in your inbox history)
+- Check drafts - attackers sometimes draft content for later use
+
+**For social media:**
+- Check posted content, stories, and direct messages sent in your name
+- Check connected apps - revoke any you do not recognise
+- Check if your profile information was changed
+
+**For cloud storage:**
+- Check download and export history
+- Check shared file permissions
+- Check if any files were deleted
+
+---
+
+## Securing Linked Accounts
+
+If you used the same password elsewhere, those accounts are also at risk. Change passwords on all accounts that shared the same password, starting with the most sensitive:
+
+1. Banking and financial accounts
+2. Other email accounts
+3. Work accounts
+4. Password manager (if affected)
+5. Social media
+
+Use the account recovery tool below to get a step-by-step sequence for each type.
+
+---
+
+## Notifying Your Contacts
+
+After the account is secured, notify contacts about any phishing sent in your name. Be specific:
+- What the message looked like
+- What link it contained
+- What they should do if they clicked it (change passwords on any account they entered credentials for)
+
+Send this notification from a different channel if possible - a text message, WhatsApp, or a second email account. If your email sent phishing and contacts receive your warning from the same email, some may distrust the warning itself.
+
+---
+
+## Rebuilding Authentication
+
+Once the immediate crisis is resolved, strengthen the account against future attacks.
+
+**Two-factor authentication:** Enable it on every account using an authenticator app rather than SMS. SMS-based 2FA can be intercepted. Authenticator apps (Google Authenticator, Authy, 1Password) generate codes locally.
+
+**Passkeys:** Where available, switch to passkeys. Passkeys replace passwords entirely and are phishing-resistant by design.
+
+**Login alerts:** Enable email or SMS alerts for new sign-ins on every account that offers them.
+
+**Password manager:** Use one. Every account should have a unique, randomly generated password. A password manager makes this manageable.
+
+---
+
+## Try It: Account Recovery Planner
+
+Select your account type to get a prioritised, step-by-step recovery sequence specific to that platform.
+
+<iframe
+  id="account-recovery-iframe"
+  src="/simulations/when-it-happens-to-you/account-compromised-or-hacked/account-recovery-planner.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Account Recovery Planner"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('account-recovery-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._accountRecoveryHandler);
+    window._accountRecoveryHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. The sequence is not obvious - and the wrong order causes more damage.**
+Changing the password before ending sessions means an attacker's active session may persist. Notifying contacts before securing the account means sending from a still-compromised account. Order matters.
+
+**2. Email accounts require extra checks that other accounts do not.**
+Forwarding rules and auto-reply settings persist after a password change. An attacker can set up forwarding that continues even after you regain control. This is one of the most commonly missed steps.
+
+**3. A password manager is not optional for anyone who uses more than three accounts.**
+The 65% password reuse rate exists because remembering unique passwords for dozens of sites is not realistic without a tool. Password managers eliminate the reuse problem entirely.
+
+**4. Recovery options are often the real attack target.**
+Changing your password does not help if the attacker has already changed your recovery email to one they control. Check recovery settings as early as step two, not as an afterthought.
+
+---
+
+## Three Things Worth Doing
+
+1. **Go to your email account's security settings right now and check what devices are shown as logged in.** Remove anything you do not recognise. Then check your recovery email and phone number are still yours.
+
+2. **Check haveibeenpwned.com with your primary email address.** If it appears in known breaches, every account that shared that email and password combination is at risk.
+
+3. **Enable login alerts on your three most important accounts.** Email, banking, and password manager. You should know immediately when someone signs into these accounts from a new device.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="You just discovered your email was compromised. What is the first thing you should do?"
+  options={[
+    {
+      label: "Change the password of the compromised account immediately on the same device you normally use.",
+      correct: false,
+      explanation: "The device you normally use may be the one that was compromised. If it has malware, the new password could be captured too. Use a different trusted device - a phone on mobile data, or another person's computer. The device matters as much as the password change."
+    },
+    {
+      label: "End all active sessions from a trusted device, then change the password and check recovery options.",
+      correct: true,
+      explanation: "Correct. Ending sessions terminates the attacker's access immediately, including any open sessions on devices you do not control. Doing this from a trusted device means the actions are not captured by anything on the compromised device. Recovery options - email and phone number - must also be checked early, as attackers frequently change these to maintain access."
+    },
+    {
+      label: "Post a public warning on social media immediately so your contacts know.",
+      correct: false,
+      explanation: "Notifying contacts is important but not the first step. While you post, the attacker still has access to your account. Securing the account first means that when you do notify contacts, you are sending from a position of control - not from an account that is still being used by someone else."
+    },
+    {
+      label: "Wait 24 hours to see if the suspicious activity stops on its own.",
+      correct: false,
+      explanation: "Waiting is the worst response. Every hour of delay gives the attacker more time to access your data, send phishing in your name, use your email to reset other accounts, and change your recovery settings to lock you out permanently. Time is critical."
+    }
+  ]}
+/>

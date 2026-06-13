@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>OpSec Checklist for High-Risk Users</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B;
+      --blue: #2563EB; --blue-light: #EFF6FF;
+      --green: #059669; --green-light: #ECFDF5;
+      --amber: #D97706; --amber-light: #FFFBEB;
+      --red: #DC2626; --red-light: #FEF2F2;
+      --r: 14px;
+    }
+    body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px 16px 36px; -webkit-font-smoothing: antialiased; line-height: 1.6; }
+    h1 { font-size: 20px; font-weight: 800; text-align: center; margin-bottom: 6px; }
+    .subtitle { font-size: 13px; color: var(--muted); text-align: center; max-width: 520px; margin: 0 auto 22px; }
+
+    .progress-strip { max-width: 640px; margin: 0 auto 18px; display: flex; gap: 8px; align-items: center; }
+    .ps-bar { flex: 1; background: var(--border); border-radius: 6px; height: 8px; }
+    .ps-fill { height: 8px; border-radius: 6px; background: var(--green); transition: width .4s; }
+    .ps-label { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+
+    .tier-tabs { display: flex; gap: 6px; max-width: 640px; margin: 0 auto 18px; }
+    .tier-tab { flex: 1; text-align: center; background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 8px; cursor: pointer; transition: all .15s; }
+    .tier-tab.active { border-color: var(--blue); background: var(--blue); color: white; }
+    .tier-tab-label { font-size: 12.5px; font-weight: 700; display: block; }
+    .tier-tab-sub { font-size: 11px; margin-top: 2px; opacity: .8; }
+
+    .tier-panel { max-width: 640px; margin: 0 auto; display: none; }
+    .tier-panel.active { display: block; }
+
+    .tier-desc { border-radius: 10px; padding: 12px 14px; font-size: 13px; line-height: 1.55; margin-bottom: 14px; }
+    .tier-desc.baseline { background: var(--green-light); border-left: 3px solid var(--green); }
+    .tier-desc.intermediate { background: var(--amber-light); border-left: 3px solid var(--amber); }
+    .tier-desc.advanced { background: var(--red-light); border-left: 3px solid var(--red); }
+
+    .check-group { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 10px; overflow: hidden; }
+    .check-item { border-top: 1px solid var(--border); padding: 14px 16px; cursor: pointer; }
+    .check-item:first-child { border-top: none; }
+    .check-row { display: flex; align-items: flex-start; gap: 12px; }
+    .cb { width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 5px; flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+    .cb.done { background: var(--green); border-color: var(--green); }
+    .cb.done::after { content: '✓'; color: white; font-size: 12px; font-weight: 700; }
+    .ci-title { font-size: 13.5px; font-weight: 700; flex: 1; }
+    .ci-protects { font-size: 12px; color: var(--muted); margin: 4px 0 0 32px; }
+    .ci-tool { background: var(--blue-light); border-radius: 8px; padding: 8px 12px; font-size: 12px; margin: 8px 0 0 32px; color: #1E40AF; }
+    .ci-tool strong { font-weight: 700; }
+  </style>
+</head>
+<body>
+<h1>OpSec Checklist — High-Risk Users</h1>
+<p class="subtitle">For journalists, activists, researchers, and whistleblowers. Three tiers: start at Baseline and work up.</p>
+
+<div class="progress-strip">
+  <div class="ps-bar"><div class="ps-fill" id="ps-fill" style="width:0%"></div></div>
+  <div class="ps-label" id="ps-label">0 / 18 completed</div>
+</div>
+
+<div class="tier-tabs">
+  <div class="tier-tab active" onclick="showTier('baseline')">
+    <span class="tier-tab-label">Baseline</span>
+    <span class="tier-tab-sub">Everyone should do this</span>
+  </div>
+  <div class="tier-tab" onclick="showTier('intermediate')">
+    <span class="tier-tab-label">Intermediate</span>
+    <span class="tier-tab-sub">Elevated exposure</span>
+  </div>
+  <div class="tier-tab" onclick="showTier('advanced')">
+    <span class="tier-tab-label">Advanced</span>
+    <span class="tier-tab-sub">Active threat actors</span>
+  </div>
+</div>
+
+<div class="tier-panel active" id="tier-baseline">
+  <div class="tier-desc baseline">Baseline protections for anyone with public exposure or sensitive sources. These take under an hour to set up and protect against the most common attacks.</div>
+  <div class="check-group">
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-row"><div class="cb" id="cb-b1"></div><div class="ci-title">Use Signal for all sensitive communications</div></div>
+      <div class="ci-protects">Protects against: message interception, operator data requests, device seizure (disappearing messages)</div>
+      <div class="ci-tool"><strong>Tool:</strong> Signal (signal.org) — free, open-source. Enable disappearing messages for all sensitive conversations.</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-row"><div class="cb" id="cb-b2"></div><div class="ci-title">Enable full-device encryption on phone and laptop</div></div>
+      <div class="ci-protects">Protects against: physical device seizure, border searches, theft</div>
+      <div class="ci-tool"><strong>iOS:</strong> Enabled by default with a strong passcode. <strong>Android:</strong> Settings > Security > Encryption. <strong>Mac:</strong> System Settings > Privacy & Security > FileVault. <strong>Windows:</strong> Settings > Privacy > Device Encryption.</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-row"><div class="cb" id="cb-b3"></div><div class="ci-title">Use a password manager with unique passwords on every account</div></div>
+      <div class="ci-protects">Protects against: credential stuffing, account takeover via reused passwords</div>
+      <div class="ci-tool"><strong>Tools:</strong> Bitwarden (open-source, free) or 1Password. Generate a unique 20+ character password for every account.</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-row"><div class="cb" id="cb-b4"></div><div class="ci-title">Enable hardware-key or app-based 2FA on all critical accounts</div></div>
+      <div class="ci-protects">Protects against: SIM swap attacks, phishing, account takeover</div>
+      <div class="ci-tool"><strong>Avoid SMS 2FA</strong> — SIM swaps bypass it. Use an authenticator app (Aegis on Android, Raivo on iOS) or a hardware key (YubiKey).</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-row"><div class="cb" id="cb-b5"></div><div class="ci-title">Audit and remove unused app permissions</div></div>
+      <div class="ci-protects">Protects against: passive location tracking, ambient microphone access</div>
+      <div class="ci-tool"><strong>iOS:</strong> Settings > Privacy & Security — review each permission category. <strong>Android:</strong> Settings > Privacy > Permission Manager. Remove location, microphone, and camera from apps that don't need them.</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-row"><div class="cb" id="cb-b6"></div><div class="ci-title">Strip metadata from files and photos before sharing</div></div>
+      <div class="ci-protects">Protects against: location disclosure, device fingerprinting, source identification via metadata</div>
+      <div class="ci-tool"><strong>Tools:</strong> ExifTool (command line), MAT2 (Linux/Mac), Metapho (iOS), Scrambled EXIF (Android). Run all documents through a metadata stripper before sending to sources or editors.</div>
+    </div>
+  </div>
+</div>
+
+<div class="tier-panel" id="tier-intermediate">
+  <div class="tier-desc intermediate">For users who face targeted surveillance, active monitoring by institutions, or who handle sensitive sources regularly.</div>
+  <div class="check-group">
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-row"><div class="cb" id="cb-i1"></div><div class="ci-title">Use a reputable no-log VPN for all internet activity</div></div>
+      <div class="ci-protects">Protects against: ISP-level traffic monitoring, network-level surveillance, IP exposure</div>
+      <div class="ci-tool"><strong>Selection criteria:</strong> No-logs policy (independently audited), jurisdiction outside 14-Eyes, open-source client. Mullvad VPN meets all three criteria. Avoid free VPNs — they typically sell traffic data.</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-row"><div class="cb" id="cb-i2"></div><div class="ci-title">Use SecureDrop or OnionShare for receiving documents</div></div>
+      <div class="ci-protects">Protects against: source identification, document interception, email metadata exposure</div>
+      <div class="ci-tool"><strong>SecureDrop:</strong> Used by major newsrooms. Sources submit documents anonymously via Tor. <strong>OnionShare:</strong> Simpler setup for one-time transfers. Never receive sensitive documents via email.</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-row"><div class="cb" id="cb-i3"></div><div class="ci-title">Use ProtonMail or Tutanota for email — not Gmail or Outlook</div></div>
+      <div class="ci-protects">Protects against: email provider data requests, content scanning, metadata exposure</div>
+      <div class="ci-tool"><strong>Proton Mail</strong> (Switzerland jurisdiction) and <strong>Tutanota</strong> (Germany) offer end-to-end encryption. Note: encryption only applies between users of the same service — standard email is not encrypted.</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-row"><div class="cb" id="cb-i4"></div><div class="ci-title">Prepare a clean travel device for high-risk border crossings</div></div>
+      <div class="ci-protects">Protects against: device search at borders, forensic extraction of contacts and communications</div>
+      <div class="ci-tool"><strong>Practice:</strong> A separate device with no source communications, no sensitive documents, and no stored credentials. Real accounts accessible only via web after crossing. Wipe travel device before return journey.</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-row"><div class="cb" id="cb-i5"></div><div class="ci-title">Check devices for stalkerware and spyware periodically</div></div>
+      <div class="ci-protects">Protects against: Pegasus-type commercial spyware, intimate partner surveillance, institutional monitoring</div>
+      <div class="ci-tool"><strong>iVerify</strong> (iOS) for Pegasus indicators. <strong>MVT (Mobile Verification Toolkit)</strong> for forensic analysis. Amnesty International's Security Lab offers threat assessment for high-risk individuals. Consider a device refresh annually.</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-row"><div class="cb" id="cb-i6"></div><div class="ci-title">Document and report coordinated harassment campaigns immediately</div></div>
+      <div class="ci-protects">Protects against: escalating harassment, legal risk from false claims, platform account suspension</div>
+      <div class="ci-tool"><strong>Tools:</strong> Hunchly or Bellingcat's online investigation tools for documentation. Report to the Coalition Against Online Violence, Committee to Protect Journalists (CPJ), or Access Now's Digital Security Helpline.</div>
+    </div>
+  </div>
+</div>
+
+<div class="tier-panel" id="tier-advanced">
+  <div class="tier-desc advanced">For users facing active state-sponsored or organised threat actors. These measures require technical effort and lifestyle adjustment.</div>
+  <div class="check-group">
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-row"><div class="cb" id="cb-a1"></div><div class="ci-title">Use Tails OS for the most sensitive work</div></div>
+      <div class="ci-protects">Protects against: persistent malware, forensic recovery of deleted files, local device compromise</div>
+      <div class="ci-tool"><strong>Tails</strong> is a live operating system that runs from a USB drive, leaves no trace, and routes all traffic through Tor. Appropriate for document handling and communications when the device may be compromised. tails.boum.org</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-row"><div class="cb" id="cb-a2"></div><div class="ci-title">Use Tor Browser for sensitive research and source contact</div></div>
+      <div class="ci-protects">Protects against: traffic analysis, IP-based location tracking, ISP monitoring</div>
+      <div class="ci-tool"><strong>Tor Browser</strong> routes traffic through 3 relays. Limitations: slow, blocks some sites. Do not log into personal accounts inside Tor — this defeats the anonymity. Use for research, SecureDrop access, and source initial contact only.</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-row"><div class="cb" id="cb-a3"></div><div class="ci-title">Use an air-gapped device for the most sensitive materials</div></div>
+      <div class="ci-protects">Protects against: network-based exfiltration, remote access attacks, cloud sync exposure</div>
+      <div class="ci-tool"><strong>Air-gapped device:</strong> A computer that has never connected to any network and never will. Data transfer only via encrypted USB. Used for the most sensitive documents, source lists, and key material. No Bluetooth, no Wi-Fi, no cameras covered with tape are all necessary.</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-row"><div class="cb" id="cb-a4"></div><div class="ci-title">Apply physical security at border crossings</div></div>
+      <div class="ci-protects">Protects against: coerced device unlocking, forensic extraction, physical seizure</div>
+      <div class="ci-tool"><strong>Protocol:</strong> Travel with clean device. Know your rights before crossing (they vary by country). Legal contact number memorised or on paper, not phone. Refuse biometric unlock — use strong PIN. Contact CPJ, RSF, or EFF if devices are seized.</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-row"><div class="cb" id="cb-a5"></div><div class="ci-title">Compartmentalise identities across different devices and accounts</div></div>
+      <div class="ci-protects">Protects against: cross-identity correlation, single-point account compromise exposing all activity</div>
+      <div class="ci-tool"><strong>Practice:</strong> Separate devices for personal, professional, and sensitive work. No cross-login between identities. Separate email addresses, SIM cards, and browsers per identity. Never use personal accounts for activist or source-facing work.</div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-row"><div class="cb" id="cb-a6"></div><div class="ci-title">Establish a digital will and emergency communication plan</div></div>
+      <div class="ci-protects">Protects against: loss of access to critical materials if detained, injury, or death; source protection failure after capture</div>
+      <div class="ci-tool"><strong>Steps:</strong> A trusted contact knows how to reach your legal team. Sensitive materials are encrypted and held by a trusted third party (not stored locally). Account recovery options held by editor or trusted colleague. Review annually.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const total = 18;
+let checked = new Set();
+
+function showTier(tier) {
+  document.querySelectorAll('.tier-tab').forEach((t, i) => {
+    t.classList.toggle('active', ['baseline','intermediate','advanced'][i] === tier);
+  });
+  document.querySelectorAll('.tier-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tier-' + tier).classList.add('active');
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function toggle(item) {
+  const cbId = item.querySelector('.cb').id;
+  const cb = document.getElementById(cbId);
+  const isDone = cb.classList.contains('done');
+  if (isDone) { cb.classList.remove('done'); checked.delete(cbId); }
+  else { cb.classList.add('done'); checked.add(cbId); }
+  updateProgress();
+}
+
+function updateProgress() {
+  const done = checked.size;
+  const pct = Math.round(done / total * 100);
+  document.getElementById('ps-fill').style.width = pct + '%';
+  document.getElementById('ps-label').textContent = `${done} / ${total} completed`;
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+window.addEventListener('load', () => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'));
+</script>
+</body>
+</html>

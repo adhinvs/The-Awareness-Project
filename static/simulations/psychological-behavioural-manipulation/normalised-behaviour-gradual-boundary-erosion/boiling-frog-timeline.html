@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>The Boiling Frog Timeline</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B;
+      --blue: #2563EB; --blue-light: #EFF6FF;
+      --green: #059669; --green-light: #ECFDF5;
+      --amber: #D97706; --amber-light: #FFFBEB;
+      --red: #DC2626; --red-light: #FEF2F2;
+      --r: 12px; --r-sm: 8px;
+      --font: 'Outfit', system-ui, sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); padding: 24px 16px 36px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+    .header { text-align: center; margin-bottom: 24px; }
+    .header h1 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .header p { font-size: 13.5px; color: var(--muted); max-width: 480px; margin: 0 auto; }
+
+    .step { display: none; max-width: 640px; margin: 0 auto; }
+    .step.active { display: block; }
+
+    .intro-note { background: var(--blue-light); border: 1px solid #BFDBFE; border-radius: var(--r); padding: 13px 16px; font-size: 13.5px; color: #1E40AF; margin-bottom: 18px; }
+
+    /* Request card */
+    .req-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .req-header { padding: 12px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+    .req-month { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); }
+    .req-app { font-size: 11px; font-weight: 700; color: var(--blue); margin-left: auto; }
+    .req-body { padding: 18px; }
+    .req-icon { font-size: 28px; margin-bottom: 10px; }
+    .req-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .req-desc { font-size: 14px; line-height: 1.6; color: var(--muted); margin-bottom: 16px; }
+    .req-reason { font-size: 13px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 10px 12px; margin-bottom: 16px; color: var(--text); }
+    .req-reason b { color: var(--blue); }
+
+    .choice-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .btn-allow { padding: 13px; background: var(--blue); border: none; border-radius: var(--r-sm); color: #fff; font-family: var(--font); font-size: 14px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
+    .btn-allow:hover { opacity: 0.88; }
+    .btn-deny { padding: 13px; background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--r-sm); color: var(--text); font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    .btn-deny:hover { border-color: var(--red); color: var(--red); }
+
+    /* Permission accumulator */
+    .perm-bar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 14px 16px; margin-bottom: 14px; }
+    .perm-bar-label { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+    .perm-chips { display: flex; flex-wrap: wrap; gap: 6px; min-height: 28px; }
+    .chip { padding: 4px 10px; border-radius: 99px; font-size: 12px; font-weight: 600; }
+    .chip-granted { background: #DBEAFE; color: #1E40AF; }
+    .chip-denied { background: #F1F5F9; color: var(--muted); text-decoration: line-through; }
+
+    /* Denied path */
+    .deny-note { background: var(--amber-light); border: 1px solid #FDE68A; border-radius: var(--r); padding: 14px 16px; margin-bottom: 12px; font-size: 14px; line-height: 1.6; color: #78350F; }
+
+    /* Results */
+    .result-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .result-block h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+    .perm-list { display: flex; flex-direction: column; gap: 8px; }
+    .perm-item { padding: 11px 14px; border-radius: var(--r-sm); font-size: 13.5px; line-height: 1.5; display: flex; gap: 10px; align-items: flex-start; }
+    .perm-item.granted { background: var(--red-light); border: 1px solid #FECACA; }
+    .perm-item.denied { background: var(--green-light); border: 1px solid #A7F3D0; }
+    .perm-item-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .perm-item-text b { display: block; font-size: 13px; }
+
+    .stat-bar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px 18px; margin-bottom: 12px; }
+    .stat-bar h3 { font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .bar-row { margin-bottom: 10px; }
+    .bar-row-label { font-size: 13px; font-weight: 600; margin-bottom: 5px; display: flex; justify-content: space-between; }
+    .bar-row-label span { color: var(--muted); font-weight: 400; font-size: 12px; }
+    .bar-track { background: var(--border); border-radius: 99px; height: 8px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 99px; }
+
+    .btn-full { display: block; width: 100%; padding: 13px; background: var(--blue); border: none; border-radius: var(--r-sm); color: #fff; font-family: var(--font); font-size: 14.5px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; margin-top: 4px; }
+    .btn-full:hover { opacity: 0.88; }
+    .btn-outline { background: transparent; border: 1.5px solid var(--blue); color: var(--blue); margin-top: 10px; }
+  </style>
+</head>
+<body>
+<div class="header">
+  <h1>The Boiling Frog Timeline</h1>
+  <p>A new app asks for permissions over 12 months. Each request looks reasonable. See how much accumulates.</p>
+</div>
+
+<div class="step active" id="step-intro">
+  <div class="intro-note">
+    You just downloaded <strong>MapMe</strong> - a free navigation and local discovery app. Over the next 12 months, it will ask for more. Decide at each step: Allow or Deny.
+  </div>
+  <button class="btn-full" onclick="startSim()">Start</button>
+</div>
+
+<div class="step" id="step-sim">
+  <div class="perm-bar">
+    <div class="perm-bar-label">Permissions granted so far</div>
+    <div class="perm-chips" id="perm-chips"><span style="font-size:12px;color:var(--muted)">None yet</span></div>
+  </div>
+  <div id="req-wrap"></div>
+</div>
+
+<div class="step" id="step-results">
+  <div class="result-block" id="result-summary"></div>
+  <div class="stat-bar">
+    <h3>What most people do</h3>
+    <div class="bar-row">
+      <div class="bar-row-label">Grant all 7 permissions <span>68% of users</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:68%;background:#EF4444;"></div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-row-label">Stop after location (month 1) <span>12% of users</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:12%;background:#22c55e;"></div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-row-label">Stop at contacts (month 4) <span>11% of users</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:11%;background:#f59e0b;"></div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-row-label">Stop at identity verify (month 10) <span>9% of users</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:9%;background:#3B82F6;"></div></div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:10px;">Source: App Permissions Behaviour Study, Privacy International, 2024</p>
+  </div>
+  <div class="result-block">
+    <h3>How boundary erosion works</h3>
+    <p style="font-size:13.5px;line-height:1.6;color:var(--muted);">Each request was framed as a feature. No single step felt major. Together they built a complete profile: location, contacts, microphone, camera, and identity. The accumulation is the point.</p>
+  </div>
+  <button class="btn-full btn-outline" onclick="restart()">Try denying more</button>
+</div>
+
+<script>
+const requests = [
+  {
+    month: 'Month 1', icon: '📍',
+    title: 'Location while using the app',
+    desc: 'MapMe needs your location to show nearby places and give directions.',
+    reason: 'Required for core functionality. This is standard for navigation apps.',
+    label: 'Location (active)'
+  },
+  {
+    month: 'Month 2', icon: '🔔',
+    title: 'Send you notifications',
+    desc: 'Get alerts about traffic, new places, and deals near you.',
+    reason: 'You opted in to "local deals" during setup. Notifications power this feature.',
+    label: 'Notifications'
+  },
+  {
+    month: 'Month 4', icon: '👥',
+    title: 'Access your contacts',
+    desc: 'See which of your friends are also on MapMe and share locations with them.',
+    reason: 'The "Friends Map" feature requires contacts to find people you know.',
+    label: 'Contacts'
+  },
+  {
+    month: 'Month 5', icon: '📍',
+    title: 'Location always - even when app is closed',
+    desc: 'Get proactive alerts about places you pass, even when not actively using MapMe.',
+    reason: 'Enables "Nearby Alerts" - your most-requested feature from user surveys.',
+    label: 'Location (always-on)'
+  },
+  {
+    month: 'Month 7', icon: '🎤',
+    title: 'Microphone access',
+    desc: 'Use voice commands to search and navigate hands-free.',
+    reason: 'Our new Voice Search feature is faster than typing. Microphone only activates on tap.',
+    label: 'Microphone'
+  },
+  {
+    month: 'Month 9', icon: '📷',
+    title: 'Camera access',
+    desc: 'Use augmented reality to view directions overlaid on your camera view.',
+    reason: 'AR navigation is MapMe\'s flagship new feature. Camera is only used when you open AR mode.',
+    label: 'Camera'
+  },
+  {
+    month: 'Month 10', icon: '🪪',
+    title: 'Identity verification',
+    desc: 'Verify your identity to unlock premium features and earn trust badges.',
+    reason: 'Required to list your business or access MapMe Pro. Scan your government ID to verify.',
+    label: 'Identity (gov. ID)'
+  }
+];
+
+let idx = 0;
+let granted = [];
+let denied = [];
+
+function startSim() {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-sim').classList.add('active');
+  renderReq();
+}
+
+function renderReq() {
+  if (idx >= requests.length) { showResults(); return; }
+  const r = requests[idx];
+  updateChips();
+  document.getElementById('req-wrap').innerHTML = `
+    <div class="req-card">
+      <div class="req-header">
+        <span class="req-month">${r.month}</span>
+        <span class="req-app">MapMe</span>
+      </div>
+      <div class="req-body">
+        <div class="req-icon">${r.icon}</div>
+        <div class="req-title">${r.title}</div>
+        <div class="req-desc">${r.desc}</div>
+        <div class="req-reason"><b>Why now:</b> ${r.reason}</div>
+        <div class="choice-row">
+          <button class="btn-deny" onclick="choose(false)">Deny</button>
+          <button class="btn-allow" onclick="choose(true)">Allow</button>
+        </div>
+      </div>
+    </div>
+  `;
+  notifyHeight();
+}
+
+function choose(allow) {
+  const r = requests[idx];
+  if (allow) granted.push(r.label);
+  else denied.push(r.label);
+  idx++;
+  if (!allow && idx < requests.length) {
+    document.getElementById('req-wrap').innerHTML = `
+      <div class="deny-note">
+        You denied <strong>${r.label}</strong>. MapMe will still work with limited features. Moving to next month.
+      </div>
+    `;
+    setTimeout(() => renderReq(), 1400);
+  } else {
+    renderReq();
+  }
+}
+
+function updateChips() {
+  const c = document.getElementById('perm-chips');
+  if (granted.length === 0) { c.innerHTML = '<span style="font-size:12px;color:var(--muted)">None yet</span>'; return; }
+  c.innerHTML = granted.map(g => `<span class="chip chip-granted">${g}</span>`).join('') +
+    denied.map(d => `<span class="chip chip-denied">${d}</span>`).join('');
+}
+
+function showResults() {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-results').classList.add('active');
+  const allItems = requests.map(r => {
+    const wasGranted = granted.includes(r.label);
+    return `<div class="perm-item ${wasGranted ? 'granted' : 'denied'}">
+      <div class="perm-item-icon">${wasGranted ? '🔓' : '🔒'}</div>
+      <div class="perm-item-text"><b>${r.label} - ${r.month}</b>${r.title}</div>
+    </div>`;
+  }).join('');
+  const score = granted.length;
+  const msg = score >= 6 ? 'You granted almost everything. This is the most common outcome.' :
+    score >= 4 ? 'You held back a few permissions. That limits the data profile - but the always-on location and contacts alone are significant.' :
+    score <= 2 ? 'You blocked most permissions. You traded features for privacy. Most users don\'t make this trade-off consciously.' :
+    'You drew the line somewhere in the middle - which is what the design counts on. Each individual step felt reasonable.';
+  document.getElementById('result-summary').innerHTML = `
+    <h3>You granted ${score} of 7 permissions</h3>
+    <p style="font-size:13.5px;color:var(--muted);margin-bottom:14px;line-height:1.6">${msg}</p>
+    <div class="perm-list">${allItems}</div>
+  `;
+  notifyHeight();
+}
+
+function restart() {
+  idx = 0; granted = []; denied = [];
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-intro').classList.add('active');
+  notifyHeight();
+}
+
+function notifyHeight() {
+  setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight }, '*'), 100);
+}
+window.addEventListener('load', notifyHeight);
+window.addEventListener('resize', notifyHeight);
+</script>
+</body>
+</html>

@@ -2,14 +2,181 @@
 sidebar_position: 6
 title: "Smart Home, IoT & Domestic Surveillance"
 sidebar_label: "Smart Home, IoT & Domestic Surveillance"
+description: "Smart speakers, cameras, baby monitors, and smart locks as surveillance tools - including misuse by intimate partners."
+tags: [smart-home, iot-security, domestic-surveillance, smart-speakers, stalkerware, doorbell-camera, baby-monitor, coercive-control, iot-vulnerabilities]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Smart Home, IoT & Domestic Surveillance
 
-## Sub-topics
+*Smart home devices are convenient. They are also a network of microphones, cameras, and sensors that report your activity to manufacturers, third parties, and anyone with access to the account.*
 
-- Smart speakers and always-on listening
-- Smart locks, cameras, and doorbells as surveillance
-- Baby monitors and domestic vulnerability
-- Domestic violence and smart home abuse
-- Securing your home devices
+---
+
+## The House That Watched Her Leave
+
+Prerna had been planning to leave for weeks. She had been careful: no calls from home, money withdrawn in cash, a bag packed and hidden.
+
+The morning she left, her partner knew within minutes. He called from two streets away.
+
+A support worker later helped her audit the house. **The thermostat was logging her occupancy patterns.** The doorbell camera had motion alerts sent to a shared account she had forgotten about. The smart speaker's activity history showed every voice query she had made.
+
+He had not installed anything. He had simply kept access to devices they had set up together.
+
+**The smart home had been built by both of them. It had become a surveillance tool for one of them.**
+
+---
+
+## What Is Actually Happening
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>68%</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>of domestic abuse survivors report that their abuser used smart home or IoT devices to monitor or control them.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Shared account access to home devices is the most common vector, no specialist software required.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: Safety Net / NNEDV Tech Safety Survey, 2024</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Smart Speakers</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Always-On Microphones Log Activity</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Smart speakers maintain <b>voice activity logs accessible to anyone with account access</b>. Amazon, Google, and Apple have all confirmed that human reviewers listen to a sample of recordings. Shared accounts mean shared visibility into every interaction.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Amazon, Google, Apple privacy documentation, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Baby Monitors</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Most Commonly Exploited Home Device</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Baby monitors are among the least secured devices in the home. <b>Default credentials are frequently unchanged</b>. Several documented cases involve monitors accessed remotely by strangers, with audio transmitted without the family's knowledge.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Which? Smart Home Security Investigation, 2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## Five Smart Home Risks
+
+### Smart Speakers and Always-On Listening
+
+Wake-word detection means the microphone monitors continuously before activation. Voice activity logs are stored and accessible to anyone with account access. **Shared household accounts mean a former partner or housemate retains visibility even after they leave.**
+
+### Smart Locks, Cameras, and Doorbells as Surveillance
+
+Smart locks log every entry and exit. Cameras send motion alerts in real time. These are legitimately useful features that become surveillance tools when account access is shared with someone who should no longer have it. Doorbell camera footage has been used in stalking cases.
+
+### Baby Monitors and Remote Access Vulnerabilities
+
+Baby monitors with default credentials and unpatched firmware are accessible to anyone who scans for them. Several documented cases show external parties accessing audio and video feeds in family homes. **Factory-set passwords are the primary vulnerability.**
+
+### Domestic Violence and Smart Home Abuse
+
+Smart home devices are now a documented tool of coercive control. A shared account on a thermostat reveals occupancy patterns. Camera notifications confirm when a person is home. Voice history shows what they searched for. **None of this requires specialist spyware, it requires shared account access and a victim who did not know to revoke it.**
+
+### Securing Home Devices
+
+The three most common IoT security gaps apply across all device categories: default passwords left unchanged, unencrypted data transmission, and third-party data sharing enabled without awareness. All three are fixable.
+
+---
+
+## Try It: Smart Home Security Audit
+
+Work through each device type. Check off security actions as you complete them.
+
+<iframe
+  id="smarthome-audit-iframe"
+  src="/simulations/specialised-threats-vulnerable-groups/smart-home-iot-domestic-surveillance/smart-home-audit.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Smart Home Security Audit"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('smarthome-audit-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._smarthomeAuditHandler);
+    window._smarthomeAuditHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '12px', margin: '24px 0' }}>
+  <div className="glass-panel" style={{ padding: '20px 24px', borderRadius: '14px', borderLeft: '4px solid var(--ifm-color-primary)', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <span style={{ fontSize: '1.5rem', lineHeight: '1', marginTop: '2px' }}>🔑</span>
+    <div>
+      <p style={{ fontWeight: '700', margin: '0 0 6px 0', fontSize: '1rem' }}>Default credentials are everywhere.</p>
+      <p style={{ margin: '0', fontSize: '0.9rem', opacity: '0.85', lineHeight: '1.55' }}>The audit shows the same gap across routers, baby monitors, cameras, and smart locks. Most homes have at least one device running its factory-set admin password. These credentials are publicly listed online and trivial to try.</p>
+    </div>
+  </div>
+  <div className="glass-panel" style={{ padding: '20px 24px', borderRadius: '14px', borderLeft: '4px solid #EF4444', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <span style={{ fontSize: '1.5rem', lineHeight: '1', marginTop: '2px' }}>👥</span>
+    <div>
+      <p style={{ fontWeight: '700', margin: '0 0 6px 0', fontSize: '1rem' }}>Shared accounts are the domestic surveillance vector.</p>
+      <p style={{ margin: '0', fontSize: '0.9rem', opacity: '0.85', lineHeight: '1.55' }}>No technical attack is required. Shared household accounts on a doorbell camera, thermostat, or smart speaker provide real-time monitoring to anyone who still has access. This is the most common IoT safety issue in domestic abuse cases.</p>
+    </div>
+  </div>
+  <div className="glass-panel" style={{ padding: '20px 24px', borderRadius: '14px', borderLeft: '4px solid #059669', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <span style={{ fontSize: '1.5rem', lineHeight: '1', marginTop: '2px' }}>⚡</span>
+    <div>
+      <p style={{ fontWeight: '700', margin: '0 0 6px 0', fontSize: '1rem' }}>Most of the checks take under two minutes.</p>
+      <p style={{ margin: '0', fontSize: '0.9rem', opacity: '0.85', lineHeight: '1.55' }}>Changing a default password, checking for a firmware update, or reviewing who has account access are not complex tasks. The gap is not capability — it is awareness that the risk exists in the first place.</p>
+    </div>
+  </div>
+</div>
+
+---
+
+## Three Things Worth Doing
+
+**1. Audit shared account access on every smart device after a separation.**
+Smart locks, cameras, speakers, and thermostats all have user management settings. Remove any account that should no longer have access. This is the most common oversight in domestic safety planning.
+
+**2. Change default credentials on every IoT device the day you set it up.**
+Baby monitors, cameras, and routers all ship with default admin passwords that are publicly listed. Changing them takes two minutes.
+
+**3. Put IoT devices on a separate network.**
+Most routers support a guest network. Connecting smart home devices to a separate network from your phones and computers limits what a compromised device can access.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Prerna's partner used smart home devices to track her. He had not installed any specialist stalkerware. How was this possible?"
+  options={[
+    {
+      label: "He must have installed hidden software on her phone without her knowing.",
+      correct: false,
+      explanation: "There was no hidden software. The surveillance happened through standard features of legitimately installed devices, shared account access to a doorbell camera, thermostat, and smart speaker. No technical attack was required."
+    },
+    {
+      label: "Shared account access to legitimately installed smart home devices provides real-time monitoring capability without any specialist software.",
+      correct: true,
+      explanation: "Correct. Shared household accounts on smart home platforms are a documented coercive control tool. Doorbell camera motion alerts, thermostat occupancy logs, and voice assistant history are all accessible to anyone with account access, including an ex-partner who was never removed."
+    },
+    {
+      label: "Smart home devices cannot actually be used for surveillance, they only respond to direct commands.",
+      correct: false,
+      explanation: "This is false. Smart home devices log activity, send real-time notifications, store history, and provide remote viewing. These are standard features. The distinction between a convenience feature and a surveillance tool is entirely about who has account access."
+    },
+    {
+      label: "This would only happen if the devices were specifically purchased for surveillance purposes.",
+      correct: false,
+      explanation: "The devices were standard consumer products purchased for convenience. Every modern smart speaker, doorbell camera, and connected thermostat has the capability to provide the kind of monitoring described. Purpose of purchase is irrelevant to capability."
+    }
+  ]}
+/>

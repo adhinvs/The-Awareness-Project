@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SE Asia & Gulf Response Kit</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f9f7f4;
+    color: #1a1a1a;
+    padding: 1.5rem 1rem 2.5rem;
+  }
+
+  .wrap { max-width: 700px; margin: 0 auto; }
+
+  .header { margin-bottom: 1.5rem; }
+  .header h1 { font-size: 18px; font-weight: 700; margin-bottom: 5px; }
+  .header p { font-size: 14px; color: #555; line-height: 1.6; }
+
+  .row-selects { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.25rem; }
+
+  .select-label { font-size: 12px; font-weight: 600; color: #666; margin-bottom: 5px; display: block; }
+
+  select {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 13px;
+    border: 1.5px solid #d4cfc8;
+    border-radius: 8px;
+    background: #fff;
+    color: #1a1a1a;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    cursor: pointer;
+  }
+  select:focus { outline: 2px solid #4a7c5a; border-color: #4a7c5a; }
+
+  .response-box {
+    display: none;
+    background: #fff;
+    border: 1px solid #e0dcd5;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .response-box.visible { display: block; }
+
+  .response-header {
+    background: #4a7c5a;
+    color: #fff;
+    padding: 14px 18px;
+  }
+  .response-header h2 { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+  .response-header p { font-size: 12px; opacity: 0.85; }
+
+  .step {
+    display: flex;
+    gap: 14px;
+    padding: 14px 18px;
+    border-bottom: 1px solid #f0ece6;
+    align-items: flex-start;
+  }
+  .step:last-child { border-bottom: none; }
+
+  .step-num {
+    width: 26px; height: 26px; min-width: 26px;
+    border-radius: 50%;
+    background: #4a7c5a;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+  }
+
+  .step-body { flex: 1; }
+  .step-title { font-size: 13.5px; font-weight: 700; margin-bottom: 3px; }
+  .step-detail { font-size: 13px; color: #555; line-height: 1.55; }
+  .step-detail strong { color: #222; font-weight: 600; }
+
+  .law-box {
+    background: #faf8f5;
+    border-top: 1px solid #e8e4de;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  .migration-box {
+    background: #fff8e6;
+    border: 1px solid #f0d080;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 14px 18px 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #7a5a00;
+  }
+  .migration-box strong { font-weight: 700; }
+
+  .urgent-tag {
+    display: inline-block;
+    background: #FEF2F2;
+    color: #DC2626;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin: 14px 18px 0;
+    display: block;
+    width: fit-content;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>Southeast Asia & Gulf Response Kit</h1>
+    <p>Select your country and scam type to get local reporting contacts and response steps.</p>
+  </div>
+
+  <div class="row-selects">
+    <div>
+      <label class="select-label" for="country-sel">Your country</label>
+      <select id="country-sel" onchange="update()">
+        <option value="">-- Select country --</option>
+        <option value="ph">Philippines</option>
+        <option value="id">Indonesia</option>
+        <option value="my">Malaysia</option>
+        <option value="sg">Singapore</option>
+        <option value="th">Thailand</option>
+        <option value="vn">Vietnam</option>
+        <option value="ae">UAE</option>
+        <option value="sa">Saudi Arabia</option>
+        <option value="qa">Qatar</option>
+      </select>
+    </div>
+    <div>
+      <label class="select-label" for="issue-sel">Scam type</label>
+      <select id="issue-sel" onchange="update()">
+        <option value="">-- Select scam type --</option>
+        <option value="mobile">Mobile money / e-wallet fraud</option>
+        <option value="recruitment">Fake recruitment / job offer</option>
+        <option value="sim">SIM swap</option>
+        <option value="romance">Romance scam</option>
+        <option value="migrant">Migrant worker exploitation</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="response-box" id="response-box"></div>
+
+</div>
+
+<script>
+const COUNTRY_INFO = {
+  ph: {
+    name: "Philippines",
+    cybercrime: "PNP Anti-Cybercrime Group: acg.pnp.gov.ph | (02) 8414-1560",
+    financial: "BSP: consumeraffairs@bsp.gov.ph | 02-8708-7087",
+    migration: "POEA: poea.gov.ph | 722-1144 (verify overseas jobs)",
+    law: "Cybercrime Prevention Act 2012 (RA 10175) · Anti-Money Laundering Act · Migrant Workers Act (RA 10022)"
+  },
+  id: {
+    name: "Indonesia",
+    cybercrime: "Bareskrim Polri: patrolisiber.id | 110 ext 6",
+    financial: "OJK: 157 (financial fraud, illegal lending apps)",
+    migration: "Kemenaker: kemnaker.go.id | BNP2TKI: bnp2tki.go.id",
+    law: "UU ITE No. 11/2008 (amended 2024) · UU PDP No. 27/2022 · OJK Fintech Regulation"
+  },
+  my: {
+    name: "Malaysia",
+    cybercrime: "CCID: ccid.rmp.gov.my | 03-2610 3500 | Cyber999: 1-300-88-2999",
+    financial: "Bank Negara: 1-300-88-5465 | bnm.gov.my/contact",
+    migration: "JTKSM: jtksm.mohr.gov.my (migrant worker complaints)",
+    law: "Computer Crimes Act 1997 · Personal Data Protection Act 2010 · Penal Code (fraud provisions)"
+  },
+  sg: {
+    name: "Singapore",
+    cybercrime: "SPF e-complaint: police.gov.sg/e-services | Anti-Scam Helpline: 1800-722-6688",
+    financial: "MAS: 1800-225-5577 | mas.gov.sg",
+    migration: "MOM: mom.gov.sg/passes-and-permits | 6438-5122",
+    law: "Computer Misuse Act 1993 · Protection from Harassment Act 2014 · PDPA 2012 · Organised Crime Act 2015"
+  },
+  th: {
+    name: "Thailand",
+    cybercrime: "CCIB: 1441 (24/7 cybercrime hotline) | ccib.police.go.th",
+    financial: "BOT: 1213 | bot.or.th",
+    migration: "DOE: doe.go.th (Department of Employment — overseas work verification)",
+    law: "Computer Crime Act 2017 · PDPA 2019 (fully in force 2022) · Criminal Code (fraud)"
+  },
+  vn: {
+    name: "Vietnam",
+    cybercrime: "Cục An toàn thông tin: khonggianmang.vn | 156 (hotline)",
+    financial: "SBV: sbv.gov.vn | 1900-6247",
+    migration: "DOLAB: dolab.gov.vn (verify overseas job contracts)",
+    law: "Law on Cybersecurity 2019 · Law on Network Information Security 2015 · Penal Code 2015 (fraud)"
+  },
+  ae: {
+    name: "UAE",
+    cybercrime: "eCrime: ecrime.ae | Police: 999 (Abu Dhabi) / 901 (Dubai)",
+    financial: "CBUAE: centralbank.ae | 800-CBUAE (800-22823)",
+    migration: "MoHRE: mohre.gov.ae | 800-60 (labour complaints)",
+    law: "Federal Law No. 34/2021 (Cybercrime) · Federal Decree-Law No. 45/2021 (PDPL) · UAE Labour Law (Federal Law No. 33/2021)"
+  },
+  sa: {
+    name: "Saudi Arabia",
+    cybercrime: "MOI Absher: moi.gov.sa | CITC: 900",
+    financial: "SAMA: 800-125-6666 | sama.gov.sa",
+    migration: "MHRSD: mhrsd.gov.sa | 19911 (labour complaints)",
+    law: "Anti-Cybercrime Law 2007 · PDPL 2023 · Labour Law (Royal Decree M/51)"
+  },
+  qa: {
+    name: "Qatar",
+    cybercrime: "Cybercrime Combating Center (C3): Interior Ministry | Police: 999",
+    financial: "QCB: qcb.gov.qa | 44456666",
+    migration: "ADLSA: adlsa.gov.qa | 16008 (labour complaints)",
+    law: "Law No. 14/2014 (Cybercrime) · Personal Data Privacy Protection Law No. 13/2016 · Labour Law No. 14/2004"
+  }
+};
+
+const ISSUE_STEPS = {
+  mobile: {
+    title: "Mobile Money / E-Wallet Fraud",
+    subtitle: "Unauthorised GCash, GoPay, Touch'n'Go, PayNow, or similar transfer",
+    urgent: "Contact your e-wallet provider within 1 hour for best chance of reversal",
+    steps: [
+      { title: "Contact the e-wallet provider immediately", detail: "GCash: 2882 | GoPay/OVO: in-app help | Touch'n'Go: 03-5022-3888 | PayNow: contact your bank. <strong>Request transaction freeze and reversal within the first hour.</strong>" },
+      { title: "Report to your bank", detail: "If the fraud involved a linked bank account: call your bank's fraud line simultaneously. Request the receiving account be flagged." },
+      { title: "File with national cybercrime unit", detail: "Provide the transaction ID, recipient account/wallet number, time, and amount. Attach screenshots of any communication." },
+      { title: "File with financial regulator", detail: "Your country's central bank or financial regulator can apply pressure on e-wallet providers and receiving institutions. See your country contacts below." },
+      { title: "Change all linked account credentials", detail: "Change e-wallet PIN, linked bank password, and email password. Enable two-factor authentication. Check for unknown linked devices." }
+    ]
+  },
+  recruitment: {
+    title: "Fake Recruitment / Job Offer",
+    subtitle: "Fraudulent job offer, agency charging illegal fees, or fake work contract",
+    urgent: "Never pay fees before signing a verified contract — this is the primary red flag",
+    steps: [
+      { title: "Verify the agency is licensed", detail: "Philippines: POEA (poea.gov.ph) | Indonesia: BNP2TKI | Malaysia: JTKSM | Vietnam: DOLAB. <strong>Unlicensed agencies cannot legally place workers overseas.</strong>" },
+      { title: "Verify the job with the employer directly", detail: "Use contact details found independently — not provided by the agency — to confirm the job exists." },
+      { title: "Do not pay any upfront fee", detail: "<strong>Any fee before employment starts is a red flag.</strong> Legitimate agencies are paid by the employer, not the worker." },
+      { title: "Report the agency", detail: "Report to your country's labour authority (contacts below). Fraudulent recruitment carries criminal penalties." },
+      { title: "File cybercrime report if money was taken", detail: "If you paid a fee and received no job: file with your national cybercrime unit. Provide agency name, receipt, contract, and all communication." }
+    ]
+  },
+  sim: {
+    title: "SIM Swap Attack",
+    subtitle: "Your SIM stops working, OTPs redirect to an attacker, accounts accessed",
+    urgent: "Call your telecom operator within minutes of noticing your SIM has stopped working",
+    steps: [
+      { title: "Call your telecom operator immediately", detail: "Report that your SIM may have been swapped without your authorisation. Request the number be suspended from outgoing OTPs and a new SIM issued to you in person only." },
+      { title: "Call your bank and e-wallet providers", detail: "Request a temporary transaction freeze. Disable OTP-based authentication if an alternative is available. Most banks can freeze mobile banking on request." },
+      { title: "Report to national cybercrime unit", detail: "SIM swap often involves telecom insider collusion. File a report with your national cybercrime unit — this triggers an investigation into the telecom side." },
+      { title: "Secure all accounts once SIM is restored", detail: "Change passwords for email, banking, and social media. Switch 2FA from SMS to an authenticator app (Google Authenticator, Authy). Remove all unknown devices from account sessions." },
+      { title: "File with telecom regulator", detail: "Philippines: NTC | Indonesia: Kominfo | Malaysia: MCMC | Singapore: IMDA | UAE: TDRA. Telecom regulators can investigate and penalise the carrier." }
+    ]
+  },
+  romance: {
+    title: "Romance Scam",
+    subtitle: "Online relationship leading to financial requests, fake investment, or blackmail",
+    urgent: "Stop all transfers immediately — further payments will not recover previous losses",
+    steps: [
+      { title: "Stop all contact and transfers", detail: "<strong>Do not send any further money.</strong> Paying 'one more time' to recover losses is itself part of the scam. Cut off contact completely." },
+      { title: "Preserve all evidence", detail: "Screenshot all messages, profile images, transaction receipts, and contact details before blocking. You will need this for all reports." },
+      { title: "Report to the platform", detail: "Report the profile on the app or platform used. Provide the profile link, screenshots, and dates. Major platforms have dedicated fraud teams." },
+      { title: "Report to national cybercrime unit", detail: "File a report with all evidence: profile screenshots, messages, bank transfer receipts, any contact numbers or email addresses used." },
+      { title: "Contact your bank for any transfers made", detail: "Bank transfers may be reversible if reported quickly. Card payments: initiate a chargeback. Cryptocurrency: recovery is unlikely — do not pay any 'crypto recovery service'." }
+    ]
+  },
+  migrant: {
+    title: "Migrant Worker Exploitation",
+    subtitle: "Withheld wages, passport confiscation, forced labour, or deceptive contract substitution",
+    urgent: "Your passport cannot legally be held by an employer in most countries — this is a rights violation",
+    steps: [
+      { title: "Contact your country's embassy immediately", detail: "Your home country embassy can provide emergency consular assistance, safe shelter referrals, and help with repatriation if needed. <strong>This is free and confidential.</strong>" },
+      { title: "Report to the host country labour authority", detail: "UAE: MoHRE (800-60) | Saudi Arabia: MHRSD (19911) | Malaysia: JTKSM | Singapore: MOM (6438-5122) | Qatar: ADLSA (16008). Labour authorities can investigate and enforce wage payment." },
+      { title: "Verify migration portal status", detail: "India workers: check eMigrate (emigrate.gov.in). Philippines workers: check POEA (poea.gov.ph). Bangladesh workers: check BMET (bmet.gov.bd). Your registration here protects your rights." },
+      { title: "Contact an NGO or legal aid organisation", detail: "UAE: Migrant-Rights.org, Legal Aid in UAE | Philippines: OWWA (owwa.gov.ph) | Malaysia: Tenaganita. These organisations provide free legal help and can mediate with employers." },
+      { title: "File with national cybercrime unit if fraud was online", detail: "If the exploitation started with a fake job offer online: file with your country's cybercrime unit for the recruitment fraud alongside the labour complaint." }
+    ]
+  }
+};
+
+function update() {
+  const country = document.getElementById('country-sel').value;
+  const issue = document.getElementById('issue-sel').value;
+  if (!country || !issue) return;
+  const ci = COUNTRY_INFO[country];
+  const iss = ISSUE_STEPS[issue];
+
+  let html = `
+    <div class="response-header">
+      <h2>${iss.title} — ${ci.name}</h2>
+      <p>${iss.subtitle}</p>
+    </div>
+    <div class="urgent-tag">${iss.urgent}</div>
+  `;
+
+  iss.steps.forEach((s, i) => {
+    html += `<div class="step"><div class="step-num">${i+1}</div><div class="step-body"><div class="step-title">${s.title}</div><div class="step-detail">${s.detail}</div></div></div>`;
+  });
+
+  html += `
+    <div class="migration-box">
+      <strong>${ci.name} — Key Contacts</strong><br>
+      Cybercrime: ${ci.cybercrime}<br>
+      Financial: ${ci.financial}<br>
+      Migration / Labour: ${ci.migration}
+    </div>
+    <div class="law-box"><strong>Applicable law (${ci.name}):</strong> ${ci.law}</div>
+  `;
+
+  const box = document.getElementById('response-box');
+  box.innerHTML = html;
+  box.classList.add('visible');
+  sendHeight();
+}
+
+function sendHeight() {
+  setTimeout(() => {
+    if (window.parent) window.parent.postMessage({ iframeHeight: document.documentElement.scrollHeight + 20 }, '*');
+  }, 60);
+}
+</script>
+</body>
+</html>

@@ -2,14 +2,204 @@
 sidebar_position: 4
 title: "Health Tech, Medical Data & Wearables"
 sidebar_label: "Health Tech, Medical Data & Wearables"
+description: "How fitness trackers, mental health apps, genetic tests, and wearables expose sensitive health data - and what happens downstream."
+tags: [health-data, wearables, fitness-trackers, medical-privacy, genetic-data, telemedicine, medical-identity-theft, data-brokers, insurance-discrimination]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Health Tech, Medical Data & Wearables
 
-## Sub-topics
+*Your step count, sleep pattern, and mood logs are commercially valuable. They are also permanently sensitive in ways a stolen credit card number is not.*
 
-- Fitness tracker data misuse and insurance discrimination
-- Mental health app data harvesting
-- Genetic testing data leaks and family exposure
-- Telemedicine platform vulnerabilities
-- Medical identity theft and reporting health data breaches
+---
+
+## The Premium That Changed
+
+Arjun had been using a fitness tracker for two years. He was active, his metrics were good, and he liked the data.
+
+When his health insurance renewed, his premium increased significantly. The insurer cited "risk profile adjustments." He asked what data informed the assessment. The answer was vague.
+
+Months later, he read a report: his fitness app's parent company had sold aggregated health data to insurance industry analytics partners. The sale was disclosed in the terms of service, under a clause about "improving services with trusted partners."
+
+**He had consented, technically. He had not understood what he was consenting to.**
+
+His data had travelled from his wrist to his insurer through three intermediaries, none of whom he had chosen.
+
+---
+
+## What Is Actually Happening
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>$45B</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>projected value of the global digital health data market by 2026.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Health data is among the most commercially valuable personal data categories, and unlike financial data, it cannot be changed if exposed.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: Grand View Research Digital Health Market Report, 2025</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Mental Health Apps</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Therapy Notes Shared With Advertisers</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>A 2023 FTC investigation found that several major mental health apps shared user data, including session content and mood logs, with Facebook and advertising platforms. <b>Data entered during emotional vulnerability was used for ad targeting.</b></p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: FTC Mobile Health App Investigation, 2023</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Genetic Data</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>23andMe Breach: 6.9M Users Exposed</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>The 2023 23andMe breach exposed genetic data on 6.9 million users. Genetic information is <b>permanent, family-wide, and irreplaceable</b>, exposure affects biological relatives who never consented to the service.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: 23andMe breach disclosure, 2023</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #3B82F6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#3B82F6', fontWeight: 'bold' }}>Insurance Discrimination</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Wearable Data Sold to Insurers</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Multiple major fitness platform operators have confirmed data sharing with insurance analytics companies. Data sold as "de-identified" can be <b>re-identified using 3-4 additional data points</b> the recipient already holds.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: University of Chicago Privacy Research, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Medical Identity Theft</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Healthcare: Top Breach Category</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Healthcare data breaches hit a record in 2024. Medical identity theft lets attackers <b>file insurance claims, obtain prescriptions, and receive care under your name</b>, creating a permanent false medical record that can affect future treatment.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: IBM Cost of a Data Breach Report, 2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## Five Health Data Risks
+
+### Fitness Tracker Data and Insurance Discrimination
+
+Wearable data flows from device to app to cloud to analytics partners to data brokers. At the end of that chain, insurers and employers are documented purchasers. Most fitness app terms of service permit this transfer under broad "research and improvement" language.
+
+### Mental Health App Data Harvesting
+
+Apps for anxiety, depression, and therapy record emotional states and personal disclosures. These data points face less regulatory protection than medical records in most jurisdictions. **The intimate nature of what users share makes mental health app data particularly valuable to advertisers.**
+
+### Genetic Testing Data Leaks and Family Exposure
+
+Genetic data cannot be changed. A single breach exposes not just the user but every biological relative, many of whom never used the service. Family trees built in these platforms create networks of involuntary exposure that extend for generations.
+
+### Telemedicine Platform Vulnerabilities
+
+Telemedicine platforms handle prescription data, diagnosis records, and consultation content. Smaller platforms frequently lack the security standards of regulated healthcare providers. In 2024, multiple telehealth startups disclosed breaches affecting millions of patients.
+
+### Medical Identity Theft
+
+Stolen medical credentials allow criminals to obtain prescriptions and file false insurance claims. False entries in the victim's medical record can persist for years and affect real treatment decisions.
+
+---
+
+## Try It: Where Your Health Data Goes
+
+Tap each stage to see who receives your wearable data, whether you consented, and what the documented real-world consequence is.
+
+<iframe
+  id="health-flow-iframe"
+  src="/simulations/specialised-threats-vulnerable-groups/health-tech-medical-data-wearables/health-data-flow.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Where Your Health Data Goes"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('health-flow-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._healthFlowHandler);
+    window._healthFlowHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '12px', margin: '24px 0' }}>
+  <div className="glass-panel" style={{ padding: '20px 24px', borderRadius: '14px', borderLeft: '4px solid var(--ifm-color-primary)', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <span style={{ fontSize: '1.5rem', lineHeight: '1', marginTop: '2px' }}>📡</span>
+    <div>
+      <p style={{ fontWeight: '700', margin: '0 0 6px 0', fontSize: '1rem' }}>Data travels far beyond the app you opened.</p>
+      <p style={{ margin: '0', fontSize: '0.9rem', opacity: '0.85', lineHeight: '1.55' }}>By the time wearable data reaches an insurer or employer, it has passed through the device, the app, cloud storage, analytics platforms, and data brokers. You interacted with one of those. You had no knowledge of the others.</p>
+    </div>
+  </div>
+  <div className="glass-panel" style={{ padding: '20px 24px', borderRadius: '14px', borderLeft: '4px solid #EF4444', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <span style={{ fontSize: '1.5rem', lineHeight: '1', marginTop: '2px' }}>📜</span>
+    <div>
+      <p style={{ fontWeight: '700', margin: '0 0 6px 0', fontSize: '1rem' }}>Consent was given. Understanding was not.</p>
+      <p style={{ margin: '0', fontSize: '0.9rem', opacity: '0.85', lineHeight: '1.55' }}>Every data transfer in the flow was disclosed in terms of service. The consent was technically valid. The downstream uses — insurance pricing, employment screening — were not explained in plain language at the point of sign-up.</p>
+    </div>
+  </div>
+  <div className="glass-panel" style={{ padding: '20px 24px', borderRadius: '14px', borderLeft: '4px solid #8B5CF6', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <span style={{ fontSize: '1.5rem', lineHeight: '1', marginTop: '2px' }}>⚠️</span>
+    <div>
+      <p style={{ fontWeight: '700', margin: '0 0 6px 0', fontSize: '1rem' }}>Health data consequences are permanent.</p>
+      <p style={{ margin: '0', fontSize: '0.9rem', opacity: '0.85', lineHeight: '1.55' }}>A stolen password can be changed. Exposed health data cannot be recalled. It exists permanently in the records of every organisation that received it, with no practical mechanism for correction or removal.</p>
+    </div>
+  </div>
+</div>
+
+---
+
+## Three Things Worth Doing
+
+**1. Treat health app data like financial data.**
+Before installing any health app, search its privacy policy for "share." Every result is a data transfer you should evaluate.
+
+**2. Disable unnecessary sensor collection.**
+Most apps work adequately without continuous heart rate monitoring or location tracking. Turn off what you are not actively using.
+
+**3. Submit a data deletion request for apps you no longer use.**
+Under GDPR (EU), DPDPA (India), and CCPA (California), you can request deletion of your data. Do this for any health app you have stopped using.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Arjun's fitness data was described as 'de-identified' before being shared with insurance analytics partners. Why does this not guarantee his privacy?"
+  options={[
+    {
+      label: "Because de-identification is an illegal practice that violates data protection law.",
+      correct: false,
+      explanation: "De-identification is a legal and widely used practice. The issue is not its legality but its effectiveness, it frequently fails to provide the privacy protection users assume it does."
+    },
+    {
+      label: "Because de-identified health data can be re-identified by combining it with a small number of other data points the recipient already has.",
+      correct: true,
+      explanation: "Correct. Research consistently shows that 'de-identified' health data can be re-identified with 3-4 additional data points such as age, postcode, and device type. Data brokers and insurers hold exactly this kind of auxiliary data, making de-identification a weak protection in practice."
+    },
+    {
+      label: "Because Arjun should have read the terms of service more carefully.",
+      correct: false,
+      explanation: "Terms of service for major apps run to tens of thousands of words. Studies show that reading all terms encountered in a year would take months. The burden of protection should not rest on individuals parsing legal language."
+    },
+    {
+      label: "Because fitness data is not sensitive enough to warrant strong protection.",
+      correct: false,
+      explanation: "Fitness and health data is among the most sensitive personal data categories precisely because of how it can be used downstream, in insurance pricing, employment screening, and targeted health advertising."
+    }
+  ]}
+/>

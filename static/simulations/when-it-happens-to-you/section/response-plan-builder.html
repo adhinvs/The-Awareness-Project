@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Your Personal Response Plan Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #F8FAFC;
+    --surface: #FFFFFF;
+    --border: #E2E8F0;
+    --text: #0F172A;
+    --muted: #64748B;
+    --blue: #2563EB;
+    --green: #059669;
+    --red: #DC2626;
+    --amber: #B45309;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Outfit', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .wrap { max-width: 680px; margin: 0 auto; }
+
+  .header { margin-bottom: 1.5rem; }
+  .header h1 { font-size: 1.2rem; font-weight: 700; margin-bottom: 6px; }
+  .header p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+  .step-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--blue);
+    margin-bottom: 6px;
+  }
+
+  .field-group {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .field-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+
+  .field-group .hint {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  input[type="text"], select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.875rem;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  input[type="text"]:focus, select:focus {
+    border-color: var(--blue);
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .accounts-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .account-input-wrap {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .account-num {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .generate-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background 0.15s;
+  }
+
+  .generate-btn:hover { background: #1D4ED8; }
+  .generate-btn:disabled { background: #94A3B8; cursor: not-allowed; }
+
+  /* Result card */
+  .result-card {
+    display: none;
+    background: var(--surface);
+    border: 2px solid var(--blue);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: 1.5rem;
+  }
+
+  .result-card.visible { display: block; }
+
+  .result-header {
+    background: var(--blue);
+    color: #fff;
+    padding: 16px 20px;
+  }
+
+  .result-header h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .result-header p {
+    font-size: 0.8rem;
+    opacity: 0.85;
+  }
+
+  .result-body { padding: 20px; }
+
+  .response-step {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .response-step:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .step-circle {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step-content .step-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 3px;
+  }
+
+  .step-content .step-detail {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .step-content .step-value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--blue);
+    margin-top: 4px;
+  }
+
+  .print-btn {
+    width: 100%;
+    padding: 11px;
+    background: var(--bg);
+    color: var(--blue);
+    border: 2px solid var(--blue);
+    border-radius: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: all 0.15s;
+  }
+
+  .print-btn:hover { background: #EFF6FF; }
+
+  .reset-btn {
+    width: 100%;
+    padding: 11px;
+    background: transparent;
+    color: var(--muted);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: all 0.15s;
+  }
+
+  .reset-btn:hover { color: var(--text); border-color: #94A3B8; }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .form-section { display: none; }
+    .generate-btn, .print-btn, .reset-btn { display: none; }
+    .result-card { border: 1px solid #ccc; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>Your Personal Response Plan</h1>
+    <p>Fill in your details to generate a personalised incident response card. Keep it saved or printed - it is most useful when you are under stress and cannot think clearly.</p>
+  </div>
+
+  <div class="form-section">
+
+    <div class="field-group">
+      <div class="step-label">Step 1 - Financial</div>
+      <label for="bank-line">Your bank's 24-hour fraud line</label>
+      <p class="hint">Find this on the back of your bank card or your bank's official website. Save it here now.</p>
+      <input type="text" id="bank-line" placeholder="e.g. 1800-XXX-XXXX or +44 XXX XXX XXXX" />
+    </div>
+
+    <div class="field-group">
+      <div class="step-label">Step 2 - Account Recovery</div>
+      <label for="recovery-contact">Recovery contact for your most important account</label>
+      <p class="hint">This is the email address or phone number used to reset your primary email account. Write it from memory if possible.</p>
+      <input type="text" id="recovery-contact" placeholder="e.g. backup.email@example.com or +91 XXXXXXXXXX" />
+    </div>
+
+    <div class="field-group">
+      <div class="step-label">Step 3 - Reporting Portal</div>
+      <label for="country-select">Your country cybercrime reporting portal</label>
+      <p class="hint">Select your country and the portal details will be filled in for you.</p>
+      <select id="country-select" onchange="autoFillPortal()">
+        <option value="">-- Select your country --</option>
+        <option value="india">India</option>
+        <option value="uk">United Kingdom</option>
+        <option value="us">United States</option>
+        <option value="australia">Australia</option>
+        <option value="eu">European Union</option>
+        <option value="canada">Canada</option>
+        <option value="singapore">Singapore</option>
+        <option value="other">Other</option>
+      </select>
+      <input type="text" id="portal-detail" style="margin-top: 8px;" placeholder="Portal will appear here, or enter manually" />
+    </div>
+
+    <div class="field-group">
+      <div class="step-label">Step 4 - Trusted Contact</div>
+      <label>One person to call in a crisis</label>
+      <p class="hint">Choose someone who is calm under pressure, not likely to be affected by the same incident, and available by phone.</p>
+      <div class="two-col" style="margin-top: 0;">
+        <input type="text" id="trusted-name" placeholder="Name" />
+        <input type="text" id="trusted-phone" placeholder="Phone number" />
+      </div>
+    </div>
+
+    <div class="field-group">
+      <div class="step-label">Step 5 - High-Risk Accounts</div>
+      <label>Your 3 accounts that would cause the most damage if compromised</label>
+      <p class="hint">Usually: primary email, banking app, and either a work account or password manager.</p>
+      <div class="accounts-grid">
+        <div class="account-input-wrap">
+          <div class="account-num">1</div>
+          <input type="text" id="acc1" placeholder="e.g. Gmail (used to reset everything else)" />
+        </div>
+        <div class="account-input-wrap">
+          <div class="account-num">2</div>
+          <input type="text" id="acc2" placeholder="e.g. Primary bank app" />
+        </div>
+        <div class="account-input-wrap">
+          <div class="account-num">3</div>
+          <input type="text" id="acc3" placeholder="e.g. Work email or password manager" />
+        </div>
+      </div>
+    </div>
+
+    <button class="generate-btn" onclick="generatePlan()">Generate My Response Plan</button>
+  </div>
+
+  <div class="result-card" id="result-card">
+    <div class="result-header">
+      <h2>Your Personal Incident Response Card</h2>
+      <p>Follow these steps in order if a digital incident occurs.</p>
+    </div>
+    <div class="result-body" id="result-body"></div>
+    <div style="padding: 0 20px 20px;">
+      <button class="print-btn" onclick="window.print()">Print or Save This Card</button>
+      <button class="reset-btn" onclick="resetForm()">Start Over</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const PORTALS = {
+  india: "1930 (Helpline) | cybercrime.gov.in",
+  uk: "0300 123 2040 | actionfraud.police.uk",
+  us: "ic3.gov (FBI Internet Crime Complaint Center)",
+  australia: "cyber.gov.au | ReportCyber portal",
+  eu: "Europol EC3 | your national cybercrime unit",
+  canada: "Canadian Anti-Fraud Centre: 1-888-495-8501 | antifraudcentre.ca",
+  singapore: "999 (emergency) | I-watch: 1800-255-0000",
+  other: "Search: '[your country] cybercrime report online'"
+};
+
+function autoFillPortal() {
+  const sel = document.getElementById('country-select').value;
+  const field = document.getElementById('portal-detail');
+  if (PORTALS[sel]) {
+    field.value = PORTALS[sel];
+  } else {
+    field.value = '';
+  }
+}
+
+function generatePlan() {
+  const bankLine = document.getElementById('bank-line').value.trim() || 'Not entered - check back of your bank card';
+  const recovery = document.getElementById('recovery-contact').value.trim() || 'Not entered - check account security settings';
+  const portal = document.getElementById('portal-detail').value.trim() || 'Not entered - search your country cybercrime report';
+  const trustedName = document.getElementById('trusted-name').value.trim() || 'Your trusted contact';
+  const trustedPhone = document.getElementById('trusted-phone').value.trim() || 'Number not entered';
+  const acc1 = document.getElementById('acc1').value.trim() || 'Account 1 (not entered)';
+  const acc2 = document.getElementById('acc2').value.trim() || 'Account 2 (not entered)';
+  const acc3 = document.getElementById('acc3').value.trim() || 'Account 3 (not entered)';
+
+  const body = document.getElementById('result-body');
+  body.innerHTML = `
+    <div class="response-step">
+      <div class="step-circle">1</div>
+      <div class="step-content">
+        <div class="step-title">Secure your accounts</div>
+        <div class="step-detail">End all active sessions on affected accounts. Change passwords from a trusted device (not the one you suspect is compromised). Check recovery email and phone are still yours.</div>
+        <div class="step-value">Your recovery contact: ${recovery}</div>
+      </div>
+    </div>
+    <div class="response-step">
+      <div class="step-circle">2</div>
+      <div class="step-content">
+        <div class="step-title">Call your bank's fraud line</div>
+        <div class="step-detail">Report any unauthorised transactions. Request a payment recall if money has been transferred. Ask for a case reference number before hanging up.</div>
+        <div class="step-value">${bankLine}</div>
+      </div>
+    </div>
+    <div class="response-step">
+      <div class="step-circle">3</div>
+      <div class="step-content">
+        <div class="step-title">Report to cybercrime portal</div>
+        <div class="step-detail">File an official report. This creates a legal record, supports insurance claims, and routes your case to the right authority.</div>
+        <div class="step-value">${portal}</div>
+      </div>
+    </div>
+    <div class="response-step">
+      <div class="step-circle">4</div>
+      <div class="step-content">
+        <div class="step-title">Call your trusted contact</div>
+        <div class="step-detail">During a crisis, your own judgment is impaired. Talking to a calm, unaffected person helps you prioritise and avoid making hasty decisions like paying more money or deleting evidence.</div>
+        <div class="step-value">${trustedName} - ${trustedPhone}</div>
+      </div>
+    </div>
+    <div class="response-step">
+      <div class="step-circle">5</div>
+      <div class="step-content">
+        <div class="step-title">Monitor your high-risk accounts</div>
+        <div class="step-detail">Enable login alerts and check recent activity on each. If you use the same password on any of these, change it immediately.</div>
+        <div class="step-value">1. ${acc1}<br/>2. ${acc2}<br/>3. ${acc3}</div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('result-card').classList.add('visible');
+  document.getElementById('result-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  sendHeight();
+}
+
+function resetForm() {
+  document.getElementById('bank-line').value = '';
+  document.getElementById('recovery-contact').value = '';
+  document.getElementById('country-select').value = '';
+  document.getElementById('portal-detail').value = '';
+  document.getElementById('trusted-name').value = '';
+  document.getElementById('trusted-phone').value = '';
+  document.getElementById('acc1').value = '';
+  document.getElementById('acc2').value = '';
+  document.getElementById('acc3').value = '';
+  document.getElementById('result-card').classList.remove('visible');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  sendHeight();
+}
+
+function sendHeight() {
+  setTimeout(() => {
+    if (window.parent) {
+      window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+    }
+  }, 100);
+}
+
+window.addEventListener('load', sendHeight);
+window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>

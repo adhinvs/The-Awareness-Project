@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Permission Audit Guide</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F8FAFC; --surface: #FFFFFF; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B;
+      --blue: #2563EB; --blue-light: #EFF6FF;
+      --green: #059669; --green-light: #ECFDF5;
+      --red: #DC2626; --red-light: #FEF2F2;
+      --amber: #D97706; --amber-light: #FFFBEB;
+      --r: 12px;
+    }
+    body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px 16px 36px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .header { text-align: center; margin-bottom: 24px; }
+    .header h1 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .header p { font-size: 13.5px; color: var(--muted); max-width: 480px; margin: 0 auto; }
+    .wrap { max-width: 620px; margin: 0 auto; }
+    .os-picker { display: flex; gap: 12px; margin-bottom: 24px; }
+    .os-btn { flex: 1; padding: 14px; background: var(--surface); border: 2px solid var(--border); border-radius: var(--r); cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700; color: var(--muted); text-align: center; transition: all 0.15s; }
+    .os-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .os-btn.active { border-color: var(--blue); background: var(--blue-light); color: var(--blue); }
+    .os-btn .icon { font-size: 24px; display: block; margin-bottom: 4px; }
+    .path-note { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 14px 16px; margin-bottom: 20px; display: none; font-size: 13px; }
+    .path-note.show { display: block; }
+    .path-note strong { display: block; margin-bottom: 4px; font-size: 13.5px; }
+    .path-note code { background: var(--bg); border: 1px solid var(--border); border-radius: 5px; padding: 2px 7px; font-size: 12px; font-family: monospace; }
+    .perm-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 12px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.04); display: none; }
+    .perm-card.show { display: block; }
+    .perm-header { padding: 14px 16px; display: flex; align-items: center; gap: 10px; background: var(--bg); border-bottom: 1px solid var(--border); }
+    .perm-icon { font-size: 20px; }
+    .perm-name { font-size: 14px; font-weight: 700; }
+    .perm-risk { margin-left: auto; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 8px; border-radius: 99px; }
+    .perm-risk.high { background: var(--red-light); color: var(--red); }
+    .perm-risk.medium { background: var(--amber-light); color: var(--amber); }
+    .perm-risk.low { background: var(--green-light); color: var(--green); }
+    .perm-body { padding: 14px 16px; }
+    .perm-desc { font-size: 13px; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
+    .rule-grid { display: flex; gap: 8px; }
+    .rule-box { flex: 1; border-radius: 8px; padding: 10px 12px; font-size: 12.5px; line-height: 1.4; }
+    .rule-box.ok { background: var(--green-light); border: 1px solid #A7F3D0; }
+    .rule-box.bad { background: var(--red-light); border: 1px solid #FECACA; }
+    .rule-box .rule-title { font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .rule-box.ok .rule-title { color: var(--green); }
+    .rule-box.bad .rule-title { color: var(--red); }
+    .revoke-note { margin-top: 10px; padding: 10px 12px; background: var(--blue-light); border: 1px solid #BFDBFE; border-radius: 8px; font-size: 12.5px; line-height: 1.5; }
+    .revoke-note strong { color: var(--blue); }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>Permission Audit Guide</h1>
+    <p>Select your OS. Then review each permission category - who legitimately needs it, who never should, and how to revoke it.</p>
+  </div>
+
+  <div class="os-picker">
+    <button class="os-btn" onclick="selectOS('android',this)"><span class="icon">🤖</span>Android</button>
+    <button class="os-btn" onclick="selectOS('iphone',this)"><span class="icon">📱</span>iPhone</button>
+  </div>
+
+  <div class="path-note" id="path-note"></div>
+
+  <div id="perm-list"></div>
+</div>
+
+<script>
+  const perms = [
+    {
+      icon: '📍', name: 'Location', risk: 'high',
+      desc: 'Reveals where you are and where you have been. "Always on" means 24/7 tracking even when the app is closed.',
+      ok: 'Maps, navigation, delivery apps (while using only)',
+      bad: 'Games, flashlight apps, news apps, keyboards, calculators',
+      android: 'Settings > Location > App permissions > [app name] > set to "Only while using"',
+      iphone: 'Settings > Privacy & Security > Location Services > [app name] > set to "While Using"'
+    },
+    {
+      icon: '🎤', name: 'Microphone', risk: 'high',
+      desc: 'Gives the app access to your microphone. This includes ambient sound, not just calls you initiate.',
+      ok: 'Voice call apps, voice notes, language learning apps',
+      bad: 'Shopping apps, games (unless voice-controlled), utility tools',
+      android: 'Settings > Privacy > Permission manager > Microphone > review each app',
+      iphone: 'Settings > Privacy & Security > Microphone > toggle off for any app that doesn\'t need it'
+    },
+    {
+      icon: '📷', name: 'Camera', risk: 'high',
+      desc: 'Allows the app to activate your camera. Some apps request this and then leave it accessible in the background.',
+      ok: 'Camera apps, video calling, QR code scanners, document scanning apps',
+      bad: 'Fitness trackers, weather apps, recipe apps, games without video features',
+      android: 'Settings > Privacy > Permission manager > Camera > check each app listed',
+      iphone: 'Settings > Privacy & Security > Camera > remove access from any app that has no camera feature'
+    },
+    {
+      icon: '👥', name: 'Contacts', risk: 'high',
+      desc: 'Exports your entire contacts list - names, numbers, emails - to the app\'s servers. Often used for data profiling.',
+      ok: 'Messaging apps, email clients, phone diallers',
+      bad: 'Games, flashlight apps, any app where contacts serve no visible function',
+      android: 'Settings > Privacy > Permission manager > Contacts',
+      iphone: 'Settings > Privacy & Security > Contacts'
+    },
+    {
+      icon: '💾', name: 'Storage / Files', risk: 'medium',
+      desc: 'Can read and write files on your device. Broad storage access means the app can see most files on your phone.',
+      ok: 'File managers, photo editors, music players, PDF readers',
+      bad: 'Apps with no reason to read or save files - games, calculators, simple utilities',
+      android: 'Settings > Privacy > Permission manager > Files and media',
+      iphone: 'Settings > Privacy & Security > Photos (for photo access)'
+    },
+    {
+      icon: '📞', name: 'Call Logs', risk: 'medium',
+      desc: 'Exposes who you call, how often, and for how long. This is used for behavioural profiling by data brokers.',
+      ok: 'Phone dialler apps, some call management tools',
+      bad: 'Any app that is not your phone app or a call manager',
+      android: 'Settings > Privacy > Permission manager > Call logs',
+      iphone: 'iOS restricts this more tightly. Third-party apps rarely get call log access.'
+    }
+  ];
+
+  let selectedOS = null;
+
+  function selectOS(os, btn) {
+    selectedOS = os;
+    document.querySelectorAll('.os-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const pathNote = document.getElementById('path-note');
+    if (os === 'android') {
+      pathNote.innerHTML = '<strong>Where to find permissions on Android</strong>Settings > Privacy > Permission manager. Or: long-press any app icon > App info > Permissions.';
+    } else {
+      pathNote.innerHTML = '<strong>Where to find permissions on iPhone</strong>Settings > Privacy & Security. Or: Settings > [App Name] to see all permissions for a specific app.';
+    }
+    pathNote.classList.add('show');
+
+    let html = '';
+    perms.forEach((p, i) => {
+      const revoke = os === 'android' ? p.android : p.iphone;
+      html += `<div class="perm-card show">
+        <div class="perm-header">
+          <span class="perm-icon">${p.icon}</span>
+          <span class="perm-name">${p.name}</span>
+          <span class="perm-risk ${p.risk}">${p.risk} sensitivity</span>
+        </div>
+        <div class="perm-body">
+          <div class="perm-desc">${p.desc}</div>
+          <div class="rule-grid">
+            <div class="rule-box ok"><div class="rule-title">Legitimate uses</div>${p.ok}</div>
+            <div class="rule-box bad"><div class="rule-title">Red flags</div>${p.bad}</div>
+          </div>
+          <div class="revoke-note"><strong>How to revoke on ${os === 'android' ? 'Android' : 'iPhone'}:</strong> ${revoke}</div>
+        </div>
+      </div>`;
+    });
+    document.getElementById('perm-list').innerHTML = html;
+
+    setTimeout(() => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'), 200);
+  }
+
+  window.addEventListener('load', () => window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*'));
+</script>
+</body>
+</html>

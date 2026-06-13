@@ -2,14 +2,181 @@
 sidebar_position: 7
 title: "Workplace & Gig Economy Threats"
 sidebar_label: "Workplace & Gig Economy Threats"
+description: "Business Email Compromise, vendor invoice fraud, gig worker account takeover, and remote work vulnerabilities."
+tags: [bec, business-email-compromise, invoice-fraud, ceo-fraud, gig-economy, content-creator, remote-work, vendor-scams, workplace-security]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Workplace & Gig Economy Threats
 
-## Sub-topics
+*Workplace fraud does not require breaking into systems. It requires one person to believe an email is legitimate and act on it before verifying.*
 
-- Business Email Compromise (BEC) and CEO fraud
-- Vendor payment scams and invoice fraud
-- Gig worker account takeover
-- Content creator impersonation and account hijacking
-- Remote worker and home office vulnerabilities
+---
+
+## The Invoice That Wasn't
+
+The finance team at a mid-size logistics company processed supplier payments every Friday. One Wednesday, an email arrived from a long-standing vendor. Bank details had changed. Please update before the next payment run.
+
+The email looked right. The name was right. The logo matched. The writing style matched.
+
+**One field was different: the email domain.** The real vendor used `.com`. This email came from `.net`, a lookalike domain registered two weeks earlier.
+
+The finance coordinator processed the update. The Friday payment of £87,000 went to an account the vendor had never heard of.
+
+The vendor called on Monday. By then, the money had moved through three accounts and was largely unrecoverable.
+
+---
+
+## What Is Actually Happening
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>$2.77B</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>lost to Business Email Compromise in the US in 2024, the highest-loss cybercrime category for the sixth consecutive year.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Every one of these attacks impersonated a trusted person or organisation. No malware or technical breach was required in the majority of cases.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', display: 'block', marginTop: '12px' }}>Source: FBI IC3 Annual Report, 2025</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Invoice Fraud</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Average BEC Loss Exceeds $125,000</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>The median loss per BEC incident is <b>$125,000</b>. The top incidents exceed $5M. Vendor payment fraud and CEO impersonation account for the majority of cases. Recovery rates drop sharply after 24 hours.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: FBI IC3 Annual Report, 2025</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Gig Economy</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Platform Account Takeover Surging</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Gig platform accounts (Uber, Fiverr, Upwork, Deliveroo) represent income streams that are immediately exploitable after takeover. <b>Attackers redirect earnings, run fraudulent orders, or sell accounts</b>. Many workers have no recourse path when locked out.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Sift Q3 2024 Digital Trust Report</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## Five Workplace Threat Vectors
+
+### Business Email Compromise and CEO Fraud
+
+BEC attacks impersonate executives or trusted contacts to redirect payments or request credential resets. The attacker researches the target organisation via LinkedIn, company websites, and previous invoices before sending a message calibrated to look completely routine. **The one verification step that defeats every BEC attack: call the person on a number already saved in your contacts, not any number in the email.**
+
+### Vendor Payment Scams and Invoice Fraud
+
+The vendor bank detail change is the most common BEC variant. A lookalike domain sends a plausible request at a plausible moment (typically just before a scheduled payment run). Domain lookalikes are registered weeks in advance. The writing style is copied from previous legitimate correspondence.
+
+### Gig Worker Account Takeover
+
+Gig platform accounts are targeted because they represent immediate, liquid income. Attackers use phishing, credential stuffing, and SIM swap attacks. Once inside, they redirect payment destinations and, in some cases, run fraudulent transactions that get the legitimate worker banned from the platform.
+
+### Content Creator Impersonation and Hijacking
+
+Verified social media accounts and YouTube channels with large audiences sell for significant sums. Creators are targeted with phishing disguised as brand partnerships, sponsorship offers, and platform notifications. **Once an account is taken over, revenue, identity, and years of work disappear simultaneously.**
+
+### Remote Worker and Home Office Vulnerabilities
+
+Home routers are less frequently patched than corporate networks. Video call backgrounds accidentally reveal home addresses. Personal and work devices sharing a network create cross-contamination risk. Remote workers are also targeted by fake IT support requests that would be immediately identified as suspicious in an office environment.
+
+---
+
+## Try It: The Vendor Invoice
+
+You are a finance team member. A familiar supplier has emailed about updated bank details. What do you do?
+
+<iframe
+  id="vendor-invoice-iframe"
+  src="/simulations/specialised-threats-vulnerable-groups/workplace-gig-economy-threats/vendor-invoice.html"
+  width="100%"
+  style={{ height: '600px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="The Vendor Invoice"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('vendor-invoice-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._vendorInvoiceHandler);
+    window._vendorInvoiceHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '12px', margin: '24px 0' }}>
+  <div className="glass-panel" style={{ padding: '20px 24px', borderRadius: '14px', borderLeft: '4px solid var(--ifm-color-primary)', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <span style={{ fontSize: '1.5rem', lineHeight: '1', marginTop: '2px' }}>✉️</span>
+    <div>
+      <p style={{ fontWeight: '700', margin: '0 0 6px 0', fontSize: '1rem' }}>The email was designed to pass a quick look.</p>
+      <p style={{ margin: '0', fontSize: '0.9rem', opacity: '0.85', lineHeight: '1.55' }}>The domain was registered weeks in advance. The writing style was copied from previous legitimate correspondence. The request arrived at a predictable moment in the payment cycle. This is research-driven fraud, not opportunistic spam.</p>
+    </div>
+  </div>
+  <div className="glass-panel" style={{ padding: '20px 24px', borderRadius: '14px', borderLeft: '4px solid #EF4444', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <span style={{ fontSize: '1.5rem', lineHeight: '1', marginTop: '2px' }}>👁️</span>
+    <div>
+      <p style={{ fontWeight: '700', margin: '0 0 6px 0', fontSize: '1rem' }}>Visual checks fail at this level.</p>
+      <p style={{ margin: '0', fontSize: '0.9rem', opacity: '0.85', lineHeight: '1.55' }}>The human brain processes familiar brand names and writing styles before it reads character-by-character. Seeing ".net" instead of ".com" requires active, deliberate inspection. Under normal workload, that inspection rarely happens.</p>
+    </div>
+  </div>
+  <div className="glass-panel" style={{ padding: '20px 24px', borderRadius: '14px', borderLeft: '4px solid #059669', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+    <span style={{ fontSize: '1.5rem', lineHeight: '1', marginTop: '2px' }}>📞</span>
+    <div>
+      <p style={{ fontWeight: '700', margin: '0 0 6px 0', fontSize: '1rem' }}>One phone call defeats the whole attack.</p>
+      <p style={{ margin: '0', fontSize: '0.9rem', opacity: '0.85', lineHeight: '1.55' }}>Calling the vendor on a number already saved in your system takes 60 seconds and breaks every variant of this fraud. The attack relies entirely on the payment being processed without that call being made.</p>
+    </div>
+  </div>
+</div>
+
+---
+
+## Three Things Worth Doing
+
+**1. Call to confirm any bank detail change, on a number you already have.**
+No email, however legitimate it looks, is sufficient authorisation for a payment destination change. One call to the vendor on a number already in your records catches this attack every time.
+
+**2. Enable 2FA on all gig platform and creator accounts.**
+Account hijacking is significantly harder with a hardware key or authenticator app. SMS-based 2FA is better than nothing but is vulnerable to SIM swap attacks.
+
+**3. Implement a payment change verification policy.**
+For businesses: require dual authorisation for any payment destination change, with at least one confirmation via a pre-existing contact channel. This is the organisational version of the "call to verify" rule.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="The BEC email the finance coordinator received came from a lookalike domain, .net instead of .com. Why did this still succeed, and what would have caught it?"
+  options={[
+    {
+      label: "It succeeded because the coordinator was not paying attention. More careful reading would have caught the domain.",
+      correct: false,
+      explanation: "Lookalike domains are registered specifically to pass quick visual checks. The human brain processes familiar names as matches before reading character by character. This is not carelessness, it is a known cognitive limitation that the attack is designed to exploit."
+    },
+    {
+      label: "It succeeded because email looks legitimate at a glance. A call to the vendor on a pre-existing number would have caught it before any action was taken.",
+      correct: true,
+      explanation: "Correct. The attack succeeded because visual plausibility is high and verification through a separate channel did not happen. One call to the vendor using a number already saved in the system would have confirmed within 60 seconds that no bank detail change had been requested."
+    },
+    {
+      label: "It succeeded because the company's email filter should have blocked the lookalike domain.",
+      correct: false,
+      explanation: "Email filters are not reliable at catching lookalike domains, especially freshly registered ones with no prior malicious activity. Relying solely on technical controls to catch BEC attacks is insufficient, human verification is the definitive defence."
+    },
+    {
+      label: "It would have been caught if the company used two-factor authentication on email.",
+      correct: false,
+      explanation: "2FA protects your own account from being taken over. It does nothing to prevent an external attacker from sending a convincing email from a lookalike domain. BEC attacks do not require compromising your account."
+    }
+  ]}
+/>

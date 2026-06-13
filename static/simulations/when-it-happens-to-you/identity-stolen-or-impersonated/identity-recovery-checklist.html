@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Identity Recovery Checklist</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --font: 'Outfit', system-ui, sans-serif;
+    --bg: #F8FAFC;
+    --surface: #FFFFFF;
+    --border: #E2E8F0;
+    --text: #0F172A;
+    --muted: #64748B;
+    --blue: #2563EB;
+    --blue-light: #EFF6FF;
+    --red: #DC2626;
+    --red-light: #FEF2F2;
+    --green: #059669;
+    --green-light: #ECFDF5;
+    --amber: #B45309;
+    --amber-light: #FFFBEB;
+    --purple: #7C3AED;
+    --purple-light: #F5F3FF;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    padding: 28px 20px 40px;
+    line-height: 1.6;
+  }
+
+  .wrap { max-width: 700px; margin: 0 auto; }
+
+  .header { margin-bottom: 20px; }
+  .header h1 { font-size: 1.15rem; font-weight: 700; margin-bottom: 5px; }
+  .header p { font-size: 0.88rem; color: var(--muted); }
+
+  /* Scenario selector */
+  .scenario-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .scenario-btn {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    font-family: var(--font);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.18s;
+    line-height: 1.4;
+  }
+  .scenario-btn:hover { border-color: #CBD5E1; color: var(--text); background: #FAFBFC; }
+  .scenario-btn.active { color: #fff; border-color: transparent; }
+  .scenario-btn[data-scenario="aadhaar"].active { background: var(--blue); }
+  .scenario-btn[data-scenario="social"].active { background: var(--purple); }
+  .scenario-btn[data-scenario="credit"].active { background: #DC2626; }
+  .scenario-btn[data-scenario="multiple"].active { background: var(--amber); }
+
+  .scenario-icon { font-size: 1.3rem; display: block; margin-bottom: 4px; }
+
+  /* Progress */
+  .progress-wrap { margin-bottom: 20px; }
+  .progress-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+  }
+  .progress-title { font-size: 0.8rem; font-weight: 600; color: var(--muted); }
+  .progress-count { font-size: 0.8rem; color: var(--muted); }
+  .progress-bg {
+    height: 8px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.35s;
+  }
+  .fill-blue { background: var(--blue); }
+  .fill-purple { background: var(--purple); }
+  .fill-red { background: var(--red); }
+  .fill-amber { background: var(--amber); }
+
+  /* Tracks */
+  .tracks { display: flex; flex-direction: column; gap: 20px; }
+
+  .track {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .track-header {
+    padding: 12px 16px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 1.5px solid var(--border);
+  }
+  .track-header.blue { color: var(--blue); background: var(--blue-light); border-color: #BFDBFE; }
+  .track-header.purple { color: var(--purple); background: var(--purple-light); border-color: #DDD6FE; }
+  .track-header.red { color: var(--red); background: var(--red-light); border-color: #FECACA; }
+  .track-header.amber { color: var(--amber); background: var(--amber-light); border-color: #FDE68A; }
+  .track-header.green { color: var(--green); background: var(--green-light); border-color: #A7F3D0; }
+
+  .track-items { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+    border: 1.5px solid transparent;
+  }
+  .check-item:hover { background: #F8FAFC; border-color: var(--border); }
+  .check-item.checked { background: var(--green-light); border-color: #A7F3D0; }
+
+  .checkbox {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 5px;
+    border: 2px solid #CBD5E1;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .check-item.checked .checkbox {
+    background: var(--green);
+    border-color: var(--green);
+  }
+  .checkbox svg { display: none; }
+  .check-item.checked .checkbox svg { display: block; }
+
+  .check-text { font-size: 0.875rem; color: var(--text); line-height: 1.5; }
+  .check-sub { font-size: 0.78rem; color: var(--muted); margin-top: 2px; line-height: 1.45; }
+  .check-item.checked .check-text { color: #065F46; }
+  .check-item.checked .check-sub { color: #047857; }
+
+  /* Completion */
+  .completion {
+    display: none;
+    background: var(--green-light);
+    border: 2px solid #6EE7B7;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .completion.visible { display: block; }
+  .completion-icon { font-size: 2rem; margin-bottom: 8px; }
+  .completion h3 { font-size: 1rem; font-weight: 700; color: #065F46; margin-bottom: 6px; }
+  .completion p { font-size: 0.85rem; color: #047857; line-height: 1.55; }
+
+  /* Tip box */
+  .tip-box {
+    background: var(--blue-light);
+    border: 1.5px solid #BFDBFE;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 0.83rem;
+    color: #1E40AF;
+    line-height: 1.55;
+    margin-top: 16px;
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .empty-icon { font-size: 2.5rem; margin-bottom: 10px; }
+
+  @media (max-width: 480px) {
+    .scenario-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>Identity Recovery Checklist</h1>
+    <p>Select what happened to you. The checklist adjusts to show the relevant steps across each recovery track.</p>
+  </div>
+
+  <div class="scenario-label">What was stolen or misused?</div>
+  <div class="scenario-grid">
+    <button class="scenario-btn" data-scenario="aadhaar">
+      <span class="scenario-icon">🪪</span>
+      Aadhaar / PAN Misuse
+    </button>
+    <button class="scenario-btn" data-scenario="social">
+      <span class="scenario-icon">👤</span>
+      Social Media Impersonation
+    </button>
+    <button class="scenario-btn" data-scenario="credit">
+      <span class="scenario-icon">💳</span>
+      Credit Opened in My Name
+    </button>
+    <button class="scenario-btn" data-scenario="multiple">
+      <span class="scenario-icon">⚠️</span>
+      Multiple / Not Sure
+    </button>
+  </div>
+
+  <div id="checklist-area">
+    <div class="empty-state">
+      <div class="empty-icon">👆</div>
+      Select a scenario above to see your personalised recovery checklist.
+    </div>
+  </div>
+
+</div>
+
+<script>
+const checked = new Set();
+let currentScenario = null;
+
+const SCENARIOS = {
+  aadhaar: {
+    label: 'Aadhaar / PAN Misuse',
+    fillClass: 'fill-blue',
+    tracks: [
+      {
+        id: 'a-credit',
+        heading: 'Track A - Credit Bureau Actions',
+        headerClass: 'blue',
+        items: [
+          { id: 'a1', text: 'Check your CIBIL report', sub: 'freecibil.com - one free report per year. Look for accounts or enquiries you do not recognise.' },
+          { id: 'a2', text: 'Place a fraud flag with CIBIL', sub: 'Contact CIBIL at 1800-200-2030 and request a fraud flag on your file.' },
+          { id: 'a3', text: 'Check your Experian India report', sub: 'experian.in - request your free credit report and review all accounts.' },
+          { id: 'a4', text: 'Check your Equifax India report', sub: 'equifax.co.in - review for any unfamiliar credit accounts or hard enquiries.' }
+        ]
+      },
+      {
+        id: 'a-report',
+        heading: 'Track B - Reporting',
+        headerClass: 'red',
+        items: [
+          { id: 'a5', text: 'File a complaint at cybercrime.gov.in', sub: 'Select "Financial Fraud" and describe the misuse. Request a case number.' },
+          { id: 'a6', text: 'Call the cybercrime helpline: 1930', sub: 'For immediate guidance on next steps and to log an initial complaint.' },
+          { id: 'a7', text: 'Report PAN misuse to Income Tax Department', sub: 'incometaxindia.gov.in - use the grievance portal to flag misuse of your PAN.' },
+          { id: 'a8', text: 'Report Aadhaar misuse at UIDAI', sub: 'uidai.gov.in - lock your Aadhaar biometrics to prevent further KYC misuse. Free via mAadhaar app.' }
+        ]
+      },
+      {
+        id: 'a-accounts',
+        heading: 'Track C - Account Actions',
+        headerClass: 'amber',
+        items: [
+          { id: 'a9', text: 'Contact your bank to flag your accounts', sub: 'Ask them to add a fraud alert and review recent activity linked to your Aadhaar.' },
+          { id: 'a10', text: 'Request a statement of all accounts linked to your Aadhaar', sub: 'Banks can provide this. Review for any accounts you did not open.' },
+          { id: 'a11', text: 'Freeze credit at each affected institution', sub: 'Contact each lender with a written dispute and your police report reference number.' }
+        ]
+      }
+    ]
+  },
+
+  social: {
+    label: 'Social Media Impersonation',
+    fillClass: 'fill-purple',
+    tracks: [
+      {
+        id: 's-platform',
+        heading: 'Platform Actions',
+        headerClass: 'purple',
+        items: [
+          { id: 's1', text: 'Screenshot the fake profile before doing anything else', sub: 'Capture the profile photo, name, bio, and any posts. You will need this for reporting.' },
+          { id: 's2', text: 'Report the fake profile to the platform', sub: 'Most platforms have a dedicated "impersonation" category. Select it specifically - not just "spam".' },
+          { id: 's3', text: 'Submit ID verification if the platform requests it', sub: 'This speeds up removal. Government-issued ID is typically accepted.' },
+          { id: 's4', text: 'Search your name on all major platforms', sub: 'Check Facebook, Instagram, TikTok, X, LinkedIn, Snapchat, and YouTube for additional fakes.' }
+        ]
+      },
+      {
+        id: 's-contacts',
+        heading: 'Protecting Your Contacts',
+        headerClass: 'blue',
+        items: [
+          { id: 's5', text: 'Notify your contacts that a fake account exists in your name', sub: 'A brief message prevents harm from anyone who receives messages from the impersonator.' },
+          { id: 's6', text: 'Ask contacts to report the fake account too', sub: 'Multiple reports from different users accelerates platform review.' }
+        ]
+      },
+      {
+        id: 's-legal',
+        heading: 'If Harassing Content Is Posted',
+        headerClass: 'red',
+        items: [
+          { id: 's7', text: 'File with cybercrime.gov.in if harassing content is posted', sub: 'India: cybercrime.gov.in. UK: Action Fraud. US: IC3.gov. Document the content before reporting.' },
+          { id: 's8', text: 'Keep records of all platform report reference numbers', sub: 'These are needed if the case needs to be escalated or handed to law enforcement.' }
+        ]
+      }
+    ]
+  },
+
+  credit: {
+    label: 'Credit Opened in My Name',
+    fillClass: 'fill-red',
+    tracks: [
+      {
+        id: 'c-freeze',
+        heading: 'Step 1 - Freeze Credit Immediately',
+        headerClass: 'red',
+        items: [
+          { id: 'c1', text: 'Place a credit freeze with CIBIL (India)', sub: 'Contact CIBIL at 1800-200-2030 or freecibil.com. This prevents any new credit being opened in your name.' },
+          { id: 'c2', text: 'Place a credit freeze with Experian India', sub: 'experian.in - contact their fraud department to place a security freeze.' },
+          { id: 'c3', text: 'Place a credit freeze with Equifax India', sub: 'equifax.co.in - request a security freeze. All three bureaus must be contacted separately.' },
+          { id: 'c4', text: 'US only: freeze at Equifax, Experian, and TransUnion', sub: 'Each bureau has an online freeze portal. All three must be contacted - they do not share freeze requests.' }
+        ]
+      },
+      {
+        id: 'c-dispute',
+        heading: 'Step 2 - Dispute Each Fraudulent Account',
+        headerClass: 'amber',
+        items: [
+          { id: 'c5', text: 'File a police report - get a reference number', sub: 'This reference number is required by most lenders to process a fraud dispute. File at your local station or cybercrime.gov.in.' },
+          { id: 'c6', text: 'Contact each lender with a written dispute letter', sub: 'State you are a victim of identity fraud, include your police reference number, and request the account be removed from your credit file.' },
+          { id: 'c7', text: 'Request written confirmation from each lender', sub: 'Keep a record of every dispute. Note the date, the name of who you spoke to, and what was agreed.' }
+        ]
+      },
+      {
+        id: 'c-monitor',
+        heading: 'Step 3 - Monitor for 12 Months',
+        headerClass: 'green',
+        items: [
+          { id: 'c8', text: 'Set a monthly reminder to check your credit report', sub: 'Fraudulent activity can appear weeks or months after the initial incident.' },
+          { id: 'c9', text: 'Set up fraud alerts where available', sub: 'Fraud alerts require lenders to take extra verification steps before opening new accounts.' },
+          { id: 'c10', text: 'File with FTC IdentityTheft.gov (US) for a personalised recovery plan', sub: 'US residents: IdentityTheft.gov generates official dispute letters and tracks your recovery steps.' }
+        ]
+      }
+    ]
+  },
+
+  multiple: {
+    label: 'Multiple / Not Sure',
+    fillClass: 'fill-amber',
+    tracks: [
+      {
+        id: 'm-urgent',
+        heading: 'Do These First',
+        headerClass: 'red',
+        items: [
+          { id: 'm1', text: 'Place a credit freeze with all major credit bureaus', sub: 'India: CIBIL (1800-200-2030), Experian, Equifax. US: Equifax, Experian, TransUnion. UK: CIFAS protective registration.' },
+          { id: 'm2', text: 'Lock your Aadhaar biometrics (India)', sub: 'uidai.gov.in or mAadhaar app. Prevents biometric-based KYC verification being done in your name.' },
+          { id: 'm3', text: 'Change passwords on email and key accounts', sub: 'Start with email - it is the master key to everything else. Use a unique password not used elsewhere.' }
+        ]
+      },
+      {
+        id: 'm-report',
+        heading: 'Report to Authorities',
+        headerClass: 'amber',
+        items: [
+          { id: 'm4', text: 'File at cybercrime.gov.in or call 1930 (India)', sub: 'Include all types of fraud in one report. Request a case number.' },
+          { id: 'm5', text: 'US: File at IdentityTheft.gov for a personalised plan', sub: 'This generates official dispute letters and a step-by-step recovery checklist specific to your situation.' },
+          { id: 'm6', text: 'UK: Report to Action Fraud at actionfraud.police.uk', sub: '0300 123 2040. Request a NFRC reference number.' }
+        ]
+      },
+      {
+        id: 'm-accounts',
+        heading: 'Check and Reclaim Accounts',
+        headerClass: 'blue',
+        items: [
+          { id: 'm7', text: 'Review your credit reports at all three bureaus', sub: 'Look for accounts, enquiries, or addresses you do not recognise.' },
+          { id: 'm8', text: 'Search your name on all social media platforms', sub: 'Check for fake profiles using your name or photo.' },
+          { id: 'm9', text: 'Check HaveIBeenPwned.com for breach exposure', sub: 'Enter your email to see which services have been breached. Change passwords for affected services.' },
+          { id: 'm10', text: 'Enable 2FA on all important accounts', sub: 'Authenticator app preferred over SMS. Start with email, then banking, then social media.' }
+        ]
+      },
+      {
+        id: 'm-ongoing',
+        heading: 'Ongoing Monitoring',
+        headerClass: 'green',
+        items: [
+          { id: 'm11', text: 'Set quarterly reminders to pull your credit report', sub: 'Fraudulent activity can appear months after the initial incident. Monitor for at least 12 months.' },
+          { id: 'm12', text: 'Keep a log of every action, date, and reference number', sub: 'This record is essential if disputes need to be escalated later.' }
+        ]
+      }
+    ]
+  }
+};
+
+function getScenarioItems(scenario) {
+  const tracks = SCENARIOS[scenario].tracks;
+  return tracks.flatMap(t => t.items.map(i => i.id));
+}
+
+function renderChecklist(scenario) {
+  const data = SCENARIOS[scenario];
+  const allIds = getScenarioItems(scenario);
+  const doneCount = allIds.filter(id => checked.has(id)).length;
+  const pct = allIds.length > 0 ? Math.round((doneCount / allIds.length) * 100) : 0;
+  const complete = doneCount === allIds.length;
+
+  let html = `
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-title">Recovery progress</span>
+        <span class="progress-count">${doneCount} of ${allIds.length} steps completed</span>
+      </div>
+      <div class="progress-bg">
+        <div class="progress-fill ${data.fillClass}" style="width:${pct}%"></div>
+      </div>
+    </div>
+    <div class="tracks">
+  `;
+
+  data.tracks.forEach(track => {
+    html += `
+      <div class="track">
+        <div class="track-header ${track.headerClass}">${track.heading}</div>
+        <div class="track-items">
+    `;
+    track.items.forEach(item => {
+      const isChecked = checked.has(item.id);
+      html += `
+        <div class="check-item${isChecked ? ' checked' : ''}" data-id="${item.id}">
+          <div class="checkbox">
+            <svg width="11" height="8" viewBox="0 0 11 8" fill="none">
+              <path d="M1 4L4 7L10 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="check-text">${item.text}</div>
+            ${item.sub ? `<div class="check-sub">${item.sub}</div>` : ''}
+          </div>
+        </div>
+      `;
+    });
+    html += `</div></div>`;
+  });
+
+  html += `</div>`;
+
+  if (complete) {
+    html += `
+      <div class="completion visible">
+        <div class="completion-icon">✓</div>
+        <h3>All steps completed</h3>
+        <p>Keep monitoring your credit and accounts over the coming months. Set a quarterly reminder to pull your credit report. Recovery is a process - you are through the hardest part.</p>
+      </div>
+    `;
+  }
+
+  html += `
+    <div class="tip-box">
+      <strong>Keep a record:</strong> Note the date, institution, reference number, and outcome of every action. This log is essential if any disputes need to be escalated.
+    </div>
+  `;
+
+  document.getElementById('checklist-area').innerHTML = html;
+
+  // Attach click events
+  document.querySelectorAll('.check-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const id = item.dataset.id;
+      if (checked.has(id)) checked.delete(id);
+      else checked.add(id);
+      renderChecklist(currentScenario);
+      sendHeight();
+    });
+  });
+
+  sendHeight();
+}
+
+// Scenario buttons
+document.querySelectorAll('.scenario-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentScenario = btn.dataset.scenario;
+    renderChecklist(currentScenario);
+    sendHeight();
+  });
+});
+
+function sendHeight() {
+  setTimeout(() => {
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+  }, 60);
+}
+
+window.addEventListener('load', sendHeight);
+window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>
