@@ -1,0 +1,1 @@
+Place module images in this folder.
