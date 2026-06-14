@@ -2,18 +2,186 @@
 sidebar_position: 5
 title: "Misinformation, Disinformation & Media Literacy"
 sidebar_label: "Misinformation, Disinformation & Media Literacy"
+description: "How false information spreads faster than true information, and the habits that help you evaluate a claim before sharing or acting on it."
+tags: [misinformation, disinformation, media-literacy, deceptive-communication, fact-checking, social-media, information-verification]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Misinformation, Disinformation & Media Literacy
 
-## Sub-topics
+The post got 14,000 shares before any fact-check appeared. By then, the damage was done.
 
-- False news vs. misleading news vs. opinion — the spectrum of information deception
-- Emotional content spreads faster than truth — why outrage travels further than accuracy
-- Coordinated disinformation campaigns and troll farms
-- Astroturfing — fake grassroots movements
-- How to evaluate a source — not just a single claim
-- Sponsored journalism and advertorial content disguised as news
-- Media ownership influence — how commercial interests shape what is and is not reported
-- Deepfake news anchors and synthetic journalism
-- Before sharing — what makes you want to share, and what happens if it is wrong
+---
+
+## The Herb That Could Not Cure Cancer
+
+Kavita's family WhatsApp group received a post claiming that a specific Ayurvedic herb, taken in a precise regimen, had been "suppressed by pharmaceutical companies" but was showing "100% cure rates" in a clinic in Kerala. The post cited a named doctor, a research institute, and included photographs.
+
+Her uncle, managing stage 2 cancer alongside chemotherapy, read it and decided to pause his treatment to try the herb instead.
+
+**The institute did not exist. The doctor's name appeared on no register. The photographs were taken from a legitimate wellness article about a different treatment.**
+
+Kavita found this out 11 days later, after the herb produced no effect and her uncle's oncologist asked why he had stopped chemotherapy.
+
+---
+
+## What Is Actually Happening
+
+Misinformation is false information spread without intent to deceive. Disinformation is false information spread deliberately. Both cause harm. The key difference is not the content - it is **who created it and why.**
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>6x</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>faster than truth - how quickly false information spreads on social media.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>The mechanism is emotional: false stories are more novel and trigger more outrage, which drives more shares. Accuracy rarely competes with emotional resonance for reach.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Vosoughi, Roy and Aral, Science (MIT), 2018 - replicated across multiple platforms through 2024</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Exposure Rate</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>69% of Adults Encounter False News Weekly</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}><b>69% of social media users encounter misinformation at least once a week.</b> Health, finance, and politics are the most affected categories. WhatsApp-forwarded content and Facebook groups are the primary distribution channels in India.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Reuters Institute Digital News Report, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Troll Farms</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>12 Accounts Responsible for 65% of Health Disinformation</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>A 2021 CCDH report found that <b>just 12 social media accounts produced 65% of all anti-vaccine disinformation</b> shared on major platforms. Coordinated small networks can drive what appears to be widespread organic belief.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Center for Countering Digital Hate, 2021</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>News vs Opinion</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>74% Cannot Reliably Distinguish News from Opinion</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}><b>74% of adults cannot consistently separate news reporting from opinion or commentary.</b> Native advertising - ads designed to look like editorial content - is intentionally formatted to exploit this confusion.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Reuters Institute Digital News Report, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #06B6D4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>Synthetic Journalism</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Deepfake News Anchors Active in 7+ Countries</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>AI-generated news anchors presenting false information have been documented in coordinated campaigns across <b>Bangladesh, India, Ethiopia, and several others.</b> The production cost of a convincing fake news broadcast is now under $100.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Meta Adversarial Threat Report, 2024; Graphika Research, 2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## The Spectrum of Information Deception
+
+**Misinformation** is factually wrong but spread by people who believe it. Kavita's family member who forwarded the herb post was not trying to harm anyone.
+
+**Disinformation** is deliberately false and created to deceive. The post about the herb was created to sell a supplement or drive traffic, using false medical claims.
+
+**Misleading information** is technically accurate but framed to produce a false impression. A real statistic used out of context. A real photograph attached to a fake story.
+
+**Opinion presented as fact** is common in news formatting. "This policy will destroy the economy" is an opinion. Many content formats present it as a factual conclusion.
+
+**Sponsored content and native advertising** are paid promotions designed to look like editorial journalism. A supplement company paying for a "health news article" is not journalism.
+
+**Astroturfing** creates the appearance of organic public opinion through coordinated fake accounts. What looks like widespread concern or enthusiasm is a manufactured impression.
+
+**Media ownership** shapes which stories get covered and which do not. A publication owned by a conglomerate with commercial interests in a sector may consistently underreport problems in that sector. Knowing who owns the outlet is part of evaluating its coverage - not just the individual article.
+
+---
+
+## Practice: Source Credibility Audit
+
+Work through the 5-point credibility checklist for a news claim. The tool walks you through each check rather than giving a verdict.
+
+<iframe
+  id="credibility-audit-iframe"
+  src="/simulations/deceptive-communication/misinformation-disinformation-media-literacy/credibility-audit.html"
+  width="100%"
+  style={{ height: '680px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Source Credibility Audit"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('credibility-audit-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._credibilityAuditHandler);
+    window._credibilityAuditHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. Claims require sources, not just sources requiring sources.**
+A named doctor, a named institute, a photograph - these are claims that themselves need verification. The question is not whether a source is cited but whether the source can be independently confirmed.
+
+**2. Emotional resonance is a manipulation signal.**
+Content designed to make you angry, frightened, or morally outraged is also content designed to be shared before it is evaluated. The stronger the emotional reaction, the more important the pause.
+
+**3. Evaluating the source is different from evaluating the claim.**
+A single article from an unfamiliar site making a large claim is not evidence. The same claim appearing in multiple independently operating outlets with named journalists and checkable citations is stronger evidence.
+
+**4. Sharing without checking makes you part of the distribution chain.**
+When Kavita's family member forwarded the herb post, they became one node in a disinformation network. The intent was good. The effect was harmful. The question before sharing is: what happens if this is wrong?
+
+---
+
+## Three Things Worth Doing
+
+**1. Check who published it and when they were founded.**
+A domain registered last year reporting a major health discovery is a red flag. Established outlets with editorial accountability are not perfect, but they have a track record to check.
+
+**2. Find one other independent source reporting the same thing.**
+If a claim is real and significant, multiple independent outlets will cover it. A claim that exists on only one site or only in forwarded messages has not been independently verified.
+
+**3. Ask what you want to be true before you share.**
+If a piece of content confirms something you already believe, that is the moment to be most careful. Confirmation bias makes misleading content feel more credible. The question is not whether the claim feels right - it is whether it can be verified.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="The post about the cancer-curing herb included a named doctor, a named institute, and photographs. Kavita's uncle stopped chemotherapy based on it. What specific verification step would have caught this before he acted?"
+  options={[
+    {
+      label: "He should have asked his oncologist whether they had heard of the herb.",
+      correct: false,
+      explanation: "This is a useful step, but the more direct check is verifying the claims in the post itself. An oncologist may not know every supplement but can be misled by a convincing document. The claims about the doctor and institute were independently checkable."
+    },
+    {
+      label: "He should have checked whether the named doctor exists on a medical register and whether the institute can be found independently.",
+      correct: true,
+      explanation: "Correct. Both claims in the post were verifiable. The doctor's name would not appear on any Indian Medical Association or state medical council register. The institute name would produce no independent search results - no website, no publications, no address. Verifying named entities is the most direct check for this type of health misinformation."
+    },
+    {
+      label: "He should have searched for the herb on Wikipedia before trusting the post.",
+      correct: false,
+      explanation: "Wikipedia can be a starting point but is not a primary source and can itself contain errors. The specific claim here was about a named doctor and institute making specific clinical claims - those need to be checked against the registers and databases that would document them if real."
+    },
+    {
+      label: "He should have checked how many likes and shares the post had - popular posts are more reliable.",
+      correct: false,
+      explanation: "Popularity is inversely correlated with accuracy for viral health content. False claims spread faster than true ones. Share count is not a reliability signal and should not be treated as one."
+    }
+  ]}
+/>

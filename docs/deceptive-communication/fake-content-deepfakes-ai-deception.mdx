@@ -2,15 +2,182 @@
 sidebar_position: 4
 title: "Fake Content, Deepfakes & AI Deception"
 sidebar_label: "Fake Content, Deepfakes & AI Deception"
+description: "How deepfake audio, video, and synthetic content are used in fraud, blackmail, and impersonation - and how to verify when you cannot trust what you see or hear."
+tags: [deepfakes, fake-content, ai-deception, deceptive-communication, verification, voice-cloning, synthetic-media]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Fake Content, Deepfakes & AI Deception
 
-## Sub-topics
+A voice you have known for years. A face on a video call. A document with the right signature. None of these are reliable anymore.
 
-- Deepfake videos used in fraud, blackmail, and impersonation
-- AI-generated audio cloning in vishing and wire fraud
-- Synthetic faces and fake identities in communications
-- Forged documents and fake PDFs
-- Using deepfakes against you personally
-- Spotting AI-generated content in messages and calls
+---
+
+## The Voice on WhatsApp
+
+Meena managed finance operations for a mid-sized manufacturing firm in Pune.
+
+One Tuesday, a voice note arrived on WhatsApp from her CFO's number. She recognized his voice immediately - the pace, the slight formality, the way he ended requests. He was traveling. He asked her to authorize a transfer to a new vendor account before end of day. He said he would confirm by email.
+
+**She transferred Rs 14.6 lakh. The confirmation email never came.**
+
+The CFO's number had not been compromised. His voice had been cloned from a 90-second clip of a recorded industry talk he had participated in. The message took under an hour to create using a freely available AI voice tool.
+
+---
+
+## What Is Actually Happening
+
+AI has reduced the cost and skill required to create convincing impersonations to near zero. **What previously required a studio and professional actors now requires a browser tab and 30 seconds of audio.**
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>40x</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>rise in deepfake fraud incidents between 2022 and 2025.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>In 2024, a Hong Kong employee transferred $25 million after a video call featuring deepfake versions of his company's CFO and multiple colleagues. None were real.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Sumsub Identity Fraud Report, 2025</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Audio Cloning</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>3 Seconds of Audio Is Enough to Clone a Voice</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Current voice cloning tools require as little as <b>3 seconds of sample audio</b> to generate a convincing synthetic voice. Podcast appearances, YouTube interviews, and company videos are all usable sources.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Microsoft VALL-E Research; ElevenLabs Technical Documentation, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Document Forgery</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Forged Documents in 1 in 5 Business Fraud Cases</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>AI-generated fake PDFs, invoices, and contracts are now used in <b>1 in 5 business fraud incidents</b>. Fake vendor invoices, identity documents, and court orders are the most common types.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: LexisNexis True Cost of Fraud Study, 2024</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Synthetic Faces</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>AI-Generated Profile Photos Fool 71% of People</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>In controlled studies, <b>71% of participants could not reliably distinguish AI-generated faces from real photographs.</b> Synthetic faces are used in fake professional profiles, romance scams, and impersonation accounts.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: University of Lancaster, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #06B6D4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>Personal Deepfakes</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Non-Consensual Deepfake Images Up 550% Since 2019</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Deepfakes targeting private individuals - used in sextortion, reputation damage, and blackmail - have grown <b>550% since 2019.</b> A social media profile with a few photos is sufficient source material.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Home Security Heroes Report, 2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## What AI Deception Looks Like in Practice
+
+**Voice cloning in finance fraud:** A WhatsApp voice note from a cloned CFO. A phone call from a cloned family member asking for urgent help. The voice is convincing because it is derived from the real person's actual recordings.
+
+**Deepfake video calls:** Real-time deepfake technology allows an attacker to appear as a specific person during a live video call. This is what happened in Hong Kong. The person on screen looked and moved like the real CFO.
+
+**Synthetic professional profiles:** AI-generated profile photos paired with fabricated work histories are used to build credibility before a financial or romantic approach. There is no real person behind the profile.
+
+**Forged documents:** Lease agreements, tax forms, court orders, and invoices can be generated with correct-looking formatting, signatures, and official styling. Document appearance is no longer evidence of document legitimacy.
+
+**Deepfakes used against you personally:** Your own photos or video from social media can be used to generate synthetic intimate content for blackmail. This requires no access to your device - only publicly available images.
+
+---
+
+## Practice: Real or Generated
+
+Six items appear one at a time. Classify each as real or AI-generated. After every decision, the specific detection signals are explained.
+
+<iframe
+  id="real-or-generated-iframe"
+  src="/simulations/deceptive-communication/fake-content-deepfakes-ai-deception/real-or-generated.html"
+  width="100%"
+  style={{ height: '680px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Real or Generated Simulator"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('real-or-generated-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._realOrGeneratedHandler);
+    window._realOrGeneratedHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. Detection accuracy is poor even for trained people.**
+Studies put human detection of AI-generated content at 50-60% under normal viewing conditions - barely better than chance. Calibration is important: overconfidence in your detection ability is itself a vulnerability.
+
+**2. The verification standard has shifted.**
+Seeing and hearing a person is no longer sufficient verification. The new standard is: **can you confirm this through an independently initiated channel?** A call to a number you already have saved. A message through an internal system you control.
+
+**3. Some signals exist, but they are not reliable across all cases.**
+Facial boundary artifacts, lighting inconsistencies around hair, unnatural eye blink patterns, audio compression artifacts - these signals exist in lower-quality deepfakes. High-quality deepfakes do not produce them reliably.
+
+**4. Documents require process verification, not visual verification.**
+If a PDF invoice or contract has financial consequences, the process for verifying it is a phone call to a known number confirming it was sent - not examining the document itself.
+
+---
+
+## Three Things Worth Doing
+
+**1. Establish a code word for urgent requests.**
+For family emergencies or high-stakes workplace requests, agree in advance on a verification phrase that only the real person would know. This is particularly effective against voice cloning attacks.
+
+**2. Verify financial requests through a separate channel you initiate.**
+A voice note on WhatsApp is not verification, even if the voice matches. Any transfer request - regardless of format - should be confirmed by calling back on a number already saved in your contacts.
+
+**3. Treat document legitimacy as a process question, not a visual one.**
+A correctly formatted document is not evidence it came from the named organisation. The verification is whether the right person, through the right channel, intentionally sent it.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Meena recognized her CFO's voice on the WhatsApp message and transferred the money. What single thing would have prevented the fraud - regardless of how convincing the voice was?"
+  options={[
+    {
+      label: "She should have used a deepfake detection app before acting.",
+      correct: false,
+      explanation: "Deepfake detection tools exist but are not reliable for real-time audio on a messaging platform. More importantly, detection tools require the content to be flagged - the issue here is that the voice sounded authentic."
+    },
+    {
+      label: "She should have called the CFO back on his number saved in her contacts - not via WhatsApp - before authorizing any transfer.",
+      correct: true,
+      explanation: "Correct. Verification through an independently initiated channel would have immediately exposed the fraud. The real CFO would not know about the voice note. Any high-value financial request should be confirmed by a callback to a number already saved, using a different channel than the one the request arrived through."
+    },
+    {
+      label: "She should have refused all WhatsApp-based financial instructions as policy.",
+      correct: false,
+      explanation: "A blanket policy on communication channels is useful, but the core principle is verification through an independent channel - not prohibition of a specific format. The same attack could arrive via email, SMS, or phone call."
+    },
+    {
+      label: "She should have waited for the confirmation email before transferring.",
+      correct: false,
+      explanation: "The attacker said an email would follow - and it never did. But waiting for a confirmation from the attacker is still not independent verification. The email could also have been spoofed."
+    }
+  ]}
+/>

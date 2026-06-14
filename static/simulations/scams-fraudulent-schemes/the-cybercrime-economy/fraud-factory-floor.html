@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The Fraud Factory Floor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root { background: #f8fafc; color: #1f2937; font-family: Inter, ui-sans-serif, system-ui, sans-serif; line-height: 1.6; }
+    body { margin: 0; padding: 20px; }
+    .container { max-width: 820px; margin: 0 auto; background: #fff; border: 1px solid #e5e7eb; border-radius: 20px; box-shadow: 0 8px 24px rgba(15,23,42,.07); padding: 28px; }
+    h1 { margin: 0 0 6px; font-size: 1.4rem; color: #111827; }
+    .intro { color: #6b7280; margin: 0 0 22px; font-size: 0.88rem; }
+
+    /* Org chart */
+    .org { display: flex; flex-direction: column; gap: 0; }
+
+    /* Leadership */
+    .layer-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: #9ca3af;
+      margin: 0 0 8px;
+    }
+    .layer { margin-bottom: 20px; }
+    .nodes { display: flex; gap: 12px; flex-wrap: wrap; }
+    .connector-down {
+      width: 2px;
+      background: #e5e7eb;
+      height: 18px;
+      margin: 0 auto;
+    }
+    .connector-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      position: relative;
+      margin-bottom: 0;
+    }
+    .connector-row::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 15%;
+      right: 15%;
+      height: 2px;
+      background: #e5e7eb;
+    }
+
+    /* Role cards */
+    .role-card {
+      border: 1.5px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: border-color .15s, box-shadow .15s;
+      flex: 1;
+      min-width: 140px;
+    }
+    .role-card:hover { border-color: var(--layer-color, #6366f1); box-shadow: 0 2px 8px rgba(99,102,241,.1); }
+    .role-card.active { border-color: var(--layer-color, #6366f1); background: var(--layer-bg, #f5f3ff); }
+    .role-icon { font-size: 1.4rem; margin-bottom: 4px; }
+    .role-title { font-weight: 700; font-size: 0.87rem; color: #111827; line-height: 1.3; }
+    .role-count { font-size: 0.76rem; color: #6b7280; margin-top: 2px; }
+    .role-rate {
+      margin-top: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 99px;
+      display: inline-block;
+    }
+
+    /* Layer colours */
+    .layer-leadership .role-card { --layer-color: #7c3aed; --layer-bg: #f5f3ff; }
+    .layer-leadership .role-rate { background: #ede9fe; color: #5b21b6; }
+    .layer-technical .role-card { --layer-color: #0369a1; --layer-bg: #f0f9ff; }
+    .layer-technical .role-rate { background: #e0f2fe; color: #0369a1; }
+    .layer-operations .role-card { --layer-color: #b45309; --layer-bg: #fffbeb; }
+    .layer-operations .role-rate { background: #fef3c7; color: #92400e; }
+    .layer-money .role-card { --layer-color: #dc2626; --layer-bg: #fef2f2; }
+    .layer-money .role-rate { background: #fee2e2; color: #991b1b; }
+
+    /* Detail panel */
+    .detail-panel {
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-top: 20px;
+      display: none;
+      font-size: 0.88rem;
+    }
+    .detail-panel.show { display: block; }
+    .detail-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .detail-icon { font-size: 1.8rem; }
+    .detail-title { font-weight: 700; font-size: 1rem; color: #111827; }
+    .detail-subtitle { font-size: 0.8rem; color: #6b7280; }
+    .detail-body { color: #374151; line-height: 1.7; margin-bottom: 10px; }
+    .detail-contribution {
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.84rem;
+      margin-top: 8px;
+    }
+    .detail-contribution strong { display: block; margin-bottom: 4px; font-size: 0.85rem; }
+
+    /* Flow arrow */
+    .flow-note {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin: 6px 0;
+    }
+    .flow-note span { font-size: 1rem; }
+
+    /* Footer */
+    .footer-note {
+      margin-top: 18px;
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 0.83rem;
+      color: #6b7280;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>The Fraud Factory Floor</h1>
+  <p class="intro">A cybercrime operation is not one criminal - it is a business with departments, job titles, and performance targets. Click any role to see what they do, what they earn on dark web markets, and how they contributed to the attack that reached you.</p>
+
+  <div class="org">
+
+    <!-- Leadership -->
+    <div class="layer layer-leadership">
+      <div class="layer-label">Leadership layer</div>
+      <div class="nodes">
+        <div class="role-card" onclick="show('organiser')">
+          <div class="role-icon">👤</div>
+          <div class="role-title">Operation Organiser</div>
+          <div class="role-count">1-3 people</div>
+          <div class="role-rate">$5,000-$50,000/month</div>
+        </div>
+        <div class="role-card" onclick="show('supervisor')">
+          <div class="role-icon">📊</div>
+          <div class="role-title">Floor Supervisor</div>
+          <div class="role-count">1 per 20 workers</div>
+          <div class="role-rate">$800-$2,000/month</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-note"><span>↓</span> directs</div>
+
+    <!-- Technical -->
+    <div class="layer layer-technical">
+      <div class="layer-label">Technical team</div>
+      <div class="nodes">
+        <div class="role-card" onclick="show('kitbuilder')">
+          <div class="role-icon">🧰</div>
+          <div class="role-title">Phishing Kit Builder</div>
+          <div class="role-count">1-5 people</div>
+          <div class="role-rate">$50-$200/kit (rented)</div>
+        </div>
+        <div class="role-card" onclick="show('spoofing')">
+          <div class="role-icon">📞</div>
+          <div class="role-title">Caller ID Spoofer</div>
+          <div class="role-count">1-2 people</div>
+          <div class="role-rate">$30-$100/month</div>
+        </div>
+        <div class="role-card" onclick="show('dashboard')">
+          <div class="role-icon">💻</div>
+          <div class="role-title">Fake Platform Dev</div>
+          <div class="role-count">2-6 people</div>
+          <div class="role-rate">$500-$5,000/build</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-note"><span>↓</span> provides tools to</div>
+
+    <!-- Data -->
+    <div class="layer layer-technical">
+      <div class="layer-label">Data team</div>
+      <div class="nodes">
+        <div class="role-card" onclick="show('datadealer')">
+          <div class="role-icon">🗂️</div>
+          <div class="role-title">Breach List Dealer</div>
+          <div class="role-count">3rd party vendor</div>
+          <div class="role-rate">$5-$15 per identity</div>
+        </div>
+        <div class="role-card" onclick="show('profiler')">
+          <div class="role-icon">🔍</div>
+          <div class="role-title">Target Profiler</div>
+          <div class="role-count">1-3 people</div>
+          <div class="role-rate">$200-$600/month</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-note"><span>↓</span> feeds targets to</div>
+
+    <!-- Operations -->
+    <div class="layer layer-operations">
+      <div class="layer-label">Operations team (the callers)</div>
+      <div class="nodes">
+        <div class="role-card" onclick="show('scripter')">
+          <div class="role-icon">📝</div>
+          <div class="role-title">Script Writer</div>
+          <div class="role-count">1-2 people</div>
+          <div class="role-rate">$300-$1,000/script</div>
+        </div>
+        <div class="role-card" onclick="show('caller')">
+          <div class="role-icon">🎙️</div>
+          <div class="role-title">Caller / Chat Agent</div>
+          <div class="role-count">10-200 workers</div>
+          <div class="role-rate">$200-$400/month + commission</div>
+        </div>
+        <div class="role-card" onclick="show('closer')">
+          <div class="role-icon">🎯</div>
+          <div class="role-title">Closer (Senior Caller)</div>
+          <div class="role-count">1-5 people</div>
+          <div class="role-rate">$500-$2,000/month</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-note"><span>↓</span> payment flows to</div>
+
+    <!-- Money -->
+    <div class="layer layer-money">
+      <div class="layer-label">Money movement layer</div>
+      <div class="nodes">
+        <div class="role-card" onclick="show('mule')">
+          <div class="role-icon">🏦</div>
+          <div class="role-title">Money Mule</div>
+          <div class="role-count">5-50 accounts</div>
+          <div class="role-rate">5-10% of transferred amount</div>
+        </div>
+        <div class="role-card" onclick="show('crypto')">
+          <div class="role-icon">₿</div>
+          <div class="role-title">Crypto Converter</div>
+          <div class="role-count">1-3 people</div>
+          <div class="role-rate">3-8% of converted amount</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Detail panel -->
+  <div class="detail-panel" id="detail-panel">
+    <div class="detail-header">
+      <div class="detail-icon" id="d-icon"></div>
+      <div>
+        <div class="detail-title" id="d-title"></div>
+        <div class="detail-subtitle" id="d-rate"></div>
+      </div>
+    </div>
+    <div class="detail-body" id="d-body"></div>
+    <div class="detail-contribution" id="d-contrib"></div>
+  </div>
+
+  <div class="footer-note">You were not a random victim. You were an entry in a spreadsheet, scored and assigned by a system built to process thousands of people at once. The people who ran the operation that reached you were employees with performance targets.</div>
+</div>
+
+<script>
+const roles = {
+  organiser: {
+    icon: '👤', title: 'Operation Organiser', rate: 'Earns $5,000-$50,000/month from operation revenue',
+    color: '#f5f3ff', contrib_bg: '#ede9fe', contrib_color: '#5b21b6',
+    body: 'The organiser funds the operation, hires (or traffics) workers, sets the targeting strategy, and decides which scam type to run based on current market opportunity. They typically remain distant from day-to-day execution, insulating themselves from law enforcement. Many operate from countries with limited extradition arrangements.',
+    contrib: 'Role in reaching you: Decided the operation would run government impersonation / investment / romance scams in your demographic. Set the weekly conversion target that drove the caller\'s urgency.'
+  },
+  supervisor: {
+    icon: '📊', title: 'Floor Supervisor', rate: 'Earns $800-$2,000/month',
+    color: '#f5f3ff', contrib_bg: '#ede9fe', contrib_color: '#5b21b6',
+    body: 'Supervisors monitor caller performance in real time - tracking how many calls convert, coaching callers mid-call, and escalating to the "closer" when a target seems persuadable but resistant. In scam compounds, supervisors also enforce work quotas and prevent workers from leaving or contacting family.',
+    contrib: 'Role in reaching you: Monitored the call as it happened. Escalated to a senior caller when you showed signs of resistance. The authoritative second voice that appeared mid-call was this person.'
+  },
+  kitbuilder: {
+    icon: '🧰', title: 'Phishing Kit Builder', rate: 'Rents kits for $50-$200/month on dark web markets',
+    color: '#f0f9ff', contrib_bg: '#e0f2fe', contrib_color: '#0369a1',
+    body: 'Phishing kits are pre-built packages that simulate legitimate login pages, banking portals, or government websites. A single kit builder can sell or rent the same kit to dozens of operations simultaneously. Kits include fake SSL certificates, mobile-responsive design, and automated credential harvesting backends.',
+    contrib: 'Role in reaching you: The fake CBI / TRAI / bank website you were directed to was a rented kit - not custom-built. It had been used in dozens of other scams before yours.'
+  },
+  spoofing: {
+    icon: '📞', title: 'Caller ID Spoofer', rate: 'Service costs $30-$100/month per number',
+    color: '#f0f9ff', contrib_bg: '#e0f2fe', contrib_color: '#0369a1',
+    body: 'VoIP spoofing services allow callers to display any number they choose on the recipient\'s phone. This is a commodity service available to any operation for a monthly fee. Numbers impersonating government agencies, banks, and police stations are configured in advance and switched between calls.',
+    contrib: 'Role in reaching you: The "+91 11..." number displaying "Government of India" or "TRAI" on your phone was a spoofed VoIP line, not a real government exchange.'
+  },
+  dashboard: {
+    icon: '💻', title: 'Fake Platform Developer', rate: 'Charges $500-$5,000 per build',
+    color: '#f0f9ff', contrib_bg: '#e0f2fe', contrib_color: '#0369a1',
+    body: 'For investment and trading scams, developers build convincing portfolio dashboards that display fake growth, fake transaction histories, and fake withdrawal confirmations. The interface is designed to look exactly like legitimate trading platforms. Victims can "log in" and see their "portfolio" growing until withdrawal is attempted.',
+    contrib: 'Role in reaching you: The investment app showing your Rs. 1.8 lakh portfolio was a static frontend. Every number on screen was hardcoded. No real trades ever occurred.'
+  },
+  datadealer: {
+    icon: '🗂️', title: 'Breach List Dealer', rate: 'Sells identities for $5-$15 each on dark web markets',
+    color: '#f0f9ff', contrib_bg: '#e0f2fe', contrib_color: '#0369a1',
+    body: 'Data brokers on dark web markets sell lists compiled from corporate data breaches, scraping of public records, and aggregation of leaked databases. Lists are sold with varying levels of detail - phone + name only, or full packages including email, PAN, Aadhaar, and bank details. The same list is sold to multiple buyers.',
+    contrib: 'Role in reaching you: Your phone number, linked to your Aadhaar, came from a breach at a company you trusted - possibly a financial institution, telecom provider, or government portal. It was purchased for under $15.'
+  },
+  profiler: {
+    icon: '🔍', title: 'Target Profiler', rate: 'Earns $200-$600/month',
+    color: '#f0f9ff', contrib_bg: '#e0f2fe', contrib_color: '#0369a1',
+    body: 'Profilers cross-reference purchased data against social media, LinkedIn, matrimonial sites, and public records to score targets. They identify approximate income, employment status, and financial sophistication. High-scoring profiles - employed, saving age, limited digital security awareness - are prioritised for the most lucrative scam types.',
+    contrib: 'Role in reaching you: Your LinkedIn profile and social media activity were used to confirm you were employed, had savings, and were in the target income bracket. You were assigned a high viability score before the first call.'
+  },
+  scripter: {
+    icon: '📝', title: 'Script Writer', rate: 'Charges $300-$1,000 per script',
+    color: '#fffbeb', contrib_bg: '#fef3c7', contrib_color: '#92400e',
+    body: 'Scripts are written and continuously optimised through A/B testing across hundreds of calls. They contain branching dialogue trees for every common objection, specific phrases designed to trigger compliance, and instructions for managing emotions like panic or suspicion. The most effective scripts are resold to multiple operations.',
+    contrib: 'Role in reaching you: Every phrase the caller used - the specific legal terminology, the calm authority, the escalating urgency - was scripted and tested. The caller was reading, not improvising.'
+  },
+  caller: {
+    icon: '🎙️', title: 'Caller / Chat Agent', rate: 'Earns $200-$400/month base + 3-5% commission on successful fraud',
+    color: '#fffbeb', contrib_bg: '#fef3c7', contrib_color: '#92400e',
+    body: 'In large operations, callers work shifts, make 30-80 calls per day, and are monitored on conversion metrics. Many are in scam compounds under coercive conditions - trafficked from neighbouring countries under false promises of legitimate work. Some are willing participants motivated by commission. They follow scripts closely and escalate resistant targets to closers.',
+    contrib: 'Role in reaching you: This was the voice you heard. They were on shift, at a desk, following a script. They had made the same call dozens of times that day. It was not personal - you were a number in a queue.'
+  },
+  closer: {
+    icon: '🎯', title: 'Closer (Senior Caller)', rate: 'Earns $500-$2,000/month',
+    color: '#fffbeb', contrib_bg: '#fef3c7', contrib_color: '#92400e',
+    body: 'Closers are brought in when a target is hesitant but engaged. They have more authority in the script - posing as a "senior officer," "RBI supervisor," or "legal department." They are experienced at reading emotional states and applying the right pressure at the right moment. A single closer handles the most resistant targets from multiple callers\' queues.',
+    contrib: 'Role in reaching you: If a more authoritative second voice appeared during the call, that was the closer. Their job was specifically to overcome your hesitation at the moment you were about to stop.'
+  },
+  mule: {
+    icon: '🏦', title: 'Money Mule', rate: 'Keeps 5-10% of each transfer',
+    color: '#fef2f2', contrib_bg: '#fee2e2', contrib_color: '#991b1b',
+    body: 'Money mules provide or rent out bank accounts to receive victim payments. The funds arrive, are immediately forwarded to a second account, and the original account is abandoned. Some mules are recruited knowingly (for a cut); others are fraud victims themselves, deceived into providing account access. Each mule account is typically used for days to weeks before being closed.',
+    contrib: 'Role in reaching you: The bank account you transferred to was a mule account. Within minutes of your transfer, the funds were moved onward. This is why bank recalls almost never succeed - the money left the account within the hour.'
+  },
+  crypto: {
+    icon: '₿', title: 'Crypto Converter', rate: 'Takes 3-8% of converted amount',
+    color: '#fef2f2', contrib_bg: '#fee2e2', contrib_color: '#991b1b',
+    body: 'Once funds are in a mule account, they are converted to cryptocurrency - typically through peer-to-peer exchanges that require minimal identity verification. From there, the funds are mixed across multiple wallets and converted to different currencies. This step makes the money effectively unrecoverable and untraceable by standard banking investigation.',
+    contrib: 'Role in reaching you: Your money was converted to crypto within hours of the transfer. It is now in a wallet controlled by the organiser. Blockchain forensics firms cannot recover it - the trail ends at the exchange.'
+  }
+};
+
+function show(id) {
+  const r = roles[id];
+  const panel = document.getElementById('detail-panel');
+  document.getElementById('d-icon').textContent = r.icon;
+  document.getElementById('d-title').textContent = r.title;
+  document.getElementById('d-rate').textContent = r.rate;
+  document.getElementById('d-body').textContent = r.body;
+
+  const contrib = document.getElementById('d-contrib');
+  contrib.style.background = r.contrib_bg;
+  contrib.style.color = r.contrib_color;
+  contrib.innerHTML = '<strong>Their role in reaching you</strong>' + r.contrib;
+
+  panel.style.background = r.color;
+  panel.classList.add('show');
+
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('active'));
+
+  setTimeout(() => {
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+  }, 50);
+}
+</script>
+</body>
+</html>

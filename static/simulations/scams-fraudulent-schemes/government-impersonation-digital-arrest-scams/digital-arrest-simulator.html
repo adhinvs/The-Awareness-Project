@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Digital Arrest Call Simulator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      background: #f8fafc;
+      color: #1f2937;
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      line-height: 1.6;
+    }
+    body { margin: 0; padding: 20px; }
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(15,23,42,.07);
+      padding: 28px;
+    }
+    h1 { margin: 0 0 6px; font-size: 1.6rem; color: #111827; }
+    .intro { color: #6b7280; margin: 0 0 24px; font-size: 0.95rem; }
+    .scene {
+      background: #f1f5f9;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .scene-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #6b7280;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .scene-text {
+      font-size: 1rem;
+      color: #111827;
+      font-weight: 500;
+      margin: 0;
+    }
+    .tactic-badge {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 99px;
+      margin-top: 10px;
+    }
+    .choices { display: grid; gap: 10px; margin-top: 16px; }
+    button.choice {
+      appearance: none;
+      background: #fff;
+      border: 1.5px solid #d1d5db;
+      border-radius: 10px;
+      padding: 14px 18px;
+      text-align: left;
+      font-size: 0.95rem;
+      color: #374151;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+      font-family: inherit;
+    }
+    button.choice:hover { border-color: #6366f1; background: #f5f3ff; }
+    .feedback {
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 16px;
+      display: none;
+      font-size: 0.95rem;
+    }
+    .feedback.safe { background: #f0fdf4; border-left: 4px solid #16a34a; color: #14532d; }
+    .feedback.danger { background: #fef2f2; border-left: 4px solid #dc2626; color: #7f1d1d; }
+    .feedback.warn { background: #fffbeb; border-left: 4px solid #d97706; color: #78350f; }
+    .feedback b { display: block; margin-bottom: 4px; font-size: 1rem; }
+    .next-btn {
+      appearance: none;
+      background: #4f46e5;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 24px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      cursor: pointer;
+      margin-top: 16px;
+      display: none;
+    }
+    .next-btn:hover { background: #4338ca; }
+    .progress { font-size: 0.8rem; color: #9ca3af; margin-bottom: 16px; }
+    .summary {
+      background: #f0fdf4;
+      border-radius: 14px;
+      padding: 24px;
+      display: none;
+    }
+    .summary h2 { margin: 0 0 12px; color: #14532d; font-size: 1.2rem; }
+    .summary ul { margin: 0; padding-left: 20px; color: #374151; }
+    .summary li { margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Digital Arrest Call Simulator</h1>
+  <p class="intro">You receive a call from someone claiming to be from the CBI Cyber Wing. Your Aadhaar is linked to a money laundering case. Work through each moment to see what happens.</p>
+
+  <div class="progress" id="progress">Step 1 of 5</div>
+
+  <div id="sim"></div>
+
+  <div class="summary" id="summary">
+    <h2>What Every Choice Revealed</h2>
+    <ul>
+      <li><b>Hanging up immediately</b> is always the right first move. A real investigation survives a call ending.</li>
+      <li><b>"Digital arrest" has no legal basis.</b> No Indian law permits detention over a call or video.</li>
+      <li><b>Personal data proves nothing.</b> Attackers buy Aadhaar and PAN data from breached databases.</li>
+      <li><b>Isolation is the weapon.</b> Any caller who tells you not to speak to family is running a scam.</li>
+      <li><b>Payment demands are the final step.</b> Once you pay, the scammer exits. Call 1930 immediately after any loss.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+const steps = [
+  {
+    label: "Incoming Call",
+    text: "An automated voice says: \"Your Aadhaar number has been linked to a money laundering case. Press 1 to speak to the CBI Cyber Crime Division.\"",
+    tactic: "Authority + Fear",
+    choices: [
+      { text: "Press 1 to find out more", result: "danger", msg: "<b>You stay connected.</b> This is what the attacker needs. Once you press 1 you enter the script. The call escalates to a 'senior officer' in uniform." },
+      { text: "Hang up immediately", result: "safe", msg: "<b>Correct response.</b> Automated calls from government agencies about legal cases do not happen. Hanging up ends the script entirely. If you are genuinely worried, call the CBI's official number independently." },
+      { text: "Call back the number shown", result: "danger", msg: "<b>Caller ID is spoofed.</b> The number displayed is fake. Calling back connects you back to the same scammer." }
+    ]
+  },
+  {
+    label: "Video Call - Inspector in Uniform",
+    text: "A man in a CBI uniform appears on video. He has your full name, Aadhaar number, and address. He says you are \"digitally arrested\" pending investigation.",
+    tactic: "Authority stacking + Personal data as proof",
+    choices: [
+      { text: "Comply - he has my personal details so this must be real", result: "danger", msg: "<b>Personal data is not proof.</b> Aadhaar numbers, names, and addresses are sold in breach markets for very little money. The uniform is a costume. The backdrop is a printed room divider." },
+      { text: "Ask him to send a written notice to your address", result: "warn", msg: "<b>Better, but not enough.</b> He will refuse and escalate the threat. The right move is to end the call and verify through official channels - not negotiate with the caller." },
+      { text: "Hang up and look up the CBI's official number independently", result: "safe", msg: "<b>Correct.</b> 'Digital arrest' has no legal existence in India. PM Modi specifically warned about this scam in 2024. A real CBI case would arrive by written summons." }
+    ]
+  },
+  {
+    label: "The Isolation Order",
+    text: "The 'inspector' says: \"You must not speak to your family or lawyer. This is a classified investigation. If you disconnect or tell anyone, you will be physically arrested within two hours.\"",
+    tactic: "Isolation + Threat escalation",
+    choices: [
+      { text: "Agree to keep it secret", result: "danger", msg: "<b>Isolation is the scam's most critical mechanism.</b> One phone call to a family member or trusted friend ends this. The secrecy demand exists precisely because contact with others breaks the script." },
+      { text: "Tell him you need to speak to a lawyer first", result: "warn", msg: "<b>Closer, but he will block this.</b> He will claim lawyers are not permitted in \"digital arrests.\" This instruction has no legal basis. End the call." },
+      { text: "Hang up and immediately call a family member", result: "safe", msg: "<b>Correct.</b> The threat of physical arrest within hours is false urgency. Legitimate investigations do not collapse if you speak to family. Contact breaks the script immediately." }
+    ]
+  },
+  {
+    label: "The Payment Demand",
+    text: "The 'senior officer' says you must transfer Rs. 5 lakh to a \"government escrow account\" as a compliance deposit to clear your name while the investigation runs. He gives you a bank account number.",
+    tactic: "Advance-fee fraud wrapped in authority framing",
+    choices: [
+      { text: "Transfer the money to clear my name quickly", result: "danger", msg: "<b>This is the theft.</b> Government agencies never demand payment to avoid arrest. The account number is controlled by the attacker. Once transferred, the money cannot be recovered." },
+      { text: "Ask for a receipt and official documentation first", result: "warn", msg: "<b>He will provide fake documents.</b> Scammers have templated letterheads with official logos. Documents are not verification. The correct action is to end the call." },
+      { text: "Refuse and report to cybercrime.gov.in and call 1930", result: "safe", msg: "<b>Correct.</b> No Indian government agency asks for money over a call. Report the account number given to cybercrime.gov.in - this helps investigators disrupt the operation." }
+    ]
+  },
+  {
+    label: "After the Call",
+    text: "You have ended the call. You are unsure whether this was real. What do you do next?",
+    tactic: "Recovery and verification",
+    choices: [
+      { text: "Wait to see if police actually come", result: "warn", msg: "<b>No police will come.</b> The threat was manufactured. But waiting delays reporting, which reduces the chance of freezing any money already sent." },
+      { text: "Call the official CBI or police number to verify any case against you", result: "safe", msg: "<b>Correct.</b> Any genuine case will be on record. Call the CBI's official number (011-24367400) or your state cybercrime cell. If no case exists, file a report about the scam call itself." },
+      { text: "Search online for the case number the caller gave you", result: "warn", msg: "<b>Case numbers are fabricated.</b> You will not find them in public records because they do not exist. Go directly to official government contact numbers." }
+    ]
+  }
+];
+
+let current = 0;
+let chosen = false;
+
+function render() {
+  const step = steps[current];
+  document.getElementById('progress').textContent = `Step ${current + 1} of ${steps.length}`;
+  const sim = document.getElementById('sim');
+  sim.innerHTML = `
+    <div class="scene">
+      <div class="scene-label">${step.label}</div>
+      <p class="scene-text">${step.text}</p>
+      <span class="tactic-badge">Tactic: ${step.tactic}</span>
+    </div>
+    <div class="choices" id="choices">
+      ${step.choices.map((c, i) => `<button class="choice" onclick="choose(${i})">${c.text}</button>`).join('')}
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="next-btn" onclick="next()">${current < steps.length - 1 ? 'Continue' : 'See Summary'}</button>
+  `;
+  chosen = false;
+}
+
+function choose(i) {
+  if (chosen) return;
+  chosen = true;
+  const c = steps[current].choices[i];
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${c.result}`;
+  fb.innerHTML = c.msg;
+  fb.style.display = 'block';
+  document.getElementById('next-btn').style.display = 'inline-block';
+  document.querySelectorAll('.choice').forEach(b => b.disabled = true);
+
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function next() {
+  current++;
+  if (current >= steps.length) {
+    document.getElementById('sim').style.display = 'none';
+    document.getElementById('progress').style.display = 'none';
+    document.getElementById('summary').style.display = 'block';
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+  } else {
+    render();
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+  }
+}
+
+render();
+</script>
+</body>
+</html>

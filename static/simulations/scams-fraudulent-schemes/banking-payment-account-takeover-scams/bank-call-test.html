@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The Bank Call Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root { background: #f8fafc; color: #1f2937; font-family: Inter, ui-sans-serif, system-ui, sans-serif; line-height: 1.6; }
+    body { margin: 0; padding: 20px; }
+    .container { max-width: 760px; margin: 0 auto; background: #fff; border: 1px solid #e5e7eb; border-radius: 20px; box-shadow: 0 8px 24px rgba(15,23,42,.07); padding: 28px; }
+    h1 { margin: 0 0 6px; font-size: 1.5rem; color: #111827; }
+    .intro { color: #6b7280; margin: 0 0 24px; font-size: 0.9rem; }
+    .call-ui {
+      background: #1e293b;
+      border-radius: 16px;
+      padding: 20px;
+      color: #f1f5f9;
+      margin-bottom: 20px;
+    }
+    .call-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .call-icon { font-size: 2rem; }
+    .call-name { font-size: 1.1rem; font-weight: 700; }
+    .call-sub { font-size: 0.82rem; color: #94a3b8; }
+    .transcript {
+      background: #0f172a;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 0.88rem;
+      color: #cbd5e1;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .msg { margin-bottom: 10px; }
+    .msg .speaker { font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px; }
+    .msg.caller .speaker { color: #60a5fa; }
+    .msg.you .speaker { color: #34d399; }
+    .prompt {
+      background: #f8fafc;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .prompt-q { font-weight: 600; font-size: 0.95rem; color: #111827; margin-bottom: 12px; }
+    .choices { display: grid; gap: 9px; }
+    button.choice {
+      appearance: none;
+      background: #fff;
+      border: 1.5px solid #d1d5db;
+      border-radius: 10px;
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 0.88rem;
+      color: #374151;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color .15s, background .15s;
+    }
+    button.choice:hover { border-color: #6366f1; background: #f5f3ff; }
+    .feedback { border-radius: 12px; padding: 14px 18px; margin-top: 14px; display: none; font-size: 0.88rem; }
+    .feedback.safe { background: #f0fdf4; border-left: 4px solid #16a34a; color: #14532d; }
+    .feedback.danger { background: #fef2f2; border-left: 4px solid #dc2626; color: #7f1d1d; }
+    .feedback.warn { background: #fffbeb; border-left: 4px solid #d97706; color: #78350f; }
+    .feedback b { display: block; margin-bottom: 4px; }
+    .next-btn { appearance: none; background: #4f46e5; color: #fff; border: none; border-radius: 10px; padding: 11px 22px; font-size: 0.9rem; font-family: inherit; cursor: pointer; margin-top: 14px; display: none; }
+    .next-btn:hover { background: #4338ca; }
+    .progress { font-size: 0.78rem; color: #9ca3af; margin-bottom: 16px; }
+    .summary { background: #f0fdf4; border-radius: 14px; padding: 22px; display: none; }
+    .summary h2 { margin: 0 0 12px; color: #14532d; font-size: 1.1rem; }
+    .summary ul { margin: 0; padding-left: 20px; color: #374151; }
+    .summary li { margin-bottom: 8px; font-size: 0.88rem; }
+    .rule-box { background: #fef3c7; border-radius: 10px; padding: 12px 16px; font-size: 0.85rem; color: #92400e; font-weight: 600; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>The Bank Call Test</h1>
+  <p class="intro">A call arrives claiming to be from your bank's fraud team. Work through what they ask you - and decide at each point what to share. Each decision reveals what the attacker gains.</p>
+
+  <div class="rule-box">Key rule: Your bank never needs your OTP, full card number, or password over an inbound call.</div>
+
+  <div class="call-ui">
+    <div class="call-header">
+      <div class="call-icon">📞</div>
+      <div>
+        <div class="call-name">SBI Fraud Prevention Team</div>
+        <div class="call-sub">+91 1800-XXX-XXXX · Incoming call</div>
+      </div>
+    </div>
+    <div class="transcript" id="transcript">
+      <div class="msg caller">
+        <div class="speaker">Caller</div>
+        "Good morning. I'm Vikram from the State Bank of India Fraud Prevention Unit. We have detected suspicious activity on your account ending in 4821. A transaction of Rs. 47,000 was attempted from Bengaluru 12 minutes ago. To block this transaction, I need to verify your identity."
+      </div>
+    </div>
+  </div>
+
+  <div class="progress" id="progress">Question 1 of 4</div>
+  <div id="sim"></div>
+
+  <div class="summary" id="summary">
+    <h2>What the Call Revealed</h2>
+    <ul>
+      <li><b>Account detail knowledge is not proof.</b> Last four digits and transaction amounts are available from breached databases. It proves the caller has data - not that they are your bank.</li>
+      <li><b>OTPs authorise transactions - they do not block them.</b> Reading an OTP to a caller gives them the authorisation code to move your money.</li>
+      <li><b>The "suspicious transaction" was a distraction.</b> Creating alarm about a fictitious event gets you into a compliant state before the real request arrives.</li>
+      <li><b>Hanging up and calling back breaks the scam.</b> Use the number on the back of your card - not any number the caller provides.</li>
+      <li><b>Report to 1930</b> if you have already shared any information.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+const steps = [
+  {
+    prompt: "The caller asks: 'Can you confirm the last 4 digits of your debit card number so I can verify your account?' He already told you the last 4 digits are 4821.",
+    choices: [
+      { text: "Confirm '4821' as he suggested", result: "warn", msg: "<b>Low direct risk, high manipulation risk.</b> Confirming what he already told you seems harmless - but it conditions you to agree with him and moves you into the next, more dangerous request. He now 'has your confirmation.'" },
+      { text: "Refuse to confirm any card details", result: "safe", msg: "<b>Correct instinct.</b> Legitimate callers from your bank do not need you to confirm information they can already see. Refusing breaks the pattern of compliance they are establishing." },
+      { text: "Hang up and call the bank's official number", result: "safe", msg: "<b>Best response.</b> You can verify the suspicious transaction entirely through an independent call. If the fraud is real, the bank's official team will see it. If not, you have just ended a scam attempt." }
+    ]
+  },
+  {
+    prompt: "The caller says: 'For your security, we'll send a 6-digit OTP to your registered number. Please read it back to confirm your identity and block the transaction.' Your phone buzzes.",
+    choices: [
+      { text: "Read the OTP to the caller", result: "danger", msg: "<b>This is the theft.</b> The OTP arriving is not for identity verification - it is the authorisation code for a payment from your account. Reading it completes the transaction he is trying to make." },
+      { text: "Tell him the OTP arrived but you won't read it to anyone", result: "safe", msg: "<b>Correct.</b> OTPs are one-time authorisation codes. Your bank's systems can already verify you - they do not need you to read an OTP aloud. This request confirms the caller is attempting to use the code." },
+      { text: "Read only the first 3 digits as a test", result: "danger", msg: "<b>Not safe.</b> Partial OTPs can still be useful to attackers for certain systems, and you are now in a negotiation rather than a firm refusal. End the call." }
+    ]
+  },
+  {
+    prompt: "After you hesitate, the caller says he needs your full 16-digit card number 'to raise a chargeback request on the fraudulent transaction.'",
+    choices: [
+      { text: "Provide the card number since a chargeback sounds legitimate", result: "danger", msg: "<b>Card numbers enable new transactions.</b> Chargebacks are processed internally by banks - they never require you to read your card number over a call. This is a credential harvest, not a fraud reversal." },
+      { text: "Refuse and say you will visit a branch to handle this", result: "safe", msg: "<b>Correct.</b> Any request for a full card number over an inbound call is a fraud attempt. Offering to handle it in person or through the official app is the right response - and will end the scam." },
+      { text: "Ask him to send the chargeback form by email first", result: "warn", msg: "<b>Better, but still engaged.</b> The email will contain a phishing link or fake form. The cleanest exit is to end the call and contact your bank directly." }
+    ]
+  },
+  {
+    prompt: "You decide to hang up. You are unsure if the transaction was real. What do you do next?",
+    choices: [
+      { text: "Call back the number shown on the incoming call", result: "danger", msg: "<b>Caller IDs can be spoofed.</b> Calling back the number shown connects you to the same attacker. Always find your bank's number independently." },
+      { text: "Open the banking app and check your actual transaction history", result: "safe", msg: "<b>Correct.</b> Your app shows your real account activity. If no suspicious transaction exists, the call was a scam attempt. If a transaction did occur, use the app to freeze your card and contact the bank through the official number on the back of your card." },
+      { text: "Wait to see if the money actually leaves the account", result: "warn", msg: "<b>Waiting costs recovery options.</b> If the attacker succeeded, every hour of delay reduces the chance of a recall. Check the app immediately and call the bank's fraud line if anything looks wrong." }
+    ]
+  }
+];
+
+const transcriptLines = [
+  null,
+  "You hesitate. He says: 'We need to move quickly - the transaction is still pending. I'm sending an OTP to your registered number now.'",
+  "He continues: 'I also need your full card number to raise the chargeback for the fraudulent transaction.'",
+  "You decide to end the call."
+];
+
+let current = 0;
+let chosen = false;
+
+function render() {
+  document.getElementById('progress').textContent = `Question ${current + 1} of ${steps.length}`;
+  const s = steps[current];
+  document.getElementById('sim').innerHTML = `
+    <div class="prompt">
+      <div class="prompt-q">${s.prompt}</div>
+      <div class="choices">${s.choices.map((c,i) => `<button class="choice" onclick="choose(${i})">${c.text}</button>`).join('')}</div>
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="next-btn" onclick="next()">${current < steps.length - 1 ? 'Continue' : 'See Summary'}</button>
+  `;
+  chosen = false;
+}
+
+function choose(i) {
+  if (chosen) return;
+  chosen = true;
+  const c = steps[current].choices[i];
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${c.result}`;
+  fb.innerHTML = c.msg;
+  fb.style.display = 'block';
+  document.getElementById('next-btn').style.display = 'inline-block';
+  document.querySelectorAll('.choice').forEach(b => b.disabled = true);
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function next() {
+  current++;
+  if (transcriptLines[current]) {
+    const t = document.getElementById('transcript');
+    t.innerHTML += `<div class="msg caller" style="margin-top:10px"><div class="speaker">Caller</div>${transcriptLines[current]}</div>`;
+    t.scrollTop = t.scrollHeight;
+  }
+  if (current >= steps.length) {
+    document.getElementById('sim').style.display = 'none';
+    document.getElementById('progress').style.display = 'none';
+    document.getElementById('summary').style.display = 'block';
+  } else {
+    render();
+  }
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phishing Inbox</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f8fafc; color: #1e293b; font-size: 15px; line-height: 1.5;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 24px 16px 48px; }
+
+  .screen { display: none; }
+  .screen.active { display: block; animation: fadeUp 0.3s ease; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Header */
+  .inbox-header {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 16px;
+    padding: 20px 24px; margin-bottom: 20px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .inbox-title { font-size: 18px; font-weight: 800; color: #0f172a; }
+  .progress-text { font-size: 13px; color: #64748b; font-weight: 600; }
+
+  /* Email card */
+  .email-card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 16px;
+    overflow: hidden; margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04);
+  }
+  .email-top {
+    padding: 16px 20px; border-bottom: 1px solid #f1f5f9;
+    display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start;
+  }
+  .email-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; font-weight: 800; color: #fff; flex-shrink: 0;
+  }
+  .email-meta { min-width: 0; }
+  .email-from { font-size: 13px; font-weight: 700; color: #0f172a; }
+  .email-addr { font-size: 12px; color: #64748b; font-family: monospace; word-break: break-all; }
+  .email-subject { font-size: 14px; font-weight: 600; color: #1e293b; margin-top: 4px; }
+  .email-time { font-size: 11px; color: #94a3b8; }
+  .email-body { padding: 18px 20px; font-size: 14px; color: #334155; line-height: 1.7; }
+  .email-body p { margin-bottom: 10px; }
+  .email-body p:last-child { margin-bottom: 0; }
+  .email-link { color: #2563eb; text-decoration: underline; word-break: break-all; font-family: monospace; font-size: 13px; }
+
+  /* Verdict buttons */
+  .verdict-row { display: flex; gap: 12px; margin-top: 20px; }
+  .verdict-btn {
+    flex: 1; padding: 14px; border-radius: 12px; border: 2px solid transparent;
+    font-size: 14px; font-weight: 700; cursor: pointer; transition: all .15s;
+  }
+  .btn-legit { background: #f0fdf4; color: #15803d; border-color: #86efac; }
+  .btn-legit:hover { background: #dcfce7; border-color: #4ade80; }
+  .btn-phish { background: #fff5f5; color: #dc2626; border-color: #fca5a5; }
+  .btn-phish:hover { background: #fee2e2; border-color: #f87171; }
+
+  /* Reveal panel */
+  .reveal-panel {
+    border-radius: 14px; padding: 18px; margin-top: 16px; display: none;
+  }
+  .reveal-panel.correct { background: #f0fdf4; border: 1px solid #86efac; }
+  .reveal-panel.wrong { background: #fff7ed; border: 1px solid #fed7aa; }
+  .reveal-title { font-size: 14px; font-weight: 800; margin-bottom: 10px; }
+  .reveal-panel.correct .reveal-title { color: #15803d; }
+  .reveal-panel.wrong .reveal-title { color: #c2410c; }
+  .reveal-body { font-size: 13px; color: #475569; line-height: 1.6; }
+  .tell { display: flex; gap: 8px; margin-bottom: 8px; align-items: flex-start; }
+  .tell-badge {
+    flex-shrink: 0; font-size: 10px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: .05em; padding: 2px 8px; border-radius: 99px; margin-top: 1px;
+  }
+  .tell-badge.red { background: #fee2e2; color: #dc2626; }
+  .tell-badge.green { background: #dcfce7; color: #15803d; }
+  .tell-badge.amber { background: #fef3c7; color: #92400e; }
+  .next-btn {
+    display: block; width: 100%; margin-top: 16px; padding: 13px;
+    background: #1e293b; color: #fff; border: none; border-radius: 12px;
+    font-size: 14px; font-weight: 700; cursor: pointer; transition: opacity .15s;
+  }
+  .next-btn:hover { opacity: .85; }
+
+  /* Score screen */
+  .score-card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 20px;
+    padding: 32px 24px; text-align: center;
+  }
+  .score-num { font-size: 64px; font-weight: 900; color: #0f172a; line-height: 1; }
+  .score-label { font-size: 16px; font-weight: 600; color: #64748b; margin: 8px 0 24px; }
+  .score-note { font-size: 14px; color: #475569; max-width: 400px; margin: 0 auto 24px; line-height: 1.6; }
+  .restart-btn {
+    display: inline-block; padding: 13px 32px;
+    background: #1e293b; color: #fff; border: none; border-radius: 12px;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+  }
+
+  /* Indicator dots */
+  .dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 20px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #e2e8f0; transition: background .2s; }
+  .dot.done-correct { background: #22c55e; }
+  .dot.done-wrong { background: #f97316; }
+  .dot.current { background: #3b82f6; }
+
+  /* Intro */
+  .intro-card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 20px;
+    padding: 32px 24px; text-align: center; margin-bottom: 20px;
+  }
+  .intro-icon { font-size: 48px; margin-bottom: 14px; }
+  .intro-title { font-size: 22px; font-weight: 900; color: #0f172a; margin-bottom: 8px; }
+  .intro-sub { font-size: 14px; color: #64748b; margin-bottom: 24px; line-height: 1.6; }
+  .start-btn {
+    display: inline-block; padding: 14px 36px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: #fff; border: none; border-radius: 12px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- INTRO -->
+<div id="intro" class="screen active">
+  <div class="intro-card">
+    <div class="intro-icon">📬</div>
+    <div class="intro-title">Phishing Inbox</div>
+    <div class="intro-sub">
+      Six messages have arrived. Three are legitimate. Three are phishing.<br>
+      Classify each one. After every decision, the specific tells are revealed.
+    </div>
+    <button class="start-btn" onclick="startGame()">Open Inbox</button>
+  </div>
+</div>
+
+<!-- EMAIL SCREEN -->
+<div id="email-screen" class="screen">
+  <div class="inbox-header">
+    <div class="inbox-title">Inbox</div>
+    <div class="progress-text" id="prog-text">1 of 6</div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="email-card" id="email-card"></div>
+  <div class="verdict-row">
+    <button class="verdict-btn btn-legit" onclick="verdict('legit')">Legitimate</button>
+    <button class="verdict-btn btn-phish" onclick="verdict('phishing')">Phishing</button>
+  </div>
+  <div class="reveal-panel" id="reveal-panel">
+    <div class="reveal-title" id="reveal-title"></div>
+    <div class="reveal-body" id="reveal-body"></div>
+    <button class="next-btn" id="next-btn" onclick="nextEmail()">Next message</button>
+  </div>
+</div>
+
+<!-- SCORE SCREEN -->
+<div id="score-screen" class="screen">
+  <div class="score-card">
+    <div class="score-num" id="score-num">0/6</div>
+    <div class="score-label">messages classified correctly</div>
+    <div class="score-note" id="score-note"></div>
+    <button class="restart-btn" onclick="restart()">Try again</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+const emails = [
+  {
+    from: "Amazon India",
+    addr: "auto-confirm@amazon.in",
+    subject: "Your order #405-8821936-2943821 has shipped",
+    avatar: "#FF9900",
+    avatarLetter: "A",
+    body: `<p>Hello Rahul,</p>
+<p>Your order has been dispatched. Estimated delivery: 14 June 2026.</p>
+<p><strong>boAt Rockerz 255 Pro+ Wireless Earphones</strong> - Rs 1,299<br>
+Sold by: boAt Lifestyle</p>
+<p>You do not need to take any action. Track your parcel in the Amazon app.</p>
+<p>Thank you for shopping with Amazon India.</p>`,
+    answer: "legit",
+    tells: [
+      { type: "green", label: "Domain", text: "amazon.in is Amazon's official Indian domain. The sending address matches." },
+      { type: "green", label: "No action", text: "Legitimate shipping confirmations do not ask you to click a link or enter any information." },
+      { type: "green", label: "No urgency", text: "No countdown, no threat, no account suspension. Informational only." }
+    ],
+    reveal: "Legitimate. This is a standard order confirmation email. The domain is correct, there is no link to click, and no action is requested."
+  },
+  {
+    from: "HDFC Bank",
+    addr: "security-alert@hdfc-banking-support.in",
+    subject: "URGENT: Suspicious login attempt - verify now",
+    avatar: "#0062B1",
+    avatarLetter: "H",
+    body: `<p>Dear Customer,</p>
+<p>We detected a suspicious login attempt on your HDFC NetBanking account from an unrecognized device.</p>
+<p><strong>To prevent unauthorized access, verify your account within 24 hours or your account will be suspended.</strong></p>
+<p>Click below to verify immediately:<br>
+<a class="email-link">https://hdfc-banking-support.in/verify-account?id=29847</a></p>
+<p>If you do not verify, your account access will be blocked permanently.</p>`,
+    answer: "phishing",
+    tells: [
+      { type: "red", label: "Domain", text: "HDFC Bank's real domain is hdfcbank.com. This email comes from hdfc-banking-support.in - a completely different domain registered by the attacker." },
+      { type: "red", label: "Urgency", text: "'Within 24 hours or suspended' is a manufactured threat. Real banks do not suspend accounts via email links." },
+      { type: "red", label: "Link mismatch", text: "The link goes to hdfc-banking-support.in, not hdfcbank.com. Clicking would load a credential harvesting page." },
+      { type: "amber", label: "Generic greeting", text: "'Dear Customer' - HDFC communications to registered customers use your actual name." }
+    ],
+    reveal: "Phishing. The sending domain is hdfc-banking-support.in, not hdfcbank.com. The urgency, account suspension threat, and click-to-verify link are all standard phishing patterns."
+  },
+  {
+    from: "Google",
+    addr: "no-reply@accounts.google.com",
+    subject: "Security alert: new sign-in on Chrome",
+    avatar: "#4285F4",
+    avatarLetter: "G",
+    body: `<p>A new sign-in to your Google Account was just detected.</p>
+<p><strong>Time:</strong> 12 June 2026, 09:14 AM IST<br>
+<strong>Device:</strong> Chrome on Windows<br>
+<strong>Location:</strong> Mumbai, India</p>
+<p>If this was you, no action is needed.</p>
+<p>If you don't recognize this activity, go to your Google Account security settings to review your recent activity.</p>`,
+    answer: "legit",
+    tells: [
+      { type: "green", label: "Domain", text: "accounts.google.com is Google's official domain for account notifications." },
+      { type: "green", label: "No link to click", text: "The email tells you to go to your Google Account - it does not provide a clickable link. Real security alerts direct you to the app, not a link in the message." },
+      { type: "green", label: "Conditional action", text: "'If this was you, no action needed' - legitimate security emails acknowledge that the alert might be expected." }
+    ],
+    reveal: "Legitimate. The sending domain is accounts.google.com. The email does not ask you to click a link and provides conditional guidance. This is a standard Google security notification."
+  },
+  {
+    from: "FedEx Delivery",
+    addr: "noreply@fedex-delivery-india.xyz",
+    subject: "Your parcel is on hold - action required",
+    avatar: "#FF6200",
+    avatarLetter: "F",
+    body: `<p>Dear Valued Customer,</p>
+<p>Your FedEx parcel (tracking: FX-7742918-IN) is currently on hold at our Mumbai facility due to an incomplete address.</p>
+<p><strong>You must update your delivery details within 48 hours or the parcel will be returned.</strong></p>
+<p>Update your address and pay the Rs 29 redelivery fee here:<br>
+<a class="email-link">https://fedex-delivery-india.xyz/update?parcel=FX7742918</a></p>`,
+    answer: "phishing",
+    tells: [
+      { type: "red", label: "Domain", text: "FedEx's real domain is fedex.com. This email comes from fedex-delivery-india.xyz - a completely different domain. The .xyz extension and hyphenated construction are typical of scam domains." },
+      { type: "red", label: "Payment request", text: "Fake parcel delivery scams consistently request a small fee (Rs 20-50) to make the request seem low-risk. Real couriers bill recipients through official apps or stated accounts." },
+      { type: "red", label: "Urgency", text: "'48 hours or returned' - manufactured deadline to pressure fast action without verification." },
+      { type: "amber", label: "Unsolicited", text: "If you are not expecting a FedEx parcel, the notification is unsolicited. Even if you are, verify through the official app with a tracking number you received at purchase." }
+    ],
+    reveal: "Phishing. The domain fedex-delivery-india.xyz is not FedEx. Fake delivery notification scams are extremely common. The payment request confirms this - real couriers do not collect redelivery fees via email links."
+  },
+  {
+    from: "Flipkart",
+    addr: "noreply@flipkart.com",
+    subject: "Your Flipkart order has been cancelled",
+    avatar: "#2874F0",
+    avatarLetter: "F",
+    body: `<p>Hi Priya,</p>
+<p>Your order for <strong>Lakme Eyeconic Kajal (Black)</strong> has been cancelled as requested.</p>
+<p>Refund of Rs 199 will be credited to your original payment method within 5-7 business days.</p>
+<p>If you did not request this cancellation, contact Flipkart customer care through the app.</p>`,
+    answer: "legit",
+    tells: [
+      { type: "green", label: "Domain", text: "flipkart.com is Flipkart's official domain. The sending address is correct." },
+      { type: "green", label: "No link to click", text: "The email does not include a link. If action is needed, it directs to the app - not a link in the message." },
+      { type: "green", label: "Named recipient", text: "The email uses the customer's name (Priya), consistent with authenticated account communications." }
+    ],
+    reveal: "Legitimate. The domain is correct, the email uses a real name, and there is no link to click. This is a standard order cancellation confirmation."
+  },
+  {
+    from: "Microsoft Security",
+    addr: "security@microsoft-account-center.net",
+    subject: "Your Microsoft account: sign-in blocked",
+    avatar: "#00A4EF",
+    avatarLetter: "M",
+    body: `<p>Dear User,</p>
+<p>Unusual activity has been detected on your Microsoft account. We have temporarily blocked sign-in to protect you.</p>
+<p><strong>Verify your identity immediately to restore access:</strong><br>
+<a class="email-link">https://microsoft-account-center.net/verify?session=ms9421</a></p>
+<p>Warning: Failure to verify within 12 hours will result in permanent account deactivation.</p>
+<p>Microsoft Security Team</p>`,
+    answer: "phishing",
+    tells: [
+      { type: "red", label: "Domain", text: "Microsoft's real domain is microsoft.com. This email comes from microsoft-account-center.net - a completely different domain. 'Microsoft' appearing before the dot does not make it a Microsoft domain." },
+      { type: "red", label: "Permanent deactivation threat", text: "Microsoft does not permanently deactivate accounts over inbound emails with 12-hour deadlines. This is an escalated threat designed to override verification." },
+      { type: "red", label: "Generic greeting", text: "'Dear User' - Microsoft communications to registered accounts use your name or the registered email address." },
+      { type: "red", label: "Link domain", text: "The link goes to microsoft-account-center.net, not microsoft.com. This is a sophisticated phishing domain designed to look official at a glance." }
+    ],
+    reveal: "Phishing. This is an advanced example. The sending domain (microsoft-account-center.net) looks plausible but is not Microsoft. The permanent deactivation threat and 'Dear User' greeting are additional signals."
+  }
+];
+
+let current = 0;
+let score = 0;
+let results = [];
+let answered = false;
+
+function startGame() {
+  current = 0; score = 0; results = []; answered = false;
+  show('email-screen');
+  renderEmail();
+}
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function renderDots() {
+  const d = document.getElementById('dots');
+  d.innerHTML = '';
+  emails.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'dot';
+    if (i < current) dot.classList.add(results[i] === 'correct' ? 'done-correct' : 'done-wrong');
+    else if (i === current) dot.classList.add('current');
+    d.appendChild(dot);
+  });
+}
+
+function renderEmail() {
+  answered = false;
+  const e = emails[current];
+  document.getElementById('prog-text').textContent = `${current + 1} of ${emails.length}`;
+  renderDots();
+
+  const card = document.getElementById('email-card');
+  card.innerHTML = `
+    <div class="email-top">
+      <div class="email-avatar" style="background:${e.avatar}">${e.avatarLetter}</div>
+      <div class="email-meta">
+        <div class="email-from">${e.from} <span class="email-time">10:${String(20+current).padStart(2,'0')} AM</span></div>
+        <div class="email-addr">From: ${e.addr}</div>
+        <div class="email-subject">${e.subject}</div>
+      </div>
+    </div>
+    <div class="email-body">${e.body}</div>
+  `;
+  const reveal = document.getElementById('reveal-panel');
+  reveal.style.display = 'none';
+  reveal.className = 'reveal-panel';
+  document.querySelectorAll('.verdict-btn').forEach(b => { b.disabled = false; b.style.opacity = '1'; });
+}
+
+function verdict(choice) {
+  if (answered) return;
+  answered = true;
+  const e = emails[current];
+  const correct = choice === e.answer;
+  if (correct) score++;
+  results.push(correct ? 'correct' : 'wrong');
+
+  document.querySelectorAll('.verdict-btn').forEach(b => { b.disabled = true; b.style.opacity = '.5'; });
+
+  const panel = document.getElementById('reveal-panel');
+  panel.style.display = 'block';
+  panel.className = 'reveal-panel ' + (correct ? 'correct' : 'wrong');
+
+  document.getElementById('reveal-title').textContent = correct
+    ? (e.answer === 'legit' ? 'Correct - Legitimate' : 'Correct - Phishing')
+    : (e.answer === 'legit' ? 'This was Legitimate' : 'This was Phishing');
+
+  let html = `<p style="margin-bottom:12px">${e.reveal}</p>`;
+  e.tells.forEach(t => {
+    html += `<div class="tell"><span class="tell-badge ${t.type}">${t.label}</span><span>${t.text}</span></div>`;
+  });
+  document.getElementById('reveal-body').innerHTML = html;
+
+  const nb = document.getElementById('next-btn');
+  nb.textContent = current < emails.length - 1 ? 'Next message' : 'See results';
+  renderDots();
+}
+
+function nextEmail() {
+  current++;
+  if (current >= emails.length) { showScore(); return; }
+  renderEmail();
+}
+
+function showScore() {
+  document.getElementById('score-num').textContent = `${score}/6`;
+  let note = '';
+  if (score === 6) note = 'Perfect score. You caught every signal including the most sophisticated attacks.';
+  else if (score >= 4) note = 'Good result. The harder cases - particularly the lookalike Microsoft domain - trip most people on their first attempt.';
+  else if (score >= 2) note = 'The trickier examples show why domain checking must become automatic. Looking right is not the same as being right.';
+  else note = 'Most people miss the subtle domain differences on the first pass. Knowing what to look for changes the result significantly.';
+  document.getElementById('score-note').textContent = note;
+  show('score-screen');
+}
+
+function restart() { startGame(); }
+
+window.addEventListener('load', () => {
+  const h = document.body.scrollHeight;
+  parent.postMessage({ iframeHeight: h }, '*');
+});
+</script>
+</body>
+</html>

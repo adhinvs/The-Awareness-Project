@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The Scholarship Email</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root { background: #f8fafc; color: #1f2937; font-family: Inter, ui-sans-serif, system-ui, sans-serif; line-height: 1.6; }
+    body { margin: 0; padding: 20px; }
+    .container { max-width: 760px; margin: 0 auto; background: #fff; border: 1px solid #e5e7eb; border-radius: 20px; box-shadow: 0 8px 24px rgba(15,23,42,.07); padding: 28px; }
+    h1 { margin: 0 0 6px; font-size: 1.5rem; color: #111827; }
+    .intro { color: #6b7280; margin: 0 0 20px; font-size: 0.9rem; }
+    .email-ui {
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .email-header {
+      background: #f8fafc;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 14px 18px;
+    }
+    .email-field { font-size: 0.85rem; color: #374151; margin-bottom: 4px; }
+    .email-field span { color: #6b7280; min-width: 50px; display: inline-block; }
+    .email-subject { font-weight: 700; font-size: 1rem; color: #111827; margin-top: 8px; }
+    .email-body { padding: 20px 24px; font-size: 0.9rem; color: #1f2937; }
+    .email-logo { background: #1e3a8a; color: white; padding: 10px 16px; font-weight: 700; font-size: 0.9rem; border-radius: 6px; display: inline-block; margin-bottom: 16px; }
+    .red-flag-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: none;
+      border: 1.5px dashed #dc2626;
+      color: #dc2626;
+      border-radius: 6px;
+      padding: 1px 7px;
+      font-size: 0.85rem;
+      font-family: inherit;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background .15s;
+    }
+    .red-flag-btn:hover { background: #fef2f2; }
+    .red-flag-btn.found { background: #fef2f2; border-style: solid; }
+    .reveal {
+      background: #fef2f2;
+      border-left: 3px solid #dc2626;
+      border-radius: 0 8px 8px 0;
+      padding: 8px 12px;
+      font-size: 0.83rem;
+      color: #7f1d1d;
+      margin: 6px 0 10px 0;
+      display: none;
+    }
+    .reveal.open { display: block; }
+    .score-bar {
+      background: #f3f4f6;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .score-label { font-size: 0.85rem; color: #6b7280; }
+    .score-num { font-size: 1.5rem; font-weight: 800; color: #dc2626; }
+    .score-total { font-size: 0.85rem; color: #9ca3af; }
+    .verdict { background: #fffbeb; border-radius: 12px; padding: 16px 20px; display: none; margin-top: 16px; }
+    .verdict h3 { margin: 0 0 10px; color: #92400e; }
+    .verdict ul { margin: 0; padding-left: 20px; color: #374151; }
+    .verdict li { font-size: 0.88rem; margin-bottom: 6px; }
+    .real-comparison {
+      background: #f0fdf4;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 16px;
+      display: none;
+    }
+    .real-comparison h3 { margin: 0 0 10px; color: #14532d; font-size: 0.95rem; }
+    .compare-row { display: flex; gap: 10px; margin-bottom: 8px; font-size: 0.85rem; }
+    .compare-label { min-width: 150px; color: #6b7280; font-weight: 600; }
+    .compare-fake { color: #dc2626; }
+    .compare-real { color: #16a34a; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>The Scholarship Email</h1>
+  <p class="intro">Read this scholarship email and find the red flags. Click on any element that signals fraud. Find all 5 to unlock the comparison with a genuine scholarship communication.</p>
+
+  <div class="score-bar">
+    <div class="score-num" id="score">0</div>
+    <div class="score-total">/ 5 red flags found</div>
+    <div class="score-label" style="margin-left:auto">Click the highlighted elements in the email</div>
+  </div>
+
+  <div class="email-ui">
+    <div class="email-header">
+      <div class="email-field"><span>From:</span> <button class="red-flag-btn" id="f1" onclick="flag(1)">awards@globaledutrust-foundation.org</button></div>
+      <div class="email-field"><span>To:</span> meghna.sharma@gmail.com</div>
+      <div class="email-field"><span>Date:</span> 14 June 2025, 09:14 AM</div>
+      <div class="email-subject">CONGRATULATIONS: Shortlisted - Global Education Trust Scholarship 2025</div>
+      <div class="reveal" id="r1">The sending domain is <b>globaledutrust-foundation.org</b> - not an official university or government domain. Registered 11 days ago. Real scholarships come from .edu or .gov domains, or verifiable institutional addresses.</div>
+    </div>
+    <div class="email-body">
+      <div class="email-logo">Global Education Trust · London, UK</div>
+      <p>Dear Meghna Sharma,</p>
+      <p>We are pleased to inform you that you have been <strong>shortlisted for a fully-funded scholarship</strong> worth <strong>£18,000</strong> for the 2025-26 academic year. You were identified through a partnership with Indian academic excellence databases.</p>
+
+      <p>To <button class="red-flag-btn" id="f2" onclick="flag(2)">secure your place, a non-refundable registration fee of Rs. 8,500</button> is required by <strong>Friday, 20 June 2025</strong>.</p>
+      <div class="reveal" id="r2"><b>Advance fee requirement.</b> Legitimate scholarships never ask recipients to pay to receive money. This single element confirms fraud. Real scholarships deduct administrative costs from the award itself.</div>
+
+      <p>Please submit the following documents within <button class="red-flag-btn" id="f3" onclick="flag(3)">5 days to scholarships@globaledutrust-foundation.org</button>:</p>
+      <div class="reveal" id="r3"><b>Document harvesting.</b> Requesting marksheets, national ID, and photographs before any verification is a data collection exercise. Your documents can be used for identity fraud even if you never receive a scholarship.</div>
+      <ul>
+        <li>Academic transcripts and marksheets</li>
+        <li>Aadhaar card (front and back)</li>
+        <li>Recent passport-size photograph</li>
+        <li>Bank account details for fund transfer</li>
+      </ul>
+
+      <p>This offer is available to <button class="red-flag-btn" id="f4" onclick="flag(4)">only 3 remaining candidates</button>. Applications close Friday.</p>
+      <div class="reveal" id="r4"><b>Artificial scarcity and urgency.</b> "Only 3 places" and a Friday deadline are classic pressure tactics designed to prevent you from taking time to verify the offer. Real scholarships have published deadlines and transparent selection processes.</div>
+
+      <p>For queries, contact us on <button class="red-flag-btn" id="f5" onclick="flag(5)">WhatsApp: +44 7XXX XXXXXX</button>.</p>
+      <div class="reveal" id="r5"><b>WhatsApp-only contact.</b> Legitimate institutions provide email addresses on their official domain, phone numbers with switchboard verification, and office addresses. WhatsApp-only contact prevents any institutional verification.</div>
+
+      <p>Congratulations on this achievement. We look forward to welcoming you.</p>
+      <p><em>The Scholarship Team<br/>Global Education Trust</em></p>
+    </div>
+  </div>
+
+  <div class="verdict" id="verdict">
+    <h3>All 5 red flags found. This email is fraudulent.</h3>
+    <ul>
+      <li>Domain registered 11 days before the email was sent</li>
+      <li>Advance fee required to receive scholarship funds</li>
+      <li>Documents requested before any verification</li>
+      <li>Artificial scarcity and Friday deadline to prevent verification</li>
+      <li>WhatsApp-only contact with no institutional address</li>
+    </ul>
+  </div>
+
+  <div class="real-comparison" id="comparison">
+    <h3>How a genuine scholarship communication differs</h3>
+    <div class="compare-row">
+      <div class="compare-label">Sender domain</div>
+      <div class="compare-fake">❌ globaledutrust-foundation.org</div>
+      <div style="margin:0 6px">vs</div>
+      <div class="compare-real">✅ scholarships.ucl.ac.uk</div>
+    </div>
+    <div class="compare-row">
+      <div class="compare-label">Payment</div>
+      <div class="compare-fake">❌ Pay Rs. 8,500 to claim</div>
+      <div style="margin:0 6px">vs</div>
+      <div class="compare-real">✅ No advance payment required</div>
+    </div>
+    <div class="compare-row">
+      <div class="compare-label">Documents</div>
+      <div class="compare-fake">❌ Requested upfront via email</div>
+      <div style="margin:0 6px">vs</div>
+      <div class="compare-real">✅ Submitted via secure portal after initial verification</div>
+    </div>
+    <div class="compare-row">
+      <div class="compare-label">Urgency</div>
+      <div class="compare-fake">❌ "Only 3 places, by Friday"</div>
+      <div style="margin:0 6px">vs</div>
+      <div class="compare-real">✅ Published deadlines, 4-6 weeks notice</div>
+    </div>
+    <div class="compare-row">
+      <div class="compare-label">Contact</div>
+      <div class="compare-fake">❌ WhatsApp only</div>
+      <div style="margin:0 6px">vs</div>
+      <div class="compare-real">✅ Official email, phone, and physical address verifiable online</div>
+    </div>
+  </div>
+</div>
+
+<script>
+let found = 0;
+function flag(n) {
+  const btn = document.getElementById(`f${n}`);
+  if (btn.classList.contains('found')) return;
+  btn.classList.add('found');
+  btn.textContent = '✓ ' + btn.textContent;
+  document.getElementById(`r${n}`).classList.add('open');
+  found++;
+  document.getElementById('score').textContent = found;
+  if (found === 5) {
+    document.getElementById('verdict').style.display = 'block';
+    document.getElementById('comparison').style.display = 'block';
+  }
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+</script>
+</body>
+</html>

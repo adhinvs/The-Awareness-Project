@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Romance Scam Persona Builder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root { background: #f8fafc; color: #1f2937; font-family: Inter, ui-sans-serif, system-ui, sans-serif; line-height: 1.6; }
+    body { margin: 0; padding: 20px; }
+    .container { max-width: 760px; margin: 0 auto; background: #fff; border: 1px solid #e5e7eb; border-radius: 20px; box-shadow: 0 8px 24px rgba(15,23,42,.07); padding: 28px; }
+    h1 { margin: 0 0 6px; font-size: 1.5rem; color: #111827; }
+    .intro { color: #6b7280; margin: 0 0 24px; font-size: 0.9rem; }
+    .profile-card {
+      border: 1.5px solid #e5e7eb;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .profile-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .avatar {
+      width: 64px; height: 64px;
+      background: rgba(255,255,255,.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+    }
+    .profile-name { font-size: 1.3rem; font-weight: 700; }
+    .profile-sub { font-size: 0.85rem; opacity: .85; }
+    .profile-body { padding: 20px; }
+    .field {
+      display: flex; gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #f3f4f6;
+      align-items: flex-start;
+    }
+    .field:last-child { border-bottom: none; }
+    .field-label { font-size: 0.8rem; color: #6b7280; font-weight: 600; min-width: 120px; padding-top: 2px; }
+    .field-value { font-size: 0.9rem; color: #111827; }
+    .why-badge {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 99px;
+      margin-left: 8px;
+      cursor: pointer;
+      border: none;
+    }
+    .reveal-box {
+      background: #fffbeb;
+      border-left: 3px solid #d97706;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: #78350f;
+      display: none;
+    }
+    .reveal-box.open { display: block; }
+    .phase-tracker {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+    }
+    .phase-tracker h3 { margin: 0 0 12px; font-size: 0.9rem; color: #374151; text-transform: uppercase; letter-spacing: .05em; }
+    .phases { display: flex; gap: 0; }
+    .phase {
+      flex: 1;
+      padding: 8px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #9ca3af;
+      border-bottom: 3px solid #e5e7eb;
+      transition: all .3s;
+    }
+    .phase.active { color: #4f46e5; border-bottom-color: #4f46e5; font-weight: 700; }
+    .phase.done { color: #16a34a; border-bottom-color: #16a34a; }
+    .phase-name { font-weight: 600; display: block; }
+    .phase-week { font-size: 0.7rem; opacity: .7; }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    button.action {
+      appearance: none;
+      background: #4f46e5;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    button.action:hover { background: #4338ca; }
+    button.action.secondary { background: #f3f4f6; color: #374151; }
+    button.action.secondary:hover { background: #e5e7eb; }
+    .insight {
+      background: #fef2f2;
+      border-left: 4px solid #dc2626;
+      border-radius: 0 12px 12px 0;
+      padding: 14px 18px;
+      margin-top: 16px;
+      font-size: 0.9rem;
+      color: #7f1d1d;
+      display: none;
+    }
+    .insight b { display: block; margin-bottom: 4px; }
+    .summary-box {
+      background: #f0fdf4;
+      border-radius: 14px;
+      padding: 20px;
+      display: none;
+      margin-top: 16px;
+    }
+    .summary-box h3 { margin: 0 0 10px; color: #14532d; }
+    .summary-box ul { margin: 0; padding-left: 20px; color: #374151; }
+    .summary-box li { margin-bottom: 6px; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>The Persona Builder</h1>
+  <p class="intro">See how a fake romantic identity is constructed, element by element. Each choice was made deliberately. Tap "Why?" on any field to understand the design decision.</p>
+
+  <div class="phase-tracker">
+    <h3>Scam Timeline</h3>
+    <div class="phases">
+      <div class="phase active" id="p1"><span class="phase-name">Contact</span><span class="phase-week">Week 1-2</span></div>
+      <div class="phase" id="p2"><span class="phase-name">Trust</span><span class="phase-week">Week 3-8</span></div>
+      <div class="phase" id="p3"><span class="phase-name">Intro</span><span class="phase-week">Week 9-10</span></div>
+      <div class="phase" id="p4"><span class="phase-name">Extract</span><span class="phase-week">Week 11+</span></div>
+    </div>
+  </div>
+
+  <div class="profile-card">
+    <div class="profile-header">
+      <div class="avatar">👤</div>
+      <div>
+        <div class="profile-name">Rahul Mehta</div>
+        <div class="profile-sub">Civil Engineer · Frankfurt, Germany</div>
+      </div>
+    </div>
+    <div class="profile-body">
+
+      <div class="field">
+        <div class="field-label">Profession</div>
+        <div class="field-value">
+          Senior Civil Engineer on an infrastructure project abroad
+          <button class="why-badge" onclick="toggleReveal('r1')">Why?</button>
+          <div class="reveal-box" id="r1">Explains why video calls are impossible ("poor connection on-site"). Establishes credibility and wealth. Creates a reason for emotional loneliness that makes romantic attention more believable.</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Photo</div>
+        <div class="field-value">
+          AI-generated face. Professional, attractive, age-appropriate.
+          <button class="why-badge" onclick="toggleReveal('r2')">Why?</button>
+          <div class="reveal-box" id="r2">AI-generated photos don't appear in reverse image searches. Real stolen photos can be found. The face is designed to be attractive but not implausibly so - too perfect triggers suspicion.</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Backstory</div>
+        <div class="field-value">
+          Widower with one child. Parents deceased. Limited family contact.
+          <button class="why-badge" onclick="toggleReveal('r3')">Why?</button>
+          <div class="reveal-box" id="r3">Creates emotional vulnerability and need for connection. Explains why nobody can verify his existence. The limited family reduces the chances the victim will suggest "let's call your sister."</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Communication style</div>
+        <div class="field-value">
+          Warm. Remembers details. Texts every morning. Never pushes.
+          <button class="why-badge" onclick="toggleReveal('r4')">Why?</button>
+          <div class="reveal-box" id="r4">Scripted behaviour that mimics genuine emotional investment. "Remembering details" is often a copy-paste from earlier in the conversation. Consistency over weeks builds the emotional attachment that makes the eventual ask feel like betrayal of trust - which is why victims hesitate to disengage.</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Video calls</div>
+        <div class="field-value">
+          Always delayed. Poor connection, security policy, time zone.
+          <button class="why-badge" onclick="toggleReveal('r5')">Why?</button>
+          <div class="reveal-box" id="r5">The worker running this persona may be managing 20+ relationships simultaneously. Live video is impossible. The excuses are designed to be individually plausible while never actually delivering a call. If pressed, a pre-recorded video may be used.</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Investment mention</div>
+        <div class="field-value">
+          Arrives in week 9. Framed as personal sharing, not a pitch.
+          <button class="why-badge" onclick="toggleReveal('r6')">Why?</button>
+          <div class="reveal-box" id="r6">The timing is deliberate. By week 9 the emotional investment is significant. The suggestion is framed as "I thought you might want to know" rather than "I want your money" because the victim is more likely to engage with something that feels like intimacy rather than a sales pitch.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="phase-content">
+    <p style="color:#374151; font-size:.9rem; margin:0 0 16px;">This is what the first weeks look like. The persona is designed to feel real. See what comes next.</p>
+    <div class="btn-row">
+      <button class="action" onclick="advance()">See the trust-building phase</button>
+    </div>
+  </div>
+
+  <div class="insight" id="insight"></div>
+  <div class="summary-box" id="summary">
+    <h3>What This Showed You</h3>
+    <ul>
+      <li>Every element of the persona was chosen to prevent verification and maximise emotional investment.</li>
+      <li>The investment suggestion is <b>never the first ask</b> - it arrives after weeks of warmth.</li>
+      <li>A single live video call within the first two weeks exposes the scam immediately.</li>
+      <li>One conversation with a sceptical friend almost always breaks the illusion.</li>
+      <li>Recovery from pig butchering involves grief for a relationship that felt real, not just a financial loss.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+let phase = 1;
+const insights = {
+  2: { cls: 'warn', text: '<b>Weeks 3-8: The warmth intensifies.</b> Daily messages. Remembering small things. Expressing connection. The script is tested to produce maximum emotional attachment before any financial topic appears. Workers in scam compounds handle this phase from standardised playbooks.' },
+  3: { cls: 'danger', text: '<b>Week 9-10: The investment is introduced.</b> "I just thought you might find this interesting - my colleagues use this platform and the returns have been significant." A small test investment is suggested. It will appear to succeed. This is the pivot point.' },
+  4: { cls: 'danger', text: '<b>Week 11+: The extraction begins.</b> Larger investments. Growing balances on a fake dashboard. Then a withdrawal request meets a barrier - a tax fee, a verification charge. Rahul offers to help. After payment, he disappears. The platform goes offline.' }
+};
+const phaseBtns = {
+  2: 'See how trust is maintained',
+  3: 'See when the money appears',
+  4: 'See how it ends'
+};
+
+function advance() {
+  phase++;
+  document.querySelectorAll('.phase').forEach((el, i) => {
+    el.className = 'phase' + (i + 1 < phase ? ' done' : i + 1 === phase ? ' active' : '');
+  });
+
+  const ins = insights[phase];
+  if (ins) {
+    const el = document.getElementById('insight');
+    el.className = `insight ${ins.cls}`;
+    el.innerHTML = ins.text;
+    el.style.display = 'block';
+  }
+
+  const pc = document.getElementById('phase-content');
+  if (phase >= 4) {
+    pc.innerHTML = `<div class="btn-row" style="margin-top:16px"><button class="action" onclick="showSummary()">See the full picture</button></div>`;
+  } else {
+    pc.innerHTML = `<div class="btn-row" style="margin-top:16px"><button class="action" onclick="advance()">${phaseBtns[phase + 1] || 'Continue'}</button></div>`;
+  }
+
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function showSummary() {
+  document.getElementById('phase-content').style.display = 'none';
+  document.getElementById('summary').style.display = 'block';
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function toggleReveal(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+</script>
+</body>
+</html>

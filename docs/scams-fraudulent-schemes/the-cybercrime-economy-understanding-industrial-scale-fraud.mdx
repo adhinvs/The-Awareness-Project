@@ -1,16 +1,181 @@
 ---
 sidebar_position: 14
 title: "The Cybercrime Economy: Understanding Industrial-Scale Fraud"
-sidebar_label: "The Cybercrime Economy: Understanding Industrial-Scale Fraud"
+sidebar_label: "The Cybercrime Economy"
+description: "How cybercrime operates as an organised industry with roles, markets, and division of labour - and why this means victims are not to blame."
+tags: [cybercrime-economy, fraud-factory, cybercrime-as-a-service, scam-compounds, dark-web, credential-markets, industrial-fraud]
 ---
 
-# The Cybercrime Economy — Understanding Industrial-Scale Fraud
+import Quiz from '@site/src/components/Quiz';
 
-## Sub-topics
+# The Cybercrime Economy: Understanding Industrial-Scale Fraud
 
-- Cybercrime-as-a-Service (CaaS) and dark web markets
-- Scam compounds and fraud factories
-- Division of labour in criminal organisations
-- Credential markets and purchased identities
-- The economics of why you were targeted
-- Removing shame — this is industrial, not personal failure
+The call that scammed you did not come from one person with bad intentions. **It came from an industry.**
+
+## What You Were Actually Up Against
+
+When Sanjay received the digital arrest call, he believed he was dealing with a criminal opportunist who happened to find his number.
+
+What he was actually dealing with:
+
+A **data team** had purchased his Aadhaar-linked phone number from a breached database, cross-referenced it against social media to confirm he was employed and had savings, and flagged him as a viable target.
+
+A **script team** had written the call script he heard, optimised through hundreds of previous calls to maximise compliance at each decision point.
+
+A **caller team** - working in a rented compound, on shift, with a supervisor monitoring conversion rates - made the call using a spoofed government number.
+
+A **money mule network** received the transfer and dispersed it across multiple accounts within minutes of Sanjay paying.
+
+A **technical team** maintained the fake CBI website Sanjay was directed to for "case verification."
+
+The total operation involved at least 15-20 people and produced dozens of identical calls that day. Sanjay was one entry in a spreadsheet.
+
+## The Scale of Cybercrime as an Industry
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>$9.2 Trillion</h2>
+  <p style={{ fontSize: '1.1rem', fontWeight: '600', margin: '8px 0 4px 0' }}>estimated global cost of cybercrime in 2024 - more than the GDP of Japan.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Cybersecurity Ventures Global Cybercrime Report, 2024</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Scam Compounds</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>300,000 Workers in SE Asia Compounds</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>The UN estimates <b>300,000+ people work in scam compounds</b> across Myanmar, Cambodia, Laos, and the Philippines - many trafficked there under false pretences.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: UNODC Report on Cyber Fraud, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Dark Web Markets</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>A Stolen Identity Costs Under $15</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>On dark web credential markets, a full identity package - name, Aadhaar, bank account details, phone number - <b>sells for under $15</b>. Phishing kits for major Indian banks rent for $50-$200 per month.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Digital Shadows Credential Exposure Report, 2024</span>
+    </div>
+  </div>
+</div>
+
+## How the Industry Is Organised
+
+### Cybercrime-as-a-Service (CaaS)
+
+Cybercrime has professionalised. Individual criminals no longer need technical skills - they rent them. **Phishing kits, call scripts, fake banking portals, malware, and money laundering services are all available as subscription products** on dark web markets.
+
+This means a scam can be launched by someone with no technical ability using purchased tools: a rented phishing portal, a purchased victim list, a leased money mule account, and a downloaded call script.
+
+### Scam compounds and fraud factories
+
+The largest operations run from physical compounds - buildings housing hundreds of workers, often in countries with limited law enforcement capacity. Workers sit at desks with scripts, targets, and performance metrics. Supervisors monitor call conversion rates and message response rates. The environment is often coercive - some workers are trafficked.
+
+**This is not organised crime in the traditional sense. It is an HR department, a call centre, and a finance team working toward a shared revenue target.**
+
+### Division of labour
+
+| Role | Function |
+|---|---|
+| Data team | Purchases breached credential lists, scrapes public records, profiles targets |
+| Technical team | Builds and maintains fake websites, banking portals, investment dashboards |
+| Script team | Writes and optimises call and message scripts |
+| Caller/chat team | Executes the scam - calls, WhatsApp, chat |
+| Money mule network | Receives and disperses victim payments |
+| Laundering team | Converts funds to crypto, moves internationally |
+
+### Credential markets and purchased identities
+
+Major data breaches produce lists of millions of records - names, phone numbers, email addresses, financial data. These are sold on dark web markets, often multiple times to multiple buyers. By the time a scammer calls you, your data may have been sold dozens of times.
+
+**You are on a list because of a breach at a company you trusted, not because of anything you did.**
+
+### The economics of why you were targeted
+
+You were not targeted because you were careless, naive, or uniquely vulnerable. You were targeted because:
+
+- Your data appeared in a purchased breach list
+- You were in a demographic the operation was targeting that week
+- An algorithm scored you as a viable contact based on available data
+- Your phone was active when the auto-dialer called
+
+The decision was made by a spreadsheet, not a person making a judgement about you.
+
+## See the Operation Behind the Call
+
+<iframe
+  id="cybercrime-iframe"
+  src="/simulations/scams-fraudulent-schemes/the-cybercrime-economy/fraud-factory-floor.html"
+  width="100%"
+  style={{ height: '640px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="The Fraud Factory Floor"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('cybercrime-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._cybercrimeHandler);
+    window._cybercrimeHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+## Removing Shame: This Is Industrial, Not Personal Failure
+
+The shame many victims feel is real. It should not be.
+
+**Being deceived by a professional operation that employs dozens of people, uses psychologically optimised scripts, and targets you at your most vulnerable moment is not a personal failure.** It is an encounter with an industry that exists specifically to overcome your defences.
+
+The people who run these operations are not smarter than you. They have more information, more time, more resources, and a business model built entirely around finding the moment when any person - regardless of intelligence or experience - can be deceived.
+
+Understanding the scale and structure of cybercrime does three things:
+- **Removes misplaced shame** that prevents reporting and recovery
+- **Explains why the attack felt so convincing** - it was built by professionals to be convincing
+- **Shifts the frame from personal failure to systemic harm** - which is what it is
+
+## Three Things Worth Doing
+
+### 1. Report, even if you feel embarrassed.
+
+Reports to cybercrime.gov.in and 1930 create the data that investigators use to disrupt operations. Your report protects the next person. The shame you feel is what keeps these operations running.
+
+### 2. Tell someone specifically what happened.
+
+Not as confession - as information transfer. Specific accounts of how scams operated are far more protective than generic warnings. The more detail you share, the harder the script is to run on someone else.
+
+### 3. Understand that recognition is a skill, not a character trait.
+
+Falling for a scam does not mean you are less capable of recognising them in future. Pattern recognition improves with exposure. Every person who learns from this material - victim or not - becomes harder to target.
+
+## Knowledge Check
+
+<Quiz
+  question="A friend says she feels stupid for falling for a job scam. She is embarrassed and does not want to report it. What is the most accurate thing you can tell her?"
+  options={[
+    {
+      label: "She should have been more careful about verifying the offer.",
+      correct: false,
+      explanation: "This framing places responsibility on the victim for a professional operation's success. Job scams use real company logos, fake LinkedIn profiles, and scripted interviewers. The operation was built to overcome reasonable verification."
+    },
+    {
+      label: "The scam was run by professionals using optimised scripts and purchased data. Her experience is the data point that helps stop the next person.",
+      correct: true,
+      explanation: "Correct. Fraud operations use professional techniques, data intelligence, and psychological engineering. Being deceived by them reflects the quality of the operation, not the quality of the victim's judgement. Reporting creates the record investigators need to disrupt these operations."
+    },
+    {
+      label: "It's not worth reporting because the money is already gone.",
+      correct: false,
+      explanation: "Reporting serves multiple purposes beyond individual recovery. It creates investigation data, can help disrupt operations, may lead to recovery in some cases, and protects future targets."
+    },
+    {
+      label: "These things happen and there's nothing to be done.",
+      correct: false,
+      explanation: "There are concrete actions: reporting to cybercrime.gov.in, contacting the bank, and potentially pursuing a chargeback. There are also protective actions for others - sharing the specific account of how the scam worked."
+    }
+  ]}
+/>

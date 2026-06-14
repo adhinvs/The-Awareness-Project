@@ -2,111 +2,121 @@
 sidebar_position: 3
 title: "Quishing & Physical-Digital Attack Convergence"
 sidebar_label: "Quishing & Physical-Digital Attack Convergence"
+description: "How attackers embed malicious links in QR codes placed in physical spaces - parking meters, restaurant tables, and transit stops - and how to scan safely."
+tags: [quishing, qr-codes, deceptive-communication, physical-digital, verification, payment-fraud]
 ---
 
 import Quiz from '@site/src/components/Quiz';
 
 # Quishing & Physical-Digital Attack Convergence
 
-Before anyone can steal your data, they have to get you to lower your guard. While we are trained to be suspicious of links in emails, our brains instinctively trust physical objects in the real world. Attackers exploit this by bridging the physical and digital worlds using malicious QR codes—a tactic known as "Quishing."
+We have spent years learning not to click suspicious email links. Attackers responded by moving the links into the physical world.
 
-## The Domino Effect of "Just Pay for Parking"
+---
 
-Sarah was running ten minutes late for a crucial client meeting downtown. She finally found a street parking spot, grabbed her bag, and rushed to the parking meter. 
+## The Parking Meter That Was Not Official
 
-The physical meter had a bright yellow sticker slapped right in the center: **"Pay Faster. Scan to Park."** 
+Sarah was running late for a meeting. She found a spot, rushed to the parking meter, and saw a bright yellow sticker in the centre: **"Pay Faster. Scan to Park."**
+
 <figure style={{ margin: '32px 0', textAlign: 'center' }}>
-  <img 
-    src="/img/section4_module31.webp"
-    alt="A split-screen image showing a person scanning a QR code on a parking meter, while the digital data stream funnels directly into a hacker's dark terminal." 
-    style={{ width: '100%', height: 'auto', borderRadius: '16px', border: '1px solid #E5E7EB', boxShadow: '0 10px 25px rgba(0, 0, 0, 0.05)' }} 
+  <img
+    src="/img/deceptive-communication/quishing-physical-digital-attack-convergence/quishing-parking-meter.webp"
+    alt="A person scanning a QR code sticker on a parking meter, with a URL preview visible on their phone screen."
+    style={{ width: '100%', height: 'auto', borderRadius: '16px', border: '1px solid #E5E7EB' }}
   />
-  <figcaption style={{ fontSize: '13px', color: '#6B7280', marginTop: '12px', fontStyle: 'italic' }}>
-    The Physical Trust Exploit: We instinctively trust physical objects like parking meters, blinding us to the digital traps layered on top of them.
-  </figcaption>
 </figure>
 
-Sarah didn't want to download a new app or dig around for coins. The QR code offered immediate convenience. She pointed her phone camera at the sticker, clicked the link that popped up, and was taken to a site that looked exactly like the city's official parking portal. 
+She scanned it. A page appeared that matched the city's parking portal exactly. She entered her card details, paid $4.00, and left.
 
-Because she was stressed, rushing, and physically standing in front of a city-owned machine, her digital skepticism was completely disabled. She quickly entered her credit card details, license plate, and email address, hit "Pay $4.00," and sprinted to her meeting.
+By evening, **$2,400 in unauthorized charges had appeared on her card.**
 
-She didn't know the bright yellow sticker had been placed there by a scammer at 2:00 AM the night before. She didn't pay the city. She sent her credit card directly to a criminal syndicate. By the end of the day, there were $2,400 in unauthorized charges on her card.
+The sticker had been placed on the meter at 2am. The page was a clone. The QR code is invisible to the eye - there is no way to read its destination without scanning. And the physical context - a government meter, a familiar location - disabled every skeptical instinct she had.
 
-## The 6 Pillars of Quishing & Physical Attacks
+---
 
-To understand why Sarah fell for a scam she would have easily spotted in an email, we must look at how attackers manipulate physical spaces.
+## What Is Actually Happening
 
-### 1. QR Codes as Attack Vectors
-A QR code is just a barcode that contains a hyperlink. Because humans cannot read QR codes with the naked eye, it is the ultimate "black box." You have absolutely no idea where the link will take you until your phone processes it, making it the perfect vehicle for hiding malicious URLs.
+A QR code is a visual URL. It goes wherever the creator pointed it. Physical placement gives it authority the URL does not earn.
 
-### 2. Parking Meters and EV Chargers
-Scammers print high-quality, weather-resistant stickers and place them directly over the legitimate QR codes on parking meters, EV charging stations, and toll booths. Because victims are usually in a hurry (high urgency) and believe they are interacting with government or corporate property (high trust), conversion rates for these scams are incredibly high.
-
-### 3. Restaurant Tables and Menus
-During the pandemic, QR code menus became ubiquitous. Attackers now slip fake QR codes onto restaurant tables or tape them inside physical menus. When scanned, the victim is taken to a fake "Order Here" portal or a page requesting a social media login to access the "Free Restaurant WiFi," resulting in stolen credentials.
-
-### 4. Public Transit and Stickers
-Physical spaces are becoming mass-phishing environments. Fake promotional posters, fake transit schedules, or fake "Scan to win" stickers on lampposts and bus stops cast a wide net. They rely on curiosity and boredom to lure victims into downloading malware or entering personal data.
-
-### 5. When Physical Spaces Become Digital Attack Surfaces
-This is the core of **Physical-Digital Convergence**. A phishing email feels like a digital threat, so your guard is up. A parking meter feels like a physical object, so your guard is down. Attackers are effectively "hacking" our physical environment to bypass our digital threat-detection instincts.
-
-### 6. How to Safely Scan QR Codes
-Your phone's native camera is your best defense. Never use third-party "QR Scanner" apps, as many contain malware themselves. When you scan with a native camera, look closely at the URL preview that pops up before clicking it. If the URL looks overly complex or uses a strange domain (like `city-parking-pay.xyz`), do not proceed.
-
-## What Is Actually Happening: Exploitation
-
-These core facts and statistics explore the psychological vectors targeted across physical-digital convergence scams.
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>3x</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>more likely - how much more often people enter payment details via a physical QR code compared to an email link.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>The physical object creates unearned trust. A parking meter, a restaurant table, a transit sign - each transfers credibility to whatever is attached to it.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Behavioral Cybersecurity Research Institute, 2024</span>
+</div>
 
 <div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
   <div className="col col--6">
-    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-      <div>
-        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Contextual Trust</span>
-        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>The Physical Bypass</h3>
-        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Victims are <b>3 times more likely</b> to enter payment details into a malicious site accessed via a physical QR code compared to a link received via email, because the physical environment establishes immediate, unearned trust.</p>
-      </div>
-      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Behavioral Cybersecurity Research Institute, 2024</span>
-    </div>
-  </div>
-
-  <div className="col col--6">
     <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
       <div>
-        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>The Urgency Exploit</span>
-        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Rushing the Target</h3>
-        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Quishing attacks deployed in high-stress transit areas (parking, tolls, train stations) succeed because the target's cognitive focus is on <b>avoiding a penalty or delay</b>, completely overriding their security awareness.</p>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Quishing Rise</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>587% Increase in QR Code Phishing in 2024</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Quishing attacks rose <b>587% in H1 2024</b> compared to the same period in 2023. Parking meters, EV chargers, and restaurant menus are the most targeted physical locations.</p>
       </div>
-      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Urban Threat Landscape Report, 2025</span>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: ReliaQuest Threat Intelligence Report, 2024</span>
     </div>
   </div>
-</div>
-
-<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
-  <div className="col col--12">
-    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #3B82F6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
       <div>
-        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#3B82F6', fontWeight: 'bold' }}>The Invisible Threat</span>
-        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Bypassing Technical Filters</h3>
-        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Unlike phishing emails which must pass through corporate spam filters, firewalls, and AI threat detection, a physical QR code <b>completely bypasses all enterprise security infrastructure</b>, delivering the payload directly to the user's personal device.</p>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Bypass Rate</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Physical QR Codes Bypass All Enterprise Filters</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>A QR code on a physical surface reaches the victim's personal device directly. <b>It bypasses every email filter, firewall, and corporate security tool</b> because it never travels through a monitored channel.</p>
       </div>
       <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Enterprise Mobile Threat Defense Index, 2025</span>
     </div>
   </div>
 </div>
 
-## Now Try It From the Other Side
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Urgency Factor</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Stress Disables Verification Instinct</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Quishing attacks at parking meters and transit stops are effective because the target's attention is split: avoiding a penalty or being late overrides the mental bandwidth needed to verify a URL.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Urban Threat Landscape Report, 2025</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #06B6D4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>Common Locations</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Parking, EV Chargers, Restaurants, Transit</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>The FBI has issued warnings specifically about <b>fake QR codes on parking meters and EV charging stations</b>. Restaurant menus and public notice boards are also active attack surfaces.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: FBI Public Service Announcement I-011823, 2023; updated 2024</span>
+    </div>
+  </div>
+</div>
 
-This is a working model of how attackers exploit physical trust. 
+---
 
-You are looking at this from the attacker's perspective. Your goal is to deploy a Quishing campaign that successfully steals credentials or credit card data. You must pair the **Location** with the correct **Payload** to ensure the target's physical context blinds them to the scam.
+## Where Physical Trust Becomes a Vulnerability
+
+**Parking meters and EV chargers:** Attackers print stickers that overlay the legitimate QR code. The physical context - a government or corporate asset - makes the scan feel safe.
+
+**Restaurant tables and menus:** QR menus became common during the pandemic. Fake codes on restaurant tables redirect to credential-stealing "Free WiFi" portals or cloned ordering pages.
+
+**Public transit and posters:** Fake "Scan to win" stickers on bus stops and lampposts use curiosity as the trigger. They cast a wide net, relying on high foot traffic rather than contextual trust.
+
+**Delivery parcels:** QR codes printed on fake delivery notices are placed in letterboxes. Victims scan to "reschedule delivery" and enter personal details on a harvesting page.
+
+**The core mechanic is the same in every location:** the physical object lends authority to the QR code. The moment you scan, you have left the physical environment and entered a digital one with no visible signals of where you actually are.
+
+---
+
+## Practice: Scan or Skip
+
+Six QR codes in real-world contexts. For each one, decide: safe to scan, scan with caution, or skip. The risk level and documented attack cases are revealed after each choice.
 
 <iframe
   id="quishing-iframe"
-  src="/simulations/quishing_simulator.html"
+  src="/simulations/deceptive-communication/quishing-physical-digital-attack-convergence/quishing-simulator.html"
   width="100%"
-  style={{ height: '780px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
-  title="Quishing Campaign Simulator"
+  style={{ height: '700px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Quishing Simulator"
   loading="lazy"
   onLoad={() => {
     const handler = (e) => {
@@ -121,58 +131,58 @@ You are looking at this from the attacker's perspective. Your goal is to deploy 
   }}
 />
 
-The simulation explores how context and urgency act as the primary drivers of physical-digital convergence attacks.
+---
 
 ## What That Just Showed You
 
-The simulation highlights that quishing is entirely dependent on manipulating physical spaces to generate unearned trust.
+**1. Physical context overrides digital skepticism.**
+A QR code on a parking meter feels different from a link in an email - even though both go to the same place. The physical object provides trust the URL has not earned.
 
-### 1. Context determines suspicion.
-If you scan a sticker on a random lamppost, your suspicion is naturally high. If you scan a sticker perfectly overlaid on a city parking meter, your suspicion drops to zero because the object's authority transfers to the sticker.
+**2. The URL preview is the only check available.**
+Before the tap, your phone shows a URL preview. That is your one window to verify where you are going. A city parking domain should match exactly - not a variant, not a redirect.
 
-### 2. Convenience is a vulnerability.
-The core appeal of a QR code is speed. Attackers exploit this desire for frictionless transactions. By making the fake portal look identical to the real one, they ensure the target's brain stays on "autopilot."
+**3. Urgency is always a component.**
+Every high-yield quishing location - parking, transit, delivery - carries time pressure. That pressure is not incidental. It is what makes the attack work.
 
-### 3. Physical stickers are the new malicious links.
-We have spent two decades learning not to click random blue links in emails. Attackers have simply moved the links into the physical world, wrapping them in black-and-white squares where our mental firewalls don't exist.
+---
 
 ## Three Things Worth Doing
 
-You don't need to stop using QR codes, but you do need to treat them like untrusted email links.
+**1. Run your fingernail over any QR code at a payment terminal.**
+If a sticker has been placed over an original code, the edge is detectable. This takes two seconds and catches most parking meter and EV charger attacks.
 
-### 1. The Fingernail Test:
-Before scanning a QR code on a parking meter, EV charger, or public transit stop, run your fingernail over the edges. If it feels like a sticker was hastily placed over the original code, do not scan it.
+**2. Read the URL preview before tapping.**
+When you scan with your phone's camera, a preview URL appears. Stop and read it. City parking, restaurant, or courier domains should exactly match what you expect. Any mismatch: close it.
 
-### 2. Check the Preview URL:
-When you scan a QR code with your phone's native camera, a yellow or white URL preview bubble will appear. **Stop and read it.** If you are paying for city parking, but the URL says `http://quick-park-pay-now.xyz`, close it immediately.
+**3. Use the official app instead of the code.**
+For parking, transit payments, and deliveries: open the known official app directly. Use nothing from the physical surface. This eliminates the attack entirely.
 
-### 3. Use the Official App:
-Whenever possible, skip the QR code entirely. If you are at a restaurant, ask for a physical menu. If you are paying for parking, download the city's official parking app from the App Store or Google Play and pay directly through the secure application.
+---
 
 ## One Question Before You Continue
 
 <Quiz
-  question="Why are malicious QR codes placed in physical environments (Quishing) often more successful than sending the same malicious link via a phishing email?"
+  question="Why are malicious QR codes in physical locations more effective than the same link sent by email?"
   options={[
     {
-      label: "Because QR codes contain advanced viruses that automatically hack the phone as soon as the camera sees them.",
+      label: "QR codes carry a virus that activates when the camera reads them.",
       correct: false,
-      explanation: "Incorrect. Standard QR codes do not automatically hack phones upon sight; they simply prompt the user to open a URL. The vulnerability relies on user action."
+      explanation: "QR codes contain only a URL. No code executes on scan. The attack requires the user to visit the linked page and enter information."
     },
     {
-      label: "Because they completely bypass digital spam filters and rely on the unearned trust people instinctively give to physical objects like parking meters.",
+      label: "They bypass all email filters and exploit the trust people instinctively extend to physical objects like parking meters and menus.",
       correct: true,
-      explanation: "Correct! Phishing emails are blocked by firewalls and spam filters. A physical sticker bypasses all technical defenses and exploits the psychological trust we place in our physical surroundings."
+      explanation: "Correct. An email link travels through monitored channels and may be blocked. A physical sticker reaches the victim's device directly, with no technical filter in the path. The physical environment provides unearned authority to whatever is attached to it."
     },
     {
-      label: "Because telecom providers charge money to block QR codes, and most cities do not pay for the protection.",
+      label: "Telecom providers do not scan QR codes the way they scan emails.",
       correct: false,
-      explanation: "Incorrect. Telecom providers do not control physical stickers placed in the real world."
+      explanation: "Telecom providers play no role here. The issue is not technical filtering - it is the trust the physical context creates before any URL is visited."
     },
     {
-      label: "Because scanning a QR code masks the user's IP address, making the scam completely anonymous.",
+      label: "QR codes hide the URL completely, so there is no way to know the destination.",
       correct: false,
-      explanation: "Incorrect. The scam's success has nothing to do with masking IP addresses; it is entirely about manipulating human trust and urgency."
+      explanation: "Phone cameras show a URL preview before the user taps. That preview is the key verification step. The URL is visible - the problem is that most people scan without reading it."
     }
   ]}
 />

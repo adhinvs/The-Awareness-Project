@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify This Expert</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f8fafc; color: #1e293b; font-size: 15px; line-height: 1.5;
+  }
+  .wrap { max-width: 620px; margin: 0 auto; padding: 24px 16px 48px; }
+  .screen { display: none; }
+  .screen.active { display: block; animation: fadeUp .3s ease; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  /* Profile card */
+  .profile-card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 16px;
+    overflow: hidden; margin-bottom: 16px;
+  }
+  .profile-cover {
+    height: 80px;
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+  }
+  .profile-body { padding: 0 20px 20px; }
+  .profile-avatar-wrap { margin-top: -36px; margin-bottom: 12px; }
+  .profile-avatar {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: linear-gradient(135deg, #0369a1, #0ea5e9);
+    border: 4px solid #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; font-weight: 900; color: #fff;
+  }
+  .profile-name { font-size: 18px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 8px; }
+  .badge-tick { font-size: 16px; }
+  .profile-title { font-size: 13px; color: #475569; margin: 3px 0 10px; }
+  .cred-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .cred-chip {
+    padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 600;
+    background: #dbeafe; color: #1d4ed8;
+  }
+  .profile-bio { font-size: 13px; color: #475569; line-height: 1.6; margin-bottom: 14px; }
+  .stat-row { display: flex; gap: 20px; }
+  .stat { font-size: 12px; color: #64748b; }
+  .stat strong { color: #0f172a; font-size: 14px; display: block; }
+  .cert-preview {
+    background: #f0fdf4; border: 1px solid #86efac; border-radius: 10px;
+    padding: 12px 14px; margin-top: 12px;
+    display: flex; align-items: center; gap: 10px; font-size: 13px; color: #15803d;
+  }
+  .cert-preview .cert-icon { font-size: 22px; }
+  .cert-text strong { display: block; font-weight: 700; font-size: 13px; }
+  .cert-text span { font-size: 11px; color: #4ade80; }
+  .post-preview {
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;
+    padding: 12px 14px; margin-top: 10px; font-size: 13px; color: #334155; line-height: 1.6;
+  }
+  .post-preview .post-meta { font-size: 11px; color: #94a3b8; margin-top: 6px; }
+
+  /* Intro screen */
+  .intro-header {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 16px;
+    padding: 20px; margin-bottom: 16px;
+    display: flex; align-items: flex-start; gap: 14px;
+  }
+  .intro-icon { font-size: 36px; flex-shrink: 0; }
+  .intro-title { font-size: 18px; font-weight: 900; color: #0f172a; margin-bottom: 4px; }
+  .intro-sub { font-size: 13px; color: #64748b; line-height: 1.6; }
+  .start-btn {
+    display: block; width: 100%; padding: 14px;
+    background: #1e293b; color: #fff; border: none; border-radius: 12px;
+    font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 16px;
+  }
+
+  /* Steps */
+  .steps-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: #94a3b8; margin-bottom: 12px; }
+  .step-card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 14px;
+    overflow: hidden; margin-bottom: 10px; transition: box-shadow .2s;
+  }
+  .step-card.active-step { box-shadow: 0 0 0 2px #3b82f6; }
+  .step-row {
+    padding: 14px 16px; display: flex; align-items: center; gap: 12px; cursor: pointer;
+  }
+  .step-row:hover { background: #f8fafc; }
+  .step-num {
+    width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800;
+  }
+  .step-num.pending { background: #f1f5f9; color: #94a3b8; }
+  .step-num.current { background: #3b82f6; color: #fff; }
+  .step-num.pass { background: #dcfce7; color: #15803d; }
+  .step-num.fail { background: #fee2e2; color: #dc2626; }
+  .step-name { flex: 1; font-size: 14px; font-weight: 600; color: #0f172a; }
+  .step-status { font-size: 12px; font-weight: 700; }
+  .step-status.pass { color: #15803d; }
+  .step-status.fail { color: #dc2626; }
+  .step-status.pending { color: #94a3b8; }
+  .step-chevron { font-size: 14px; color: #94a3b8; transition: transform .2s; }
+  .step-chevron.open { transform: rotate(90deg); }
+
+  .step-detail { display: none; padding: 0 16px 16px; }
+  .step-detail.open { display: block; }
+  .step-instruction {
+    background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px;
+    padding: 12px 14px; font-size: 13px; color: #0c4a6e; line-height: 1.6; margin-bottom: 12px;
+  }
+  .step-instruction strong { display: block; margin-bottom: 4px; color: #075985; }
+  .finding-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  .finding-btn {
+    flex: 1; min-width: 120px; padding: 10px; border-radius: 10px; border: 1px solid #e2e8f0;
+    font-size: 13px; font-weight: 600; cursor: pointer; background: #fff; transition: all .15s;
+  }
+  .finding-btn.found:hover, .finding-btn.found.sel { background: #dcfce7; border-color: #4ade80; color: #15803d; }
+  .finding-btn.not-found:hover, .finding-btn.not-found.sel { background: #fee2e2; border-color: #f87171; color: #dc2626; }
+  .finding-btn.mismatch:hover, .finding-btn.mismatch.sel { background: #fef3c7; border-color: #fbbf24; color: #92400e; }
+  .step-reveal { font-size: 13px; color: #475569; line-height: 1.6; padding: 10px 12px; border-radius: 8px; display: none; }
+
+  /* Final verdict */
+  .verdict-card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 22px 20px; margin-top: 16px;
+  }
+  .verdict-title { font-size: 16px; font-weight: 800; margin-bottom: 12px; }
+  .verdict-row-items { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .verdict-item {
+    display: flex; align-items: center; gap: 6px; padding: 6px 12px;
+    border-radius: 99px; font-size: 12px; font-weight: 700;
+  }
+  .verdict-item.fail { background: #fee2e2; color: #dc2626; }
+  .verdict-item.pass { background: #dcfce7; color: #15803d; }
+  .verdict-conclusion {
+    background: #fff7ed; border: 1px solid #fed7aa; border-radius: 12px;
+    padding: 14px 16px; font-size: 13px; color: #92400e; line-height: 1.6; margin-bottom: 14px;
+  }
+  .verdict-conclusion.legit { background: #f0fdf4; border-color: #86efac; color: #14532d; }
+  .restart-btn {
+    display: block; width: 100%; padding: 13px;
+    background: #f1f5f9; border: none; border-radius: 12px;
+    font-size: 14px; font-weight: 700; cursor: pointer; color: #475569;
+  }
+  .restart-btn:hover { background: #e2e8f0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- INTRO -->
+<div id="intro" class="screen active">
+  <div class="intro-header">
+    <div class="intro-icon">🔍</div>
+    <div>
+      <div class="intro-title">Verify This Expert</div>
+      <div class="intro-sub">A financial advisor profile appears on social media. Work through a guided 5-step verification process to determine whether the credentials are real before trusting their advice.</div>
+    </div>
+  </div>
+
+  <div class="profile-card">
+    <div class="profile-cover"></div>
+    <div class="profile-body">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar">VK</div>
+      </div>
+      <div class="profile-name">Vikram Khanna <span class="badge-tick">✓</span></div>
+      <div class="profile-title">SEBI Registered Investment Advisor | MBA Finance (IIM-A) | 14 Years Experience</div>
+      <div class="cred-list">
+        <span class="cred-chip">SEBI RIA</span>
+        <span class="cred-chip">NISM Certified</span>
+        <span class="cred-chip">CFP</span>
+        <span class="cred-chip">IIM Ahmedabad</span>
+      </div>
+      <div class="profile-bio">Helping 5,000+ families build wealth through disciplined, evidence-based investing. SEBI Registration: INA000012847. DM for portfolio review. Free webinar every Sunday 7 PM.</div>
+      <div class="stat-row">
+        <div class="stat"><strong>62.4K</strong>followers</div>
+        <div class="stat"><strong>1,847</strong>posts</div>
+        <div class="stat"><strong>2018</strong>joined</div>
+      </div>
+      <div class="cert-preview">
+        <div class="cert-icon">📄</div>
+        <div class="cert-text">
+          <strong>SEBI RIA Certificate - INA000012847</strong>
+          <span>Issued 2018. Valid until 2027. Tap to view.</span>
+        </div>
+      </div>
+      <div class="post-preview">
+        "Nifty 50 will hit 28,000 by December 2026 - here is my detailed analysis with 7 supporting data points. Full report in my paid community (Rs 999/month). Link in bio."
+        <div class="post-meta">Posted 3 days ago - 2,847 likes - 391 comments</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="start-btn" onclick="startVerify()">Begin 5-Step Verification</button>
+</div>
+
+<!-- VERIFY -->
+<div id="verify-screen" class="screen">
+  <div class="profile-card" style="margin-bottom:16px">
+    <div class="profile-body" style="padding-top:16px">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px">
+        <div class="profile-avatar" style="width:44px;height:44px;font-size:16px;border:2px solid #fff">VK</div>
+        <div>
+          <div class="profile-name" style="font-size:15px">Vikram Khanna ✓</div>
+          <div style="font-size:12px;color:#64748b">SEBI RIA: INA000012847 | 62.4K followers</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="steps-label">Verification checklist - 5 steps</div>
+  <div id="steps-container"></div>
+
+  <div class="verdict-card" id="verdict-card" style="display:none">
+    <div class="verdict-title" id="verdict-title"></div>
+    <div class="verdict-row-items" id="verdict-items"></div>
+    <div class="verdict-conclusion" id="verdict-conclusion"></div>
+    <button class="restart-btn" onclick="restart()">Start again</button>
+  </div>
+</div>
+
+</div>
+<script>
+const steps = [
+  {
+    name: 'SEBI Register Lookup',
+    instruction: 'Go to sebi.gov.in → Investor Corner → Registered Advisors. Search for INA000012847 and "Vikram Khanna".',
+    detail: 'Every SEBI RIA has a registration number starting with INA followed by nine digits in the public register.',
+    options: [
+      { label: 'Found - details match', cls: 'found', value: 'match' },
+      { label: 'Found - details differ', cls: 'mismatch', value: 'mismatch' },
+      { label: 'Not found', cls: 'not-found', value: 'none' }
+    ],
+    reveals: {
+      match: { pass: true, text: 'Registration confirmed. Continue to the remaining checks.' },
+      mismatch: { pass: false, text: 'INA000012847 belongs to a different person - a common fraud technique using a real number that belongs to someone else.' },
+      none: { pass: false, text: 'INA000012847 is not in the SEBI register. The registration number on the profile is fabricated.' }
+    }
+  },
+  {
+    name: 'Institution Verification',
+    instruction: 'Check the IIM Ahmedabad alumni directory at iima.ac.in. Search "Vikram Khanna".',
+    detail: 'Degree claims can be verified via official alumni directories or the registrar\'s office.',
+    options: [
+      { label: 'Verified in alumni records', cls: 'found', value: 'match' },
+      { label: 'Cannot verify', cls: 'mismatch', value: 'mismatch' },
+      { label: 'Not found / disputed', cls: 'not-found', value: 'none' }
+    ],
+    reveals: {
+      match: { pass: true, text: 'IIM-A confirms this person. Continue verification.' },
+      mismatch: { pass: false, text: 'Without institutional confirmation, the MBA claim remains unverified.' },
+      none: { pass: false, text: 'Name not in alumni records. The credential is either false or an alias is being used.' }
+    }
+  },
+  {
+    name: 'Reverse Image Search',
+    instruction: 'Download the profile photo and run a reverse image search on Google Images or TinEye.',
+    detail: 'A photo appearing under a different name is direct evidence of fabricated identity.',
+    options: [
+      { label: 'Unique - no other results', cls: 'found', value: 'match' },
+      { label: 'Appears under a different name', cls: 'not-found', value: 'none' },
+      { label: 'Stock photo or AI-generated', cls: 'not-found', value: 'ai' }
+    ],
+    reveals: {
+      match: { pass: true, text: 'Photo is unique to this profile. Consistent with a real person. Continue.' },
+      none: { pass: false, text: 'The same photo appears under a different name - direct evidence of fabricated identity.' },
+      ai: { pass: false, text: 'A fabricated profile photo is a strong signal the entire identity is constructed.' }
+    }
+  },
+  {
+    name: 'Cross-Platform Consistency',
+    instruction: 'Search "Vikram Khanna SEBI advisor" on LinkedIn, Google, and financial news sites.',
+    detail: 'A genuine advisor with 14 years of experience would have traceable footprint across multiple independent platforms.',
+    options: [
+      { label: 'Consistent across platforms', cls: 'found', value: 'match' },
+      { label: 'Only exists on this platform', cls: 'not-found', value: 'none' },
+      { label: 'Inconsistent details', cls: 'mismatch', value: 'mismatch' }
+    ],
+    reveals: {
+      match: { pass: true, text: 'Consistent cross-platform presence supports authenticity. Continue.' },
+      none: { pass: false, text: 'Existing only on one platform contradicts a claimed 14-year career with 5,000+ clients.' },
+      mismatch: { pass: false, text: 'Inconsistent credentials across platforms indicate a constructed identity.' }
+    }
+  },
+  {
+    name: 'SCORES / SEBI Complaint Check',
+    instruction: 'Check scores.sebi.gov.in for complaints against INA000012847. Verify contact details match the SEBI register.',
+    detail: 'A SEBI-registered advisor must use their registered contact details. A mismatch is itself a regulatory violation.',
+    options: [
+      { label: 'No complaints, details match', cls: 'found', value: 'match' },
+      { label: 'Complaints on record', cls: 'mismatch', value: 'mismatch' },
+      { label: 'Contact details do not match', cls: 'not-found', value: 'none' }
+    ],
+    reveals: {
+      match: { pass: true, text: 'No complaints and matching contact details. Verification complete.' },
+      mismatch: { pass: false, text: 'Complaints on SEBI SCORES are a serious red flag. Review them before proceeding.' },
+      none: { pass: false, text: 'Contact mismatch means the registration either belongs to someone else or the advisor is violating SEBI rules.' }
+    }
+  }
+];
+
+let results = [];
+let openStep = 0;
+
+function startVerify() {
+  results = new Array(steps.length).fill(null);
+  openStep = 0;
+  renderSteps();
+  document.getElementById('verdict-card').style.display = 'none';
+  show('verify-screen');
+  setTimeout(() => parent.postMessage({ iframeHeight: document.body.scrollHeight + 20 }, '*'), 100);
+}
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function renderSteps() {
+  const container = document.getElementById('steps-container');
+  container.innerHTML = '';
+  steps.forEach((step, i) => {
+    const res = results[i];
+    let numClass = 'pending', numText = i + 1, statusText = '', statusClass = 'pending';
+    if (res) {
+      const passed = step.reveals[res].pass;
+      numClass = passed ? 'pass' : 'fail';
+      numText = passed ? '✓' : '✕';
+      statusText = passed ? 'Verified' : 'Failed';
+      statusClass = passed ? 'pass' : 'fail';
+    } else if (i === openStep) {
+      numClass = 'current';
+    }
+
+    const isOpen = i === openStep;
+    const card = document.createElement('div');
+    card.className = 'step-card' + (i === openStep && !res ? ' active-step' : '');
+    card.innerHTML = `
+      <div class="step-row" onclick="toggleStep(${i})">
+        <div class="step-num ${numClass}">${numText}</div>
+        <div class="step-name">${step.name}</div>
+        ${res ? `<div class="step-status ${statusClass}">${statusText}</div>` : ''}
+        <div class="step-chevron ${isOpen ? 'open' : ''}">›</div>
+      </div>
+      <div class="step-detail ${isOpen ? 'open' : ''}">
+        <div class="step-instruction">
+          <strong>What to check:</strong>
+          ${step.instruction}
+        </div>
+        <div style="font-size:12px;color:#94a3b8;margin-bottom:10px">${step.detail}</div>
+        <div class="finding-row">
+          ${step.options.map(opt => `
+            <button class="finding-btn ${opt.cls} ${res === opt.value ? 'sel' : ''}"
+              onclick="recordResult(${i}, '${opt.value}')">${opt.label}</button>
+          `).join('')}
+        </div>
+        ${res ? `
+          <div class="step-reveal" style="display:block; background:${step.reveals[res].pass ? '#f0fdf4' : '#fff5f5'}">
+            ${step.reveals[res].text}
+          </div>
+        ` : ''}
+      </div>
+    `;
+    container.appendChild(card);
+  });
+  setTimeout(() => parent.postMessage({ iframeHeight: document.body.scrollHeight + 20 }, '*'), 50);
+}
+
+function toggleStep(i) {
+  openStep = openStep === i ? -1 : i;
+  renderSteps();
+}
+
+function recordResult(i, value) {
+  results[i] = value;
+  // Advance to next unanswered step
+  const next = results.findIndex((r, j) => r === null && j > i);
+  openStep = next !== -1 ? next : -1;
+  renderSteps();
+  if (results.every(r => r !== null)) {
+    showVerdict();
+  }
+}
+
+function showVerdict() {
+  const passCount = results.filter((r, i) => steps[i].reveals[r].pass).length;
+  const items = steps.map((step, i) => {
+    const passed = steps[i].reveals[results[i]].pass;
+    return `<div class="verdict-item ${passed ? 'pass' : 'fail'}">${passed ? '✓' : '✕'} ${step.name}</div>`;
+  }).join('');
+
+  document.getElementById('verdict-items').innerHTML = items;
+
+  let title, conclusion, isLegit = false;
+  if (passCount === 5) {
+    title = 'Profile appears legitimate';
+    conclusion = 'All five checks passed. The SEBI registration is confirmed, the institution is verified, the identity is consistent across platforms, and contact details match. This is a meaningfully stronger basis for trusting the profile than appearance alone.';
+    isLegit = true;
+  } else if (passCount >= 3) {
+    title = 'Significant concerns found';
+    conclusion = `${5 - passCount} of the 5 checks failed or could not be completed. Do not take financial action based on this profile. The failed checks represent specific, actionable concerns that have not been resolved. Contact SEBI at sebi.gov.in/sebiweb/home/HomeAction.do before engaging.`;
+  } else {
+    title = 'Profile is likely fraudulent';
+    conclusion = `${5 - passCount} of the 5 checks failed. The profile shows strong indicators of fraudulent credential display. The registration number may belong to a different person, the identity may be fabricated, and the credentials cannot be independently confirmed. Do not invest based on this profile. Report to SEBI SCORES at scores.sebi.gov.in.`;
+  }
+
+  document.getElementById('verdict-title').textContent = title;
+  document.getElementById('verdict-conclusion').textContent = conclusion;
+  document.getElementById('verdict-conclusion').className = 'verdict-conclusion' + (isLegit ? ' legit' : '');
+  document.getElementById('verdict-card').style.display = 'block';
+  setTimeout(() => parent.postMessage({ iframeHeight: document.body.scrollHeight + 20 }, '*'), 100);
+}
+
+function restart() {
+  show('intro');
+  setTimeout(() => parent.postMessage({ iframeHeight: document.body.scrollHeight }, '*'), 100);
+}
+
+window.addEventListener('load', () => parent.postMessage({ iframeHeight: document.body.scrollHeight }, '*'));
+</script>
+</body>
+</html>

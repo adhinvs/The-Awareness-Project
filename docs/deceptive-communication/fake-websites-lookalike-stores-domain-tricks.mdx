@@ -2,15 +2,180 @@
 sidebar_position: 2
 title: "Fake Websites, Lookalike Stores & Domain Tricks"
 sidebar_label: "Fake Websites, Lookalike Stores & Domain Tricks"
+description: "How attackers clone real websites, build lookalike stores, and use domain tricks to steal payment details and credentials."
+tags: [fake-websites, deceptive-communication, domain-tricks, typosquatting, phishing, verification, online-shopping]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Fake Websites, Lookalike Stores & Domain Tricks
 
-## Sub-topics
+A padlock in the browser bar used to mean safe. It no longer does. The lock means your connection is encrypted. It says nothing about who runs the server.
 
-- Domain names that mimic real companies
-- Fake checkout pages and cloned e-commerce stores
-- Lookalike apps on official app stores
-- SSL certificates on fake sites — the lock icon is not safety
-- Typosquatting and visually similar URLs
-- Verifying URL legitimacy before entering any data
+---
+
+## The Sale That Was Never Real
+
+Arjun was looking for headphones during a festival sale. He searched, found what appeared to be the brand's Indian store at `sony-india-store.in`. The prices matched the sale he had seen advertised. The site looked professional. He paid Rs 6,499.
+
+The headphones never arrived. The "order tracking" link led to a generic parcel tracker. Customer support stopped responding after two days.
+
+**The real Sony India site is `sony.co.in`. The site Arjun bought from was registered 11 days earlier.** Its entire purpose was to process payments during the sale window before being taken down.
+
+---
+
+## What Is Actually Happening
+
+Fake websites work because they resolve a basic question - "does this look right?" - without actually proving anything. Looking right is easy to fake. Being right requires checking the one thing attackers cannot replicate: **the exact domain name registered to the real organisation.**
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>1.5 million</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>new phishing sites created every month in 2025.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>That is roughly one new fake site every two seconds. Most are active for hours or days, then abandoned.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Interisle Consulting Phishing Landscape Report, 2025</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>The Padlock Problem</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>87% of Phishing Sites Now Use HTTPS</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>SSL certificates are free and take minutes to obtain. <b>87% of phishing sites display a padlock.</b> The padlock confirms encryption. It does not confirm identity. Treating it as a safety signal is one of the most widely exploited misconceptions in digital security.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: APWG Phishing Trends Report, Q3 2025</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Lookalike Domains</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>95% of Major Brands Have Lookalike Domains Registered</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Attackers register slight variations of real domains before and after major sale events. <b>95% of Fortune 500 brands have at least one active lookalike domain</b> targeting their customers.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Interisle Consulting, 2025</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>App Stores</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Lookalike Apps Removed by the Millions Annually</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Google removed over <b>2.28 million policy-violating apps</b> from the Play Store in 2023 alone. Many impersonate banks, government services, and payment apps. Official-looking names and icons pass initial review before being flagged.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Google Play Transparency Report, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #06B6D4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>Search Results</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Fake Sites Appear in Top Search Results</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Attackers purchase <b>Google Ads for fake bank sites</b> that appear above the real bank in search results. Clicking "bank login" in a search is no longer safe. Typing the known address directly is the only reliable entry point.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Which? Consumer Research, 2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## The Domain Tricks Attackers Use
+
+**Typosquatting** registers common misspellings. `amaz0n.com` (zero instead of O), `paypa1.com` (one instead of L), `fllpkart.com` (doubled L). These trigger on fast typing or mobile autocorrect.
+
+**Subdomain confusion** puts a real-looking name before the actual domain. `sbi.co.in.verify-account.xyz` looks official at a glance. The real domain is `verify-account.xyz`, not `sbi.co.in`.
+
+**TLD switching** uses alternative extensions. `google.co.com` or `amazon.shop` instead of `amazon.com`. Looks similar, points to a different server.
+
+**Homoglyph attacks** replace characters with visually identical ones from other alphabets. A Cyrillic "a" is indistinguishable from a Latin "a" at normal reading speed, but it is a different character that resolves to a different domain.
+
+**New domain registration** is the simplest tell. Most fake stores are registered days or weeks before a sale event. A domain registered last week selling electronics at a discount is almost always fraudulent.
+
+---
+
+## Practice: URL Danger Scanner
+
+Paste any URL below. The tool breaks it into components and flags suspicious patterns.
+
+<iframe
+  id="url-scanner-iframe"
+  src="/simulations/deceptive-communication/fake-websites-lookalike-stores-domain-tricks/url-scanner.html"
+  width="100%"
+  style={{ height: '620px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="URL Danger Scanner"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('url-scanner-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._urlScannerHandler);
+    window._urlScannerHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. The domain is the only reliable identity signal.**
+Logo, layout, padlock, reviews - all of these can be copied or faked. The exact domain name registered to the real organisation cannot be duplicated. It is the only check worth making before entering data.
+
+**2. Subdomains can be misleading by design.**
+`sbi.co.in.login.xyz` is not an SBI website. The actual domain is `login.xyz`. Everything before the last dot-separated segment is a subdomain, not the organisation name.
+
+**3. Search results are not safe navigation.**
+Sponsored results appear above legitimate sites. Never use a search result to navigate to your bank or a financial service. Type the address or use a saved bookmark.
+
+**4. New domains are the clearest red flag.**
+A legitimate e-commerce business has an established domain with years of history. A site registered this month selling discounted premium goods almost certainly is not what it claims to be.
+
+---
+
+## Three Things Worth Doing
+
+**1. Check the root domain, not the full URL.**
+Ignore subdomains. Find the part immediately before `.com`, `.in`, or any extension. That is the actual owner. Compare it exactly against the real company's known domain.
+
+**2. Never navigate to financial sites via search.**
+Type the address directly or use a bookmark you created yourself. This eliminates both typosquatting and paid-search phishing in a single step.
+
+**3. Check domain age before buying from an unfamiliar store.**
+Paste the URL into a WHOIS checker. If the domain was registered in the last 30 days and is selling branded goods, do not buy. New domains selling discounted items are a consistent pattern in e-commerce fraud.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Arjun's fake store had a padlock in the browser bar, professional design, and competitive prices. What was the single thing that would have revealed it as fraudulent before he paid?"
+  options={[
+    {
+      label: "The presence of a padlock means encryption only - the actual domain name was different from Sony's real domain.",
+      correct: true,
+      explanation: "Correct. The padlock confirms the connection is encrypted. It says nothing about who operates the server. The real Sony India domain is sony.co.in. The fake site used sony-india-store.in, registered 11 days earlier. Checking the exact domain before entering payment details would have stopped the purchase."
+    },
+    {
+      label: "The site had no reviews, which is always a sign of a fake store.",
+      correct: false,
+      explanation: "Fake stores frequently include fabricated reviews. The absence of reviews can be a signal, but their presence is not evidence of legitimacy. Domain verification is more reliable than review count."
+    },
+    {
+      label: "The prices were too low, which is always a sign of fraud.",
+      correct: false,
+      explanation: "Arjun's fake site matched the advertised sale prices, not dramatically undercut them. Price alone is not a reliable fraud signal - especially during genuine sale periods when attackers time their sites specifically."
+    },
+    {
+      label: "He should have searched for the store name to find more information first.",
+      correct: false,
+      explanation: "A search might surface other fake sites, paid ads, or content created by the same fraudsters. Searching is not a verification step. Checking the exact domain against the company's known web address is."
+    }
+  ]}
+/>

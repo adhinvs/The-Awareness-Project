@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>URL Danger Scanner</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f8fafc; color: #1e293b; font-size: 15px; line-height: 1.5;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 24px 16px 48px; }
+
+  .intro-card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 20px;
+    padding: 28px 24px; margin-bottom: 20px;
+  }
+  .intro-title { font-size: 20px; font-weight: 900; color: #0f172a; margin-bottom: 6px; }
+  .intro-sub { font-size: 13px; color: #64748b; line-height: 1.6; margin-bottom: 20px; }
+
+  .url-input-wrap { display: flex; gap: 10px; }
+  .url-input {
+    flex: 1; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 12px;
+    font-size: 14px; color: #0f172a; font-family: monospace; outline: none;
+    transition: border-color .2s;
+  }
+  .url-input:focus { border-color: #3b82f6; }
+  .scan-btn {
+    padding: 12px 20px; background: #1e293b; color: #fff; border: none;
+    border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer;
+    transition: opacity .15s; white-space: nowrap;
+  }
+  .scan-btn:hover { opacity: .85; }
+
+  .example-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .example-chip {
+    padding: 5px 12px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 99px;
+    font-size: 12px; font-family: monospace; cursor: pointer; color: #475569;
+    transition: background .15s;
+  }
+  .example-chip:hover { background: #e2e8f0; color: #0f172a; }
+
+  /* Result panel */
+  .result-card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 16px;
+    overflow: hidden; margin-top: 20px; display: none;
+  }
+  .result-header {
+    padding: 16px 20px; display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .verdict-badge {
+    padding: 4px 14px; border-radius: 99px; font-size: 12px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: .05em;
+  }
+  .verdict-badge.safe { background: #dcfce7; color: #15803d; }
+  .verdict-badge.suspicious { background: #fef3c7; color: #92400e; }
+  .verdict-badge.dangerous { background: #fee2e2; color: #dc2626; }
+  .verdict-url { font-family: monospace; font-size: 13px; color: #64748b; word-break: break-all; }
+
+  /* URL breakdown */
+  .breakdown-section { padding: 18px 20px; border-bottom: 1px solid #f1f5f9; }
+  .section-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: #94a3b8; margin-bottom: 12px; }
+  .url-parts { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 14px; }
+  .url-part {
+    padding: 5px 10px; border-radius: 8px; font-family: monospace; font-size: 13px; font-weight: 600;
+  }
+  .url-part.scheme { background: #ede9fe; color: #7c3aed; }
+  .url-part.subdomain { background: #dbeafe; color: #1d4ed8; }
+  .url-part.domain { background: #fef3c7; color: #92400e; font-weight: 800; border: 2px solid #fbbf24; }
+  .url-part.domain.safe { background: #dcfce7; color: #15803d; border-color: #4ade80; }
+  .url-part.domain.danger { background: #fee2e2; color: #dc2626; border-color: #f87171; }
+  .url-part.tld { background: #f1f5f9; color: #475569; }
+  .url-part.path { background: #f8fafc; color: #94a3b8; }
+  .url-part.sep { background: transparent; color: #94a3b8; padding: 5px 2px; }
+
+  .part-legend { display: flex; flex-wrap: wrap; gap: 8px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #64748b; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+
+  /* Signals */
+  .signals-section { padding: 18px 20px; }
+  .signal {
+    display: flex; gap: 10px; padding: 12px; border-radius: 10px; margin-bottom: 8px;
+    align-items: flex-start;
+  }
+  .signal:last-child { margin-bottom: 0; }
+  .signal.red { background: #fff5f5; }
+  .signal.amber { background: #fffbeb; }
+  .signal.green { background: #f0fdf4; }
+  .signal-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .signal-content {}
+  .signal-title { font-size: 13px; font-weight: 700; }
+  .signal.red .signal-title { color: #dc2626; }
+  .signal.amber .signal-title { color: #d97706; }
+  .signal.green .signal-title { color: #15803d; }
+  .signal-desc { font-size: 12px; color: #64748b; margin-top: 2px; line-height: 1.5; }
+
+  .try-more-btn {
+    display: block; width: 100%; margin-top: 16px; padding: 13px;
+    background: #f1f5f9; border: none; border-radius: 12px;
+    font-size: 14px; font-weight: 700; cursor: pointer; color: #475569;
+    transition: background .15s;
+  }
+  .try-more-btn:hover { background: #e2e8f0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="intro-card">
+    <div class="intro-title">URL Danger Scanner</div>
+    <div class="intro-sub">Paste any URL to see it broken into components and checked for suspicious patterns. The tool highlights the parts that matter - and the ones that are designed to mislead.</div>
+    <div class="url-input-wrap">
+      <input type="text" class="url-input" id="url-input" placeholder="https://example.com/path" />
+      <button class="scan-btn" onclick="scanURL()">Scan</button>
+    </div>
+    <div class="example-row">
+      <span class="example-chip" onclick="setURL('https://sbi.co.in.verify-account.xyz/login')">Try: SBI phishing</span>
+      <span class="example-chip" onclick="setURL('https://hdfc-banking-support.in/verify?id=28')">Try: HDFC fake</span>
+      <span class="example-chip" onclick="setURL('https://amazon.in/orders/tracking')">Try: Amazon real</span>
+      <span class="example-chip" onclick="setURL('https://paytm-secure-verify.net/otp')">Try: Paytm fake</span>
+      <span class="example-chip" onclick="setURL('https://google.com/accounts/signin')">Try: Google real</span>
+      <span class="example-chip" onclick="setURL('https://microsoﬅ-login.com/reset')">Try: Homoglyph</span>
+    </div>
+  </div>
+
+  <div class="result-card" id="result-card">
+    <div class="result-header">
+      <div class="verdict-badge" id="verdict-badge"></div>
+      <div class="verdict-url" id="verdict-url"></div>
+    </div>
+    <div class="breakdown-section">
+      <div class="section-label">URL Breakdown</div>
+      <div class="url-parts" id="url-parts"></div>
+      <div class="part-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#7c3aed"></div>Protocol</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#1d4ed8"></div>Subdomain</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#92400e"></div>Root domain (key)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#475569"></div>TLD / Path</div>
+      </div>
+    </div>
+    <div class="signals-section">
+      <div class="section-label">Signals</div>
+      <div id="signals"></div>
+    </div>
+    <div style="padding: 0 20px 20px;">
+      <button class="try-more-btn" onclick="clearResult()">Scan another URL</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const KNOWN_SAFE = {
+  'amazon': ['amazon.in', 'amazon.com', 'amazon.co.uk'],
+  'sbi': ['sbi.co.in', 'onlinesbi.sbi'],
+  'hdfc': ['hdfcbank.com', 'hdfcbank.net'],
+  'google': ['google.com', 'google.co.in', 'accounts.google.com'],
+  'microsoft': ['microsoft.com', 'live.com', 'outlook.com'],
+  'paytm': ['paytm.com'],
+  'flipkart': ['flipkart.com'],
+  'icici': ['icicibank.com'],
+  'axis': ['axisbank.com'],
+};
+
+const SUSPICIOUS_TLDS = ['.xyz', '.top', '.tk', '.cf', '.ga', '.ml', '.gq', '.net.in'];
+const SUSPICIOUS_KEYWORDS = ['secure', 'verify', 'alert', 'update', 'support', 'login', 'signin', 'account', 'banking', 'payment'];
+
+function setURL(url) {
+  document.getElementById('url-input').value = url;
+  scanURL();
+}
+
+function parseURL(raw) {
+  raw = raw.trim();
+  if (!raw.startsWith('http')) raw = 'https://' + raw;
+  try {
+    const u = new URL(raw);
+    const hostname = u.hostname;
+    const parts = hostname.split('.');
+    let tld = '', domain = '', subdomain = '';
+    if (parts.length >= 2) {
+      // Handle country-code TLDs like co.in, com.au
+      const last2 = parts.slice(-2).join('.');
+      const ccTLDs = ['co.in', 'com.au', 'co.uk', 'net.in', 'org.in'];
+      if (ccTLDs.includes(last2) && parts.length >= 3) {
+        tld = last2;
+        domain = parts[parts.length - 3];
+        subdomain = parts.slice(0, -3).join('.');
+      } else {
+        tld = parts[parts.length - 1];
+        domain = parts[parts.length - 2];
+        subdomain = parts.slice(0, -2).join('.');
+      }
+    }
+    return { raw, scheme: u.protocol.replace(':', ''), subdomain, domain, tld: tld.startsWith('.') ? tld : '.' + tld, path: u.pathname + u.search, hostname };
+  } catch(e) { return null; }
+}
+
+function analyzeURL(p) {
+  const signals = [];
+  let risk = 0;
+
+  // Check subdomain confusion
+  if (p.subdomain) {
+    const allParts = p.subdomain.split('.').concat([p.domain]);
+    for (const [brand, domains] of Object.entries(KNOWN_SAFE)) {
+      if (allParts.some(part => part.toLowerCase().includes(brand))) {
+        const realDomains = domains.map(d => d.split('.').slice(-2).join('.'));
+        const isRealDomain = realDomains.some(rd => p.hostname.endsWith(rd));
+        if (!isRealDomain) {
+          signals.push({ type: 'red', icon: '🚨', title: 'Subdomain confusion', desc: `"${p.subdomain}" appears in the subdomain, not the real domain. The actual domain is "${p.domain}.${p.tld.replace('.','')}" which is not ${brand.toUpperCase()}'s real website. This is a common trick to make a fake URL look official.` });
+          risk += 3;
+        }
+      }
+    }
+  }
+
+  // Check for known safe domains
+  let isSafeKnown = false;
+  for (const [brand, domains] of Object.entries(KNOWN_SAFE)) {
+    if (domains.some(d => p.hostname === d || p.hostname.endsWith('.' + d))) {
+      signals.push({ type: 'green', icon: '✓', title: 'Recognised domain', desc: `This domain is registered to ${brand.charAt(0).toUpperCase() + brand.slice(1)}. The root domain matches their known web address.` });
+      isSafeKnown = true;
+      risk -= 2;
+      break;
+    }
+  }
+
+  // Check suspicious TLD
+  const tldCheck = p.tld.toLowerCase();
+  if (['.xyz', '.top', '.tk', '.cf', '.ga', '.ml'].some(t => tldCheck === t)) {
+    signals.push({ type: 'red', icon: '⚠', title: `Suspicious domain extension (${p.tld})`, desc: `${p.tld} is a low-cost extension heavily used for disposable phishing domains. Legitimate banks, government services, and major e-commerce sites do not use ${p.tld}.` });
+    risk += 2;
+  }
+
+  // Check for suspicious keywords in domain
+  const domainFull = (p.subdomain + '.' + p.domain).toLowerCase();
+  const foundKeywords = SUSPICIOUS_KEYWORDS.filter(k => domainFull.includes(k) && !isSafeKnown);
+  if (foundKeywords.length > 0) {
+    signals.push({ type: 'amber', icon: '⚠', title: `Security keywords in domain name`, desc: `Words like "${foundKeywords.join('", "')}" in a domain name are a common phishing signal. Real banks and services use their brand name as the domain - not security-related words.` });
+    risk += 1;
+  }
+
+  // Hyphenated domain
+  if (p.domain.includes('-')) {
+    signals.push({ type: 'amber', icon: '−', title: 'Hyphenated domain', desc: `Legitimate organisations almost never use hyphens in their main domain name. "${p.domain}" with hyphens is a pattern frequently seen in lookalike phishing domains.` });
+    risk += 1;
+  }
+
+  // Check for homoglyph characters
+  const hasHomoglyph = /[а-яА-ЯёЁЀ-ӿɐ-ʯ]/.test(p.hostname);
+  if (hasHomoglyph) {
+    signals.push({ type: 'red', icon: '👁', title: 'Non-Latin characters detected', desc: `This URL contains characters from a non-Latin alphabet that are visually identical to English letters. For example, the Cyrillic "а" looks like a Latin "a" but resolves to a different domain. This is a homoglyph attack.` });
+    risk += 3;
+  }
+
+  // Long domain with many hyphens and keywords
+  if (p.domain.split('-').length > 2) {
+    signals.push({ type: 'amber', icon: '−', title: 'Multiple hyphens in domain', desc: `Domains like "${p.domain}" with multiple hyphens are very rarely used by legitimate organisations. This pattern is common in newly registered scam domains.` });
+    risk += 1;
+  }
+
+  // HTTPS note
+  if (p.scheme === 'https') {
+    if (!isSafeKnown) {
+      signals.push({ type: 'amber', icon: 'ℹ', title: 'HTTPS is not a safety signal', desc: `This site uses HTTPS (padlock). 87% of phishing sites also use HTTPS. The padlock confirms the connection is encrypted - it does not confirm who operates the server.` });
+    }
+  } else {
+    signals.push({ type: 'red', icon: '⚠', title: 'HTTP - unencrypted connection', desc: `This URL uses plain HTTP. Any data entered is sent unencrypted. No legitimate financial site or login page uses HTTP.` });
+    risk += 1;
+  }
+
+  if (signals.length === 0) {
+    signals.push({ type: 'green', icon: '✓', title: 'No major signals found', desc: 'No obvious phishing patterns detected. This does not confirm the site is legitimate - verify the domain matches the organisation you intend to visit.' });
+  }
+
+  let verdict = 'safe';
+  if (risk >= 3) verdict = 'dangerous';
+  else if (risk >= 1) verdict = 'suspicious';
+  if (isSafeKnown && risk <= 0) verdict = 'safe';
+
+  return { signals, verdict };
+}
+
+function scanURL() {
+  const raw = document.getElementById('url-input').value.trim();
+  if (!raw) return;
+  const parsed = parseURL(raw);
+  if (!parsed) {
+    alert('Please enter a valid URL (e.g. https://example.com)');
+    return;
+  }
+
+  const { signals, verdict } = analyzeURL(parsed);
+
+  // Render verdict
+  const badge = document.getElementById('verdict-badge');
+  badge.className = 'verdict-badge ' + verdict;
+  badge.textContent = verdict === 'safe' ? 'Looks Safe' : verdict === 'suspicious' ? 'Suspicious' : 'Likely Dangerous';
+  document.getElementById('verdict-url').textContent = parsed.raw;
+
+  // Render URL breakdown
+  const partsDiv = document.getElementById('url-parts');
+  partsDiv.innerHTML = '';
+  const addPart = (text, cls) => {
+    const s = document.createElement('span');
+    s.className = 'url-part ' + cls;
+    s.textContent = text;
+    partsDiv.appendChild(s);
+  };
+  addPart(parsed.scheme + '://', 'scheme');
+  if (parsed.subdomain) {
+    addPart(parsed.subdomain, 'subdomain');
+    addPart('.', 'sep');
+  }
+  const domainClass = verdict === 'dangerous' ? 'domain danger' : verdict === 'safe' ? 'domain safe' : 'domain';
+  addPart(parsed.domain, domainClass);
+  addPart(parsed.tld, 'tld');
+  if (parsed.path && parsed.path !== '/') addPart(parsed.path, 'path');
+
+  // Render signals
+  const sigDiv = document.getElementById('signals');
+  sigDiv.innerHTML = signals.map(s => `
+    <div class="signal ${s.type}">
+      <div class="signal-icon">${s.icon}</div>
+      <div class="signal-content">
+        <div class="signal-title">${s.title}</div>
+        <div class="signal-desc">${s.desc}</div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('result-card').style.display = 'block';
+
+  setTimeout(() => {
+    const h = document.body.scrollHeight;
+    parent.postMessage({ iframeHeight: h + 20 }, '*');
+  }, 100);
+}
+
+function clearResult() {
+  document.getElementById('result-card').style.display = 'none';
+  document.getElementById('url-input').value = '';
+  document.getElementById('url-input').focus();
+  setTimeout(() => parent.postMessage({ iframeHeight: document.body.scrollHeight }, '*'), 100);
+}
+
+document.getElementById('url-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') scanURL();
+});
+
+window.addEventListener('load', () => parent.postMessage({ iframeHeight: document.body.scrollHeight }, '*'));
+</script>
+</body>
+</html>

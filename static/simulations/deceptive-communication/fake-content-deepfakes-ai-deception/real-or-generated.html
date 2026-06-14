@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real or Generated?</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f8fafc; color: #1e293b; font-size: 15px; line-height: 1.5;
+  }
+  .wrap { max-width: 620px; margin: 0 auto; padding: 24px 16px 48px; }
+  .screen { display: none; }
+  .screen.active { display: block; animation: fadeUp .3s ease; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  /* Intro */
+  .intro-card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 20px;
+    padding: 32px 24px; text-align: center;
+  }
+  .intro-icon { font-size: 48px; margin-bottom: 14px; }
+  .intro-title { font-size: 22px; font-weight: 900; color: #0f172a; margin-bottom: 8px; }
+  .intro-sub { font-size: 14px; color: #64748b; line-height: 1.6; margin-bottom: 24px; }
+  .start-btn {
+    display: inline-block; padding: 14px 36px;
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #fff; border: none; border-radius: 12px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+  }
+
+  /* Progress */
+  .progress-bar-wrap { background: #e2e8f0; border-radius: 99px; height: 6px; margin-bottom: 20px; }
+  .progress-bar { background: #6366f1; height: 6px; border-radius: 99px; transition: width .4s ease; }
+  .progress-label { font-size: 12px; color: #94a3b8; text-align: right; margin-bottom: 6px; font-weight: 600; }
+
+  /* Content card */
+  .content-card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 16px;
+    overflow: hidden; margin-bottom: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04);
+  }
+  .content-label {
+    padding: 10px 16px; background: #f8fafc; border-bottom: 1px solid #f1f5f9;
+    font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: #94a3b8;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .content-type-badge {
+    padding: 2px 8px; border-radius: 99px; font-size: 10px;
+    background: #ede9fe; color: #7c3aed;
+  }
+  .content-body { padding: 20px; }
+
+  /* Profile mock */
+  .profile-mock { display: flex; gap: 14px; align-items: flex-start; }
+  .avatar-box {
+    width: 72px; height: 72px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; font-weight: 900; color: #fff;
+    position: relative;
+  }
+  .avatar-ai-hint {
+    position: absolute; bottom: -2px; right: -2px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: #fff; border: 2px solid #fff;
+    font-size: 11px; display: flex; align-items: center; justify-content: center;
+  }
+  .profile-info h4 { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 2px; }
+  .profile-info p { font-size: 13px; color: #64748b; margin-bottom: 6px; line-height: 1.5; }
+  .profile-info .stat-row { display: flex; gap: 16px; }
+  .stat { font-size: 12px; color: #94a3b8; }
+  .stat strong { color: #0f172a; }
+
+  /* Quote mock */
+  .quote-box {
+    border-left: 3px solid #e2e8f0; padding: 12px 16px;
+    font-size: 14px; color: #334155; line-height: 1.7; font-style: italic;
+  }
+  .quote-source { font-size: 12px; color: #94a3b8; margin-top: 8px; font-style: normal; }
+
+  /* Audio mock */
+  .audio-mock {
+    display: flex; align-items: center; gap: 12px; padding: 14px;
+    background: #f8fafc; border-radius: 12px;
+  }
+  .play-btn {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: #6366f1; color: #fff; border: none; cursor: pointer;
+    font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .waveform { flex: 1; display: flex; align-items: center; gap: 2px; height: 32px; }
+  .wave-bar {
+    width: 3px; border-radius: 2px; background: #6366f1;
+    opacity: .5;
+  }
+  .audio-label { font-size: 12px; color: #94a3b8; flex-shrink: 0; }
+
+  /* Chat mock */
+  .chat-msg {
+    background: #f1f5f9; padding: 12px 16px; border-radius: 12px;
+    font-size: 14px; color: #334155; line-height: 1.7; margin-bottom: 4px;
+  }
+  .chat-meta { font-size: 11px; color: #94a3b8; padding: 0 4px; }
+
+  /* Verdict buttons */
+  .verdict-row { display: flex; gap: 12px; }
+  .verdict-btn {
+    flex: 1; padding: 14px; border-radius: 12px; border: 2px solid transparent;
+    font-size: 14px; font-weight: 700; cursor: pointer; transition: all .15s;
+  }
+  .btn-real { background: #f0fdf4; color: #15803d; border-color: #86efac; }
+  .btn-real:hover { background: #dcfce7; border-color: #4ade80; }
+  .btn-ai { background: #ede9fe; color: #7c3aed; border-color: #c4b5fd; }
+  .btn-ai:hover { background: #ddd6fe; border-color: #a78bfa; }
+  .verdict-btn:disabled { opacity: .5; cursor: default; }
+
+  /* Reveal */
+  .reveal {
+    border-radius: 14px; padding: 16px; margin-top: 14px; display: none;
+  }
+  .reveal.correct { background: #f0fdf4; border: 1px solid #86efac; }
+  .reveal.wrong { background: #fff7ed; border: 1px solid #fed7aa; }
+  .reveal-head { font-size: 13px; font-weight: 800; margin-bottom: 8px; }
+  .reveal.correct .reveal-head { color: #15803d; }
+  .reveal.wrong .reveal-head { color: #c2410c; }
+  .reveal-text { font-size: 13px; color: #475569; line-height: 1.6; }
+  .signal-list { margin-top: 10px; }
+  .sig { display: flex; gap: 8px; margin-bottom: 6px; align-items: flex-start; font-size: 12px; color: #475569; }
+  .sig-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+
+  .next-btn {
+    display: block; width: 100%; margin-top: 14px; padding: 13px;
+    background: #1e293b; color: #fff; border: none; border-radius: 12px;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+  }
+  .next-btn:hover { opacity: .85; }
+
+  /* Score */
+  .score-card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 20px;
+    padding: 32px 24px; text-align: center;
+  }
+  .score-num { font-size: 60px; font-weight: 900; color: #0f172a; line-height: 1; }
+  .score-sub { font-size: 15px; color: #64748b; margin: 8px 0 20px; }
+  .score-note { font-size: 14px; color: #475569; max-width: 400px; margin: 0 auto 20px; line-height: 1.6; }
+  .key-insight {
+    background: #ede9fe; border-radius: 12px; padding: 14px 16px;
+    font-size: 13px; color: #4c1d95; line-height: 1.6; margin-bottom: 20px; text-align: left;
+  }
+  .restart-btn {
+    display: inline-block; padding: 13px 32px;
+    background: #1e293b; color: #fff; border: none; border-radius: 12px;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div id="intro" class="screen active">
+  <div class="intro-card">
+    <div class="intro-icon">🤔</div>
+    <div class="intro-title">Real or Generated?</div>
+    <div class="intro-sub">
+      Six pieces of content appear one at a time - profile descriptions, messages, audio clips, and posts.<br><br>
+      Some are created by a real person. Some are AI-generated.<br>
+      Classify each one. After every choice, the detection signals are explained.
+    </div>
+    <button class="start-btn" onclick="start()">Begin</button>
+  </div>
+</div>
+
+<div id="quiz-screen" class="screen">
+  <div class="progress-label" id="prog-label">1 of 6</div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar" style="width:0%"></div></div>
+  <div id="item-area"></div>
+  <div class="verdict-row">
+    <button class="verdict-btn btn-real" id="btn-real" onclick="answer('real')">Real Person</button>
+    <button class="verdict-btn btn-ai" id="btn-ai" onclick="answer('ai')">AI Generated</button>
+  </div>
+  <div class="reveal" id="reveal">
+    <div class="reveal-head" id="reveal-head"></div>
+    <div class="reveal-text" id="reveal-text"></div>
+    <div class="signal-list" id="signal-list"></div>
+    <button class="next-btn" id="next-btn" onclick="next()">Next</button>
+  </div>
+</div>
+
+<div id="score-screen" class="screen">
+  <div class="score-card">
+    <div class="score-num" id="score-num">0/6</div>
+    <div class="score-sub">classified correctly</div>
+    <div class="score-note" id="score-note"></div>
+    <div class="key-insight">
+      <strong>Key insight:</strong> Studies put human detection of AI-generated content at 50-60% under normal viewing conditions - barely better than random. The correct response is not to rely on detection but to verify through an independent channel before taking any action based on what you saw or heard.
+    </div>
+    <button class="restart-btn" onclick="restart()">Try again</button>
+  </div>
+</div>
+
+</div>
+<script>
+const items = [
+  {
+    type: 'profile',
+    label: 'Professional Profile',
+    answer: 'ai',
+    render: () => `
+      <div class="profile-mock">
+        <div class="avatar-box" style="background: linear-gradient(135deg, #6366f1, #8b5cf6)">
+          AK
+        </div>
+        <div class="profile-info">
+          <h4>Aryan Kapoor</h4>
+          <p>Senior Financial Advisor | SEBI Registered | Helping individuals build wealth through disciplined investing.</p>
+          <div class="stat-row">
+            <div class="stat"><strong>58.2K</strong> followers</div>
+            <div class="stat"><strong>847</strong> posts</div>
+            <div class="stat"><strong>2019</strong> joined</div>
+          </div>
+        </div>
+      </div>
+    `,
+    reveal: 'AI-generated profile description.',
+    signals: [
+      { color: '#f97316', text: '"Disciplined investing" and "building wealth" are generic keyword phrases - AI-generated bios use category language rather than personal description.' },
+      { color: '#f97316', text: 'The bio reads as a credentials list, not a person talking about themselves.' },
+      { color: '#94a3b8', text: 'The correct check is not the text - it is the SEBI registered advisor list at sebi.gov.in.' }
+    ]
+  },
+  {
+    type: 'message',
+    label: 'WhatsApp Message',
+    answer: 'real',
+    render: () => `
+      <div class="chat-msg">
+        ugh can you believe the traffic today, took me 45 mins to get from malad to andheri 😭 also did you check that restaurant for sunday? the reviews looked decent but idk the photos felt a bit off
+      </div>
+      <div class="chat-meta">Sent 11:34 AM</div>
+    `,
+    reveal: 'Written by a real person.',
+    signals: [
+      { color: '#22c55e', text: 'Specific geography (Malad to Andheri) and personal frustration reflect lived experience.' },
+      { color: '#22c55e', text: 'Informal, inconsistent grammar - AI produces more uniform structure even when prompted to be casual.' },
+      { color: '#22c55e', text: 'Trailing uncertainty ("idk the photos felt a bit off") reflects genuine hesitation, not a constructed information gap.' }
+    ]
+  },
+  {
+    type: 'audio',
+    label: 'Voice Clip (transcript shown)',
+    answer: 'ai',
+    render: () => `
+      <div class="audio-mock">
+        <button class="play-btn">▶</button>
+        <div class="waveform" id="waveform"></div>
+        <div class="audio-label">0:12</div>
+      </div>
+      <div style="margin-top:14px; font-size:13px; color:#64748b; font-style:italic; line-height:1.6">
+        Transcript: "Hello Meena, this is Rajesh here. I need you to process the transfer to the new vendor account before close of business today. I will send the account details by email. Please keep this between us until I confirm the deal is signed."
+      </div>
+    `,
+    reveal: 'AI-generated voice clip (cloned from real recordings).',
+    signals: [
+      { color: '#f97316', text: '"Before close of business today" and "keep this between us" are scripted fraud patterns - unusually formal for a voice message between colleagues.' },
+      { color: '#f97316', text: '"I will send the account details by email" is a delay tactic that prevents real-time verification.' },
+      { color: '#94a3b8', text: 'Voice cloning needs only 3 seconds of sample audio. A familiar voice is not proof of identity - call back on a known number.' }
+    ]
+  },
+  {
+    type: 'review',
+    label: 'Product Review',
+    answer: 'ai',
+    render: () => `
+      <div class="quote-box">
+        "I have been using this supplement for approximately three weeks and I am genuinely impressed by the results. My energy levels have noticeably improved and I find myself more focused during work hours. The quality of the product is evident from the first use. I would highly recommend this to anyone looking to enhance their daily wellness routine."
+      </div>
+      <div class="quote-source">Posted by: Verified Purchaser | 3 weeks ago | ★★★★★</div>
+    `,
+    reveal: 'AI-generated review.',
+    signals: [
+      { color: '#f97316', text: '"Approximately three weeks" - real reviewers write "about 3 weeks". Formal approximation is a consistent AI tell.' },
+      { color: '#f97316', text: 'Structured as: claim → evidence → quality → recommendation. AI reliably produces this formula.' },
+      { color: '#f97316', text: 'No specific details - no flavour, packaging, or comparison to other products. Specificity marks genuine experience.' }
+    ]
+  },
+  {
+    type: 'message',
+    label: 'Email',
+    answer: 'real',
+    render: () => `
+      <div class="chat-msg" style="background:#f0fdf4">
+        Hi Priya,<br><br>
+        Sorry for the late reply - been in back to back meetings since Monday. To answer your question: yes we can move the launch to the 20th but only if the legal team signs off by end of this week. I already nudged Karan about it, he said he'd check. Can you also remind Deepa to send her revised copy? She keeps forgetting and I don't want to be the one chasing her again.<br><br>
+        Thanks
+      </div>
+      <div class="chat-meta">From: Aditya | Sent Tuesday, 3:47 PM</div>
+    `,
+    reveal: 'Written by a real person.',
+    signals: [
+      { color: '#22c55e', text: 'Named individuals (Karan, Deepa), specific conditions, and interpersonal friction - details AI tends to omit.' },
+      { color: '#22c55e', text: 'Informal fragments ("he said he\'d check") reflect natural conversational shortcuts.' },
+      { color: '#22c55e', text: 'Embedded complaint ("I don\'t want to be the one chasing her again") is the kind of casual aside real communication contains.' }
+    ]
+  },
+  {
+    type: 'profile',
+    label: 'Social Media Bio',
+    answer: 'ai',
+    render: () => `
+      <div class="profile-mock">
+        <div class="avatar-box" style="background: linear-gradient(135deg, #ec4899, #f97316)">
+          SP
+        </div>
+        <div class="profile-info">
+          <h4>Sunita Pillai</h4>
+          <p>Passionate health and wellness advocate. Helping people transform their lives through natural remedies, mindful eating, and holistic practices. Join me on this journey to optimal health.</p>
+          <div class="stat-row">
+            <div class="stat"><strong>24.7K</strong> followers</div>
+            <div class="stat"><strong>312</strong> posts</div>
+          </div>
+        </div>
+      </div>
+    `,
+    reveal: 'AI-generated profile description.',
+    signals: [
+      { color: '#f97316', text: '"Passionate health and wellness advocate" appears in millions of AI-generated profiles - it is a category label, not a personal description.' },
+      { color: '#f97316', text: 'Three parallel items ("natural remedies, mindful eating, holistic practices") - structurally balanced in a way people rarely write naturally.' },
+      { color: '#94a3b8', text: 'Recognising the template (credential claim → three-item list → inclusive invitation) is more reliable than any single word.' }
+    ]
+  }
+];
+
+let current = 0, score = 0, answered = false;
+
+function start() {
+  current = 0; score = 0; answered = false;
+  show('quiz-screen');
+  render();
+}
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function render() {
+  answered = false;
+  const item = items[current];
+  document.getElementById('prog-label').textContent = `${current + 1} of ${items.length}`;
+  document.getElementById('prog-bar').style.width = `${(current / items.length) * 100}%`;
+
+  document.getElementById('item-area').innerHTML = `
+    <div class="content-card">
+      <div class="content-label">
+        ${item.label}
+        <span class="content-type-badge">Classify this</span>
+      </div>
+      <div class="content-body">${item.render()}</div>
+    </div>
+  `;
+
+  // Generate waveform if audio
+  if (item.type === 'audio') {
+    const wf = document.getElementById('waveform');
+    if (wf) {
+      for (let i = 0; i < 40; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'wave-bar';
+        bar.style.height = (8 + Math.random() * 20) + 'px';
+        wf.appendChild(bar);
+      }
+    }
+  }
+
+  document.getElementById('reveal').style.display = 'none';
+  document.getElementById('reveal').className = 'reveal';
+  document.querySelectorAll('.verdict-btn').forEach(b => { b.disabled = false; b.style.opacity = '1'; });
+  document.getElementById('next-btn').textContent = current < items.length - 1 ? 'Next' : 'See results';
+
+  setTimeout(() => parent.postMessage({ iframeHeight: document.body.scrollHeight + 20 }, '*'), 100);
+}
+
+function answer(choice) {
+  if (answered) return;
+  answered = true;
+  const item = items[current];
+  const correct = choice === item.answer;
+  if (correct) score++;
+
+  document.querySelectorAll('.verdict-btn').forEach(b => { b.disabled = true; b.style.opacity = '.5'; });
+
+  const rev = document.getElementById('reveal');
+  rev.style.display = 'block';
+  rev.className = 'reveal ' + (correct ? 'correct' : 'wrong');
+
+  document.getElementById('reveal-head').textContent = correct
+    ? `Correct - ${item.answer === 'real' ? 'Real Person' : 'AI Generated'}`
+    : `This was ${item.answer === 'real' ? 'a Real Person' : 'AI Generated'}`;
+
+  document.getElementById('reveal-text').textContent = item.reveal;
+
+  document.getElementById('signal-list').innerHTML = item.signals.map(s => `
+    <div class="sig">
+      <div class="sig-dot" style="background:${s.color}"></div>
+      <span>${s.text}</span>
+    </div>
+  `).join('');
+
+  setTimeout(() => parent.postMessage({ iframeHeight: document.body.scrollHeight + 20 }, '*'), 100);
+}
+
+function next() {
+  current++;
+  if (current >= items.length) { showScore(); return; }
+  render();
+}
+
+function showScore() {
+  document.getElementById('score-num').textContent = `${score}/6`;
+  let note = '';
+  if (score === 6) note = 'Perfect score. You caught every signal including the most subtle structural patterns.';
+  else if (score >= 4) note = 'Strong result. The harder cases - particularly voice clips and review text - are designed to pass casual inspection.';
+  else note = 'This is a typical result. Human detection of AI content sits at around 50-60% under normal reading conditions. Recognition improves with practice.';
+  document.getElementById('score-note').textContent = note;
+  show('score-screen');
+  setTimeout(() => parent.postMessage({ iframeHeight: document.body.scrollHeight + 20 }, '*'), 100);
+}
+
+function restart() { start(); }
+window.addEventListener('load', () => parent.postMessage({ iframeHeight: document.body.scrollHeight }, '*'));
+</script>
+</body>
+</html>

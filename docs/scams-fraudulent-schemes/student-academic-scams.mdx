@@ -2,14 +2,155 @@
 sidebar_position: 11
 title: "Student & Academic Scams"
 sidebar_label: "Student & Academic Scams"
+description: "How fake scholarships, degree mills, and EdTech fraud target students and job seekers with advance fees and false credentials."
+tags: [student-scams, scholarship-fraud, degree-mill, edtech-fraud, academic-fraud, credential-fraud, advance-fee, india-cyber-fraud]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Student & Academic Scams
 
-## Sub-topics
+The email has a university logo. The offer is fully funded. The deadline is Friday. **The scholarship does not exist.**
 
-- Fake scholarship offers and advance payment for placement
-- Fake university degrees and credential fraud
-- EdTech data harvesting, predatory platforms, and fake credentials
-- Academic credential impersonation
-- Reporting academic fraud
+## The Award She Did Not Apply For
+
+Meghna was in her final year of a BCom degree and had been applying to postgraduate programmes abroad. She received an email from "The Global Education Trust, UK" congratulating her on being shortlisted for a fully-funded scholarship worth £18,000.
+
+The email used official-looking letterhead. It referenced her university, her degree, and her field of study. It said she had been identified through an academic excellence database.
+
+To claim the award, she needed to:
+- Submit her academic documents within 5 days
+- Pay a Rs. 8,500 "registration and processing fee" to hold her place
+- Sign and return the attached scholarship agreement
+
+She paid the fee. She sent her marksheets, ID, and a photograph. She never heard back. The domain had been registered 11 days before her email arrived.
+
+Three months later, she received a call from someone claiming to be a "recovery agent" for the same scholarship - with a new fee to "release her pending funds."
+
+## What Is Actually Happening
+
+Student scams exploit one of the most powerful emotional states: **the hope attached to educational opportunity.** They are designed to be indistinguishable from real institutional communications because students, by definition, have less experience identifying them.
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Global Scale</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>$3.5B Lost to Education Fraud Annually</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>Education-related fraud - scholarships, fake degrees, EdTech scams - costs victims an estimated <b>$3.5 billion globally each year</b>, with the fastest growth in developing economies.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: UNESCO Institute for Statistics / Interpol Education Fraud Report, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Degree Mills</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Over 400 Fake Universities Identified</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>The UGC maintains a list of <b>over 400 fake universities</b> operating in India. Degree mill operations globally issue hundreds of thousands of unrecognised credentials each year.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: University Grants Commission India, 2024</span>
+    </div>
+  </div>
+</div>
+
+## The Main Scam Types
+
+### Fake scholarship offers and advance payment
+
+Legitimate scholarships **never require an upfront fee**. Processing fees, registration charges, and administrative deposits are the universal hallmarks of fake award schemes. Real scholarships deduct costs from the award - they do not ask recipients to pay first.
+
+Common variants target:
+- Students who have publicly shared academic achievements on LinkedIn or social media
+- Applicants from data harvested from university websites and study abroad forums
+- Recent graduates looking for postgraduate funding
+
+### Fake university degrees and credential fraud
+
+**Degree mills** issue certificates for money without requiring study. These range from outright fake institutions to real-sounding names using "University" or "Institute" in ways that suggest accreditation they do not hold.
+
+In India, the UGC publishes a list of fake universities. Before paying for or accepting any credential, verify the institution's status at ugc.ac.in.
+
+Internationally, verify through the country's official accreditation authority. In the UK: HESA. In the US: CHEA. In Australia: TEQSA.
+
+### EdTech data harvesting and predatory platforms
+
+Some EdTech platforms operate legitimately but collect more data than the course requires - including financial information, ID documents, and employment history. Others are fronts for lead generation, selling student data to lenders, immigration agents, and recruitment services.
+
+**Free courses that require your national ID, financial situation, or full contact history as a "registration requirement" are harvesting, not educating.**
+
+### Academic credential impersonation
+
+Scammers impersonate real universities to send fraudulent offers, fake acceptance letters, or visa documentation. Students pay tuition to accounts that do not belong to the institution.
+
+Always verify bank account details for institutional payments by calling the university's official admissions office using a number from the university's own website.
+
+## Spot the Scholarship Scam
+
+<iframe
+  id="student-iframe"
+  src="/simulations/scams-fraudulent-schemes/student-academic-scams/scholarship-email.html"
+  width="100%"
+  style={{ height: '660px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Scholarship Email Scam Detector"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('student-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._studentHandler);
+    window._studentHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+## Three Things Worth Doing
+
+### 1. Apply the advance-fee zero rule.
+
+**No legitimate scholarship asks for money before you receive money.** Any programme that requires a processing fee, registration charge, or security deposit before releasing funds is fraudulent. No exceptions.
+
+### 2. Verify the institution before sharing any documents.
+
+Check the UGC list for Indian universities (ugc.ac.in) or the relevant national accreditation authority before submitting ID documents, marksheets, or paying any fee. Your academic documents combined with ID are valuable for identity fraud.
+
+### 3. Find the opportunity independently.
+
+Search for the scholarship or programme on the institution's own website using an address you found yourself. If the opportunity does not appear there, it is not from that institution.
+
+## Reporting Academic Fraud
+
+- Fake universities in India: File with the UGC at ugc.ac.in and the state education department
+- Financial loss: cybercrime.gov.in or 1930
+- Fake EdTech platforms: File with the Ministry of Education and the Consumer Disputes Redressal Commission
+
+## Knowledge Check
+
+<Quiz
+  question="You receive an email saying you have been shortlisted for a fully-funded scholarship worth £15,000. To secure your place, you must pay a Rs. 7,000 processing fee within 3 days. The email uses a professional logo and says you were identified through your university's records. What is the strongest red flag?"
+  options={[
+    {
+      label: "The scholarship is from a foreign institution.",
+      correct: false,
+      explanation: "Foreign scholarships are legitimate and common. The origin country is not the issue."
+    },
+    {
+      label: "You are required to pay a fee to receive money.",
+      correct: true,
+      explanation: "Correct. Legitimate scholarships deduct costs from the award - they never require recipients to pay upfront. An advance fee requirement is the definitive marker of a fake scholarship scheme, regardless of how professional the communication looks."
+    },
+    {
+      label: "The deadline is only 3 days away.",
+      correct: false,
+      explanation: "Urgency is a manipulation tactic but is not the defining red flag here. The payment requirement is the clearest single signal."
+    },
+    {
+      label: "You did not apply for it.",
+      correct: false,
+      explanation: "Some legitimate scholarships do identify and contact candidates directly. Not having applied is worth noting, but the payment demand is the critical marker."
+    }
+  ]}
+/>

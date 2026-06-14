@@ -2,15 +2,184 @@
 sidebar_position: 1
 title: "Phishing, Smishing & Vishing"
 sidebar_label: "Phishing, Smishing & Vishing"
+description: "How attackers use email, SMS, and voice calls to steal credentials and money - and the specific checks that catch them."
+tags: [phishing, smishing, vishing, deceptive-communication, verification, credential-harvesting, social-engineering]
 ---
+
+import Quiz from '@site/src/components/Quiz';
 
 # Phishing, Smishing & Vishing
 
-## Sub-topics
+The message looked urgent. The number matched. The link loaded a familiar page. Four minutes later, the money was gone.
 
-- Email phishing and spoofed sender addresses
-- Text message phishing (smishing)
-- Voice calls pretending to be banks, support, or family (vishing)
-- Fake links and credential harvesting pages
-- QR code phishing
-- How to verify sender legitimacy before responding
+---
+
+## The SMS That Drained the Account
+
+Priya was at work when a message arrived from a number saved as "SBI Bank" in her contacts.
+
+*"Alert: Unusual login detected. Verify now to prevent suspension: sbi-securelogin.in/verify"*
+
+She had received genuine bank alerts in the same thread before. The urgency felt real. She clicked, entered her credentials on a page identical to SBI's site, then entered the OTP that arrived seconds later.
+
+**Within four minutes, Rs 1.8 lakh was transferred from her account.**
+
+The number was spoofed. The page was a clone. The OTP she entered did not verify a login - it authorized the transfer the attacker had already queued.
+
+---
+
+## What Is Actually Happening
+
+Phishing (email), smishing (SMS), and vishing (voice) share one mechanism: impersonate a trusted source, create pressure, and capture credentials or payment before the target pauses to verify.
+
+<div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
+  <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>3.4 billion</h2>
+  <p style={{ fontSize: '1.2rem', fontWeight: '600', margin: '8px 0 4px 0' }}>phishing emails sent every single day in 2025.</p>
+  <p style={{ fontSize: '0.95rem', opacity: '0.8', margin: '0' }}>Even a 0.001% success rate produces tens of thousands of victims daily. Volume is the strategy.</p>
+  <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Proofpoint State of the Phish Report, 2025</span>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '20px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Smishing</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>SMS Fraud Reports Rose 89% in 2024</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>People click SMS links at much higher rates than email links. Mobile screens hide full URLs. Sender IDs can be spoofed to appear in existing threads with your real bank - making the message look like an official continuation.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: FTC Consumer Sentinel Network, 2025</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Vishing</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>1 in 3 Social Engineering Attacks Now Uses Voice</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>AI voice cloning has lowered the barrier to convincing caller impersonation. <b>Vishing accounts for 33% of all social engineering incidents.</b> Callers arriving with your name and partial account details purchase them from breach markets beforehand.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: IBM X-Force Threat Intelligence Index, 2025</span>
+    </div>
+  </div>
+</div>
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #8B5CF6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#8B5CF6', fontWeight: 'bold' }}>Click Rate</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>1 in 3 Employees Click Phishing Links</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>In controlled tests, <b>34% of employees clicked a phishing link</b> and 1 in 8 entered credentials on the fake page. Click rates are highest for financial alerts, HR notices, and IT security warnings - the same formats attackers prioritize.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Proofpoint State of the Phish Report, 2025</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #06B6D4', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#06B6D4', fontWeight: 'bold' }}>Time Window</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>Phishing Pages Stay Live Under 60 Minutes</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}><b>The average phishing page is active for less than 60 minutes</b> before being taken down or moved. Attackers use the window to collect as many credentials as possible, then act immediately before victims notice.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: APWG Phishing Trends Report, Q4 2024</span>
+    </div>
+  </div>
+</div>
+
+---
+
+## How Each Format Works
+
+**Email phishing** spoofs display names and uses lookalike domains. `alerts@hdfc-banking.co.in` looks official. The domain after the @ symbol is the only checkable fact.
+
+**Smishing** exploits mobile UX. Sender names can be set by the sender, not verified by the network. A message can appear in the same thread as your real bank by using the same sender name string.
+
+**Vishing** uses spoofed caller IDs and scripted social engineering. Callers arrive knowing your name, partial account number, and a recent transaction - bought from breach markets. This creates a false sense of verification before asking for an OTP.
+
+**QR codes in phishing emails** are used because they bypass email link scanning. The QR redirects to a credential page that corporate filters never see.
+
+The consistent factor across all three: **the attacker creates a reason not to pause.** A 24-hour deadline. A suspended account. A transaction already in progress. The urgency exists to prevent the one action that would expose the scam: independent verification.
+
+---
+
+## Practice: Sort the Inbox
+
+Six messages have arrived. Classify each as real or phishing. After every decision, the specific tells are revealed.
+
+<iframe
+  id="phishing-inbox-iframe"
+  src="/simulations/deceptive-communication/phishing-smishing-vishing/phishing-inbox.html"
+  width="100%"
+  style={{ height: '720px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Phishing Inbox Simulator"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('phishing-inbox-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._phishingInboxHandler);
+    window._phishingInboxHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+---
+
+## What That Just Showed You
+
+**1. Display names are not sender addresses.**
+The name shown can be set to anything. "SBI Bank" costs nothing to fake. The actual sending address or domain is the only checkable fact.
+
+**2. OTPs authorize actions, not identities.**
+An OTP does not verify a login. It approves a specific action. When an attacker asks for your OTP to "block" a transaction, they are asking you to approve the transaction.
+
+**3. Urgency is a mechanism to skip verification.**
+Every phishing, smishing, and vishing attack includes a reason to act now. That reason exists because verification would reveal the scam.
+
+**4. Credential pages look identical to real ones.**
+The only reliable tell is the domain name. Checking the URL before entering any data is the single most effective habit.
+
+---
+
+## Three Things Worth Doing
+
+**1. Check the domain before entering anything.**
+On mobile, tap the address bar to see the full URL. The domain - the part immediately before `.com`, `.in`, or any extension - must exactly match the organisation's known domain.
+
+**2. Never act on an inbound contact. Go outbound.**
+If a bank, courier, or government body contacts you urgently, close the message or hang up. Then contact them using a number you already have saved or a website you already know. Use nothing from the message itself.
+
+**3. OTPs are authorizations, not verifications.**
+No bank, government agency, or support team needs your OTP to help you. If someone asks for it, they are using it against you.
+
+---
+
+## One Question Before You Continue
+
+<Quiz
+  question="Priya entered her OTP on the fake page because she thought it would verify her identity and block the suspicious transaction. What did the OTP actually do?"
+  options={[
+    {
+      label: "It verified her login to the real SBI server, which then froze the account.",
+      correct: false,
+      explanation: "The page was not operated by SBI. No data reached the real bank. The OTP was captured by the attacker's server and immediately used elsewhere."
+    },
+    {
+      label: "It authorized the transfer the attacker had already queued. OTPs approve actions, not identities.",
+      correct: true,
+      explanation: "Correct. The attacker had already initiated the transfer and needed the OTP to complete it. Priya's entry gave them exactly that. Banks never ask for an OTP to block or investigate a transaction - that framing only exists in fraud scripts."
+    },
+    {
+      label: "It allowed the attacker to reset her password.",
+      correct: false,
+      explanation: "In this case the OTP authorized a transaction. Both uses are possible, but the immediate financial loss indicates transaction authorization. The key point is the same: OTPs approve actions on your account."
+    },
+    {
+      label: "Nothing - OTPs expire in 30 seconds and the attacker couldn't use it that fast.",
+      correct: false,
+      explanation: "Attackers operate automated systems specifically to relay OTPs in real time. The 30-second window is intentionally exploited. The OTP was used before it expired."
+    }
+  ]}
+/>

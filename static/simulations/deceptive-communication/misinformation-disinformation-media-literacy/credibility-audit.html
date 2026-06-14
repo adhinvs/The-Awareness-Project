@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Source Credibility Audit</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f8fafc; color: #1e293b; font-size: 15px; line-height: 1.5;
+  }
+  .wrap { max-width: 620px; margin: 0 auto; padding: 24px 16px 48px; }
+  .screen { display: none; }
+  .screen.active { display: block; animation: fadeUp .3s ease; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  /* Intro */
+  .intro-card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 28px 24px;
+  }
+  .intro-title { font-size: 20px; font-weight: 900; color: #0f172a; margin-bottom: 6px; }
+  .intro-sub { font-size: 13px; color: #64748b; line-height: 1.6; margin-bottom: 20px; }
+  .claim-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .claim-tab {
+    padding: 7px 14px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 99px;
+    font-size: 12px; cursor: pointer; color: #475569; transition: all .15s;
+  }
+  .claim-tab.active { background: #1e293b; color: #fff; border-color: #1e293b; }
+  .claim-display {
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 14px 16px; font-size: 14px; color: #1e293b; line-height: 1.6;
+    margin-bottom: 16px; min-height: 60px;
+  }
+  .claim-source { font-size: 12px; color: #94a3b8; margin-top: 6px; }
+  .start-btn {
+    display: block; width: 100%; padding: 14px;
+    background: #1e293b; color: #fff; border: none; border-radius: 12px;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+  }
+
+  /* Audit screen */
+  .audit-header {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 16px;
+    padding: 16px 20px; margin-bottom: 16px;
+  }
+  .audit-claim { font-size: 14px; color: #334155; line-height: 1.6; font-style: italic; }
+  .audit-claim-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: #94a3b8; margin-bottom: 6px; }
+
+  /* Steps */
+  .step-card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 16px;
+    overflow: hidden; margin-bottom: 12px;
+  }
+  .step-header {
+    padding: 14px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer;
+    transition: background .15s;
+  }
+  .step-header:hover { background: #f8fafc; }
+  .step-num {
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; transition: all .2s;
+  }
+  .step-num.pending { background: #f1f5f9; color: #94a3b8; }
+  .step-num.active { background: #1e293b; color: #fff; }
+  .step-num.done-yes { background: #dcfce7; color: #15803d; }
+  .step-num.done-no { background: #fee2e2; color: #dc2626; }
+  .step-num.done-partial { background: #fef3c7; color: #92400e; }
+  .step-title { font-size: 14px; font-weight: 700; color: #0f172a; flex: 1; }
+  .step-chevron { font-size: 14px; color: #94a3b8; transition: transform .2s; }
+  .step-chevron.open { transform: rotate(90deg); }
+  .step-body { display: none; padding: 0 18px 16px; }
+  .step-body.open { display: block; }
+  .step-question { font-size: 13px; color: #475569; line-height: 1.6; margin-bottom: 14px; }
+  .step-what-to-do {
+    background: #f8fafc; border-radius: 10px; padding: 12px 14px;
+    font-size: 12px; color: #64748b; line-height: 1.6; margin-bottom: 14px;
+  }
+  .step-what-to-do strong { color: #374151; display: block; margin-bottom: 4px; }
+  .answer-row { display: flex; gap: 8px; }
+  .ans-btn {
+    flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #e2e8f0;
+    font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; background: #fff;
+  }
+  .ans-btn.yes:hover, .ans-btn.yes.sel { background: #dcfce7; border-color: #4ade80; color: #15803d; }
+  .ans-btn.no:hover, .ans-btn.no.sel { background: #fee2e2; border-color: #f87171; color: #dc2626; }
+  .ans-btn.partial:hover, .ans-btn.partial.sel { background: #fef3c7; border-color: #fbbf24; color: #92400e; }
+  .step-feedback { font-size: 12px; color: #475569; line-height: 1.6; margin-top: 10px; padding: 10px 12px; border-radius: 8px; display: none; }
+
+  /* Summary */
+  .summary-card {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 22px 20px; margin-top: 16px;
+  }
+  .summary-title { font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 14px; }
+  .meter-row { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .meter-label { font-size: 12px; color: #64748b; width: 140px; flex-shrink: 0; }
+  .meter-bar-wrap { flex: 1; background: #f1f5f9; border-radius: 99px; height: 8px; }
+  .meter-bar { height: 8px; border-radius: 99px; transition: width .6s ease; }
+  .meter-val { font-size: 12px; font-weight: 700; width: 30px; text-align: right; }
+  .verdict-box {
+    margin-top: 16px; padding: 14px; border-radius: 12px; font-size: 13px; line-height: 1.6;
+  }
+  .verdict-box.strong { background: #dcfce7; color: #14532d; }
+  .verdict-box.weak { background: #fef3c7; color: #78350f; }
+  .verdict-box.very-weak { background: #fee2e2; color: #7f1d1d; }
+  .restart-btn {
+    display: block; width: 100%; margin-top: 14px; padding: 13px;
+    background: #f1f5f9; border: none; border-radius: 12px;
+    font-size: 14px; font-weight: 700; cursor: pointer; color: #475569;
+  }
+  .restart-btn:hover { background: #e2e8f0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- INTRO -->
+<div id="intro" class="screen active">
+  <div class="intro-card">
+    <div class="intro-title">Source Credibility Audit</div>
+    <div class="intro-sub">Choose a claim below. Then work through the 5 checks that reveal whether the source behind it is credible. The tool does not give a verdict - it helps you reach one.</div>
+    <div class="claim-tabs" id="claim-tabs"></div>
+    <div class="claim-display" id="claim-display">Select a claim above to begin.</div>
+    <button class="start-btn" onclick="startAudit()">Start 5-Point Audit</button>
+  </div>
+</div>
+
+<!-- AUDIT -->
+<div id="audit-screen" class="screen">
+  <div class="audit-header">
+    <div class="audit-claim-label">Claim being audited</div>
+    <div class="audit-claim" id="audit-claim-text"></div>
+  </div>
+  <div id="steps-area"></div>
+  <div class="summary-card" id="summary-card" style="display:none">
+    <div class="summary-title">Your credibility assessment</div>
+    <div id="meters"></div>
+    <div class="verdict-box" id="verdict-box"></div>
+    <button class="restart-btn" onclick="restart()">Audit another claim</button>
+  </div>
+</div>
+
+</div>
+<script>
+const claims = [
+  {
+    label: 'Health claim',
+    text: '"Doctors are hiding a natural herb that cures Type 2 diabetes permanently - pharmaceutical companies have suppressed research for decades."',
+    source: 'Shared on WhatsApp, no publication date, source listed as "NaturalHealthTruth.net"',
+    steps: [
+      {
+        title: 'Who published this?',
+        question: 'Can you find the original publisher - a named organisation with an About page, editorial team, and contact address?',
+        howTo: 'Search the domain name. Look for named editors and a physical address.',
+        feedbacks: {
+          yes: 'A traceable publisher is a baseline signal. Continue checking.',
+          no: 'No identifiable publisher is a strong red flag for anonymous health content.',
+          partial: 'A site with no named staff or address is weak attribution.'
+        }
+      },
+      {
+        title: 'Can the named entities be found independently?',
+        question: 'Can you find the research study, institution, or doctors cited - in published scientific databases?',
+        howTo: 'Search PubMed (pubmed.ncbi.nlm.nih.gov). Real research leaves a verifiable trail.',
+        feedbacks: {
+          yes: 'Check whether the study actually supports the specific claim made.',
+          no: 'No independent trace of cited research is the most direct signal of fabrication.',
+          partial: 'Partial traces may mean the claim misrepresents real but unrelated research.'
+        }
+      },
+      {
+        title: 'Have independent outlets reported the same finding?',
+        question: 'Does the same claim appear in outlets with different ownership, named journalists, and editorial accountability?',
+        howTo: 'Search the core claim in news. Multiple independent outlets = corroborated.',
+        feedbacks: {
+          yes: 'Check those organisations have independent editorial accountability.',
+          no: 'A claim with no independent reporting has not been corroborated.',
+          partial: 'Many sites repeating the same text is amplification, not independent verification.'
+        }
+      },
+      {
+        title: 'What is the emotional register of the content?',
+        question: 'Does the headline use language designed to provoke outrage or fear? Is the intensity proportionate to a factual report?',
+        howTo: 'Words like "hidden", "suppressed", "shocking" are persuasion cues, not factual descriptors.',
+        feedbacks: {
+          yes: 'Proportionate language is a good sign.',
+          no: 'Highly charged suppression language is the most consistent marker of health misinformation.',
+          partial: 'Some emotional language is normal. The issue is whether it substitutes for evidence.'
+        }
+      },
+      {
+        title: 'What would a professional body say?',
+        question: 'Has a relevant medical authority - WHO, ICMR, or a national health council - documented a position on this specific claim?',
+        howTo: 'Search the claim on WHO.int or ICMR\'s website.',
+        feedbacks: {
+          yes: 'Compare their position directly with the specific claim.',
+          no: 'Absence of professional engagement is unusual for a genuine breakthrough.',
+          partial: 'A general statement about unproven treatments is still relevant context.'
+        }
+      }
+    ]
+  },
+  {
+    label: 'Financial news',
+    text: '"The Indian rupee will collapse by 40% within 60 days. The government is planning emergency capital controls next week and insiders are already moving money out."',
+    source: 'Posted on X (Twitter) by account with 12K followers, no source citation, account created 3 months ago.',
+    steps: [
+      {
+        title: 'Who is the source?',
+        question: 'Is the account making this claim a traceable financial professional registered with a regulatory body?',
+        howTo: 'Search the account name in SEBI/RBI registers. Check when the account was created.',
+        feedbacks: {
+          yes: 'Check whether their past predictions have been accurate.',
+          no: 'An anonymous account with no regulatory registration has no accountability basis.',
+          partial: 'No regulatory registration is insufficient basis for a major financial claim.'
+        }
+      },
+      {
+        title: 'Is it covered by financial news outlets with named journalists?',
+        question: 'Have ET, Mint, Reuters India, or Bloomberg India reported this with named journalists and primary sources?',
+        howTo: 'Search the specific claim in financial news. Look for bylined articles.',
+        feedbacks: {
+          yes: 'Read the full article before acting - not just the headline.',
+          no: 'No financial press coverage of this magnitude is a strong counter-signal.',
+          partial: 'General rupee coverage is not the same as corroboration of this specific claim.'
+        }
+      },
+      {
+        title: 'Does the RBI or Finance Ministry have a public statement?',
+        question: 'Have the RBI or Ministry of Finance issued any statement relevant to this claim?',
+        howTo: 'Check rbi.org.in and pib.gov.in for press releases.',
+        feedbacks: {
+          yes: 'Compare the official statement precisely with the specific claim.',
+          no: 'Policy of this significance cannot remain undisclosed - absence of statement is telling.',
+          partial: 'General monetary policy statements do not confirm this specific claim.'
+        }
+      },
+      {
+        title: 'Who benefits if this claim spreads?',
+        question: 'Does this claim - if believed - cause people to sell rupees or move to gold or crypto that would benefit anyone with prior positions?',
+        howTo: 'Consider who profits if people act on this prediction.',
+        feedbacks: {
+          yes: 'An identifiable beneficiary is a significant red flag.',
+          no: 'No obvious beneficiary does not clear the claim. Continue checking.',
+          partial: 'Note the incentive structure as one factor alongside the evidence checks.'
+        }
+      },
+      {
+        title: 'Is the timeframe specific and falsifiable?',
+        question: '"Within 60 days" is testable. Has this account made previous specific predictions? Were they accurate?',
+        howTo: 'Check the account\'s post history for past predictions and outcomes.',
+        feedbacks: {
+          yes: 'A track record of accuracy is meaningful but does not prove this claim.',
+          no: 'No visible track record means no credibility basis for specific forecasts.',
+          partial: 'A mixed track record should be weighed alongside the other signals.'
+        }
+      }
+    ]
+  },
+  {
+    label: 'Viral news',
+    text: '"A major Indian bank is about to fail - employees have been told to clear their desks and the government is preparing an emergency announcement."',
+    source: 'Forwarded WhatsApp message, shared across multiple groups, originally from an unnamed "banking insider".',
+    steps: [
+      {
+        title: 'Is there any traceable original source?',
+        question: 'Can you trace the claim to a named journalist, official on record, or locatable document?',
+        howTo: '"A banking insider" with no name or institution is not a source.',
+        feedbacks: {
+          yes: 'Check whether that source is credible and independently corroborated.',
+          no: 'A WhatsApp forward with no verifiable origin is not a source.',
+          partial: 'Second-hand information is weak sourcing for a claim of this magnitude.'
+        }
+      },
+      {
+        title: 'Has the RBI or SEBI made any statement?',
+        question: 'Would the RBI issue a public statement if a major bank were approaching failure? Has any been made?',
+        howTo: 'Check rbi.org.in for press releases. The absence of a statement is informative.',
+        feedbacks: {
+          yes: 'Compare the RBI statement precisely with the specific claim.',
+          no: 'No RBI statement about imminent bank failure is a very strong signal the claim is false.',
+          partial: 'General system statements are not confirmation of a specific institution failing.'
+        }
+      },
+      {
+        title: 'Are financial journalists reporting it?',
+        question: 'Have named journalists at established outlets reported this bank facing trouble - with regulatory filings or named sources?',
+        howTo: 'Search the bank name in financial news.',
+        feedbacks: {
+          yes: 'Read the full article before acting.',
+          no: 'Genuine banking distress cannot be kept from financial press if it is real.',
+          partial: 'General negative coverage is different from evidence of imminent failure.'
+        }
+      },
+      {
+        title: 'What is the likely effect of this claim spreading?',
+        question: 'If many people believed this and withdrew deposits simultaneously, what would happen?',
+        howTo: 'False bank-failure claims can trigger real bank runs - a known form of financial attack.',
+        feedbacks: {
+          yes: 'You identified the harm mechanism. This explains why false claims of this type are created.',
+          no: 'The effect of the claim spreading - regardless of intent - is worth considering.',
+          partial: 'Partial harm awareness is useful context.'
+        }
+      },
+      {
+        title: 'Before sharing: what is your verification status?',
+        question: 'Have you independently confirmed this through a primary source?',
+        howTo: 'The question is not "could this be true?" but "can I confirm this is true?"',
+        feedbacks: {
+          yes: 'If you have primary source verification, act accordingly.',
+          no: 'An unverified claim about a major bank is not something to share.',
+          partial: 'Partial verification is not verification. The standard here should be high.'
+        }
+      }
+    ]
+  }
+];
+
+let selectedClaim = 0;
+let answers = [];
+let openStep = 0;
+
+// Build claim tabs
+const tabsEl = document.getElementById('claim-tabs');
+const displayEl = document.getElementById('claim-display');
+claims.forEach((c, i) => {
+  const t = document.createElement('button');
+  t.className = 'claim-tab' + (i === 0 ? ' active' : '');
+  t.textContent = c.label;
+  t.onclick = () => {
+    selectedClaim = i;
+    document.querySelectorAll('.claim-tab').forEach((b, j) => b.classList.toggle('active', j === i));
+    displayEl.innerHTML = `<strong>${claims[i].text}</strong><div class="claim-source">${claims[i].source}</div>`;
+    setTimeout(() => parent.postMessage({ iframeHeight: document.body.scrollHeight + 20 }, '*'), 50);
+  };
+  tabsEl.appendChild(t);
+});
+displayEl.innerHTML = `<strong>${claims[0].text}</strong><div class="claim-source">${claims[0].source}</div>`;
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startAudit() {
+  answers = new Array(5).fill(null);
+  openStep = 0;
+  document.getElementById('audit-claim-text').textContent = claims[selectedClaim].text;
+  renderSteps();
+  document.getElementById('summary-card').style.display = 'none';
+  show('audit-screen');
+  setTimeout(() => parent.postMessage({ iframeHeight: document.body.scrollHeight + 20 }, '*'), 100);
+}
+
+function renderSteps() {
+  const claim = claims[selectedClaim];
+  const area = document.getElementById('steps-area');
+  area.innerHTML = '';
+  claim.steps.forEach((step, i) => {
+    const ans = answers[i];
+    const numClass = ans === null ? (i === openStep ? 'active' : 'pending') : (ans === 'yes' ? 'done-yes' : ans === 'no' ? 'done-no' : 'done-partial');
+    const numText = ans === null ? (i + 1) : (ans === 'yes' ? '✓' : ans === 'no' ? '✕' : '~');
+    const isOpen = i === openStep;
+
+    const card = document.createElement('div');
+    card.className = 'step-card';
+    card.innerHTML = `
+      <div class="step-header" onclick="toggleStep(${i})">
+        <div class="step-num ${numClass}">${numText}</div>
+        <div class="step-title">${step.title}</div>
+        <div class="step-chevron ${isOpen ? 'open' : ''}">›</div>
+      </div>
+      <div class="step-body ${isOpen ? 'open' : ''}">
+        <div class="step-question">${step.question}</div>
+        <div class="step-what-to-do"><strong>How to check:</strong>${step.howTo}</div>
+        <div class="answer-row">
+          <button class="ans-btn yes ${ans === 'yes' ? 'sel' : ''}" onclick="setAnswer(${i}, 'yes')">Yes</button>
+          <button class="ans-btn partial ${ans === 'partial' ? 'sel' : ''}" onclick="setAnswer(${i}, 'partial')">Partially</button>
+          <button class="ans-btn no ${ans === 'no' ? 'sel' : ''}" onclick="setAnswer(${i}, 'no')">No</button>
+        </div>
+        <div class="step-feedback" id="feedback-${i}" style="${ans ? 'display:block; background:' + (ans==='yes'?'#f0fdf4':ans==='no'?'#fff5f5':'#fffbeb') : 'display:none'}">${ans ? step.feedbacks[ans] : ''}</div>
+      </div>
+    `;
+    area.appendChild(card);
+  });
+}
+
+function toggleStep(i) {
+  openStep = openStep === i ? -1 : i;
+  renderSteps();
+  setTimeout(() => parent.postMessage({ iframeHeight: document.body.scrollHeight + 20 }, '*'), 50);
+}
+
+function setAnswer(i, val) {
+  answers[i] = val;
+  const claim = claims[selectedClaim];
+  const fb = document.getElementById(`feedback-${i}`);
+  if (fb) {
+    fb.textContent = claim.steps[i].feedbacks[val];
+    fb.style.display = 'block';
+    fb.style.background = val === 'yes' ? '#f0fdf4' : val === 'no' ? '#fff5f5' : '#fffbeb';
+  }
+  // Move to next unanswered step
+  const next = answers.findIndex((a, j) => a === null && j > i);
+  if (next !== -1) openStep = next;
+  else openStep = -1;
+
+  renderSteps();
+
+  // Show summary when all answered
+  if (answers.every(a => a !== null)) {
+    showSummary();
+  }
+  setTimeout(() => parent.postMessage({ iframeHeight: document.body.scrollHeight + 20 }, '*'), 100);
+}
+
+function showSummary() {
+  const yesCount = answers.filter(a => a === 'yes').length;
+  const partialCount = answers.filter(a => a === 'partial').length;
+  const noCount = answers.filter(a => a === 'no').length;
+  const score = yesCount + partialCount * 0.5;
+
+  const meters = [
+    { label: 'Publisher accountability', val: answers[0] === 'yes' ? 100 : answers[0] === 'partial' ? 50 : 0, color: '#22c55e' },
+    { label: 'Named entities verified', val: answers[1] === 'yes' ? 100 : answers[1] === 'partial' ? 50 : 0, color: '#6366f1' },
+    { label: 'Independent corroboration', val: answers[2] === 'yes' ? 100 : answers[2] === 'partial' ? 50 : 0, color: '#3b82f6' },
+    { label: 'Proportionate language', val: answers[3] === 'yes' ? 100 : answers[3] === 'partial' ? 50 : 0, color: '#f59e0b' },
+    { label: 'Professional body position', val: answers[4] === 'yes' ? 100 : answers[4] === 'partial' ? 50 : 0, color: '#ec4899' },
+  ];
+
+  let metersHtml = meters.map(m => `
+    <div class="meter-row">
+      <div class="meter-label">${m.label}</div>
+      <div class="meter-bar-wrap"><div class="meter-bar" style="width:${m.val}%; background:${m.color}"></div></div>
+      <div class="meter-val" style="color:${m.color}">${m.val}%</div>
+    </div>
+  `).join('');
+
+  document.getElementById('meters').innerHTML = metersHtml;
+
+  let verdict = '', vClass = '';
+  if (score >= 4) {
+    verdict = 'This claim has strong credibility indicators. The source is traceable, the claim is corroborated, and the evidence basis can be checked independently.';
+    vClass = 'strong';
+  } else if (score >= 2) {
+    verdict = 'This claim has mixed credibility signals. Some checks passed, others did not. Do not act on it or share it until the failing checks are resolved through independent verification.';
+    vClass = 'weak';
+  } else {
+    verdict = 'This claim has very weak credibility indicators. The source cannot be traced, the claim is not independently corroborated, and sharing it would spread unverified information. Do not forward.';
+    vClass = 'very-weak';
+  }
+
+  const vb = document.getElementById('verdict-box');
+  vb.className = 'verdict-box ' + vClass;
+  vb.textContent = verdict;
+  document.getElementById('summary-card').style.display = 'block';
+  setTimeout(() => parent.postMessage({ iframeHeight: document.body.scrollHeight + 20 }, '*'), 100);
+}
+
+function restart() {
+  show('intro');
+  setTimeout(() => parent.postMessage({ iframeHeight: document.body.scrollHeight }, '*'), 100);
+}
+
+window.addEventListener('load', () => parent.postMessage({ iframeHeight: document.body.scrollHeight }, '*'));
+</script>
+</body>
+</html>
