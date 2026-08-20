@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>After the Loss</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      background: #f8fafc;
+      color: #1f2937;
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      line-height: 1.6;
+    }
+    body { margin: 0; padding: 20px; }
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(15,23,42,.07);
+      padding: 28px;
+    }
+    h1 { margin: 0 0 6px; font-size: 1.6rem; color: #111827; }
+    .intro { color: #6b7280; margin: 0 0 24px; font-size: 0.95rem; }
+    .scene {
+      background: #f1f5f9;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .scene-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #6b7280;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .scene-text {
+      font-size: 1rem;
+      color: #111827;
+      font-weight: 500;
+      margin: 0;
+    }
+    .tactic-badge {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 99px;
+      margin-top: 10px;
+    }
+    .choices { display: grid; gap: 10px; margin-top: 16px; }
+    button.choice {
+      appearance: none;
+      background: #fff;
+      border: 1.5px solid #d1d5db;
+      border-radius: 10px;
+      padding: 14px 18px;
+      text-align: left;
+      font-size: 0.95rem;
+      color: #374151;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+      font-family: inherit;
+    }
+    button.choice:hover { border-color: #6366f1; background: #f5f3ff; }
+    .feedback {
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 16px;
+      display: none;
+      font-size: 0.95rem;
+    }
+    .feedback.safe { background: #f0fdf4; border-left: 4px solid #16a34a; color: #14532d; }
+    .feedback.danger { background: #fef2f2; border-left: 4px solid #dc2626; color: #7f1d1d; }
+    .feedback.warn { background: #fffbeb; border-left: 4px solid #d97706; color: #78350f; }
+    .feedback b { display: block; margin-bottom: 4px; font-size: 1rem; }
+    .next-btn {
+      appearance: none;
+      background: #4f46e5;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 24px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      cursor: pointer;
+      margin-top: 16px;
+      display: none;
+    }
+    .next-btn:hover { background: #4338ca; }
+    .progress { font-size: 0.8rem; color: #9ca3af; margin-bottom: 16px; }
+    .summary {
+      background: #f0fdf4;
+      border-radius: 14px;
+      padding: 24px;
+      display: none;
+    }
+    .summary h2 { margin: 0 0 12px; color: #14532d; font-size: 1.2rem; }
+    .summary ul { margin: 0; padding-left: 20px; color: #374151; }
+    .summary li { margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>After the Loss</h1>
+  <p class="intro">Rahul put Rs. 85,000 into an "investment app" a colleague's cousin recommended. The app has stopped letting him withdraw. Walk through the three months that follow.</p>
+
+  <div class="progress" id="progress">Step 1 of 4</div>
+
+  <div id="sim"></div>
+
+  <div class="summary" id="summary">
+    <h2>What Every Choice Revealed</h2>
+    <ul>
+      <li><b>Denial</b> feels protective in the moment, but it delays every action that could actually limit the damage.</li>
+      <li><b>Rationalisation</b> turns a red flag you noticed and ignored into a story that makes the decision feel reasonable in hindsight.</li>
+      <li><b>The second shame</b> - embarrassment about being fooled - silences people more effectively than the financial loss itself.</li>
+      <li><b>Recovery scammers specifically target the silence</b> denial and shame create. The "quiet fix" is the second theft.</li>
+      <li>Naming the defence mechanism out loud, to one other person, is what interrupts the cycle.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+const steps = [
+  {
+    label: "The App Freezes",
+    text: "Rahul tries to withdraw his money. The app shows an error and asks for a \"verification fee\" to unlock the account. Some part of him already suspects what this is.",
+    tactic: "Denial",
+    choices: [
+      { text: "Tell himself it is probably a technical glitch", result: "danger", msg: "<b>This is denial doing its job.</b> Admitting the red flag means admitting the loss - so the mind reaches for the least painful explanation instead, even when the evidence points elsewhere." },
+      { text: "Accept that something is seriously wrong and stop sending money", result: "safe", msg: "<b>Correct.</b> Naming the situation accurately - before any more money moves - is the single highest-leverage moment in the whole sequence. Every dollar sent after this point compounds the loss." },
+      { text: "Pay the verification fee to see what happens", result: "danger", msg: "<b>This funds the next stage of the same scheme.</b> \"Verification fees,\" \"tax clearances,\" and similar charges after a freeze are the second phase of the same operation, not a separate hurdle." }
+    ]
+  },
+  {
+    label: "Three Months of Silence",
+    text: "Rahul has not told his wife. He tells himself it \"just hadn't come up.\"",
+    tactic: "Rationalisation",
+    choices: [
+      { text: "Continue telling himself it hasn't come up yet", result: "danger", msg: "<b>This is rationalisation.</b> A logical-sounding reason is substituted for the real one: that admitting the loss feels unbearable. The story is more comfortable than the truth, which is exactly why it persists." },
+      { text: "Tell one trusted person what happened, even though it is uncomfortable", result: "safe", msg: "<b>Correct.</b> Pew Research found three in four people who lose money to an online scam never tell anyone official about it. Breaking that silence early is what keeps a bad decision from compounding into a second one." },
+      { text: "Decide it is not worth mentioning since the amount was 'not that large'", result: "warn", msg: "<b>The size of the loss is not the point.</b> Minimising it is another way of avoiding the conversation - the amount does not change how useful telling someone would be." }
+    ]
+  },
+  {
+    label: "The Recovery Call",
+    text: "A man calls claiming to work with a \"cyber recovery cell\" that can trace and return funds lost to investment fraud - for a processing fee of Rs. 15,000 upfront.",
+    tactic: "The second shame, exploited",
+    choices: [
+      { text: "Pay the fee - it offers a way to fix this without anyone finding out", result: "danger", msg: "<b>This is the second scam, built specifically for people carrying shame about the first.</b> The appeal is not really the recovery - it is the promise of a quiet, no-questions-asked fix that avoids the conversation Rahul has been avoiding for three months." },
+      { text: "Ask how this stranger knew about the original app at all", result: "safe", msg: "<b>Correct instinct.</b> Legitimate recovery routes - banks, cybercrime portals, fraud agencies - do not cold-call with unsolicited knowledge of a specific loss. That detail alone should end the call." },
+      { text: "Ask for documentation before deciding", result: "warn", msg: "<b>Documentation can be fabricated as easily as the original app was.</b> The more useful question is why a stranger already knows about a loss Rahul never reported publicly." }
+    ]
+  },
+  {
+    label: "Six Months Later",
+    text: "Rahul finally tells his wife what happened - both losses. Her first response is relief that he told her, not anger.",
+    tactic: "Interrupting the defence cycle",
+    choices: [
+      { text: "Recognise this confirms he should have said something sooner", result: "safe", msg: "<b>Correct.</b> The imagined consequences of disclosure are almost always worse than the real ones. Naming denial, rationalisation, and shame for what they are - automatic defences, not character flaws - is what breaks the cycle before a third scam finds him." },
+      { text: "Still feel it was better to have waited this long", result: "warn", msg: "<b>The delay itself carried real cost</b> - three months of unexamined risk, plus a second loss to the recovery scam that specifically targeted his silence. Earlier disclosure would not have undone the first loss, but it would very likely have prevented the second." },
+      { text: "Feel this proves he should stop trusting anyone with money advice", result: "warn", msg: "<b>The lesson is narrower than that.</b> The failure was not trusting people in general - it was not examining a specific defence mechanism (denial) in the moment it appeared." }
+    ]
+  }
+];
+
+let current = 0;
+let chosen = false;
+
+function render() {
+  const step = steps[current];
+  document.getElementById('progress').textContent = `Step ${current + 1} of ${steps.length}`;
+  const sim = document.getElementById('sim');
+  sim.innerHTML = `
+    <div class="scene">
+      <div class="scene-label">${step.label}</div>
+      <p class="scene-text">${step.text}</p>
+      <span class="tactic-badge">Mechanism: ${step.tactic}</span>
+    </div>
+    <div class="choices" id="choices">
+      ${step.choices.map((c, i) => `<button class="choice" onclick="choose(${i})">${c.text}</button>`).join('')}
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="next-btn" onclick="next()">${current < steps.length - 1 ? 'Continue' : 'See Summary'}</button>
+  `;
+  chosen = false;
+}
+
+function choose(i) {
+  if (chosen) return;
+  chosen = true;
+  const c = steps[current].choices[i];
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${c.result}`;
+  fb.innerHTML = c.msg;
+  fb.style.display = 'block';
+  document.getElementById('next-btn').style.display = 'inline-block';
+  document.querySelectorAll('.choice').forEach(b => b.disabled = true);
+
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function next() {
+  current++;
+  if (current >= steps.length) {
+    document.getElementById('sim').style.display = 'none';
+    document.getElementById('progress').style.display = 'none';
+    document.getElementById('summary').style.display = 'block';
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+  } else {
+    render();
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+  }
+}
+
+render();
+</script>
+</body>
+</html>

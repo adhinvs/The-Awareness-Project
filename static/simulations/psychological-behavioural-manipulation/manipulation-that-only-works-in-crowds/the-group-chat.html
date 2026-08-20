@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The Group Chat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      background: #f8fafc;
+      color: #1f2937;
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      line-height: 1.6;
+    }
+    body { margin: 0; padding: 20px; }
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(15,23,42,.07);
+      padding: 28px;
+    }
+    h1 { margin: 0 0 6px; font-size: 1.6rem; color: #111827; }
+    .intro { color: #6b7280; margin: 0 0 24px; font-size: 0.95rem; }
+    .scene {
+      background: #f1f5f9;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .scene-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #6b7280;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .scene-text {
+      font-size: 1rem;
+      color: #111827;
+      font-weight: 500;
+      margin: 0;
+    }
+    .tactic-badge {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 99px;
+      margin-top: 10px;
+    }
+    .choices { display: grid; gap: 10px; margin-top: 16px; }
+    button.choice {
+      appearance: none;
+      background: #fff;
+      border: 1.5px solid #d1d5db;
+      border-radius: 10px;
+      padding: 14px 18px;
+      text-align: left;
+      font-size: 0.95rem;
+      color: #374151;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+      font-family: inherit;
+    }
+    button.choice:hover { border-color: #6366f1; background: #f5f3ff; }
+    .feedback {
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 16px;
+      display: none;
+      font-size: 0.95rem;
+    }
+    .feedback.safe { background: #f0fdf4; border-left: 4px solid #16a34a; color: #14532d; }
+    .feedback.danger { background: #fef2f2; border-left: 4px solid #dc2626; color: #7f1d1d; }
+    .feedback.warn { background: #fffbeb; border-left: 4px solid #d97706; color: #78350f; }
+    .feedback b { display: block; margin-bottom: 4px; font-size: 1rem; }
+    .next-btn {
+      appearance: none;
+      background: #4f46e5;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 24px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      cursor: pointer;
+      margin-top: 16px;
+      display: none;
+    }
+    .next-btn:hover { background: #4338ca; }
+    .progress { font-size: 0.8rem; color: #9ca3af; margin-bottom: 16px; }
+    .summary {
+      background: #f0fdf4;
+      border-radius: 14px;
+      padding: 24px;
+      display: none;
+    }
+    .summary h2 { margin: 0 0 12px; color: #14532d; font-size: 1.2rem; }
+    .summary ul { margin: 0; padding-left: 20px; color: #374151; }
+    .summary li { margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>The Group Chat</h1>
+  <p class="intro">A "guaranteed doubling scheme" lands in a 22-person family WhatsApp group on a Tuesday. You are Priya. Decide what to do at each moment.</p>
+
+  <div class="progress" id="progress">Step 1 of 4</div>
+
+  <div id="sim"></div>
+
+  <div class="summary" id="summary">
+    <h2>What Every Choice Revealed</h2>
+    <ul>
+      <li><b>Pluralistic ignorance</b> means everyone can privately doubt something while assuming, wrongly, that they are the only one who does.</li>
+      <li><b>The bystander effect</b> diffuses responsibility to act across everyone in the group - which means, in practice, to no one.</li>
+      <li><b>Groupthink</b> suppresses dissent to preserve harmony, especially with family or people you respect.</li>
+      <li>False content spreads roughly six times faster than accurate corrections on social platforms - group silence does nothing to slow that down.</li>
+      <li>Deciding in advance to act as if you are the only one who noticed is the concrete counter-move.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+const steps = [
+  {
+    label: "The Message Arrives",
+    text: "Priya's uncle shares a \"guaranteed doubling scheme\" from someone he met in a crypto trading group, with three screenshots of \"payouts\" attached. It reads exactly like the frauds she has seen described elsewhere.",
+    tactic: "Pluralistic ignorance forming",
+    choices: [
+      { text: "Wait to see if anyone else in the group reacts first", result: "danger", msg: "<b>This is exactly how pluralistic ignorance takes hold.</b> Everyone privately doubting the message, but each person assuming their doubt is unusual, produces a silence that looks like agreement to everyone watching it." },
+      { text: "Say something immediately, even briefly", result: "safe", msg: "<b>Correct.</b> One voice breaking the silence early is often enough to reveal that the doubt was shared all along, not unusual." },
+      { text: "Message her uncle privately instead of in the group", result: "warn", msg: "<b>A reasonable step</b>, but it does nothing for the other twenty people who are watching the group's silence and reading it as consensus." }
+    ]
+  },
+  {
+    label: "Four Hours of Silence",
+    text: "Nobody says anything - not even Priya's cousin who works in finance. Priya starts to doubt her own read of the situation more than the message itself.",
+    tactic: "Bystander effect and self-doubt",
+    choices: [
+      { text: "Assume everyone else understands something she doesn't", result: "danger", msg: "<b>This is the trap.</b> The responsibility to raise a concern has quietly diffused across twenty-two people - which functionally means it belongs to no one. Silence from a group is not evidence of shared understanding; it is evidence that everyone is waiting for someone else to go first." },
+      { text: "Trust her own assessment and speak up regardless of the silence", result: "safe", msg: "<b>Correct.</b> Assigning the responsibility to yourself specifically - deciding to act as if you are the only one who noticed - is the direct counter-move to diffusion of responsibility." },
+      { text: "Assume the silence means the group has already agreed to ignore it", result: "warn", msg: "<b>An understandable read, but unverified.</b> Silence in a group chat is compatible with several very different underlying states - agreement, doubt, and simple non-engagement all look identical from the outside." }
+    ]
+  },
+  {
+    label: "The Cousin Breaks the Silence",
+    text: "Four hours in, Priya's cousin finally writes: \"Wait, is anyone else worried about this?\" Within minutes, three more relatives admit they had been thinking the same thing.",
+    tactic: "Pluralistic ignorance revealed",
+    choices: [
+      { text: "Notice how quickly the shared doubt surfaces once named", result: "safe", msg: "<b>Correct.</b> This is the signature of pluralistic ignorance: the doubt was there in most of the group the entire time. It just needed one person willing to say it out loud before everyone else's matching doubt became visible." },
+      { text: "Assume the cousin is the only one who was right to be suspicious", result: "warn", msg: "<b>Not quite.</b> Three other relatives immediately confirm they felt the same doubt. The cousin did not have unique insight - she was simply the first to break a silence several people were already sharing." },
+      { text: "Feel reassured now that others have spoken, but stay quiet herself", result: "warn", msg: "<b>Understandable relief</b>, but the pattern that let the scheme sit unchallenged for four hours is worth naming for next time, not just resolved for this one." }
+    ]
+  },
+  {
+    label: "The Uncle Asks What to Do",
+    text: "Priya's uncle, now uncertain, asks the group whether he should still send money to \"lock in\" the offer before it expires.",
+    tactic: "Assigning responsibility to yourself",
+    choices: [
+      { text: "Let someone else answer since the doubt has already been raised", result: "warn", msg: "<b>The diffusion risk is not fully gone.</b> A live decision about sending money benefits from a direct, specific answer, not an assumption that the earlier discussion already covered it." },
+      { text: "Answer directly: no, and explain why the scarcity pressure itself is a warning sign", result: "safe", msg: "<b>Correct.</b> A specific, direct answer to a specific, live question closes the loop that the earlier group silence opened. Naming the manufactured urgency (\"lock in before it expires\") as a tactic, not a genuine deadline, gives the uncle a concrete reason to pause." },
+      { text: "Suggest the group vote on it", result: "warn", msg: "<b>This reintroduces exactly the dynamic that caused the four-hour delay</b> - diffusing a decision across a group rather than one person giving a clear, direct answer." }
+    ]
+  }
+];
+
+let current = 0;
+let chosen = false;
+
+function render() {
+  const step = steps[current];
+  document.getElementById('progress').textContent = `Step ${current + 1} of ${steps.length}`;
+  const sim = document.getElementById('sim');
+  sim.innerHTML = `
+    <div class="scene">
+      <div class="scene-label">${step.label}</div>
+      <p class="scene-text">${step.text}</p>
+      <span class="tactic-badge">Dynamic: ${step.tactic}</span>
+    </div>
+    <div class="choices" id="choices">
+      ${step.choices.map((c, i) => `<button class="choice" onclick="choose(${i})">${c.text}</button>`).join('')}
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="next-btn" onclick="next()">${current < steps.length - 1 ? 'Continue' : 'See Summary'}</button>
+  `;
+  chosen = false;
+}
+
+function choose(i) {
+  if (chosen) return;
+  chosen = true;
+  const c = steps[current].choices[i];
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${c.result}`;
+  fb.innerHTML = c.msg;
+  fb.style.display = 'block';
+  document.getElementById('next-btn').style.display = 'inline-block';
+  document.querySelectorAll('.choice').forEach(b => b.disabled = true);
+
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function next() {
+  current++;
+  if (current >= steps.length) {
+    document.getElementById('sim').style.display = 'none';
+    document.getElementById('progress').style.display = 'none';
+    document.getElementById('summary').style.display = 'block';
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+  } else {
+    render();
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+  }
+}
+
+render();
+</script>
+</body>
+</html>

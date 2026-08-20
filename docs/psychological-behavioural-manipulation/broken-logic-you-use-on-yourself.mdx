@@ -1,0 +1,136 @@
+---
+sidebar_position: 10
+title: "Broken Logic You Use on Yourself"
+sidebar_label: "Broken Logic You Use on Yourself"
+description: "How the gambler's fallacy and base-rate neglect keep people chasing bad bets and believing vivid stories over real odds - especially in investment and crypto scams."
+tags: [gamblers-fallacy, base-rate-neglect, slippery-slope, sunk-cost, investment-fraud, crypto-scam, reasoning-errors]
+---
+
+import Quiz from '@site/src/components/Quiz';
+
+# Broken Logic You Use on Yourself
+
+Module 13 already covers the sunk cost trap - the pull of money already spent. This module is its family of related fallacies: the gambler's fallacy and base-rate neglect, which keep people chasing bad bets and believing vivid stories over real odds.
+
+---
+
+## The Fee That Was Never the Last One
+
+Vikram put in Rs. 50,000 first. The app's dashboard showed it growing to Rs. 68,000 within a week, and withdrawing a small amount "to test it" worked exactly as promised. So he put in more.
+
+When the app froze his account at Rs. 4.2 lakh and asked for a "tax clearance payment" to release the funds, he didn't walk away. He told himself he was owed a win. He'd lost this much, the account was so close to unlocking, and surely the odds of losing twice in a row on the same platform were low. He borrowed Rs. 1 lakh from his brother-in-law to pay the clearance fee.
+
+He never once asked himself the only question that mattered: how many apps promising guaranteed returns turn out to be real.
+
+## What Is Actually Happening
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #EF4444', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#EF4444', fontWeight: 'bold' }}>Scale</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>$3.5B+ Lost, 40,000+ Victims</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>The FBI's Financial Crimes Section reported over <b>$3.5 billion</b> in pig-butchering and investment-fraud losses and more than <b>40,000 victims</b> across the US in a single year - the majority involving exactly this escalating "one more payment" pattern.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: FBI Financial Crimes Section, cited by NBC News, 2024</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #F59E0B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#F59E0B', fontWeight: 'bold' }}>Real Case</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>A Retirement Drained on "One More"</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>A 62-year-old Mississippi retiree sold property and drained his retirement savings chasing a promised payout, each new deposit framed as the one that would finally unlock the money. An FBI agent intervened before he could take out a further loan.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: NBC News, 2024</span>
+    </div>
+  </div>
+</div>
+
+## The Fallacies at Work
+
+### The gambler's fallacy - "I'm due for a win"
+
+Each request for money from a fraudulent platform is an independent decision, not a continuation of a fair game. The platform does not "owe" anyone a correction because of what came before - there is no mechanism by which past losses make a future payout more likely.
+
+### Base-rate neglect - a vivid story feels more real than the actual odds
+
+Vikram's own dashboard, his own successful test withdrawal, felt more convincing than the general, boring, statistical fact that most guaranteed-return schemes are fraudulent. A specific personal experience will almost always feel more real than an abstract base rate - which is exactly why scammers manufacture that personal experience first.
+
+### Slippery slope and foot-in-the-door logic
+
+Each individual step - the small test withdrawal, the first top-up, the clearance fee - feels reasonable in isolation. The unreasonable part only becomes visible when the whole sequence is viewed from outside, which is precisely the view a person mid-sequence does not have.
+
+### Related to, but distinct from, sunk cost
+
+[Module 13](/docs/social-engineering-manipulation-tactics/commitment-consistency-sunk-cost) covers the pull of money already spent. The gambler's fallacy is a separate, additional error layered on top: not just "I've already put in too much to stop," but the further belief that the *odds themselves* have shifted in your favour because of the losses.
+
+### The base-rate reset habit
+
+The single most useful question, asked before the next payment rather than after: **"How often is this actually true?"** Not "does this feel true," not "am I due" - but a genuine estimate of the base rate for the specific claim being made.
+
+## Now Try It: The Clearance Fee
+
+Walk through Vikram's decisions from the first test withdrawal to the borrowed loan.
+
+<iframe
+  id="clearance-fee-iframe"
+  src="/simulations/psychological-behavioural-manipulation/broken-logic-you-use-on-yourself/the-clearance-fee.html"
+  width="100%"
+  style={{ height: '680px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="The Clearance Fee"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('clearance-fee-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._clearanceFeeHandler);
+    window._clearanceFeeHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+## Three Things Worth Doing
+
+### 1. Ask the base-rate question before every payment, not after.
+
+"How often is this actually true?" is more useful asked in the moment than as a postscript once the money is already gone.
+
+### 2. Treat a small successful test as marketing, not proof.
+
+A test withdrawal that works costs the operator almost nothing and is specifically designed to produce trust on a scale too small to matter to them.
+
+### 3. Recognise a frozen account plus a new fee as a known pattern.
+
+The specific platform's name and dashboard design change constantly. The freeze-then-fee structure does not - recognising the pattern matters more than evaluating any single instance on its own terms.
+
+## Knowledge Check
+
+<Quiz
+  question="Vikram has already lost money on a crypto app that later asks for a 'clearance fee' before releasing his funds. He pays it because he feels he's 'due' for the losses to turn around. What is this reasoning error called?"
+  options={[
+    {
+      label: "The gambler's fallacy",
+      correct: true,
+      explanation: "Correct. The gambler's fallacy is the belief that a string of losses makes a win 'overdue,' as if independent events owe you a correction. Module 13 covers the related sunk cost trap - the pull of money already spent; this is the separate belief that the odds themselves have shifted in your favour."
+    },
+    {
+      label: "Base-rate neglect",
+      correct: false,
+      explanation: "Base-rate neglect is ignoring how rare something is because a vivid personal story feels more real than the actual statistics. It's related but distinct - it explains why the scheme felt credible in the first place, not why Vikram kept paying after the freeze."
+    },
+    {
+      label: "Sunk cost fallacy",
+      correct: false,
+      explanation: "Sunk cost is the pull of money already invested - a real factor here, but the specific reasoning described ('due for a win') is about believing the odds have shifted, which is the gambler's fallacy specifically."
+    },
+    {
+      label: "Anchoring",
+      correct: false,
+      explanation: "Anchoring is about a first number setting a reference point for later numbers. It does not describe the belief that a losing streak makes a win overdue."
+    }
+  ]}
+/>

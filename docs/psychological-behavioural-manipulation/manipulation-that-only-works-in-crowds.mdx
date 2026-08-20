@@ -1,0 +1,136 @@
+---
+sidebar_position: 9
+title: "Manipulation That Only Works in Crowds"
+sidebar_label: "Manipulation That Only Works in Crowds"
+description: "How the bystander effect, pluralistic ignorance, and groupthink let scams and harassment go unchallenged in group chats, livestreams, and comment sections."
+tags: [bystander-effect, pluralistic-ignorance, groupthink, deindividuation, group-psychology, crowd-manipulation, wash-trading]
+---
+
+import Quiz from '@site/src/components/Quiz';
+
+# Manipulation That Only Works in Crowds
+
+A scam plays out in a group chat, a livestream, or a comment section, and no one steps in - even though several people notice something is wrong. Groups suppress the doubt individuals would otherwise act on.
+
+---
+
+## Four Hours of Silence in a Family Group
+
+The message landed in the family WhatsApp group on a Tuesday. Rahul's uncle had shared a "guaranteed doubling scheme" from someone he'd met in a crypto trading group, with three screenshots of "payouts" attached.
+
+Priya read it twice and felt her stomach drop. It had every mark of the frauds she'd read about. But nobody else in the group had said anything - not even her cousin who worked in finance - and the silence made her doubt herself more than the message had. Maybe they all understood something she didn't. Maybe raising it would embarrass Uncle in front of twenty-two relatives.
+
+It was her cousin who finally broke the silence, four hours later: *"Wait, is anyone else worried about this?"* Within minutes, three more people admitted they'd been thinking the same thing since the message arrived.
+
+## What Is Actually Happening
+
+<div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #3B82F6', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#3B82F6', fontWeight: 'bold' }}>Speed of Spread</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>6x Faster Than the Truth</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}>False content on social media reaches its first 1,500 people roughly <b>six times faster</b> than accurate information, and is 70% more likely to be shared - a dynamic that group silence does nothing to slow.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Vosoughi, Roy & Aral, MIT Media Lab / MIT Sloan, published in Science</span>
+    </div>
+  </div>
+  <div className="col col--6">
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '100%', borderLeft: '4px solid #10B981', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div>
+        <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#10B981', fontWeight: 'bold' }}>Watching, Not Acting</span>
+        <h3 style={{ margin: '8px 0', fontSize: '1.25rem', fontWeight: '700' }}>66% See It. 30% Say Something.</h3>
+        <p style={{ fontSize: '0.9rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.5' }}><b>66% of US adults</b> have witnessed harassing behaviour directed at someone else online - but only 30% ever stepped in to say or do something about it.</p>
+      </div>
+      <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic', marginTop: '12px' }}>Source: Pew Research Center, "Americans and Online Harassment," 2017</span>
+    </div>
+  </div>
+</div>
+
+## The Dynamics at Work
+
+### Bystander effect and diffusion of responsibility
+
+The more people who witness something, the less any single person feels personally responsible for acting on it. In a group of twenty-two, the responsibility to speak up quietly splits twenty-two ways - which in practice means it belongs to no one.
+
+### Pluralistic ignorance - "no one else seems worried, so it must be fine"
+
+This is distinct from the bystander effect. It isn't that people feel less responsible to act; it's that they misread the group's silence as agreement, when in fact most people present are privately doubting the same thing.
+
+### Groupthink - a group suppresses doubt to keep harmony
+
+Especially with family, colleagues, or people you respect, raising a concern can feel like an accusation against the person who shared it. The group's desire for harmony quietly overrides the individual's instinct to object.
+
+### Deindividuation and mob dynamics
+
+Anonymity plus crowd size lowers inhibition - visible in coordinated pile-ons, comment-section pressure campaigns, and fabricated "crowd" activity such as wash trading, where fake buy and sell orders manufacture the appearance of genuine group enthusiasm.
+
+### Assigning responsibility to yourself as the counter-move
+
+The direct antidote to all four dynamics above is the same: deciding, deliberately, to act as if you are the only one who noticed - rather than waiting to see what the group does.
+
+## Now Try It: The Group Chat
+
+You are Priya. Decide what to do at each point in the four hours before her cousin finally spoke up.
+
+<iframe
+  id="group-chat-iframe"
+  src="/simulations/psychological-behavioural-manipulation/manipulation-that-only-works-in-crowds/the-group-chat.html"
+  width="100%"
+  style={{ height: '680px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="The Group Chat"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('group-chat-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._groupChatHandler);
+    window._groupChatHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+## Three Things Worth Doing
+
+### 1. Speak first, not last.
+
+If something feels off in a group, say so early. Waiting to see if someone else raises it first is precisely the mechanism that lets pluralistic ignorance take hold.
+
+### 2. Treat silence as data-free, not as agreement.
+
+A quiet group chat is compatible with several very different real states underneath - agreement, doubt, and simple non-engagement all look identical from the outside.
+
+### 3. Decide in advance to act as if you're the only one who noticed.
+
+This single mental reframe is the direct counter-move to diffusion of responsibility - it removes the "someone else will handle it" assumption before it forms.
+
+## Knowledge Check
+
+<Quiz
+  question="In a group chat, several people privately doubt a 'guaranteed returns' message, but nobody says anything because no one else seems concerned. What is this specifically called?"
+  options={[
+    {
+      label: "Groupthink",
+      correct: false,
+      explanation: "Groupthink is when a group actively suppresses dissent to preserve harmony. This scenario is different - the doubt exists privately but people misread each other's silence, rather than the group collectively pressuring anyone into agreement."
+    },
+    {
+      label: "Pluralistic ignorance",
+      correct: true,
+      explanation: "Correct. Pluralistic ignorance is when everyone privately doubts something but assumes, because no one else is objecting, that they must be the only one who feels that way. It is different from the bystander effect, which is about diffusion of responsibility to act rather than a false read of what the group believes."
+    },
+    {
+      label: "The bystander effect",
+      correct: false,
+      explanation: "The bystander effect is about responsibility to act diffusing across a group. This scenario centres on a false belief about what other people think, which is pluralistic ignorance specifically."
+    },
+    {
+      label: "Confirmation bias",
+      correct: false,
+      explanation: "Confirmation bias is about seeking information that confirms what you already believe. It does not describe the specific dynamic of misreading group silence as agreement."
+    }
+  ]}
+/>

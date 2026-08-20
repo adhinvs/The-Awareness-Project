@@ -12,7 +12,7 @@ The Awareness Project is a free, open-source education platform covering digital
 
 We live in a world where attention is manipulated and deception is engineered at scale. The Awareness Project exists to close the gap between knowing threats exist and actually recognizing them in real time.
 
-The curriculum is structured across **15 sections and 106 modules**, covering everything from phishing and social engineering to AI deepfakes, dark patterns, financial exploitation, and recovery when things go wrong. Every module ends with specific, actionable steps you can apply to your digital life immediately.
+The curriculum is structured across **15 sections and 110 modules**, covering everything from phishing and social engineering to AI deepfakes, dark patterns, financial exploitation, and recovery when things go wrong. Every module ends with specific, actionable steps you can apply to your digital life immediately.
 
 ---
 
@@ -26,15 +26,17 @@ The curriculum is structured across **15 sections and 106 modules**, covering ev
 | 04 | Deceptive Communication | Phishing, smishing, vishing, fake websites, deepfakes, QR code attacks |
 | 05 | AI Bias & Algorithmic Influence | Synthetic media, algorithmic bias, filter bubbles, AI hallucinations |
 | 06 | Dark Patterns & Manipulative Design | Consent tricks, subscription traps, manufactured urgency, addictive design |
-| 07 | Surveillance & Privacy Theft | Tracking technologies, behavioral profiling, corporate and government surveillance |
-| 08 | Financial & Economic Exploitation | Payment fraud, SIM swap, account takeover, monetisation of addiction |
-| 09 | Harassment, Abuse & Harm | Cyberbullying, doxxing, stalking, sextortion, reputational damage |
-| 10 | Psychological & Behavioral Manipulation | Cognitive biases, FOMO, decision fatigue, addiction, gradual boundary erosion |
-| 11 | Specialized Threats & Vulnerable Groups | Seniors, children, gamers, dating apps, health tech, smart home, workplace threats |
-| 12 | When It Happens to You | Recovery: account compromise, financial loss, identity theft, intimate image abuse |
-| 13 | Country-Specific Threats & Resources | India, United States, Europe, Southeast Asia — local scams, laws, and helplines |
+| 07 | Marketing & Advertising Manipulation | Ad targeting, influencer deception, identity-based selling, political microtargeting, the attention economy |
+| 08 | Surveillance & Privacy Theft | Tracking technologies, behavioral profiling, corporate and government surveillance |
+| 09 | Financial & Economic Exploitation | Payment fraud, SIM swap, account takeover, monetisation of addiction |
+| 10 | Harassment, Abuse & Harm | Cyberbullying, doxxing, stalking, sextortion, reputational damage |
+| 11 | Psychological & Behavioral Manipulation | Cognitive biases, FOMO, decision fatigue, addiction, gradual boundary erosion |
+| 12 | Specialized Threats & Vulnerable Groups | Seniors, children, gamers, dating apps, health tech, smart home, workplace threats |
+| 13 | When It Happens to You | Recovery: account compromise, financial loss, identity theft, intimate image abuse, digital rights |
+| 14 | Country-Specific Threats & Resources | India, US & North America, Europe, Southeast Asia & Gulf, UK & Australia — local scams, laws, and helplines |
+| 15 | Your Digital Protection Habits | Devices, accounts, app permissions, networks, privacy settings, everyday safe behaviour |
 
-The full curriculum with all 89 modules is listed in [`Documents/TheAwarenessProject_Curriculum.txt`](Documents/TheAwarenessProject_Curriculum.txt).
+The full curriculum with all 110 modules is listed in [`Documents/TheAwarenessProject_Curriculum.md`](Documents/TheAwarenessProject_Curriculum.md).
 
 ---
 
@@ -83,7 +85,7 @@ This project is open so that anyone can learn from it — and add to it. If you 
 
 - **Add or improve a module** — Content lives in the `docs/` folder as `.mdx` files. Each section has its own subfolder.
 - **Fix errors or outdated information** — Scam tactics and threat landscapes evolve. If something is wrong or stale, open a pull request.
-- **Add country-specific content** — Section 13 covers India, USA, Europe, and Southeast Asia. More regions are needed.
+- **Add country-specific content** — Section 14 covers India, US & North America, Europe, Southeast Asia & Gulf, and UK & Australia. More regions are needed.
 - **Improve simulations** — Interactive HTML simulations live in `static/simulations/`. More scenarios are welcome.
 - **Translate content** — Making this accessible in other languages is a future goal.
 

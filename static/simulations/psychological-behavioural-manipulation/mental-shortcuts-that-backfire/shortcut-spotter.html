@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The Shortcut Spotter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      background: #f8fafc;
+      color: #1f2937;
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      line-height: 1.6;
+    }
+    body { margin: 0; padding: 20px; }
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(15,23,42,.07);
+      padding: 28px;
+    }
+    h1 { margin: 0 0 6px; font-size: 1.6rem; color: #111827; }
+    .intro { color: #6b7280; margin: 0 0 24px; font-size: 0.95rem; }
+    .scene {
+      background: #f1f5f9;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .scene-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #6b7280;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .scene-text {
+      font-size: 1rem;
+      color: #111827;
+      font-weight: 500;
+      margin: 0;
+    }
+    .tactic-badge {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 99px;
+      margin-top: 10px;
+    }
+    .choices { display: grid; gap: 10px; margin-top: 16px; }
+    button.choice {
+      appearance: none;
+      background: #fff;
+      border: 1.5px solid #d1d5db;
+      border-radius: 10px;
+      padding: 14px 18px;
+      text-align: left;
+      font-size: 0.95rem;
+      color: #374151;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+      font-family: inherit;
+    }
+    button.choice:hover { border-color: #6366f1; background: #f5f3ff; }
+    .feedback {
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 16px;
+      display: none;
+      font-size: 0.95rem;
+    }
+    .feedback.safe { background: #f0fdf4; border-left: 4px solid #16a34a; color: #14532d; }
+    .feedback.danger { background: #fef2f2; border-left: 4px solid #dc2626; color: #7f1d1d; }
+    .feedback.warn { background: #fffbeb; border-left: 4px solid #d97706; color: #78350f; }
+    .feedback b { display: block; margin-bottom: 4px; font-size: 1rem; }
+    .next-btn {
+      appearance: none;
+      background: #4f46e5;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 24px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      cursor: pointer;
+      margin-top: 16px;
+      display: none;
+    }
+    .next-btn:hover { background: #4338ca; }
+    .progress { font-size: 0.8rem; color: #9ca3af; margin-bottom: 16px; }
+    .summary {
+      background: #f0fdf4;
+      border-radius: 14px;
+      padding: 24px;
+      display: none;
+    }
+    .summary h2 { margin: 0 0 12px; color: #14532d; font-size: 1.2rem; }
+    .summary ul { margin: 0; padding-left: 20px; color: #374151; }
+    .summary li { margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>The Shortcut Spotter</h1>
+  <p class="intro">Meera has been getting messages from a "market analyst" for weeks. Each message uses a different mental shortcut to earn her trust. Spot which one is at work before you decide what to do.</p>
+
+  <div class="progress" id="progress">Step 1 of 5</div>
+
+  <div id="sim"></div>
+
+  <div class="summary" id="summary">
+    <h2>What Every Choice Revealed</h2>
+    <ul>
+      <li><b>Mere exposure</b> makes repeated, harmless-looking contact feel like familiarity - familiarity is not verification.</li>
+      <li><b>The Barnum effect</b> makes vague, flattering language feel personally written for you. It is written for everyone.</li>
+      <li><b>Anchoring</b> makes any later number look reasonable once an earlier number has set the frame.</li>
+      <li><b>The halo effect</b> lets one polished signal - a title, a photo, a confident voice - imply trustworthiness that was never actually demonstrated.</li>
+      <li><b>Framing</b> changes how persuasive the same fact feels, purely based on the words used to describe it.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+const steps = [
+  {
+    label: "Week One",
+    text: "Stock tip messages start arriving in Meera's WhatsApp - a few a week, mixed in with screenshots of other people's \"profits.\" She has not replied to any of them.",
+    tactic: "Mere exposure effect",
+    choices: [
+      { text: "Ignore them - repetition alone means nothing", result: "safe", msg: "<b>Correct instinct.</b> The mere exposure effect means repeated, harmless contact quietly builds a feeling of familiarity - even with zero evidence of credibility. Recognising that the feeling has no informational content is the whole defence." },
+      { text: "They must be legitimate if they keep contacting me", result: "danger", msg: "<b>This is the trap working.</b> Persistence and volume feel like proof of legitimacy, but they cost the sender nothing. Familiarity is not verification." },
+      { text: "Block the number right away without reading further", result: "warn", msg: "<b>A reasonable option</b>, but the more useful skill here is recognising why the messages start to feel normal - because that same mechanism will resurface elsewhere, in subtler forms, without a block button available." }
+    ]
+  },
+  {
+    label: "Week Four",
+    text: "A message arrives addressed to Meera by name: \"You have worked hard for your money and you are cautious, but this year holds an opportunity you should not let pass.\"",
+    tactic: "The Barnum / Forer effect",
+    choices: [
+      { text: "Feel that this was written specifically for her", result: "danger", msg: "<b>This is the Barnum effect at work.</b> The line is vague enough to fit almost anyone who has ever worked for money and hesitated before a decision - which is nearly everyone. It only feels personal because Meera is filling in the specifics herself." },
+      { text: "Notice the statement could apply to almost anyone", result: "safe", msg: "<b>Correct.</b> Vague, flattering, universally applicable statements are the engine of fake profiling. The specificity is an illusion Meera's own mind supplies." },
+      { text: "Ask the sender how they knew so much about her", result: "warn", msg: "<b>Understandable, but risky.</b> Engaging invites a more tailored follow-up. The safer move is recognising the vagueness for what it is and disengaging." }
+    ]
+  },
+  {
+    label: "The First Recommendation",
+    text: "The \"analyst\" recommends a stock priced at Rs. 4.",
+    tactic: "Setting the anchor",
+    choices: [
+      { text: "Note the price and move on - it seems low-risk", result: "warn", msg: "<b>The number itself is not the danger.</b> The real function of this step is to set a mental reference point that will make the next number look reasonable by comparison, whatever it turns out to be." },
+      { text: "Recognise this number will be used as a comparison point later", result: "safe", msg: "<b>Correct.</b> Anchoring works by planting a first number that every later number gets measured against - not by the first number being good or bad on its own." },
+      { text: "Assume a low price means low risk", result: "danger", msg: "<b>Price and risk are unrelated here.</b> A Rs. 4 stock in an unregulated tip scheme carries the same fabricated-return risk as any other price point." }
+    ]
+  },
+  {
+    label: "The Second Recommendation",
+    text: "A week later, the same contact pushes a \"premium pick\" priced at Rs. 40. It is presented as an unmissable step up from the first tip.",
+    tactic: "Anchoring in action",
+    choices: [
+      { text: "It feels cheap compared to the first pick, so it seems worth trying", result: "danger", msg: "<b>This is the anchor doing its job.</b> Rs. 40 only feels reasonable because Rs. 4 was planted first. Compared to what, exactly? No independent reference point was ever offered - only the scammer's own earlier number." },
+      { text: "Ask: cheap compared to what independent benchmark?", result: "safe", msg: "<b>Correct.</b> The only comparison on offer is the one the scammer supplied. Stepping outside that frame and asking for an independent reference point breaks the anchor's pull." },
+      { text: "Assume any price increase means the scheme is working", result: "danger", msg: "<b>A rising ask price is not evidence of a rising asset.</b> It is evidence the scheme is escalating, which is exactly what these operations are built to do." }
+    ]
+  },
+  {
+    label: "The Photo and Title",
+    text: "The sender's profile shows a man in a blazer with a SEBI-sounding registration number listed under his name.",
+    tactic: "The halo effect",
+    choices: [
+      { text: "A polished photo and an official-sounding title suggest real credentials", result: "danger", msg: "<b>This is the halo effect.</b> One polished signal - a blazer, a plausible-sounding number - implies overall trustworthiness that was never actually verified. Registration numbers can be checked independently and usually are not." },
+      { text: "Verify the registration number on the actual regulator's website before trusting it", result: "safe", msg: "<b>Correct.</b> A credential is only as good as its verification. SEBI and equivalent regulators publish searchable registries specifically so a claimed number can be checked in seconds - rather than accepted because it sounds right." },
+      { text: "Assume the platform would have removed a fake account already", result: "warn", msg: "<b>Platforms are slow and reactive here.</b> The presence of an account, even a long-standing one, is not verification of the credential it claims." }
+    ]
+  }
+];
+
+let current = 0;
+let chosen = false;
+
+function render() {
+  const step = steps[current];
+  document.getElementById('progress').textContent = `Step ${current + 1} of ${steps.length}`;
+  const sim = document.getElementById('sim');
+  sim.innerHTML = `
+    <div class="scene">
+      <div class="scene-label">${step.label}</div>
+      <p class="scene-text">${step.text}</p>
+      <span class="tactic-badge">Shortcut: ${step.tactic}</span>
+    </div>
+    <div class="choices" id="choices">
+      ${step.choices.map((c, i) => `<button class="choice" onclick="choose(${i})">${c.text}</button>`).join('')}
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="next-btn" onclick="next()">${current < steps.length - 1 ? 'Continue' : 'See Summary'}</button>
+  `;
+  chosen = false;
+}
+
+function choose(i) {
+  if (chosen) return;
+  chosen = true;
+  const c = steps[current].choices[i];
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${c.result}`;
+  fb.innerHTML = c.msg;
+  fb.style.display = 'block';
+  document.getElementById('next-btn').style.display = 'inline-block';
+  document.querySelectorAll('.choice').forEach(b => b.disabled = true);
+
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function next() {
+  current++;
+  if (current >= steps.length) {
+    document.getElementById('sim').style.display = 'none';
+    document.getElementById('progress').style.display = 'none';
+    document.getElementById('summary').style.display = 'block';
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+  } else {
+    render();
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+  }
+}
+
+render();
+</script>
+</body>
+</html>

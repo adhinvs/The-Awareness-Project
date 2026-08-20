@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The Clearance Fee</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      background: #f8fafc;
+      color: #1f2937;
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      line-height: 1.6;
+    }
+    body { margin: 0; padding: 20px; }
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(15,23,42,.07);
+      padding: 28px;
+    }
+    h1 { margin: 0 0 6px; font-size: 1.6rem; color: #111827; }
+    .intro { color: #6b7280; margin: 0 0 24px; font-size: 0.95rem; }
+    .scene {
+      background: #f1f5f9;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .scene-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #6b7280;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .scene-text {
+      font-size: 1rem;
+      color: #111827;
+      font-weight: 500;
+      margin: 0;
+    }
+    .tactic-badge {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 99px;
+      margin-top: 10px;
+    }
+    .choices { display: grid; gap: 10px; margin-top: 16px; }
+    button.choice {
+      appearance: none;
+      background: #fff;
+      border: 1.5px solid #d1d5db;
+      border-radius: 10px;
+      padding: 14px 18px;
+      text-align: left;
+      font-size: 0.95rem;
+      color: #374151;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+      font-family: inherit;
+    }
+    button.choice:hover { border-color: #6366f1; background: #f5f3ff; }
+    .feedback {
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 16px;
+      display: none;
+      font-size: 0.95rem;
+    }
+    .feedback.safe { background: #f0fdf4; border-left: 4px solid #16a34a; color: #14532d; }
+    .feedback.danger { background: #fef2f2; border-left: 4px solid #dc2626; color: #7f1d1d; }
+    .feedback.warn { background: #fffbeb; border-left: 4px solid #d97706; color: #78350f; }
+    .feedback b { display: block; margin-bottom: 4px; font-size: 1rem; }
+    .next-btn {
+      appearance: none;
+      background: #4f46e5;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 24px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      cursor: pointer;
+      margin-top: 16px;
+      display: none;
+    }
+    .next-btn:hover { background: #4338ca; }
+    .progress { font-size: 0.8rem; color: #9ca3af; margin-bottom: 16px; }
+    .summary {
+      background: #f0fdf4;
+      border-radius: 14px;
+      padding: 24px;
+      display: none;
+    }
+    .summary h2 { margin: 0 0 12px; color: #14532d; font-size: 1.2rem; }
+    .summary ul { margin: 0; padding-left: 20px; color: #374151; }
+    .summary li { margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>The Clearance Fee</h1>
+  <p class="intro">Vikram put Rs. 50,000 into a crypto app. The dashboard shows it growing. Then it freezes at Rs. 4.2 lakh. Walk through his reasoning at each step.</p>
+
+  <div class="progress" id="progress">Step 1 of 4</div>
+
+  <div id="sim"></div>
+
+  <div class="summary" id="summary">
+    <h2>What Every Choice Revealed</h2>
+    <ul>
+      <li><b>A small "test withdrawal" that works is bait</b>, not proof - it costs the operator far less than what it is designed to unlock.</li>
+      <li><b>The gambler's fallacy</b> treats a string of losses as making a win "overdue," as if the app owed Vikram a correction.</li>
+      <li><b>Base-rate neglect</b> means a vivid, specific story (his own dashboard, his own numbers) feels more real than the actual odds of a random guaranteed-return app being genuine.</li>
+      <li>Every step here also carries the sunk cost pull covered in Module 13 - but the gambler's fallacy is a separate, additional error: not just "I've already spent this," but "the odds themselves must have shifted in my favour."</li>
+      <li>The reset habit that breaks the spiral: ask "how often is this actually true?" before the next payment, not after.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+const steps = [
+  {
+    label: "The Test Withdrawal",
+    text: "Vikram puts in Rs. 50,000. The dashboard shows it growing to Rs. 68,000 within a week. He withdraws a small amount \"to test it\" - and it works exactly as promised.",
+    tactic: "Base-rate neglect begins",
+    choices: [
+      { text: "Treat the successful small withdrawal as proof the platform is real", result: "danger", msg: "<b>A working small withdrawal is the least expensive part of the entire operation.</b> It costs the scheme almost nothing and is specifically designed to produce exactly this reaction - proof by demonstration, on a scale too small to matter to the operator." },
+      { text: "Ask what percentage of \"guaranteed return\" apps turn out to be genuine", result: "safe", msg: "<b>Correct.</b> This is the base-rate question. A single vivid personal experience - his own dashboard, his own successful test - feels more real than the actual, much smaller, base rate of legitimate guaranteed-return platforms. Asking the base-rate question directly counters that." },
+      { text: "Put in more money to see if the dashboard keeps growing", result: "danger", msg: "<b>This is the intended next step of the scheme</b>, not an independent test. A dashboard number is not verified money; it is a figure the platform controls entirely." }
+    ]
+  },
+  {
+    label: "The Freeze",
+    text: "The account freezes at Rs. 4.2 lakh. A message asks for a \"tax clearance payment\" to release the funds.",
+    tactic: "The sunk cost pull, plus a new fallacy",
+    choices: [
+      { text: "Pay the clearance fee - he is too close to walk away now", result: "danger", msg: "<b>This combines two separate errors.</b> The sunk cost pull (Module 13) makes the money already invested feel like a reason to continue. But there is also a second, distinct belief at work here: that the odds of losing twice on the same platform must be low, simply because he has already lost once. They are not related." },
+      { text: "Recognise the freeze-then-fee pattern as a known scheme structure", result: "safe", msg: "<b>Correct.</b> A frozen account that only unlocks after a further payment is a well-documented structure, independent of the platform's specific name or dashboard design. Recognising the pattern matters more than evaluating this particular instance on its own terms." },
+      { text: "Ask the platform's support chat for an explanation", result: "warn", msg: "<b>The support chat is generally part of the same operation.</b> Any answer it gives will be designed to keep the payment flow moving, not to genuinely resolve the freeze." }
+    ]
+  },
+  {
+    label: "The Reasoning",
+    text: "Vikram tells himself he is \"due\" for the losses to turn around, since he has already lost this much and the account is so close to unlocking.",
+    tactic: "The gambler's fallacy",
+    choices: [
+      { text: "Accept that a losing streak makes a win feel overdue", result: "danger", msg: "<b>This is the gambler's fallacy by name.</b> Independent events - each new payment request from a fraudulent platform - do not owe anyone a correction because of what came before. The platform is not a slot machine that is \"due\" to pay out; it is a person deciding whether to keep asking for money." },
+      { text: "Ask how often accounts actually unlock after paying a clearance fee", result: "safe", msg: "<b>Correct.</b> This is the base-rate reset habit in practice: pausing to ask how often this specific claim - fee unlocks frozen funds - turns out to be true, rather than trusting the feeling that a win is overdue." },
+      { text: "Borrow money from a relative to pay the fee, since the amount already invested is too large to lose", result: "danger", msg: "<b>Borrowing to fund the next request escalates the loss</b> without changing the underlying probability of ever seeing the money again - which the gambler's fallacy is specifically obscuring." }
+    ]
+  },
+  {
+    label: "The Question He Never Asked",
+    text: "Vikram never once asked himself: how many apps promising guaranteed returns actually turn out to be real?",
+    tactic: "The base-rate reset habit",
+    choices: [
+      { text: "Recognise this question, asked earlier, could have stopped the whole sequence", result: "safe", msg: "<b>Correct.</b> A single base-rate question - how often is this actually true? - asked before the first deposit, would have reframed every later decision. It is a habit worth applying before payment, not as a postscript after the loss." },
+      { text: "Decide the real lesson is to avoid crypto apps specifically", result: "warn", msg: "<b>The lesson is broader than the asset class.</b> The same reasoning failures - gambler's fallacy, base-rate neglect, escalating sunk cost - apply equally to guaranteed-return schemes in stocks, forex, or any other framing." },
+      { text: "Conclude nothing could have been done differently once the first deposit was made", result: "danger", msg: "<b>Not accurate.</b> The clearest exit point was actually after the freeze, before the clearance fee - recognising the pattern and stopping there would have limited the loss to the original Rs. 50,000." }
+    ]
+  }
+];
+
+let current = 0;
+let chosen = false;
+
+function render() {
+  const step = steps[current];
+  document.getElementById('progress').textContent = `Step ${current + 1} of ${steps.length}`;
+  const sim = document.getElementById('sim');
+  sim.innerHTML = `
+    <div class="scene">
+      <div class="scene-label">${step.label}</div>
+      <p class="scene-text">${step.text}</p>
+      <span class="tactic-badge">Fallacy: ${step.tactic}</span>
+    </div>
+    <div class="choices" id="choices">
+      ${step.choices.map((c, i) => `<button class="choice" onclick="choose(${i})">${c.text}</button>`).join('')}
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="next-btn" onclick="next()">${current < steps.length - 1 ? 'Continue' : 'See Summary'}</button>
+  `;
+  chosen = false;
+}
+
+function choose(i) {
+  if (chosen) return;
+  chosen = true;
+  const c = steps[current].choices[i];
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${c.result}`;
+  fb.innerHTML = c.msg;
+  fb.style.display = 'block';
+  document.getElementById('next-btn').style.display = 'inline-block';
+  document.querySelectorAll('.choice').forEach(b => b.disabled = true);
+
+  window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+}
+
+function next() {
+  current++;
+  if (current >= steps.length) {
+    document.getElementById('sim').style.display = 'none';
+    document.getElementById('progress').style.display = 'none';
+    document.getElementById('summary').style.display = 'block';
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+  } else {
+    render();
+    window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 40 }, '*');
+  }
+}
+
+render();
+</script>
+</body>
+</html>
