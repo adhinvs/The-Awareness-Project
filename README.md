@@ -1,135 +1,151 @@
 # The Awareness Project
 
-**Helping people see through Digital Risk and Manipulation.**
+**A free, open-source digital safety curriculum for recognizing manipulation, scams, AI deception, privacy risks, and online harm before they become personal.**
 
-The Awareness Project is a free, open-source education platform covering digital risk, manipulation tactics, AI deception, scams, and the psychology behind why they work. Built on research. Designed for everyone. No login. No paywall. No subscription.
+[The Awareness Project](https://theawarenessproject.in) is built for everyday people, educators, parents, students, teams, and communities who want clearer judgment in a noisy digital world. It turns complex digital threats into plain-language lessons, practical recovery steps, and interactive learning experiences.
 
-> Powered by [The Blue Signal](https://thebluesignal.com) — Helping People Make Better Digital Decisions.
-
----
-
-## What This Is
-
-We live in a world where attention is manipulated and deception is engineered at scale. The Awareness Project exists to close the gap between knowing threats exist and actually recognizing them in real time.
-
-The curriculum is structured across **15 sections and 110 modules**, covering everything from phishing and social engineering to AI deepfakes, dark patterns, financial exploitation, and recovery when things go wrong. Every module ends with specific, actionable steps you can apply to your digital life immediately.
+> An initiative by [The Blue Signal](https://thebluesignal.com), helping people make better digital decisions.
 
 ---
 
-## Curriculum Overview
+## Why It Exists
 
-| # | Section | What It Covers |
-|---|---------|----------------|
-| 01 | Who You Are & What You Have | Identity, passwords, financial assets, location data — what attackers want from you |
-| 02 | Social Engineering & Manipulation Tactics | Authority, fear, trust, guilt, scarcity — the psychology exploited against you |
-| 03 | Scams & Fraudulent Schemes | Government impersonation, romance scams, tech support fraud, investment schemes |
-| 04 | Deceptive Communication | Phishing, smishing, vishing, fake websites, deepfakes, QR code attacks |
-| 05 | AI Bias & Algorithmic Influence | Synthetic media, algorithmic bias, filter bubbles, AI hallucinations |
-| 06 | Dark Patterns & Manipulative Design | Consent tricks, subscription traps, manufactured urgency, addictive design |
-| 07 | Marketing & Advertising Manipulation | Ad targeting, influencer deception, identity-based selling, political microtargeting, the attention economy |
-| 08 | Surveillance & Privacy Theft | Tracking technologies, behavioral profiling, corporate and government surveillance |
-| 09 | Financial & Economic Exploitation | Payment fraud, SIM swap, account takeover, monetisation of addiction |
-| 10 | Harassment, Abuse & Harm | Cyberbullying, doxxing, stalking, sextortion, reputational damage |
-| 11 | Psychological & Behavioral Manipulation | Cognitive biases, FOMO, decision fatigue, addiction, gradual boundary erosion |
-| 12 | Specialized Threats & Vulnerable Groups | Seniors, children, gamers, dating apps, health tech, smart home, workplace threats |
-| 13 | When It Happens to You | Recovery: account compromise, financial loss, identity theft, intimate image abuse, digital rights |
-| 14 | Country-Specific Threats & Resources | India, US & North America, Europe, Southeast Asia & Gulf, UK & Australia — local scams, laws, and helplines |
-| 15 | Your Digital Protection Habits | Devices, accounts, app permissions, networks, privacy settings, everyday safe behaviour |
+Digital risk is no longer only technical. It is psychological, financial, social, emotional, and increasingly automated. People are targeted through trust, fear, urgency, shame, loneliness, status anxiety, convenience, and carefully designed interfaces.
 
-The full curriculum with all 110 modules is listed in [`Documents/TheAwarenessProject_Curriculum.md`](Documents/TheAwarenessProject_Curriculum.md).
+The Awareness Project helps close the gap between "I know scams exist" and "I can recognize what is happening to me in the moment."
+
+The curriculum is organized around real-world situations: what attackers want, how manipulation works, what platforms and algorithms amplify, what to do when harm happens, and which protective habits matter most.
+
+---
+
+## What You Will Find
+
+- **15 curriculum sections** covering identity, social engineering, scams, AI deception, dark patterns, surveillance, harassment, financial exploitation, recovery, and digital protection habits.
+- **110 learning modules** written in accessible language for non-technical readers.
+- **Interactive simulations** that help people practice spotting risk instead of only reading about it.
+- **Action-focused guidance** with practical steps people can use immediately.
+- **Country-specific resources** for regional scams, legal context, reporting routes, and support pathways.
+- **Open-source structure** so contributors can improve, localize, and extend the project.
+
+---
+
+## Curriculum Map
+
+| # | Section | Focus |
+|---|---------|-------|
+| 01 | Who You Are & What You Have | Identity, passwords, money, location, and the assets attackers try to reach. |
+| 02 | Social Engineering & Manipulation Tactics | Authority, fear, trust, guilt, scarcity, reciprocity, and emotional pressure. |
+| 03 | Scams & Fraudulent Schemes | Impersonation, romance scams, job scams, tech support fraud, investment traps, and recovery scams. |
+| 04 | Deceptive Communication | Phishing, smishing, vishing, fake websites, fake credentials, deepfakes, and QR-code attacks. |
+| 05 | AI Bias & Algorithmic Influence | Synthetic media, AI hallucinations, algorithmic bias, persuasion at scale, and filter bubbles. |
+| 06 | Dark Patterns & Manipulative Design | Consent tricks, subscription traps, fake urgency, gamification loops, and misleading commerce design. |
+| 07 | Marketing & Advertising Manipulation | Targeting pipelines, influencer deception, gambling hooks, political microtargeting, and attention economics. |
+| 08 | Surveillance & Privacy Theft | Tracking technologies, data brokers, behavioral profiling, and corporate or government surveillance. |
+| 09 | Financial & Economic Exploitation | Payment fraud, SIM swaps, account takeover, and business models that monetize addiction. |
+| 10 | Harassment, Abuse & Harm | Cyberbullying, stalking, sextortion, image-based abuse, grooming, and reputational attacks. |
+| 11 | Psychological & Behavioral Manipulation | Cognitive biases, FOMO, decision fatigue, compulsive loops, and gradual boundary erosion. |
+| 12 | Specialized Threats & Vulnerable Groups | Risks affecting children, seniors, gamers, activists, workers, dating-app users, smart homes, health tech, and Web3 users. |
+| 13 | When It Happens to You | Practical response paths for hacked accounts, lost money, identity theft, harassment, intimate image abuse, and digital aftermath. |
+| 14 | Country-Specific Threats & Resources | India, the United States, North America, Europe, Southeast Asia, the Gulf, the United Kingdom, and Australia. |
+| 15 | Your Digital Protection Habits | Devices, accounts, permissions, networks, privacy settings, and everyday behavior changes that reduce risk. |
+
+---
+
+## Built With
+
+- [Docusaurus](https://docusaurus.io/) for the documentation site
+- React and MDX for pages, components, and learning modules
+- Static HTML simulations for interactive practice scenarios
+- Custom styling and theme components for the public learning experience
 
 ---
 
 ## Running Locally
 
-This project is built with [Docusaurus](https://docusaurus.io/). You will need [Node.js](https://nodejs.org/) (v18 or higher) installed.
-
-**1. Clone the repository**
+You need [Node.js](https://nodejs.org/) **20 or newer**.
 
 ```bash
 git clone https://github.com/adhinvs/The-Awareness-Project.git
 cd The-Awareness-Project
-```
-
-**2. Install dependencies**
-
-```bash
 npm install
-```
-
-This downloads all required packages into a local `node_modules/` folder (not included in the repo — this is normal).
-
-**3. Start the development server**
-
-```bash
 npm start
 ```
 
-Opens the site at `http://localhost:3000`. Changes to content files are reflected live without restarting.
+The local site runs at:
 
-**4. Build for production**
+```text
+http://localhost:3000
+```
+
+To create a production build:
 
 ```bash
 npm run build
 ```
 
-Generates a static site in the `build/` folder, ready to be deployed to any static hosting service (GitHub Pages, Netlify, Vercel, etc.). 
-
----
-
-## Contributing
-
-This project is open so that anyone can learn from it — and add to it. If you think a module is missing, a topic is incomplete, or something could be explained better, contributions are welcome.
-
-**Ways to contribute:**
-
-- **Add or improve a module** — Content lives in the `docs/` folder as `.mdx` files. Each section has its own subfolder.
-- **Fix errors or outdated information** — Scam tactics and threat landscapes evolve. If something is wrong or stale, open a pull request.
-- **Add country-specific content** — Section 14 covers India, US & North America, Europe, Southeast Asia & Gulf, and UK & Australia. More regions are needed.
-- **Improve simulations** — Interactive HTML simulations live in `static/simulations/`. More scenarios are welcome.
-- **Translate content** — Making this accessible in other languages is a future goal.
-
-**To contribute:**
-
-1. Fork the repository
-2. Create a new branch (`git checkout -b your-topic-name`)
-3. Make your changes
-4. Submit a pull request with a brief description of what you added or changed
-
-Please keep content factual, source claims where possible, and write in plain language — this is for everyone, not just technical readers.
+The static output is generated in the `build/` directory and can be deployed to any static hosting platform.
 
 ---
 
 ## Project Structure
 
-```
+```text
 the-awareness-project/
-├── docs/                  # All module content (.mdx files, organized by section)
+├── docs/                  # Curriculum sections and learning modules
 ├── src/
-│   ├── components/        # React components (homepage features, quiz)
-│   ├── pages/             # Landing page
-│   └── css/               # Global styles
+│   ├── components/        # Reusable React components
+│   ├── pages/             # Site landing page
+│   ├── css/               # Global styling
+│   └── theme/             # Docusaurus theme customizations
 ├── static/
-│   ├── img/               # Logos and images
-│   └── simulations/       # Interactive HTML simulations
-├── Documents/             # Supporting documents and curriculum reference
-├── docusaurus.config.js   # Site configuration
-├── sidebars.js            # Sidebar navigation structure
-└── package.json           # Project dependencies
+│   ├── img/               # Logos, section images, and module visuals
+│   └── simulations/       # Interactive HTML learning simulations
+├── docusaurus.config.js   # Site and theme configuration
+├── sidebars.js            # Documentation navigation
+└── package.json           # Scripts and dependencies
+```
+
+---
+
+## Contributing
+
+Contributions are welcome, especially improvements that make the project clearer, more practical, more current, or more accessible.
+
+Good places to help:
+
+- Improve or expand existing modules in `docs/`
+- Add new country-specific scam and support resources
+- Update outdated threat examples or reporting guidance
+- Build new interactive simulations in `static/simulations/`
+- Improve accessibility, readability, images, or navigation
+- Translate or adapt content for more communities
+
+Please write for real people, not only technical readers. Keep explanations factual, cite sources where appropriate, avoid fear-driven language, and focus on useful decisions a person can make.
+
+---
+
+## Useful Commands
+
+```bash
+npm start              # Start the local development server
+npm run build          # Build the production site
+npm run serve          # Serve the production build locally
+npm run clear          # Clear Docusaurus caches
+npm run write-heading-ids
 ```
 
 ---
 
 ## License
 
-Content is open for learning and non-commercial use. If you use this material in workshops, training, or public education, a credit to The Awareness Project and The Blue Signal is appreciated.
+This project is open for learning, public education, and non-commercial use. If you use the material in workshops, training, classrooms, or community programs, credit to The Awareness Project and The Blue Signal is appreciated.
 
 ---
 
 ## About The Blue Signal
 
-The Blue Signal is a digital initiative helping people make better decisions online. The Awareness Project is our open contribution to the public — because access to knowledge should not be a privilege, and digital literacy should not have a price tag.
+[The Blue Signal](https://thebluesignal.com) is a digital initiative focused on helping people make better decisions online. The Awareness Project is its open educational contribution to digital literacy, manipulation awareness, and safer online behavior.
 
 - Website: [thebluesignal.com](https://thebluesignal.com)
-- Live workshops and corporate sessions: [adhinvs.com](https://adhinvs.com/hire-me)
-- Flagship program — Mind Under Influence: [adhinvs.com/courses/mind-under-influence](https://adhinvs.com/courses/mind-under-influence)
+- Workshops and sessions: [adhinvs.com](https://adhinvs.com/hire-me)
+- Flagship program: [Mind Under Influence](https://adhinvs.com/courses/mind-under-influence)
