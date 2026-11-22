@@ -428,18 +428,6 @@ h6 {
   background: var(--ifm-color-primary);
 }
 
-.awareness-brand__lockup::after {
-  content: '';
-  position: absolute;
-  left: 1.45rem;
-  bottom: -0.65rem;
-  width: 4.5rem;
-  height: 0.24rem;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--ifm-color-primary), rgba(37, 99, 235, 0));
-  transform: rotate(-3deg);
-}
-
 /* Adjust navbar menu items */
 .navbar__item {
   font-size: var(--nav-item-size);
@@ -464,8 +452,7 @@ h6 {
     display: none !important;
   }
 
-  .awareness-brand__tagline,
-  .awareness-brand__lockup::after {
+  .awareness-brand__tagline {
     display: none;
   }
 
