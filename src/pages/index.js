@@ -34,7 +34,7 @@ function HomepageHeader() {
               <Link
                 className={clsx('button button--primary button--lg', styles.primaryButton)}
                 to="/docs/intro">
-                Explore Free Module
+                Explore Modules
               </Link>
             </div>
           </div>

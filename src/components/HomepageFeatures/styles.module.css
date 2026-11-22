@@ -291,6 +291,25 @@
   color: var(--ifm-background-color);
 }
 
+.curriculumLink {
+  align-self: flex-start;
+  margin-top: 1.75rem;
+  color: var(--ifm-color-primary);
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 2px solid currentColor;
+  padding-bottom: 0.2rem;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.curriculumLink:hover {
+  color: var(--ifm-color-primary-dark);
+  opacity: 0.82;
+  text-decoration: none;
+  transform: translateX(3px);
+}
+
 .pillDark {
   background-color: rgba(255, 255, 255, 0.1);
   color: white;

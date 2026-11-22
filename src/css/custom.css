@@ -258,45 +258,124 @@ h6 {
 }
 
 /* ---------------------------------------------------
-   NAVBAR PILL BUTTON & SOCIAL ICONS
+   FOCUSED NAVBAR ACTIONS
 --------------------------------------------------- */
-.navbar__item.nav-btn-pill {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--ifm-color-primary) !important;
-  color: white !important;
-  border-radius: 2rem;
-  padding: 0 1.25rem !important;
-  height: 2.5rem;
-  margin: auto 0 auto 1rem;
-  font-weight: 600;
-  font-size: var(--nav-item-size);
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+.navbar {
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
 }
 
-.navbar__item.nav-btn-pill:hover {
-  background: var(--ifm-color-primary-dark) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
+.nav-explore-link {
+  display: flex;
+  align-items: center;
   color: white !important;
+  background: var(--ifm-color-primary) !important;
+  border: 1px solid var(--ifm-color-primary);
+  border-radius: 999px;
+  padding: 0 1.25rem !important;
+  height: 2.65rem;
+  margin-left: 0.7rem;
+  margin-right: 1.35rem;
+  font-weight: 600 !important;
+  font-size: 1rem;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.2);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-explore-link:hover {
+  background: var(--ifm-color-primary-dark) !important;
+  border-color: var(--ifm-color-primary-dark);
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: 0 9px 20px rgba(37, 99, 235, 0.28);
+}
+
+.navbar__item.nav-whatsapp-link,
+.navbar__item.nav-company-link {
+  display: flex;
+  align-items: center;
+  color: var(--ifm-color-emphasis-800) !important;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 999px;
+  min-height: 2.65rem;
+  padding: 0 1rem !important;
+  margin-right: 0.65rem;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.navbar__item.nav-whatsapp-link {
+  background: #effbf3 !important;
+}
+
+.navbar__item.nav-whatsapp-link::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 0.55rem;
+  height: 0.55rem;
+  margin-right: 0.45rem;
+  border-radius: 50%;
+  background: #25d366;
+  box-shadow: 0 0 0 4px rgba(37, 211, 102, 0.12);
+}
+
+.navbar__item.nav-whatsapp-link:hover,
+.navbar__item.nav-company-link:hover {
+  color: var(--ifm-color-primary) !important;
+  border-color: rgba(37, 99, 235, 0.35);
+  background: rgba(37, 99, 235, 0.06);
+  transform: translateY(-1px);
   text-decoration: none;
 }
 
-/* Remove external link icon from nav pill button */
-.nav-btn-pill svg[class*="iconExternalLink_"] {
+.navbar__item.nav-whatsapp-link:hover {
+  background: #e5f8eb !important;
+}
+
+/* Keep the pale WhatsApp pill readable in dark mode. */
+[data-theme='dark'] .navbar__item.nav-whatsapp-link {
+  color: #ffffff !important;
+  background: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.72);
+}
+
+[data-theme='dark'] .navbar__item.nav-whatsapp-link:hover {
+  color: #ffffff !important;
+  background: #0b0b0b !important;
+  border-color: #ffffff;
+}
+
+.navbar__item.nav-company-link {
+  color: var(--ifm-color-emphasis-800) !important;
+  border-color: transparent;
+  padding: 0 !important;
+  min-height: auto;
+  margin-right: 1rem;
+}
+
+.navbar__item.nav-company-link:hover {
+  background: transparent;
+  border-color: transparent;
+}
+
+/* Keep both actions visually clean and avoid a duplicated external-link glyph. */
+.nav-whatsapp-link svg[class*="iconExternalLink_"],
+.nav-explore-link svg[class*="iconExternalLink_"] {
   display: none !important;
 }
 
-/* Fix right padding since Docusaurus adds padding for external links */
-.nav-btn-pill::after {
+.nav-whatsapp-link::after,
+.nav-explore-link::after {
   content: none !important;
 }
 
 /* Site Title and Logo Customization */
 .navbar__logo {
-  height: var(--nav-logo-size);
+  width: 4.15rem;
+  height: 4.15rem;
+  object-fit: contain;
 }
 
 .navbar__title {
@@ -305,41 +384,66 @@ h6 {
   letter-spacing: -0.02em;
 }
 
+.awareness-brand {
+  gap: 0.9rem;
+  min-width: max-content;
+}
+
+.awareness-brand__lockup {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--ifm-color-primary);
+}
+
+.awareness-brand__name {
+  color: var(--ifm-color-emphasis-900);
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+}
+
+.awareness-brand__name span {
+  color: var(--ifm-color-primary);
+}
+
+.awareness-brand__tagline {
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.awareness-brand__tagline i {
+  display: inline-block;
+  width: 0.24rem;
+  height: 0.24rem;
+  margin: 0 0.3rem 0.1rem;
+  border-radius: 50%;
+  background: var(--ifm-color-primary);
+}
+
+.awareness-brand__lockup::after {
+  content: '';
+  position: absolute;
+  left: 1.45rem;
+  bottom: -0.65rem;
+  width: 4.5rem;
+  height: 0.24rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--ifm-color-primary), rgba(37, 99, 235, 0));
+  transform: rotate(-3deg);
+}
+
 /* Adjust navbar menu items */
 .navbar__item {
   font-size: var(--nav-item-size);
   font-weight: 500;
-}
-
-/* Base styles using the variables above */
-.social-icons-group {
-  display: flex;
-  align-items: center;
-  gap: var(--social-icon-gap);
-  height: 100%;
-}
-
-.header-social-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--social-icon-color) !important;
-  transition: transform 0.2s ease, filter 0.2s ease;
-}
-
-.header-social-icon:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.2);
-}
-
-[data-theme='dark'] .header-social-icon {
-  color: var(--social-icon-color-dark) !important;
-}
-
-/* Size application */
-.header-social-icon svg {
-  width: var(--social-icon-size);
-  height: var(--social-icon-size);
 }
 
 /* ========================================================
@@ -360,6 +464,24 @@ h6 {
     display: none !important;
   }
 
+  .awareness-brand__tagline,
+  .awareness-brand__lockup::after {
+    display: none;
+  }
+
+  .awareness-brand__name {
+    font-size: 1rem;
+  }
+
+  .awareness-brand__lockup {
+    padding-left: 0.65rem;
+  }
+
+  .navbar__logo {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
   /* Inject the title into the top of the mobile hamburger menu */
   .navbar-sidebar__items .menu::before {
     content: "The Awareness Project";
@@ -374,8 +496,10 @@ h6 {
     text-align: center;
   }
 
-  /* Fix custom pill button spacing in mobile sidebar so it stays contained */
-  .menu__list-item .nav-btn-pill {
+  /* Keep the two actions comfortable inside the mobile drawer. */
+  .menu__list-item .nav-whatsapp-link,
+  .menu__list-item .nav-company-link,
+  .menu__list-item .nav-explore-link {
     margin: 1rem auto;
     height: auto;
     padding: 0.75rem 1rem !important;
@@ -391,12 +515,16 @@ h6 {
     font-size: 0.875rem;
   }
 
-  /* Grouped social icons centered properly in mobile menu */
-  .social-icons-group {
+  .nav-explore-link {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .navbar__item.nav-whatsapp-link,
+  .navbar__item.nav-company-link {
+    margin-right: 0;
     justify-content: center;
-    padding: 1.5rem 0;
-    gap: 1.5rem;
-    width: 100%;
+    width: calc(100% - 2rem);
   }
 }
 /* ========================================================

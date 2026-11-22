@@ -11,7 +11,7 @@ const FeatureList = [
     title: 'Know What You\'re Up Against.',
     description: (
       <>
-        From phishing links to AI-generated voices — learn the tactics being used against you, explained without jargon.
+        From phishing links to AI-generated voices, learn the tactics being used against you, explained without jargon.
       </>
     ),
     icon: (
@@ -45,7 +45,7 @@ const FeatureList = [
     title: 'Learn by Doing.',
     description: (
       <>
-        Simulated scenarios, decision points, and real manipulation tactics — because reading about it isn't enough.
+        Simulated scenarios, decision points, and real manipulation tactics, because reading about it isn't enough.
       </>
     ),
     icon: (
@@ -81,38 +81,44 @@ const CurriculumData = [
   {
     id: '01',
     title: 'Cyber Security Fundamentals',
-    description: 'The essentials every digital citizen should know — passwords, phishing, secure browsing, account hygiene, and the small habits that block most attacks.',
-    topics: ['Phishing', 'Passwords', '2FA', 'Browsers', 'Wi-Fi']
+    description: 'The essentials every digital citizen should know: passwords, phishing, secure browsing, account hygiene, and the small habits that block most attacks.',
+    topics: ['Phishing', 'Passwords', '2FA', 'Browsers', 'Wi-Fi'],
+    link: '/docs/your-digital-protection-habits'
   },
   {
     id: '02',
     title: 'Digital Psychology & Manipulation',
     description: 'Explore the cognitive biases that scammers and algorithms exploit to influence your decisions and behavior online.',
-    topics: ['Cognitive Biases', 'Dark Patterns', 'Persuasion Tactics', 'Emotional Exploitation']
+    topics: ['Cognitive Biases', 'Dark Patterns', 'Persuasion Tactics', 'Emotional Exploitation'],
+    link: '/docs/psychological-behavioural-manipulation'
   },
   {
     id: '03',
     title: 'Scams & Social Engineering',
     description: 'Understand how attackers bypass technical defenses by targeting you directly. Learn to spot the red flags in everyday communications.',
-    topics: ['Vishing', 'Romance Scams', 'Impersonation', 'QR Fraud', 'Fake Websites']
+    topics: ['Vishing', 'Romance Scams', 'Impersonation', 'QR Fraud', 'Fake Websites'],
+    link: '/docs/social-engineering-manipulation-tactics'
   },
   {
     id: '04',
     title: 'AI Deception & Deepfakes',
     description: 'Learn to identify synthetic media, voice clones, and AI-generated text designed to deceive, manipulate, and defraud.',
-    topics: ['Synthetic Media', 'Voice Cloning', 'AI Scams', 'Detection Methods']
+    topics: ['Synthetic Media', 'Voice Cloning', 'AI Scams', 'Detection Methods'],
+    link: '/docs/deceptive-communication'
   },
   {
     id: '05',
     title: 'Privacy & Data Awareness',
-    description: 'Take back control over what you share. Learn how your data is tracked, collected, and monetised—and what you can do about it.',
-    topics: ['Data Tracking', 'Digital Footprint', 'App Permissions', 'Data Economy']
+    description: 'Take back control over what you share. Learn how your data is tracked, collected, and monetised, and what you can do about it.',
+    topics: ['Data Tracking', 'Digital Footprint', 'App Permissions', 'Data Economy'],
+    link: '/docs/surveillance-privacy-theft'
   },
   {
     id: '06',
     title: 'Building Digital Resilience',
     description: 'A holistic approach to digital life, combining security, psychology, and critical thinking for complete and proactive resilience.',
-    topics: ['Behavioral Change', 'Decision-Making Under Pressure', 'Habit Building', 'Awareness Frameworks']
+    topics: ['Behavioral Change', 'Decision-Making Under Pressure', 'Habit Building', 'Awareness Frameworks'],
+    link: '/docs/your-digital-protection-habits'
   }
 ];
 
@@ -140,7 +146,7 @@ function CurriculumSection() {
         <div className="text--center margin-bottom--xl animate-fade-up">
           <Heading as="h2" className={styles.sectionTitle}>What you will master.</Heading>
           <p className={styles.sectionDescription} style={{ color: 'var(--ifm-color-emphasis-700)', maxWidth: '600px', margin: '0 auto' }}>
-            An ever-growing library — new modules added regularly.
+            An ever-growing library, with new modules added regularly.
           </p>
         </div>
         
@@ -176,6 +182,10 @@ function CurriculumSection() {
                 <p className={styles.curriculumDescription} style={{ maxWidth: '800px' }}>
                   {activeTheme.description}
                 </p>
+
+                <Link className={styles.curriculumLink} to={activeTheme.link}>
+                  Explore this theme
+                </Link>
                 
                 <div className="margin-top--lg" style={{ marginTop: 'auto', paddingTop: '1.5rem' }}>
                   <strong className={styles.topicsInsideTitle}>TOPICS INSIDE</strong>
@@ -245,7 +255,7 @@ export default function HomepageFeatures() {
                   The Blue Signal is a digital initiative researching how people think, decide, and get deceived online.
                 </p>
                 <p className={styles.transparencyTextSub}>
-                  We built The Awareness Project as our open contribution to the public—because access to knowledge shouldn't be a privilege, and digital literacy shouldn't have a price tag.
+                  We built The Awareness Project as our open contribution to the public, because access to knowledge shouldn't be a privilege, and digital literacy shouldn't have a price tag.
                 </p>
                 <Link className="button button--primary" style={{ borderRadius: '2rem' }} to="https://thebluesignal.com">
                   Explore The Blue Signal →
@@ -275,7 +285,7 @@ export default function HomepageFeatures() {
                   Hands-on sessions designed for corporates, public events, and community programs. Real scenarios and conversations, customised for your audience.
                 </p>
                 <div style={{ marginTop: 'auto' }}>
-                  <Link className="button button--primary button--outline button--lg" style={{ borderRadius: '2rem', borderWidth: '2px', fontWeight: 600 }} to="https://adhinvs.com">
+                  <Link className="button button--primary button--outline button--lg" style={{ borderRadius: '2rem', borderWidth: '2px', fontWeight: 600 }} to="https://adhinvs.com/plan-and-book-training/">
                     Book or Invite Us →
                   </Link>
                 </div>
@@ -292,7 +302,7 @@ export default function HomepageFeatures() {
                   A deep-dive into the behavioral psychology of the digital world. Master how technology and scams are engineered to influence human behavior.
                 </p>
                 <div style={{ marginTop: 'auto' }}>
-                  <Link className="button button--secondary button--lg" style={{ borderRadius: '2rem', color: 'var(--ifm-color-primary)', fontWeight: 700 }} to="https://adhinvs.com/courses/mind-under-influence">
+                  <Link className="button button--secondary button--lg" style={{ borderRadius: '2rem', color: 'var(--ifm-color-primary)', fontWeight: 700 }} to="https://thebluesignal.com/programs/#mind">
                     Explore the Program →
                   </Link>
                 </div>
