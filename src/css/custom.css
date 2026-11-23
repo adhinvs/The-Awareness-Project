@@ -566,6 +566,7 @@ h6 {
     margin: 0 0 0 0.35rem;
     padding: 0 0.6rem !important;
     white-space: nowrap;
+    overflow: visible;
     font-size: 0;
   }
 
@@ -579,6 +580,18 @@ h6 {
     content: 'Get Daily Insights on WhatsApp' !important;
     font-size: 0.5rem;
     line-height: 1;
+    white-space: nowrap;
+    flex: 0 0 auto;
+  }
+
+  .navbar__items--left {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .navbar__items--left .awareness-brand {
+    flex: 0 1 auto;
+    min-width: 0;
   }
 }
 /* ========================================================
