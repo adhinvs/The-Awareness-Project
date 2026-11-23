@@ -562,22 +562,22 @@ h6 {
   .navbar__items--left > .nav-whatsapp-link {
     flex: 0 0 auto;
     width: auto !important;
-    min-height: 2.2rem;
+    min-height: 1.9rem;
     margin: 0 0 0 0.35rem;
-    padding: 0 0.75rem !important;
+    padding: 0 0.6rem !important;
     white-space: nowrap;
     font-size: 0;
   }
 
   .navbar__items--left > .nav-whatsapp-link::before {
-    width: 0.5rem;
-    height: 0.5rem;
-    margin-right: 0.4rem;
+    width: 0.42rem;
+    height: 0.42rem;
+    margin-right: 0.32rem;
   }
 
   .navbar__items--left > .nav-whatsapp-link::after {
     content: 'Get Daily Insights on WhatsApp' !important;
-    font-size: 0.78rem;
+    font-size: 0.68rem;
     line-height: 1;
   }
 }
