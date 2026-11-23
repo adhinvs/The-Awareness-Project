@@ -6,15 +6,28 @@ description: "How data brokers build psychological profiles from your everyday a
 tags: [data-brokers, behavioural-profiling, psychographic-targeting, advertising, surveillance, emotional-targeting, privacy]
 ---
 
-import Quiz from '@site/src/components/Quiz';
 
 # Behavioural Profiling & Advertising Manipulation
 
 You do not need to fill in a form. Your behaviour is the form.
 
----
+This topic affects how people use technology, make decisions, or protect themselves. Understanding the mechanisms makes it easier to recognise risks and choose a response.
 
-## The File You Did Not Know Existed
+## Myth Busters
+
+**Behavioural Profiling and Advertising Manipulation only affects careless people.**  
+People with different backgrounds can be affected by this risk.
+
+**A familiar or professional appearance proves behavioural profiling and advertising manipulation is safe.**  
+Appearance alone cannot establish trustworthiness.
+
+**There is no practical way to reduce behavioural profiling and advertising manipulation.**  
+Small, independent checks and protective steps can reduce exposure.
+
+**If behavioural profiling and advertising manipulation causes harm, nothing can be done afterward.**  
+Documenting the situation and seeking appropriate support can help.
+
+## The Story
 
 Tom had never heard of Acxiom. He had never signed up to their service.
 
@@ -29,9 +42,9 @@ They knew his home address, his estimated household income, his political lean, 
 
 He found this out when he submitted a Subject Access Request under GDPR. He had 60 days to dispute inaccurate entries. Some inferences were wrong. **Most were not.**
 
----
+## Statistical Evidence
 
-## What Is Actually Happening
+**What Is Actually Happening**  
 
 <div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
   <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>$0.001</h2>
@@ -85,29 +98,24 @@ He found this out when he submitted a Subject Access Request under GDPR. He had 
     </div>
   </div>
 </div>
+**How Your Profile Is Built**  
 
----
-
-## How Your Profile Is Built
-
-### Loyalty cards
+**Loyalty cards**  
 Every purchase is timestamped, geo-located, and categorised. Retailers sell this data to brokers who infer health conditions, life events, and financial state from your basket.
 
-### Free apps
+**Free apps**  
 Apps that cost nothing generate revenue by sharing your data. Location, contacts, browsing behaviour, and app usage are common data points sold to advertising networks.
 
-### Browsing while logged in
+**Browsing while logged in**  
 Google, Meta, and Microsoft link your web activity to your real identity when you are logged into any of their products. Their tracking scripts are embedded across most of the web.
 
-### Competition forms
+**Competition forms**  
 Many prize draw forms exist solely to collect verified PII (name, address, phone, date of birth). The data is the prize.
 
-### Credit applications
+**Credit applications**  
 Financial data is among the highest-value categories for brokers. Loan applications, store credit cards, and insurance quotes all feed into financial profile databases.
 
----
-
-## Try It: Build Your Data Broker Profile
+## Experience It
 
 Walk through 8 everyday actions and watch a data broker profile build itself.
 
@@ -131,9 +139,7 @@ Walk through 8 everyday actions and watch a data broker profile build itself.
   }}
 />
 
----
-
-## What That Just Showed You
+## What the Experience Shows
 
 **1. Profile building requires no single dramatic breach.**
 Each action was ordinary. The profile is built by aggregating them. No single data point is the problem - the assembly is.
@@ -144,9 +150,7 @@ You did not tell any broker your political lean or health conditions. These were
 **3. You can request your profile - and opt out.**
 Under GDPR, you have the right to access the data a broker holds and request deletion. Under California's CCPA, you have similar rights. Opt-out is manual and must be repeated.
 
----
-
-## Three Things Worth Doing
+## Take Control: What Can You Do?
 
 **1. Check your Google and Meta ad profiles.**
 Google: myaccount.google.com/data-and-privacy. Meta: facebook.com/ads/preferences. These show inferences each platform holds. You can reset them.
@@ -156,33 +160,3 @@ A dedicated address for loyalty cards limits linking of your purchase data to yo
 
 **3. Request deletion from major data brokers.**
 Acxiom, LexisNexis, Experian, and Oracle Data Cloud all have GDPR/CCPA removal processes. The FTC's 2024 data broker report lists opt-out paths for the main players.
-
----
-
-## One Question Before You Continue
-
-<Quiz
-  question="A data broker holds a 'financially distressed' flag inferred from your browsing and purchase history. Under GDPR, can you challenge this?"
-  options={[
-    {
-      label: "No - inferences are not personal data under GDPR, so access and erasure rights do not apply.",
-      correct: false,
-      explanation: "Inferences qualify as personal data under GDPR if they relate to an identifiable individual. The European Data Protection Board has confirmed that inferred data is subject to the same rights as directly collected data, including subject access requests and erasure requests."
-    },
-    {
-      label: "Yes - under GDPR you can submit a Subject Access Request for inferred data and request correction or deletion of inaccurate inferences.",
-      correct: true,
-      explanation: "Correct. GDPR Article 15 gives you the right to access all personal data held about you, including inferences. Article 16 gives you the right to rectification of inaccurate data. Article 17 gives the right to erasure. If a data broker refuses, you can escalate to your national data protection authority (ICO in the UK)."
-    },
-    {
-      label: "Only if the inference caused you financial harm - you need to prove damage to make a claim.",
-      correct: false,
-      explanation: "Under GDPR, you do not need to prove harm to exercise data rights. Access, rectification, and erasure rights are available regardless of whether harm has occurred. Proving harm is only required if you are seeking financial compensation."
-    },
-    {
-      label: "No - the data broker has no legal relationship with you, so the law does not apply.",
-      correct: false,
-      explanation: "Data protection law applies to data processors regardless of whether they have a direct customer relationship with you. If a broker holds identifiable data about you, they are subject to GDPR or equivalent law."
-    }
-  ]}
-/>

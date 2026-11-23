@@ -6,15 +6,28 @@ tags: [dark-patterns, manipulative-design, ux-deception, consent-manipulation, s
 ---
 
 import DocCardList from '@theme/DocCardList';
-import Quiz from '@site/src/components/Quiz';
 
 # Dark Patterns & Manipulative Design
 
-The interface is not neutral. Every button, default, and timer was designed by someone - and not always with your interests in mind.
+Dark Patterns & Manipulative Design introduces the risks, patterns, and safeguards in this domain.
 
----
+This topic affects how people use technology, make decisions, or protect themselves. Understanding the mechanisms makes it easier to recognise risks and choose a response.
 
-## The Sign-Up That Cost £168
+## Myth Busters
+
+**Dark Patterns and Manipulative Design only affects careless people.**  
+People with different backgrounds can be affected by this risk.
+
+**A familiar or professional appearance proves dark patterns and manipulative design is safe.**  
+Appearance alone cannot establish trustworthiness.
+
+**There is no practical way to reduce dark patterns and manipulative design.**  
+Small, independent checks and protective steps can reduce exposure.
+
+**If dark patterns and manipulative design causes harm, nothing can be done afterward.**  
+Documenting the situation and seeking appropriate support can help.
+
+## The Story
 
 Aisha downloaded a meditation app. The banner said "Free - Start Today."
 
@@ -35,9 +48,9 @@ She cancelled. She had been charged for 12 months before she noticed the recurri
 
 Nothing Aisha experienced was accidental. Every step was designed that way.
 
----
+## Statistical Evidence
 
-## What Is Actually Happening
+**What Is Actually Happening**  
 
 <div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
   <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>76.4%</h2>
@@ -91,10 +104,7 @@ Nothing Aisha experienced was accidental. Every step was designed that way.
     </div>
   </div>
 </div>
-
----
-
-## What Makes a Design "Dark"
+**What Makes a Design "Dark"**  
 
 A dark pattern is a user interface designed to lead you toward an action that benefits the company at your expense.
 
@@ -104,9 +114,7 @@ It is not a bug. It is a deliberate choice, A/B tested and optimised. The button
 
 Dark patterns fall into patterns that repeat across the entire industry: consent tricks, subscription traps, artificial urgency, compulsion loops, obfuscation, emotional manipulation. This section covers all of them - what they look like, how they work, and what to do about them.
 
----
-
-## Try It: The Dark Pattern Gauntlet
+## Experience It
 
 Sign up for a fictional service and then try to cancel. Every screen contains a real dark pattern. All 6 will reveal themselves as you go.
 
@@ -130,9 +138,7 @@ Sign up for a fictional service and then try to cancel. Every screen contains a 
   }}
 />
 
----
-
-## What That Just Showed You
+## What the Experience Shows
 
 **1. Dark patterns are invisible until you know what to look for.**
 Each pattern you encountered felt like a normal part of signing up. That is the point. Asymmetric design, pre-ticked boxes, and confirm-shame language only become visible once you have a name for them.
@@ -146,9 +152,7 @@ The countdown timer reset on every page reload. It had no server connection. Not
 **4. These patterns compound.**
 Individually, each trick is a nudge. Together, they form a funnel. By the time you reach the cancel screen, you have been fatigued by 6 separate friction points. That fatigue is also designed.
 
----
-
-## Three Things Worth Doing
+## Take Control: What Can You Do?
 
 **1. Use a separate email for free trials.**
 Create a dedicated email address for trials and sign-ups. This makes it easy to track what you have signed up for and prevents trial-related messages from cluttering your main inbox.
@@ -159,38 +163,6 @@ Subscription creep is real. A 10-minute monthly review of recurring charges ofte
 **3. Name the pattern when you see it.**
 Urgency timers, confirm-shame buttons, buried cancel links - naming them out loud breaks their effect. You cannot be manipulated by a trick you can identify.
 
----
-
-## One Question Before You Continue
-
-<Quiz
-  question="In the gauntlet, the cancellation flow took 7 screens while sign-up took 2 clicks. What does this asymmetry tell you about the company's design intent?"
-  options={[
-    {
-      label: "Cancellation requires more steps because it involves more system processes than sign-up.",
-      correct: false,
-      explanation: "Cancellation is technically simple - it requires toggling a flag in a database. The extra screens are not a technical requirement. They are deliberate friction designed to exhaust users before they reach the final confirmation."
-    },
-    {
-      label: "The asymmetry is deliberate. Easy sign-up maximises conversion; hard cancellation maximises retention. Both are business decisions, not UX failures.",
-      correct: true,
-      explanation: "Correct. Roach motel design - easy to enter, hard to exit - is a documented and studied business strategy. Companies know that most users who encounter enough friction will abandon cancellation. Every extra screen was put there to exploit that tendency."
-    },
-    {
-      label: "The extra steps protect users by ensuring they genuinely want to cancel.",
-      correct: false,
-      explanation: "Protecting users from accidental cancellation would require one confirmation step, not seven screens with retention offers and confirm-shame buttons. The extra steps serve the company's retention metrics, not the user's wellbeing."
-    },
-    {
-      label: "This is a regulatory requirement - companies must present alternatives before allowing cancellation.",
-      correct: false,
-      explanation: "No regulation requires companies to make cancellation difficult or to present multiple retention offers before confirming. In fact, regulators in the UK, EU, and US have increasingly targeted roach motel design as a consumer protection violation."
-    }
-  ]}
-/>
-
----
-
-## Modules in This Section
+### Modules in This Section
 
 <DocCardList />

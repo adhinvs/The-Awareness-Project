@@ -6,15 +6,28 @@ description: "How dynamic pricing, drip pricing, fake discounts, search manipula
 tags: [dark-patterns, e-commerce, dynamic-pricing, drip-pricing, fake-discounts, search-manipulation, counterfeit-products, returns-manipulation, flash-sales, marketplace-deception]
 ---
 
-import Quiz from '@site/src/components/Quiz';
 
 # E-Commerce & Marketplace Deception
 
 The price was "50% off." It had never been sold at the higher price. The discount existed only to make the current price look like a bargain.
 
----
+This topic affects how people use technology, make decisions, or protect themselves. Understanding the mechanisms makes it easier to recognise risks and choose a response.
 
-## The Laptop That Was Always £799
+## Myth Busters
+
+**E-Commerce and Marketplace Deception only affects careless people.**  
+People with different backgrounds can be affected by this risk.
+
+**A familiar or professional appearance proves e-commerce and marketplace deception is safe.**  
+Appearance alone cannot establish trustworthiness.
+
+**There is no practical way to reduce e-commerce and marketplace deception.**  
+Small, independent checks and protective steps can reduce exposure.
+
+**If e-commerce and marketplace deception causes harm, nothing can be done afterward.**  
+Documenting the situation and seeking appropriate support can help.
+
+## The Story
 
 Raj was buying a laptop. He found one showing £799, marked down from £1,599. A 50% saving. "Deal of the Day" badge. Flash sale countdown: 2 hours left.
 
@@ -33,9 +46,9 @@ He was being shown a higher price because he was logged in - and his browsing hi
 
 **The fake reference price inflated the perceived value. The dynamic pricing charged him more because his history suggested he would pay it. Two separate deception mechanisms running simultaneously on the same product page.**
 
----
+## Statistical Evidence
 
-## What Is Actually Happening
+**What Is Actually Happening**  
 
 <div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
   <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>98%</h2>
@@ -89,35 +102,30 @@ He was being shown a higher price because he was logged in - and his browsing hi
     </div>
   </div>
 </div>
+**The E-Commerce Deception Stack**  
 
----
-
-## The E-Commerce Deception Stack
-
-### Dynamic pricing
+**Dynamic pricing**  
 Prices vary based on your location, device, logged-in status, purchase history, and browsing behaviour. The same product can legitimately show different prices to different users at the same moment. The higher-propensity buyer is charged more.
 
-### Drip pricing
+**Drip pricing**  
 The advertised price is the cheapest possible version - before service fees, booking fees, delivery charges, and platform fees are added at checkout. By that point, most buyers complete the purchase rather than abandon the cart.
 
-### Fake reference prices
+**Fake reference prices**  
 The crossed-out price was either never charged, charged only briefly at a non-standard time, or inflated specifically to set an anchor. UK and EU regulations require that a reference price reflect a genuine previous selling price held for a meaningful period.
 
-### Search result manipulation
+**Search result manipulation**  
 Paid sponsored listings appear first. Organic ranking algorithms are not neutral - they reflect which sellers pay for visibility. "Best seller" placement can be purchased or gamed with review volume.
 
-### Counterfeit products
+**Counterfeit products**  
 Third-party marketplace sellers mix authentic and counterfeit products. Commingled inventory (where products from multiple sellers are stored and shipped together in fulfilment centres) makes the origin of a physical product untraceable.
 
-### Returns manipulation
+**Returns manipulation**  
 Complex returns policies, short return windows, buyer-pays-return-shipping terms, and "return to overseas warehouse" requirements are designed to deter returns rather than facilitate them. The policy may be technically legal but practically unusable.
 
-### Flash sale psychology
+**Flash sale psychology**  
 Flash sales combining countdown timers, low-stock claims, and large displayed discounts recreate urgency even when the discount is not real or the product is available indefinitely.
 
----
-
-## Try It: Price Manipulation Detector
+## Experience It
 
 Examine four product listings for signs of dynamic pricing, fake discounts, search manipulation, and returns traps.
 
@@ -141,9 +149,7 @@ Examine four product listings for signs of dynamic pricing, fake discounts, sear
   }}
 />
 
----
-
-## What That Just Showed You
+## What the Experience Shows
 
 **1. Price history reveals fake discounts immediately.**
 A price that was "high" for 3 days and "discounted" for 11 months is not a discounted product. It is a product with a false reference price. Price history tools make this visible in seconds.
@@ -157,9 +163,7 @@ The "Sponsored" label on marketplace search results is frequently in lower contr
 **4. Legitimate products show verifiable characteristics.**
 Consistent price over time, seller account age, explicit returns policy with domestic return address, and no price difference between logged-in and incognito views - these are signals of legitimacy.
 
----
-
-## Three Things Worth Doing
+## Take Control: What Can You Do?
 
 **1. Use a price history extension before any significant purchase.**
 CamelCamelCamel (Amazon), Keepa, or browser extensions like Honey track real price histories. A product that has "always" been on sale was never actually discounted.
@@ -169,33 +173,3 @@ Open the same product page in an incognito or private browsing window, without b
 
 **3. Read the full returns policy before checkout.**
 Look specifically for: return window duration, who pays return shipping, whether the return address is domestic, and whether you need original packaging. A restrictive returns policy is a signal that the seller does not expect buyers to be satisfied.
-
----
-
-## One Question Before You Continue
-
-<Quiz
-  question="Raj found a laptop shown at '50% off' from £1,599 to £799. A price history tool showed it had sold at £799 for 11 months and at £1,599 for only 3 days. He also found it priced at £769 in an incognito window. Which two deception mechanisms were active simultaneously?"
-  options={[
-    {
-      label: "Flash sale psychology and counterfeit product risk.",
-      correct: false,
-      explanation: "Flash sale psychology is a related dark pattern, but the story does not describe countdown timers or flash sale framing for the £1,599 to £799 drop. Counterfeit risk is a separate concern not indicated in the laptop scenario. The two mechanisms clearly active are the false reference price and dynamic pricing."
-    },
-    {
-      label: "Fake reference price (the £1,599 that was barely ever charged) and dynamic pricing (a higher price shown to the logged-in user than to the anonymous visitor).",
-      correct: true,
-      explanation: "Correct. The crossed-out £1,599 is a fake reference price - it was charged briefly at a non-representative time to set an anchor. The £30 price difference between the logged-in (£799) and incognito (£769) views is dynamic pricing - the logged-in user's purchase history indicated higher purchase likelihood and the price was adjusted accordingly."
-    },
-    {
-      label: "Drip pricing and search manipulation.",
-      correct: false,
-      explanation: "Drip pricing involves fees added at checkout, not a false reference price. Search manipulation relates to paid placement in search results. Neither was described in the scenario. The reference price history and the logged-in vs incognito price difference are the two specific mechanisms present."
-    },
-    {
-      label: "This is legal because discounts can be set at the seller's discretion.",
-      correct: false,
-      explanation: "In the UK and EU, a discount reference price must reflect a genuine previous selling price held for a meaningful period. A price held for 3 days that is then used as the reference price for an 11-month 'discount' is specifically addressed in the UK's Consumer Protection from Unfair Trading Regulations and the EU Omnibus Directive (2022). This practice is illegal in these jurisdictions."
-    }
-  ]}
-/>

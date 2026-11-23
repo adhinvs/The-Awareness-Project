@@ -6,11 +6,28 @@ description: "How fake bank calls, OTP requests, and social engineering are used
 tags: [banking-scam, account-takeover, otp-fraud, upi-fraud, credit-card-fraud, social-engineering, payment-fraud, india-cyber-fraud]
 ---
 
-import Quiz from '@site/src/components/Quiz';
 
 # Banking, Payment & Account Takeover Scams
 
-Your bank calls you. There is an unauthorised transaction on your account. They need to verify your identity. **They are the unauthorised transaction.**
+Your bank calls you. There is an unauthorised transaction on your account. They need to verify your identity. They are the unauthorised transaction.
+
+Banking, Payment & Account Takeover Scams uses deception to obtain money, personal information, or access. Independent verification can interrupt the manipulation.
+
+## Myth Busters
+
+**A bank caller needs your OTP to stop a transfer.**  
+Reality: Verify the claim independently before acting.
+
+**The appearance of legitimacy can be faked.**  
+Reality: Verify the claim independently before acting.
+
+**Pause and use a separate trusted channel.**  
+Reality: Verify the claim independently before acting.
+
+**Reporting can help protect others.**  
+Reality: Verify the claim independently before acting.
+
+## The Story
 
 <figure style={{ margin: '32px 0', textAlign: 'center' }}>
   <img
@@ -18,8 +35,6 @@ Your bank calls you. There is an unauthorised transaction on your account. They 
     alt="How fake bank calls, OTP requests, and social engineering are used to drain accounts and take over financial identity."
   />
 </figure>
-
-## The Call That Came First
 
 Anjali received a call at 11am on a Tuesday. The caller said he was from the fraud prevention team at her bank. He read out her account number - the last four digits - and said a suspicious transaction of Rs. 47,000 had been attempted from Bengaluru.
 
@@ -33,7 +48,9 @@ Twenty seconds later, she received a notification: Rs. 47,000 had left her accou
 
 The fraudulent transaction she had been told about was not in Bengaluru. It was the one that just happened. The OTP she shared was used to authorise a transfer, not block one.
 
-## What Is Actually Happening
+## Statistical Evidence
+
+**What Is Actually Happening**  
 
 **OTPs exist to prevent third-party access. Any caller asking you to read one aloud is attempting to use that OTP to access your account.** There is no other reason a bank representative would need it from you.
 
@@ -61,32 +78,31 @@ The scammer's account detail knowledge comes from data breaches, phishing data, 
     </div>
   </div>
 </div>
+**The Main Attack Patterns**  
 
-## The Main Attack Patterns
-
-### Fake bank calls about unauthorised transactions
+**Fake bank calls about unauthorised transactions**  
 
 The script is consistent: an alarming transaction has occurred, verification is urgently needed, an OTP or card detail is required to block it. The emotional design - alarm, urgency, the appearance of help - bypasses the verification instinct.
 
 **Rule: Real banks never ask for OTPs over an inbound call. Never.**
 
-### Account verification and password reset manipulation
+**Account verification and password reset manipulation**  
 
 Attackers call claiming accounts need re-KYC, upgrade, or security review. They walk victims through "verification steps" that are actually credential surrender steps. Alternatively, they trigger a genuine password reset and then call to "help" the victim complete it - which means capturing the reset OTP.
 
-### UPI "Request Money" scams
+**UPI "Request Money" scams**  
 
 Sellers on OLX or classifieds receive a UPI payment request - framed as "I'm sending you the money, please accept." Accepting a request in UPI authorises a payment from your account to theirs. Victims pay when they believed they were receiving.
 
-### Credit card cloning and payment confirmation scams
+**Credit card cloning and payment confirmation scams**  
 
 Card-skimming devices on ATMs and POS terminals capture card data. Some scams use "confirmation" calls for a large transaction - the victim cancels it but in doing so shares card details that are then used for a different transaction.
 
-### Account takeover through social engineering
+**Account takeover through social engineering**  
 
 Full account takeover typically combines multiple steps: SIM swap or OTP capture for two-factor bypass, password reset via captured email access, and then linked account draining. The entire chain often runs in under two hours.
 
-## Test the Bank Call
+## Experience It
 
 <iframe
   id="banking-iframe"
@@ -108,7 +124,22 @@ Full account takeover typically combines multiple steps: SIM swap or OTP capture
   }}
 />
 
-## Verifying Caller Legitimacy
+## What the Experience Shows
+
+**Recognise the pressure**  
+Fear, urgency, hope, or obligation can make unusual requests feel reasonable.
+
+**Verify independently**  
+Use a trusted channel you find yourself before acting.
+
+## Take Control: What Can You Do?
+
+:::danger[Never share an OTP with an inbound caller]
+
+End the call, open your bank app independently, and call the official number if you need to verify an alert.
+
+:::
+
 
 Three steps that take under two minutes and stop every bank impersonation call:
 
@@ -118,7 +149,7 @@ Three steps that take under two minutes and stop every bank impersonation call:
 
 3. **Check the app independently.** Before acting on any caller's instruction, open your banking app directly (not through a link) and check your actual transaction history. Legitimate alerts appear there.
 
-## Immediate Reporting Steps
+
 
 Every hour of delay reduces recovery options.
 
@@ -126,31 +157,3 @@ Every hour of delay reduces recovery options.
 - **File with cybercrime.gov.in** or call **1930**. Include the attacker's account number if known.
 - **File a complaint with the RBI's Banking Ombudsman** if the bank does not respond adequately.
 - **Block your card** through the bank app immediately after any suspected compromise.
-
-## Knowledge Check
-
-<Quiz
-  question="You receive a call from someone claiming to be from your bank's fraud team. They read out the last four digits of your account number and say an unauthorised transaction is in progress. They need you to share the OTP sent to your phone to block it. What do you do?"
-  options={[
-    {
-      label: "Share the OTP. The caller knows your account details, so they must be real.",
-      correct: false,
-      explanation: "Account details are available through data breaches. Knowing your last four digits proves nothing. OTPs are designed to authorise transactions, not block them. Sharing it gives the caller authorisation to move your money."
-    },
-    {
-      label: "Hang up, open your banking app independently, and call your bank back on their official number.",
-      correct: true,
-      explanation: "Correct. Ending the call and verifying through independent channels costs two minutes and stops the scam entirely. If a genuine fraud alert exists, the bank's official team will see it when you call back."
-    },
-    {
-      label: "Ask the caller for their employee ID before deciding.",
-      correct: false,
-      explanation: "Employee IDs can be fabricated. The issue is not the caller's claimed identity - it is the request itself. No bank employee ever needs your OTP over an inbound call."
-    },
-    {
-      label: "Share only part of the OTP to verify the caller's intentions.",
-      correct: false,
-      explanation: "Partial OTPs do not protect you. The full OTP is required to authorise a transaction. Sharing any part of it while an attacker is guiding you is still dangerous. End the call."
-    }
-  ]}
-/>

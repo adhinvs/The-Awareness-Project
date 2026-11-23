@@ -6,15 +6,28 @@ description: "How infinite scroll, autoplay, and the removal of time cues are de
 tags: [dark-patterns, infinite-scroll, autoplay, attention-economy, time-on-platform, stopping-points, digital-wellbeing, social-media-design]
 ---
 
-import Quiz from '@site/src/components/Quiz';
 
 # Infinite Scroll, Autoplay & Stopping Points
 
 Every book has a last page. Every TV episode ends. These are natural stopping points. The feed was specifically designed to have none.
 
----
+This topic affects how people use technology, make decisions, or protect themselves. Understanding the mechanisms makes it easier to recognise risks and choose a response.
 
-## The Hour She Did Not Choose to Spend
+## Myth Busters
+
+**Infinite Scroll, Autoplay and Stopping Points only affects careless people.**  
+People with different backgrounds can be affected by this risk.
+
+**A familiar or professional appearance proves infinite scroll, autoplay and stopping points is safe.**  
+Appearance alone cannot establish trustworthiness.
+
+**There is no practical way to reduce infinite scroll, autoplay and stopping points.**  
+Small, independent checks and protective steps can reduce exposure.
+
+**If infinite scroll, autoplay and stopping points causes harm, nothing can be done afterward.**  
+Documenting the situation and seeking appropriate support can help.
+
+## The Story
 
 Leila opened Instagram to check one message. She checked it.
 
@@ -33,9 +46,9 @@ She had not decided to spend 53 minutes on Instagram. There was no point at whic
 
 **She had been kept in the feed - not because she wanted to stay, but because leaving required an active decision the interface made as hard as possible.**
 
----
+## Statistical Evidence
 
-## What Is Actually Happening
+**What Is Actually Happening**  
 
 <div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
   <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>300ft</h2>
@@ -89,10 +102,7 @@ She had not decided to spend 53 minutes on Instagram. There was no point at whic
     </div>
   </div>
 </div>
-
----
-
-## What Was Removed from the Interface
+**What Was Removed from the Interface**  
 
 Natural stopping points exist in almost every other medium. A magazine runs out of pages. A TV episode ends. A newspaper has a back page. These endings give your brain a cue to stop and decide whether to continue.
 
@@ -108,9 +118,7 @@ Social media apps deliberately removed these cues:
 
 Each of these is a feature, not a bug. Each was A/B tested. Each survived because it increased time on platform.
 
----
-
-## Try It: Find the Exit
+## Experience It
 
 You opened the app to check one thing. The timer starts now. Find the exit when you are ready.
 
@@ -134,9 +142,7 @@ You opened the app to check one thing. The timer starts now. Find the exit when 
   }}
 />
 
----
-
-## What That Just Showed You
+## What the Experience Shows
 
 **1. The exit was not visible immediately.**
 It appeared after 20 seconds - long enough for the feed to begin doing its work. In a real app, you would have continued scrolling while looking for it.
@@ -150,9 +156,7 @@ The feed never ended. Every time you neared the last visible post, more were add
 **4. The back button was missing.**
 This is a real pattern in mobile apps. Suppressing the native back gesture keeps you inside the app's navigation stack - where every "back" action leads to another screen rather than out.
 
----
-
-## Three Things Worth Doing
+## Take Control: What Can You Do?
 
 **1. Enable app time limits.**
 Both iOS Screen Time and Android Digital Wellbeing allow per-app time limits with a hard lock. Setting a 20-minute daily limit on feed apps does not require willpower - it removes the decision entirely.
@@ -162,33 +166,3 @@ YouTube, Netflix, and most video platforms have autoplay settings. Turning autop
 
 **3. Use the platform's "caught up" feature if it exists.**
 Some platforms now offer "you're all caught up" markers. Treating this as a stopping point - rather than scrolling past it into older content - restores the natural ending that was deliberately removed.
-
----
-
-## One Question Before You Continue
-
-<Quiz
-  question="Leila spent 53 minutes on Instagram when she only intended to check one message. Which design feature most directly prevented her from stopping at a natural point?"
-  options={[
-    {
-      label: "She had poor self-control and should have set a timer before opening the app.",
-      correct: false,
-      explanation: "Self-control framing places the responsibility on the user for a designed outcome. Infinite scroll was specifically built to eliminate the natural stopping points that other media provide. Expecting users to manufacture their own stopping points for a medium that removed them is a design problem, not a character flaw."
-    },
-    {
-      label: "Infinite scroll and autoplay removed natural stopping points - every stopping moment required an active decision that the interface made unintuitive.",
-      correct: true,
-      explanation: "Correct. Natural stopping points - the end of a page, the end of an episode, the back of a magazine - give the brain a cue to decide whether to continue. Infinite scroll eliminates the cue. Every exit requires active decision-making against a flow designed to eliminate those moments. The 53 minutes was the designed outcome."
-    },
-    {
-      label: "The content was too interesting to stop - this is a content quality issue, not a design issue.",
-      correct: false,
-      explanation: "Content quality does not explain the pattern. The same type of content in a medium with natural stopping points - a magazine, a TV schedule - produces significantly less unintended consumption. The design, not the content, is what removed the stopping point."
-    },
-    {
-      label: "She should have closed the app after checking her message.",
-      correct: false,
-      explanation: "This is technically true but misses the point. The interface was designed so that the transition from the message to the feed was seamless and immediate - with new content already loaded and visible before she consciously decided to look at it. 'Just close the app' requires overriding a designed flow, not following one."
-    }
-  ]}
-/>

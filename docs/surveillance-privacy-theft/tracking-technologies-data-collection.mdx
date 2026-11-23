@@ -6,15 +6,28 @@ description: "How cookies, pixels, fingerprinting scripts, and location data har
 tags: [tracking, cookies, fingerprinting, location-tracking, metadata, surveillance, third-party-trackers, geofencing]
 ---
 
-import Quiz from '@site/src/components/Quiz';
 
 # Tracking Technologies & Data Collection
 
 You loaded a page. You did not click anything. Seventeen organisations already know you were there.
 
----
+This topic affects how people use technology, make decisions, or protect themselves. Understanding the mechanisms makes it easier to recognise risks and choose a response.
 
-## The Page That Watched Back
+## Myth Busters
+
+**Tracking Technologies and Data Collection only affects careless people.**  
+People with different backgrounds can be affected by this risk.
+
+**A familiar or professional appearance proves tracking technologies and data collection is safe.**  
+Appearance alone cannot establish trustworthiness.
+
+**There is no practical way to reduce tracking technologies and data collection.**  
+Small, independent checks and protective steps can reduce exposure.
+
+**If tracking technologies and data collection causes harm, nothing can be done afterward.**  
+Documenting the situation and seeking appropriate support can help.
+
+## The Story
 
 Marcus opened a news article. He did not log in. He did not click an ad. He read for 4 minutes and closed the tab.
 
@@ -29,9 +42,9 @@ In those 4 minutes: Google recorded his visit. Meta received his IP address via 
 
 Marcus thought he was reading the news. **He was also generating a commodity.**
 
----
+## Statistical Evidence
 
-## What Is Actually Happening
+**What Is Actually Happening**  
 
 <div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
   <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>74</h2>
@@ -85,32 +98,27 @@ Marcus thought he was reading the news. **He was also generating a commodity.**
     </div>
   </div>
 </div>
+**The Tracking Methods, Named**  
 
----
-
-## The Tracking Methods, Named
-
-### First-party cookies
+**First-party cookies**  
 Set by the site you visit. Used for login sessions and preferences. Broadly considered legitimate.
 
-### Third-party cookies
+**Third-party cookies**  
 Set by other companies embedded in the site (ad networks, analytics). They follow you across sites. Third-party cookies are being phased out in most browsers - but fingerprinting fills the gap.
 
-### Tracking pixels
+**Tracking pixels**  
 Tiny 1x1 invisible images loaded from an ad server. When your browser loads the image, the server logs your IP, device, and time. Used in emails to record when you open them.
 
-### Browser fingerprinting
+**Browser fingerprinting**  
 Your browser configuration (fonts, screen size, GPU model, time zone, installed plugins) creates a near-unique signature. No cookie needed. Survives clearing browsing history and private mode.
 
-### Location tracking and geofencing
+**Location tracking and geofencing**  
 Apps request your GPS coordinates. Geofencing triggers actions when you enter a defined area (a competitor's store, a place of worship, a medical clinic). Location data is one of the most sold data types.
 
-### Cross-device tracking
+**Cross-device tracking**  
 Ad networks link your phone, laptop, and TV by matching IP addresses, login states, and behavioural patterns. They build a single profile across all your devices.
 
----
-
-## Try It: Tracker Exposure Scanner
+## Experience It
 
 Scan a mock news page to see every tracking technology active on a single visit.
 
@@ -134,9 +142,7 @@ Scan a mock news page to see every tracking technology active on a single visit.
   }}
 />
 
----
-
-## What That Just Showed You
+## What the Experience Shows
 
 **1. Trackers load before you do anything.**
 The scripts that report your visit activate on page load, not on interaction. You do not need to click an ad to be tracked by it.
@@ -147,9 +153,14 @@ Private browsing prevents your history from being saved locally. It does not pre
 **3. You are tracked by companies whose names you do not recognise.**
 Most of the organisations that received your data from a single page visit are not the site you visited. They are ad networks, data brokers, and analytics platforms you have no direct relationship with.
 
----
+## Take Control: What Can You Do?
 
-## Three Things Worth Doing
+:::info[One setting rarely stops all tracking]
+
+Cookies, app permissions, account history, and device identifiers are separate mechanisms. Review each source of collection individually.
+
+:::
+
 
 **1. Install uBlock Origin.**
 The most effective free tracker blocker. Blocks third-party scripts, pixels, and most fingerprinting attempts. Available for all major browsers.
@@ -159,33 +170,3 @@ Settings > Apps > Permissions > Location. Set every app to "Only while using" un
 
 **3. Use Firefox or Brave as your default browser.**
 Both block third-party tracking by default. Firefox includes enhanced tracking protection. Brave blocks ads and fingerprinting natively.
-
----
-
-## One Question Before You Continue
-
-<Quiz
-  question="You browse in private/incognito mode. A news site you visit has a canvas fingerprinting script. Are you tracked?"
-  options={[
-    {
-      label: "No - private mode prevents all tracking because your session data is not saved.",
-      correct: false,
-      explanation: "Private mode prevents your browser from saving history, cookies, and session data locally. It does not prevent external servers from receiving your visit. Fingerprinting scripts execute in private mode and send their results to external servers the same way they do in regular browsing."
-    },
-    {
-      label: "Yes - canvas fingerprinting reads your device hardware characteristics, which are the same in private mode as in regular browsing.",
-      correct: true,
-      explanation: "Correct. Canvas fingerprinting uses your GPU and browser settings to generate a unique signature - characteristics that do not change between sessions or modes. Private mode does not mask these values. The script runs, generates your fingerprint, and reports it to the fingerprinting server regardless of your browser mode."
-    },
-    {
-      label: "Partially - the site can fingerprint you, but it cannot link this visit to your previous visits.",
-      correct: false,
-      explanation: "If the fingerprinting service has seen your device before - even in a previous regular session - it can recognise the same fingerprint and link the visits. The fingerprint is consistent across sessions. That is the entire point of fingerprinting as a tracking mechanism."
-    },
-    {
-      label: "Only if you have JavaScript enabled - disabling it prevents fingerprinting.",
-      correct: false,
-      explanation: "Disabling JavaScript does prevent some fingerprinting methods, but it breaks most of the modern web. More importantly, server-side fingerprinting using HTTP headers (user-agent, accept-language, connection type) does not require JavaScript at all. No single setting eliminates fingerprinting entirely."
-    }
-  ]}
-/>

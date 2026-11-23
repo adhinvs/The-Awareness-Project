@@ -6,15 +6,28 @@ description: "The data pipeline behind every targeted ad you see - from browsing
 tags: [advertising-targeting, data-brokers, retargeting, lookalike-audiences, ad-profile, behavioural-data, privacy]
 ---
 
-import Quiz from '@site/src/components/Quiz';
 
 # How Advertising Targeting Really Works
 
 Every targeted ad you see is the output of a data pipeline that started long before the ad was made. Understanding it changes how you move online.
 
----
+This topic affects how people use technology, make decisions, or protect themselves. Understanding the mechanisms makes it easier to recognise risks and choose a response.
 
-## The Bid That Happened While You Blinked
+## Myth Busters
+
+**How Advertising Targeting Really Works only affects careless people.**  
+People with different backgrounds can be affected by this risk.
+
+**A familiar or professional appearance proves how advertising targeting really works is safe.**  
+Appearance alone cannot establish trustworthiness.
+
+**There is no practical way to reduce how advertising targeting really works.**  
+Small, independent checks and protective steps can reduce exposure.
+
+**If how advertising targeting really works causes harm, nothing can be done afterward.**  
+Documenting the situation and seeking appropriate support can help.
+
+## The Story
 
 Arjun visited a travel site. He searched for flights to Bangkok, browsed two hotels, and closed the tab.
 
@@ -35,9 +48,9 @@ He saw the ad before the page had finished loading.
 
 For the next two weeks, Bangkok hotels followed him across every app he opened.
 
----
+## Statistical Evidence
 
-## What Is Actually Happening
+**What Is Actually Happening**  
 
 <div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
   <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>200ms</h2>
@@ -91,30 +104,35 @@ For the next two weeks, Bangkok hotels followed him across every app he opened.
     </div>
   </div>
 </div>
+**The Pipeline in Four Steps**  
 
----
-
-## The Pipeline in Four Steps
-
-### Step 1: Collection
+**Step 1: Collection**  
 
 Every click, scroll, pause, and purchase generates a signal. Tracking pixels, cookies, app SDKs, and loyalty cards capture behaviour across thousands of sites and services. You do not need to be logged in - device fingerprinting identifies you anyway.
 
-### Step 2: Profile Construction
+**Step 2: Profile Construction**  
 
 Data brokers aggregate signals from hundreds of sources into a single profile. They assign segment labels: "new parent," "financially distressed," "health-anxious," "politically right-leaning." These segments are for sale.
 
-### Step 3: Auction
+**Step 3: Auction**  
 
 When you visit any ad-supported page, your profile enters a real-time bidding auction. Dozens of advertisers bid within milliseconds for the right to show you one ad. The auction completes before the page finishes loading.
 
-### Step 4: The Ad
+**Step 4: The Ad**  
 
 The winning ad appears. It looks like a relevant recommendation. It is the output of a multi-layer commercial system built around your behaviour.
+**How to See Your Own Profile**  
 
----
+You can view partial versions of your ad profile directly:
 
-## Build Your Ad Profile
+- **Google:** [myaccount.google.com/data-and-privacy](https://myaccount.google.com/data-and-privacy) - Ad Center shows your interest categories
+- **Meta:** Settings > Ads > Ad Preferences - shows your interest segments
+- **TikTok:** Settings > Privacy > Ads Preferences
+- **Apple:** Settings > Privacy & Security > Apple Advertising
+
+You cannot see what data brokers hold. You can request deletion from some via opt-out directories, but it is not comprehensive.
+
+## Experience It
 
 Answer 10 quick questions about your recent online behaviour to see the inferred profile that gets bought and sold on your behalf.
 
@@ -138,9 +156,7 @@ Answer 10 quick questions about your recent online behaviour to see the inferred
   }}
 />
 
----
-
-## What That Just Showed You
+## What the Experience Shows
 
 **Your browsing behaviour is the input. Your inferred identity is the product.**
 
@@ -148,22 +164,7 @@ A few clicks is enough to assign you to segments covering income, health, politi
 
 **The same data profile is used for commercial ads, political messaging, and insurance pricing.** What segment you fall into affects not just what you see, but what you pay and what opportunities are offered to you.
 
----
-
-## How to See Your Own Profile
-
-You can view partial versions of your ad profile directly:
-
-- **Google:** [myaccount.google.com/data-and-privacy](https://myaccount.google.com/data-and-privacy) - Ad Center shows your interest categories
-- **Meta:** Settings > Ads > Ad Preferences - shows your interest segments
-- **TikTok:** Settings > Privacy > Ads Preferences
-- **Apple:** Settings > Privacy & Security > Apple Advertising
-
-You cannot see what data brokers hold. You can request deletion from some via opt-out directories, but it is not comprehensive.
-
----
-
-## Three Things Worth Doing
+## Take Control: What Can You Do?
 
 **1. Use a browser with tracking protection.**
 Firefox with uBlock Origin or Brave blocks most third-party tracking pixels. This reduces the signals entering your profile without requiring you to change your behaviour.
@@ -173,33 +174,3 @@ Reviewing what Google and Meta believe about you takes under five minutes and of
 
 **3. Use incognito mode for sensitive searches.**
 Health symptoms, financial problems, relationship issues - searching these while logged into a platform links the search to your identity profile. Incognito plus a private DNS reduces this.
-
----
-
-## One Question Before You Continue
-
-<Quiz
-  question="A data broker labels you as 'financially distressed' based on browsing patterns. You never told any platform this. What is the most significant risk of this inference?"
-  options={[
-    {
-      label: "You will see more ads for discount products.",
-      correct: false,
-      explanation: "Discount ads are the minor consequence. The more significant issue is that the 'financially distressed' label can be purchased by payday lenders, high-interest credit providers, and predatory financial services that specifically target vulnerable users."
-    },
-    {
-      label: "Predatory financial services can buy the label and specifically target you with high-risk offers during a vulnerable period.",
-      correct: true,
-      explanation: "Correct. Data broker segments are sold without context or ethics review to any buyer with a credit card. A 'financially distressed' label is commercially attractive to exactly the advertisers whose products cause the most harm to people in that situation."
-    },
-    {
-      label: "The inference is probably wrong and has no real effect.",
-      correct: false,
-      explanation: "Behavioural inference from browsing data is accurate enough to be commercially viable - which is why the data broker industry generates over $200 billion annually. Wrong inferences exist, but the 'financially distressed' label is typically based on multiple converging signals."
-    },
-    {
-      label: "It will be automatically deleted after 30 days under privacy law.",
-      correct: false,
-      explanation: "Data broker retention and deletion obligations vary by jurisdiction and are largely self-regulated. In most countries there is no automatic 30-day deletion. Many brokers hold data for years."
-    }
-  ]}
-/>

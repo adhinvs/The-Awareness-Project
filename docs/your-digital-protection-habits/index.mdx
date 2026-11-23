@@ -6,11 +6,28 @@ tags: [digital-safety, cybersecurity-habits, device-security, password-manager, 
 ---
 
 import DocCardList from '@theme/DocCardList';
-import Quiz from '@site/src/components/Quiz';
 
 # Your Digital Protection Habits
 
-*Most attacks succeed not because someone is clever, but because a basic habit was missing. This section covers the six areas where small, consistent actions make the biggest difference.*
+Your Digital Protection Habits introduces the risks, patterns, and safeguards in this domain.
+
+This topic affects how people use technology, make decisions, or protect themselves. Understanding the mechanisms makes it easier to recognise risks and choose a response.
+
+## Myth Busters
+
+**Your Digital Protection Habits only affects careless people.**  
+People with different backgrounds can be affected by this risk.
+
+**A familiar or professional appearance proves your digital protection habits is safe.**  
+Appearance alone cannot establish trustworthiness.
+
+**There is no practical way to reduce your digital protection habits.**  
+Small, independent checks and protective steps can reduce exposure.
+
+**If your digital protection habits causes harm, nothing can be done afterward.**  
+Documenting the situation and seeking appropriate support can help.
+
+## The Story
 
 <figure style={{ margin: '32px 0', textAlign: 'center' }}>
   <img
@@ -18,10 +35,6 @@ import Quiz from '@site/src/components/Quiz';
     alt="Six practical habit areas that make you significantly harder to target - devices, accounts, apps, networks, data settings, and daily behaviour."
   />
 </figure>
-
----
-
-## The Breach That Took Three Minutes
 
 Maya was a project manager with 11 years of digital experience.
 
@@ -37,9 +50,9 @@ Her session token was captured. By the time she boarded, someone had used that t
 
 The breach cost her company a client and three weeks of recovery. The attacker was never identified.
 
----
+## Statistical Evidence
 
-## What Is Actually Happening: The Habit Gap
+**What Is Actually Happening: The Habit Gap**  
 
 These six modules are not about technical knowledge. They are about the gap between knowing and doing.
 
@@ -119,9 +132,7 @@ These six modules are not about technical knowledge. They are about the gap betw
   </div>
 </div>
 
----
-
-## Where Do You Actually Stand?
+## Experience It
 
 This 15-point audit covers all six habit domains: devices, accounts, apps, network, data settings, and daily behaviour. Three questions each. Binary answers only.
 
@@ -149,72 +160,36 @@ The output is not a lecture. It gives you one high-impact action per domain - si
 
 *Your score is a starting point, not a verdict. Each domain can be addressed with a single focused action.*
 
----
-
-## What the Scorecard Shows You
+## What the Experience Shows
 
 Protection is not achieved by doing everything perfectly once. It is maintained by doing a small number of things consistently.
 
-### The six domains are interdependent.
+**The six domains are interdependent.**  
 
 A strong password means nothing if the device it is stored on has no screen lock. Reviewing privacy settings once means nothing if you grant every app permission without checking. The six domains in this section reinforce each other.
 
-### Defaults are set against you.
+**Defaults are set against you.**  
 
 Every platform and operating system ships with settings that maximise data sharing and minimise friction. The default is rarely the secure option. Reviewing settings is not paranoia - it is correcting what was set without your input.
 
-### Habits beat knowledge.
+**Habits beat knowledge.**  
 
 You can know every threat in this curriculum and still be compromised because knowing is not the same as doing. The three-minute habit of pausing before clicking, the four-minute habit of reviewing privacy settings, and the five-minute habit of a device health check are worth more than hours of reading about attacks.
 
----
+## Take Control: What Can You Do?
 
-## Three Things Worth Doing
-
-### 1. Fix one gap per domain this week.
+**1. Fix one gap per domain this week.**  
 
 You do not need to address everything at once. Pick the lowest-effort action from your scorecard results and complete it today. One per domain over six weeks is more sustainable than trying to do everything on a single afternoon.
 
-### 2. Set a calendar reminder for 6 months from now.
+**2. Set a calendar reminder for 6 months from now.**  
 
 Privacy settings change when platforms update their terms. App permissions reset after operating system upgrades. The threat landscape shifts. A 6-month review cycle catches what has drifted.
 
-### 3. Teach one habit to someone in your household.
+**3. Teach one habit to someone in your household.**  
 
 The weakest device on your home network is the entry point for every device on it. Sharing one habit - screen lock, auto-updates, or checking before clicking - with a family member protects your network as much as it protects them.
 
----
-
-## One Question Before You Continue
-
-<Quiz
-  question="Maya had good security habits but was still compromised. What was the single gap that made the breach possible?"
-  options={[
-    {
-      label: "She used a weak password for her work system.",
-      correct: false,
-      explanation: "No password was involved. The attack captured a session token over the network, bypassing her password entirely."
-    },
-    {
-      label: "She connected to an untrusted public Wi-Fi network while accessing a work system.",
-      correct: true,
-      explanation: "Correct. The rogue hotspot intercepted her active session token - a credential that bypasses password checks entirely. No amount of password strength helps when the session itself is captured over an insecure network."
-    },
-    {
-      label: "She did not have two-factor authentication enabled.",
-      correct: false,
-      explanation: "2FA protects login attempts. It does not protect against session token theft, which bypasses the login step entirely."
-    },
-    {
-      label: "She failed to update her software before the trip.",
-      correct: false,
-      explanation: "Updates patch vulnerabilities in software, not network interception. The attack was network-based, not a software exploit."
-    }
-  ]}
-/>
-
----
-
-## Modules in This Section
+### Modules in This Section
 
 <DocCardList />

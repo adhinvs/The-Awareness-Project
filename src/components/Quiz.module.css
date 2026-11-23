@@ -77,6 +77,12 @@
   border-color: var(--ifm-color-primary);
 }
 
+.option:focus-visible,
+.tryAgain:focus-visible {
+  outline: 3px solid var(--ifm-color-primary-lighter);
+  outline-offset: 3px;
+}
+
 .option:disabled {
   cursor: default;
 }

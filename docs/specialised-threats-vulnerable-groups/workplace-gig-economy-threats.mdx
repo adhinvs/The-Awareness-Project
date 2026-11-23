@@ -6,11 +6,28 @@ description: "Business Email Compromise, vendor invoice fraud, gig worker accoun
 tags: [bec, business-email-compromise, invoice-fraud, ceo-fraud, gig-economy, content-creator, remote-work, vendor-scams, workplace-security]
 ---
 
-import Quiz from '@site/src/components/Quiz';
 
 # Workplace & Gig Economy Threats
 
 *Workplace fraud does not require breaking into systems. It requires one person to believe an email is legitimate and act on it before verifying.*
+
+This topic affects how people use technology, make decisions, or protect themselves. Understanding the mechanisms makes it easier to recognise risks and choose a response.
+
+## Myth Busters
+
+**Workplace and Gig Economy Threats only affects careless people.**  
+People with different backgrounds can be affected by this risk.
+
+**A familiar or professional appearance proves workplace and gig economy threats is safe.**  
+Appearance alone cannot establish trustworthiness.
+
+**There is no practical way to reduce workplace and gig economy threats.**  
+Small, independent checks and protective steps can reduce exposure.
+
+**If workplace and gig economy threats causes harm, nothing can be done afterward.**  
+Documenting the situation and seeking appropriate support can help.
+
+## The Story
 
 <figure style={{ margin: '32px 0', textAlign: 'center' }}>
   <img
@@ -18,10 +35,6 @@ import Quiz from '@site/src/components/Quiz';
     alt="Business Email Compromise, vendor invoice fraud, gig worker account takeover, and remote work vulnerabilities."
   />
 </figure>
-
----
-
-## The Invoice That Wasn't
 
 The finance team at a mid-size logistics company processed supplier payments every Friday. One Wednesday, an email arrived from a long-standing vendor. Bank details had changed. Please update before the next payment run.
 
@@ -33,9 +46,9 @@ The finance coordinator processed the update. The Friday payment of £87,000 wen
 
 The vendor called on Monday. By then, the money had moved through three accounts and was largely unrecoverable.
 
----
+## Statistical Evidence
 
-## What Is Actually Happening
+**What Is Actually Happening**  
 
 <div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
   <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>$2.77B</h2>
@@ -66,34 +79,29 @@ The vendor called on Monday. By then, the money had moved through three accounts
     </div>
   </div>
 </div>
+**Five Workplace Threat Vectors**  
 
----
-
-## Five Workplace Threat Vectors
-
-### Business Email Compromise and CEO Fraud
+**Business Email Compromise and CEO Fraud**  
 
 BEC attacks impersonate executives or trusted contacts to redirect payments or request credential resets. The attacker researches the target organisation via LinkedIn, company websites, and previous invoices before sending a message calibrated to look completely routine. **The one verification step that defeats every BEC attack: call the person on a number already saved in your contacts, not any number in the email.**
 
-### Vendor Payment Scams and Invoice Fraud
+**Vendor Payment Scams and Invoice Fraud**  
 
 The vendor bank detail change is the most common BEC variant. A lookalike domain sends a plausible request at a plausible moment (typically just before a scheduled payment run). Domain lookalikes are registered weeks in advance. The writing style is copied from previous legitimate correspondence.
 
-### Gig Worker Account Takeover
+**Gig Worker Account Takeover**  
 
 Gig platform accounts are targeted because they represent immediate, liquid income. Attackers use phishing, credential stuffing, and SIM swap attacks. Once inside, they redirect payment destinations and, in some cases, run fraudulent transactions that get the legitimate worker banned from the platform.
 
-### Content Creator Impersonation and Hijacking
+**Content Creator Impersonation and Hijacking**  
 
 Verified social media accounts and YouTube channels with large audiences sell for significant sums. Creators are targeted with phishing disguised as brand partnerships, sponsorship offers, and platform notifications. **Once an account is taken over, revenue, identity, and years of work disappear simultaneously.**
 
-### Remote Worker and Home Office Vulnerabilities
+**Remote Worker and Home Office Vulnerabilities**  
 
 Home routers are less frequently patched than corporate networks. Video call backgrounds accidentally reveal home addresses. Personal and work devices sharing a network create cross-contamination risk. Remote workers are also targeted by fake IT support requests that would be immediately identified as suspicious in an office environment.
 
----
-
-## Try It: The Vendor Invoice
+## Experience It
 
 You are a finance team member. A familiar supplier has emailed about updated bank details. What do you do?
 
@@ -117,9 +125,7 @@ You are a finance team member. A familiar supplier has emailed about updated ban
   }}
 />
 
----
-
-## What That Just Showed You
+## What the Experience Shows
 
 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', margin: '24px 0' }}>
   <div className="glass-panel" style={{ padding: '20px 24px', borderRadius: '14px', borderLeft: '4px solid var(--ifm-color-primary)', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
@@ -145,9 +151,14 @@ You are a finance team member. A familiar supplier has emailed about updated ban
   </div>
 </div>
 
----
+## Take Control: What Can You Do?
 
-## Three Things Worth Doing
+:::caution[Verify the work and payment terms]
+
+Before sharing identity documents or paying a fee, confirm the employer, platform, contract, and payment arrangement through an independent channel.
+
+:::
+
 
 **1. Call to confirm any bank detail change, on a number you already have.**
 No email, however legitimate it looks, is sufficient authorisation for a payment destination change. One call to the vendor on a number already in your records catches this attack every time.
@@ -157,33 +168,3 @@ Account hijacking is significantly harder with a hardware key or authenticator a
 
 **3. Implement a payment change verification policy.**
 For businesses: require dual authorisation for any payment destination change, with at least one confirmation via a pre-existing contact channel. This is the organisational version of the "call to verify" rule.
-
----
-
-## One Question Before You Continue
-
-<Quiz
-  question="The BEC email the finance coordinator received came from a lookalike domain, .net instead of .com. Why did this still succeed, and what would have caught it?"
-  options={[
-    {
-      label: "It succeeded because the coordinator was not paying attention. More careful reading would have caught the domain.",
-      correct: false,
-      explanation: "Lookalike domains are registered specifically to pass quick visual checks. The human brain processes familiar names as matches before reading character by character. This is not carelessness, it is a known cognitive limitation that the attack is designed to exploit."
-    },
-    {
-      label: "It succeeded because email looks legitimate at a glance. A call to the vendor on a pre-existing number would have caught it before any action was taken.",
-      correct: true,
-      explanation: "Correct. The attack succeeded because visual plausibility is high and verification through a separate channel did not happen. One call to the vendor using a number already saved in the system would have confirmed within 60 seconds that no bank detail change had been requested."
-    },
-    {
-      label: "It succeeded because the company's email filter should have blocked the lookalike domain.",
-      correct: false,
-      explanation: "Email filters are not reliable at catching lookalike domains, especially freshly registered ones with no prior malicious activity. Relying solely on technical controls to catch BEC attacks is insufficient, human verification is the definitive defence."
-    },
-    {
-      label: "It would have been caught if the company used two-factor authentication on email.",
-      correct: false,
-      explanation: "2FA protects your own account from being taken over. It does nothing to prevent an external attacker from sending a convincing email from a lookalike domain. BEC attacks do not require compromising your account."
-    }
-  ]}
-/>

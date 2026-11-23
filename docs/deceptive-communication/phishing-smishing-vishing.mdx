@@ -6,11 +6,28 @@ description: "How attackers use email, SMS, and voice calls to steal credentials
 tags: [phishing, smishing, vishing, deceptive-communication, verification, credential-harvesting, social-engineering]
 ---
 
-import Quiz from '@site/src/components/Quiz';
 
 # Phishing, Smishing & Vishing
 
 The message looked urgent. The number matched. The link loaded a familiar page. Four minutes later, the money was gone.
+
+This topic affects how people use technology, make decisions, or protect themselves. Understanding the mechanisms makes it easier to recognise risks and choose a response.
+
+## Myth Busters
+
+**Phishing, Smishing and Vishing only affects careless people.**  
+People with different backgrounds can be affected by this risk.
+
+**A familiar or professional appearance proves phishing, smishing and vishing is safe.**  
+Appearance alone cannot establish trustworthiness.
+
+**There is no practical way to reduce phishing, smishing and vishing.**  
+Small, independent checks and protective steps can reduce exposure.
+
+**If phishing, smishing and vishing causes harm, nothing can be done afterward.**  
+Documenting the situation and seeking appropriate support can help.
+
+## The Story
 
 <figure style={{ margin: '32px 0', textAlign: 'center' }}>
   <img
@@ -18,10 +35,6 @@ The message looked urgent. The number matched. The link loaded a familiar page. 
     alt="How attackers use email, SMS, and voice calls to steal credentials and money - and the specific checks that catch them."
   />
 </figure>
-
----
-
-## The SMS That Drained the Account
 
 Priya was at work when a message arrived from a number saved as "SBI Bank" in her contacts.
 
@@ -33,9 +46,9 @@ She had received genuine bank alerts in the same thread before. The urgency felt
 
 The number was spoofed. The page was a clone. The OTP she entered did not verify a login - it authorized the transfer the attacker had already queued.
 
----
+## Statistical Evidence
 
-## What Is Actually Happening
+**What Is Actually Happening**  
 
 Phishing (email), smishing (SMS), and vishing (voice) share one mechanism: impersonate a trusted source, create pressure, and capture credentials or payment before the target pauses to verify.
 
@@ -91,10 +104,7 @@ Phishing (email), smishing (SMS), and vishing (voice) share one mechanism: imper
     </div>
   </div>
 </div>
-
----
-
-## How Each Format Works
+**How Each Format Works**  
 
 **Email phishing** spoofs display names and uses lookalike domains. `alerts@hdfc-banking.co.in` looks official. The domain after the @ symbol is the only checkable fact.
 
@@ -106,9 +116,7 @@ Phishing (email), smishing (SMS), and vishing (voice) share one mechanism: imper
 
 The consistent factor across all three: **the attacker creates a reason not to pause.** A 24-hour deadline. A suspended account. A transaction already in progress. The urgency exists to prevent the one action that would expose the scam: independent verification.
 
----
-
-## Practice: Sort the Inbox
+## Experience It
 
 Six messages have arrived. Classify each as real or phishing. After every decision, the specific tells are revealed.
 
@@ -132,9 +140,7 @@ Six messages have arrived. Classify each as real or phishing. After every decisi
   }}
 />
 
----
-
-## What That Just Showed You
+## What the Experience Shows
 
 **1. Display names are not sender addresses.**
 The name shown can be set to anything. "SBI Bank" costs nothing to fake. The actual sending address or domain is the only checkable fact.
@@ -148,9 +154,14 @@ Every phishing, smishing, and vishing attack includes a reason to act now. That 
 **4. Credential pages look identical to real ones.**
 The only reliable tell is the domain name. Checking the URL before entering any data is the single most effective habit.
 
----
+## Take Control: What Can You Do?
 
-## Three Things Worth Doing
+:::danger[Never share an OTP with an inbound caller]
+
+An OTP authorizes a specific action. End the call and contact the organization through a number or app you already trust.
+
+:::
+
 
 **1. Check the domain before entering anything.**
 On mobile, tap the address bar to see the full URL. The domain - the part immediately before `.com`, `.in`, or any extension - must exactly match the organisation's known domain.
@@ -160,33 +171,3 @@ If a bank, courier, or government body contacts you urgently, close the message 
 
 **3. OTPs are authorizations, not verifications.**
 No bank, government agency, or support team needs your OTP to help you. If someone asks for it, they are using it against you.
-
----
-
-## One Question Before You Continue
-
-<Quiz
-  question="Priya entered her OTP on the fake page because she thought it would verify her identity and block the suspicious transaction. What did the OTP actually do?"
-  options={[
-    {
-      label: "It verified her login to the real SBI server, which then froze the account.",
-      correct: false,
-      explanation: "The page was not operated by SBI. No data reached the real bank. The OTP was captured by the attacker's server and immediately used elsewhere."
-    },
-    {
-      label: "It authorized the transfer the attacker had already queued. OTPs approve actions, not identities.",
-      correct: true,
-      explanation: "Correct. The attacker had already initiated the transfer and needed the OTP to complete it. Priya's entry gave them exactly that. Banks never ask for an OTP to block or investigate a transaction - that framing only exists in fraud scripts."
-    },
-    {
-      label: "It allowed the attacker to reset her password.",
-      correct: false,
-      explanation: "In this case the OTP authorized a transaction. Both uses are possible, but the immediate financial loss indicates transaction authorization. The key point is the same: OTPs approve actions on your account."
-    },
-    {
-      label: "Nothing - OTPs expire in 30 seconds and the attacker couldn't use it that fast.",
-      correct: false,
-      explanation: "Attackers operate automated systems specifically to relay OTPs in real time. The 30-second window is intentionally exploited. The OTP was used before it expired."
-    }
-  ]}
-/>

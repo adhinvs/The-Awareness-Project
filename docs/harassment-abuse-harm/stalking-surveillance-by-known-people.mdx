@@ -6,15 +6,28 @@ description: "How digital stalking and coercive monitoring by known people works
 tags: [stalking, digital-surveillance, coercive-control, intimate-partner-violence, stalkerware, location-tracking, domestic-abuse, protective-orders, online-safety]
 ---
 
-import Quiz from '@site/src/components/Quiz';
 
 # Stalking & Surveillance by Known People
 
 *Most digital stalking is not committed by strangers. It is committed by people who already have access - to your devices, your accounts, and your life.*
 
----
+This topic affects how people use technology, make decisions, or protect themselves. Understanding the mechanisms makes it easier to recognise risks and choose a response.
 
-## The Phone That Was Always Watching
+## Myth Busters
+
+**Stalking and Surveillance by Known People only affects careless people.**  
+People with different backgrounds can be affected by this risk.
+
+**A familiar or professional appearance proves stalking and surveillance by known people is safe.**  
+Appearance alone cannot establish trustworthiness.
+
+**There is no practical way to reduce stalking and surveillance by known people.**  
+Small, independent checks and protective steps can reduce exposure.
+
+**If stalking and surveillance by known people causes harm, nothing can be done afterward.**  
+Documenting the situation and seeking appropriate support can help.
+
+## The Story
 
 Deepa had been separated from her husband for six months.
 
@@ -37,9 +50,9 @@ The location sharing was removed. The monitoring continued through a different a
 
 **The surveillance was not sophisticated. It was just invisible.**
 
----
+## Statistical Evidence
 
-## What Is Actually Happening
+**What Is Actually Happening**  
 
 <div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
   <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>1 in 3</h2>
@@ -71,9 +84,7 @@ The location sharing was removed. The monitoring continued through a different a
   </div>
 </div>
 
----
-
-### How Digital Stalking Actually Works
+**How Digital Stalking Actually Works**  
 
 The tools used for stalking by known people fall into four categories:
 
@@ -85,7 +96,7 @@ The tools used for stalking by known people fall into four categories:
 
 **4. Account access.** Email forwarding rules, shared iCloud or Google accounts, and saved passwords give access to everything - calendar, location history, messages, and reset codes for other accounts.
 
-### Intimate Partner Violence and Digital Coercive Control
+**Intimate Partner Violence and Digital Coercive Control**  
 
 Coercive control is a pattern of behaviour - not a single incident - designed to make a person dependent, afraid, and isolated. Digital tools have made coercive control easier to maintain across physical distance and across the end of a relationship.
 
@@ -97,7 +108,7 @@ Coercive control is a pattern of behaviour - not a single incident - designed to
 - Creating financial dependency through digital account access
 - Contacting employers, family, or friends to damage relationships
 
-### Evidence for Protective Orders
+**Evidence for Protective Orders**  
 
 A protective order (restraining order, domestic violence injunction) requires documented evidence of the behaviour. Digital evidence is admissible in most jurisdictions and is often more compelling than accounts of verbal incidents.
 
@@ -109,9 +120,7 @@ A protective order (restraining order, domestic violence injunction) requires do
 
 **Do not delete anything.** Even messages you find distressing.
 
----
-
-## Digital Safety Planner
+## Experience It
 
 Work through the checklist below. It covers every major surveillance access point - shared accounts, location sharing, devices, smart home, and evidence. Each unticked item has a specific action step.
 
@@ -137,9 +146,7 @@ Work through the checklist below. It covers every major surveillance access poin
 
 *If you are concerned that making changes may alert someone, use a device that person has never had access to - a friend's phone, a library computer.*
 
----
-
-## What That Just Showed You
+## What the Experience Shows
 
 **1. Surveillance is often invisible because it was legitimate first.**
 Shared accounts and location-sharing apps were not installed for surveillance. They became surveillance when the dynamic changed. This is why checking them is not paranoia - it is standard safety practice.
@@ -150,9 +157,40 @@ Deepa's situation took three audits. Smart home devices, account forwarding rule
 **3. Safety planning has to come before digital changes.**
 In high-risk situations, removing surveillance can trigger escalation. The checklist is designed to be worked through carefully, ideally with guidance from a specialist support organisation before making changes that could be noticed.
 
----
+## Take Control: What Can You Do?
 
-## Three Things Worth Doing
+:::caution[Plan before changing a monitored device]
+
+If someone may be tracking your device, sudden changes can alert them. Use a safer device to seek support and plan next steps.
+
+:::
+
+
+Work through the checklist below. It covers every major surveillance access point - shared accounts, location sharing, devices, smart home, and evidence. Each unticked item has a specific action step.
+
+<iframe
+  id="safety-planner-iframe"
+  src="/simulations/harassment-abuse-harm/stalking-surveillance-by-known-people/digital-safety-planner.html"
+  width="100%"
+  style={{ height: '700px', border: 'none', borderRadius: '16px', display: 'block', marginTop: '16px' }}
+  title="Digital Safety Planner"
+  loading="lazy"
+  onLoad={() => {
+    const handler = (e) => {
+      if (e.data && e.data.iframeHeight) {
+        const el = document.getElementById('safety-planner-iframe');
+        if (el) el.style.height = e.data.iframeHeight + 'px';
+      }
+    };
+    window.removeEventListener('message', window._safetyPlannerHandler);
+    window._safetyPlannerHandler = handler;
+    window.addEventListener('message', handler);
+  }}
+/>
+
+*If you are concerned that making changes may alert someone, use a device that person has never had access to - a friend's phone, a library computer.*
+
+
 
 **1. Check email forwarding rules today.**
 Gmail: Settings (gear) > See all settings > Forwarding and POP/IMAP. Outlook: Settings > Mail > Forwarding. A forwarding rule routes every incoming email to another address silently. It is one of the most commonly used and least-known surveillance methods in coercive control situations.
@@ -162,33 +200,3 @@ Google Maps > Profile > Location sharing. Apple: Settings > [Your name] > Find M
 
 **3. Contact a specialist organisation before making large changes in a high-risk situation.**
 UK: National Stalking Helpline (0808 802 0300) | US: NNEDV Safety Net (nnedv.org) | IN: iCall (+91 9152987821) | AU: 1800RESPECT (1800 737 732). These organisations advise on safety planning specific to your situation, including the order in which to make changes to reduce escalation risk.
-
----
-
-## One Question Before You Continue
-
-<Quiz
-  question="Deepa discovered that a Google account she did not recognise was syncing her real-time location. Her husband had set it up during their marriage. Why is it important not to simply remove the access immediately without planning?"
-  options={[
-    {
-      label: "Removing access is illegal without the account holder's consent.",
-      correct: false,
-      explanation: "Removing unauthorised surveillance from your own device is not illegal. The legal question runs in the opposite direction - installing monitoring software or accessing someone's account without consent is the potential offence."
-    },
-    {
-      label: "In high-risk situations, removing surveillance can alert the person monitoring and trigger escalation - safety planning should come before digital changes.",
-      correct: true,
-      explanation: "Correct. Abusers who monitor digitally often know the moment access is removed. In documented cases, the removal of surveillance has triggered escalated contact or physical confrontation. Specialist organisations advise working through a safety plan - including safe locations, trusted contacts, and a staged approach - before removing access points."
-    },
-    {
-      label: "She needs a court order before removing any shared account access.",
-      correct: false,
-      explanation: "No court order is required to audit or change access on your own accounts and devices. You have the right to remove surveillance from your own property. The planning concern is practical safety, not legal permission."
-    },
-    {
-      label: "The surveillance may be needed as evidence, so it should never be removed.",
-      correct: false,
-      explanation: "Evidence is preserved by documenting it - screenshots, screen recordings, written logs. The surveillance itself does not need to remain active to serve as evidence. Safety comes before the continuation of any monitoring."
-    }
-  ]}
-/>

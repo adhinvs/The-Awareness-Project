@@ -6,40 +6,33 @@ description: "How open loops and curiosity traps are engineered into email, phys
 tags: [social-engineering, curiosity, phishing, usb-drop, qr-codes, free-tools, bait]
 ---
 
-import Quiz from '@site/src/components/Quiz';
-
 # Curiosity & the Information Gap
 
----
+Curiosity & the Information Gap describes how ordinary human instincts can be turned into pressure, access, or compliance. The tactic works by making a request feel familiar, urgent, rewarding, or emotionally difficult to question.
 
-## The Email She Was Never Supposed to See
+These attacks are social before they are technical. Recognising the pattern creates time to pause, verify the person and request independently, and choose a safer response.
 
-Priya worked in the finance department of a logistics company in Bangalore.
-She was careful and had sat through three security training sessions in two years.
+## Myth Busters
 
-On a Tuesday morning, an email appeared in her inbox.
+**A message sent by mistake is probably harmless.**  
+Accidental-looking messages are often designed to make you open or click.
 
-**Subject line:**
-> *"Fwd: Fwd: Do not share outside core team - Q3 restructuring list"*
+**Curiosity is too small to be a security risk.**  
+A few seconds of curiosity can expose credentials or trigger malware.
 
-It was not addressed to her. The sender appeared to be a senior manager two levels above her. The first line read:
+**A QR code is safer than a link.**  
+A QR code hides the destination and can redirect to a malicious site.
 
-> *"Sorry - sent this to the wrong group. Please disregard if you are not on the core team."*
+**A found USB drive is just a storage device.**  
+Physical bait can deliver malware before you open a file.
 
-Priya was not on any core team. She knew that.
+## The Story
 
-**She opened the email in under five seconds.**
+**The Email She Was Never Supposed to See**  
 
-Inside was a link labelled *"Confidential Document - View Only."*
-She clicked it. A Google login page appeared. She entered her credentials without hesitating.
+Priya, a careful finance employee, received an email with the subject “Fwd: Do not share outside core team - Q3 restructuring list.” It appeared to come from a senior manager and said it had been sent to the wrong group.
 
-There was no wrong group. There was no senior manager.
-Every element - the forwarded chain, the apology, the exclusive subject line - had been built to make someone feel like they had stumbled onto something they were not supposed to see.
 
-Her credentials were captured within seconds.
-The company's IT team flagged the breach four days later.
-
-**The attacker never tricked Priya into doing something suspicious. They only made her curious.**
 
 <figure style={{ margin: '32px 0', textAlign: 'center' }}>
   <img
@@ -49,11 +42,13 @@ The company's IT team flagged the breach four days later.
   />
 </figure>
 
----
+The message contained a link labelled “confidential documents.” Priya knew she should not open it, but the apparent mistake and fear of missing important information overpowered her caution. She clicked, entered her company credentials, and approved a phone prompt.
 
-## What Is Actually Happening: How Curiosity Becomes a Weapon
+The page was a credential-harvesting site. The sender was spoofed, the document did not exist, and the “wrong group” message was the bait. The attacker did not need to create trust. Curiosity created the opening.
 
-Curiosity is not a weakness. It is how every human brain works. It is the drive to close open loops, resolve uncertainty, and not be left out. Attackers study this drive and engineer every lure around it.
+## Statistical Evidence
+
+Curiosity is not a weakness. It is how every human brain works.
 
 <div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
   <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>3.4B</h2>
@@ -68,7 +63,7 @@ Curiosity is not a weakness. It is how every human brain works. It is the drive 
       <div>
         <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#2563EB', fontWeight: 'bold' }}>Fast Reaction</span>
         <h3 style={{ margin: '8px 0', fontSize: '1.2rem', fontWeight: '700' }}>3-Second Judgement</h3>
-        <p style={{ fontSize: '0.92rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.6' }}><b>Most people decide whether to open an email within 3 seconds.</b> That makes the subject line the most dangerous part of the attack.</p>
+        <p style={{ fontSize: '0.92rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.6' }}>Most people decide whether to open an email within 3 seconds.</p>
       </div>
       <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Nielsen Norman Group Email Open Rate Study, 2024 (latest available)</span>
     </div>
@@ -78,18 +73,16 @@ Curiosity is not a weakness. It is how every human brain works. It is the drive 
       <div>
         <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#1E40AF', fontWeight: 'bold' }}>Spear Phishing</span>
         <h3 style={{ margin: '8px 0', fontSize: '1.2rem', fontWeight: '700' }}>66% of Breaches</h3>
-        <p style={{ fontSize: '0.92rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.6' }}>Personalised spear-phishing represents just 0.1% of all phishing emails, but <b>accounts for 66% of all confirmed breaches.</b> Specificity multiplies impact.</p>
+        <p style={{ fontSize: '0.92rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.6' }}>Personalised spear-phishing represents just 0.1% of all phishing emails, but accounts for 66% of all confirmed breaches.</p>
       </div>
       <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Barracuda Networks Spear Phishing Report, 2024</span>
     </div>
   </div>
 </div>
 
----
+**Clickbait Engineering**  
 
-### Clickbait Engineering
-
-A phishing subject line is not written. It is engineered. Attackers test variations and track open rates exactly the way email marketers do. Each formula pulls a specific psychological trigger.
+A phishing subject line is not written.
 
 > *"Action required on your account"*
 
@@ -99,17 +92,15 @@ Which account? The vagueness is deliberate. An ambiguous message forces you to o
 
 Makes you feel like you received something by accident. The sense of accidental access is the hook.
 
-**These attacks are now automated, personalised, and assembled from public information in seconds.** The subject line in your inbox may have been built for you specifically.
+These attacks are now automated, personalised, and assembled from public information in seconds. The subject line in your inbox may have been built for you specifically.
 
----
-
-### USB Drop Attacks and Malicious QR Codes
+**USB Drop Attacks and Malicious QR Codes**  
 
 Not every attack arrives in an inbox. Some are left on the ground.
 
-**A USB drop attack** is when an attacker leaves a storage device somewhere it is likely to be found. Car parks, office lobbies, and conference venues are common locations. The drive is labelled to maximise curiosity: *"HR Salary Data," "Redundancy List 2024," "Private Photos."* On many systems, **inserting the drive executes malicious code automatically - before any file is opened.**
+A USB drop attack is when an attacker leaves a storage device somewhere it is likely to be found.
 
-**Malicious QR codes** work on the same principle. Attackers print fake QR codes and stick them over legitimate ones on restaurant menus, parking machines, and noticeboards. **The scan feels passive. The destination is entirely controlled by whoever printed the sticker.**
+Malicious QR codes work on the same principle. Attackers print fake QR codes and stick them over legitimate ones on restaurant menus, parking machines, and noticeboards.
 
 <div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
   <div className="col col--12">
@@ -117,43 +108,39 @@ Not every attack arrives in an inbox. Some are left on the ground.
       <div>
         <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#D97706', fontWeight: 'bold' }}>Physical Lures</span>
         <h3 style={{ margin: '8px 0', fontSize: '1.2rem', fontWeight: '700' }}>Curiosity still wins</h3>
-        <p style={{ fontSize: '0.92rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.6' }}><b>Nearly half of people plugged in a found USB drive.</b> The most common reason was simple curiosity about what was on it.</p>
+        <p style={{ fontSize: '0.92rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.6' }}>Nearly half of people plugged in a found USB drive.</p>
       </div>
       <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Tischer et al., "Users Really Do Plug in USB Drives They Find", IEEE Security & Privacy, 2016</span>
     </div>
   </div>
 </div>
 
----
+**Forbidden Knowledge Appeals**  
 
-### Forbidden Knowledge Appeals
-
-When people are told they cannot access something, they want it more. Psychologists call this **reactance** - the urge to push back when something feels restricted or off-limits. **The stronger the sense of exclusion, the stronger the pull.**
+When people are told they cannot access something, they want it more. Psychologists call this reactance - the urge to push back when something feels restricted or off-limits.
 
 Subject lines like:
 
 > *"This message will self-delete in 24 hours"*
 
-or
+**or**  
 
 > *"Leaked: Internal document not for public release"*
 
-are not careless phrasing. **The restriction is the advertisement.**
+are not careless phrasing. The restriction is the advertisement.
 
-The same mechanic drives **lure documents** - files named *"Confidential - Do Not Share.pdf"* or *"Employees Under Review - PRIVATE.docx"* placed in shared drives or emailed to group lists. Opening them installs malware or routes to a fake login page. The label only needs to be tempting enough to act on before thinking begins.
+The same mechanic drives lure documents - files named *"Confidential - Do Not Share.pdf"* or *"Employees Under Review - PRIVATE.docx"* placed in shared drives or emailed to group lists.
 
-> **In controlled studies, messages framed as "restricted" or "not for everyone" recorded click-through rates up to 3x higher than identical messages with neutral framing.**
+> In controlled studies, messages framed as "restricted" or "not for everyone" recorded click-through rates up to 3x higher than identical messages with neutral framing.
 >
 > Source: Cialdini, R.B., Influence: The Psychology of Persuasion, updated research edition, 2021
----
+**Free Tools and Reports**  
 
-### Free Tools and Reports
+Free things are powerful lures because the perceived risk feels low and the perceived value feels high. *"Download our free threat report." "Free invoice template - instant download." "Install our free VPN."* The real cost.
 
-Free things are powerful lures because the perceived risk feels low and the perceived value feels high. *"Download our free threat report." "Free invoice template - instant download." "Install our free VPN."* The real cost is your device, your login credentials, or your personal data.
+Free PDFs can contain embedded scripts that run the moment the file opens. Free browser extensions can record every password you type.
 
-Free PDFs can contain embedded scripts that run the moment the file opens. Free browser extensions can record every password you type. A free Word template asking you to *"enable macros to display correctly"* can silently install malware while you work.
-
-**The attacker has built a product. You are not the customer. You are what is being sold.**
+The attacker has built a product. You are not the customer. You are what is being sold.
 
 <div className="row" style={{ gap: '20px 0', marginBottom: '30px' }}>
   <div className="col col--12">
@@ -161,18 +148,15 @@ Free PDFs can contain embedded scripts that run the moment the file opens. Free 
       <div>
         <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#059669', fontWeight: 'bold' }}>Free Offers</span>
         <h3 style={{ margin: '8px 0', fontSize: '1.2rem', fontWeight: '700' }}>Gifts That Cost You More</h3>
-        <p style={{ fontSize: '0.92rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.6' }}><b>Over 40% of malicious files arrive as free or pirated tools, documents, and browser extensions.</b> Free does not mean safe - it often means you are the product.</p>
+        <p style={{ fontSize: '0.92rem', margin: '0 0 16px 0', opacity: '0.85', lineHeight: '1.6' }}>Over 40% of malicious files arrive as free or pirated tools, documents, and browser extensions.</p>
       </div>
       <span style={{ fontSize: '0.75rem', opacity: '0.6', fontStyle: 'italic' }}>Source: Kaspersky Security Bulletin, 2024 (latest available)</span>
     </div>
   </div>
 </div>
+## Experience It
 
----
-
-## Spot the Bait - Curiosity Autopsy
-
-**A lure is a structure, not an accident. Once you can name the structure, the pull loses power.**
+A lure is a structure, not an accident. Once you can name the structure, the pull loses power.
 
 <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', borderLeft: '4px solid #2563EB', marginBottom: '20px', background: '#FFFFFF', border: '1px solid #E2E8F0' }}>
   <h3 style={{ margin: '0 0 10px 0', fontSize: '1.1rem', fontWeight: '700' }}>Try the Curiosity Check</h3>
@@ -206,64 +190,30 @@ Free PDFs can contain embedded scripts that run the moment the file opens. Free 
 
 *The simulation shows how simple choices can stop the trap before it starts.*
 
----
+## What the Experience Shows
 
-## What That Just Showed You
+**Curiosity is not a flaw. It is a surface.**  
+Every lure exploits something genuinely useful - the desire to stay informed, to not miss something important. The goal is not to stop being curious. The goal is to notice when that curiosity is being steered by someone else.
 
-**1. Curiosity is not a flaw. It is a surface.**
-Every lure exploits something genuinely useful - the desire to stay informed, to not miss something important. **The goal is not to stop being curious. The goal is to notice when that curiosity is being steered by someone else.**
+**The trigger comes before the thought.**  
+The click, the scan, the plug-in almost always happens before conscious evaluation begins. The information gap creates urgency. That urgency suppresses caution. This sequence is predictable - which means it is also interruptible.
 
-**2. The trigger comes before the thought.**
-The click, the scan, the plug-in almost always happens before conscious evaluation begins. The information gap creates urgency. That urgency suppresses caution. **This sequence is predictable - which means it is also interruptible.**
+**The label is the attack.**  
+With USB drives, QR codes, and lure documents, the harm starts the moment a label creates enough curiosity to act. Asking "why does this exist, and where did it come from?" before touching it stops the attack before it starts.
 
-**3. The label is the attack.**
-With USB drives, QR codes, and lure documents, the harm starts the moment a label creates enough curiosity to act. **Asking "why does this exist, and where did it come from?" before touching it stops the attack before it starts.**
+**Training does not make you immune.**  
+The information gap fires in trained professionals the same way it fires in everyone else. Priya had sat through three security sessions. She still opened the email in under five seconds. The mechanism operates before knowing begins.
+## Take Control: What Can You Do?
 
-**4. Training does not make you immune.**
-The information gap fires in trained professionals the same way it fires in everyone else. Priya had sat through three security sessions. **She still opened the email in under five seconds.** The mechanism operates before knowing begins.
+**Ask one question before you click.**  
+When something creates an immediate urge to open, click, or scan, pause and ask: *"Did I go looking for this, or did it come to me?"* If it came unsolicited, verify the source first. This single question interrupts the automatic sequence most attacks depend on.
 
----
+**Never enter your login credentials from a link someone sent you.**  
+If an email, QR code, or pop-up takes you to a login page, close it. Open a new browser tab and type the address yourself. This defeats the majority of phishing attacks entirely. The address bar is the one thing an attacker cannot fake.
 
-## Four Things Worth Doing
+**Treat found physical objects the same way you treat found food.**  
+A USB drive in a car park is an unknown object from an unknown source. Do not plug it in. Hand it to your IT team or a security desk. The label on it is not information. It is bait.
 
-**1. Ask one question before you click.**
-When something creates an immediate urge to open, click, or scan, pause and ask: *"Did I go looking for this, or did it come to me?"* If it came unsolicited, verify the source first. **This single question interrupts the automatic sequence most attacks depend on.**
+**Verify free downloads before opening them.**  
+Scan any unsolicited free tool, template, or report at virustotal.com before opening it. If the file asks you to enable macros or disable security settings, close it immediately.
 
-**2. Never enter your login credentials from a link someone sent you.**
-If an email, QR code, or pop-up takes you to a login page, close it. Open a new browser tab and type the address yourself. **This defeats the majority of phishing attacks entirely.** The address bar is the one thing an attacker cannot fake.
-
-**3. Treat found physical objects the same way you treat found food.**
-A USB drive in a car park is an unknown object from an unknown source. Do not plug it in. Hand it to your IT team or a security desk. **The label on it is not information. It is bait.**
-
-**4. Verify free downloads before opening them.**
-Scan any unsolicited free tool, template, or report at virustotal.com before opening it. **If the file asks you to enable macros or disable security settings, close it immediately.**
-
----
-
-## One Question Before You Continue
-
-<Quiz
-  question="Which of the following is the safest practice when something creates an urgent curiosity pull?"
-  options={[
-    {
-      label: "Click the link immediately if it looks like it came from someone senior.",
-      correct: false,
-      explanation: "Urgency and senior-sounding labels are common bait. The safest action is to verify the source before you act."
-    },
-    {
-      label: "Pause and ask if I went looking for it or if it came to me.",
-      correct: true,
-      explanation: "Correct! Asking that question interrupts the automatic response and helps you decide whether the message is legitimate or a trap."
-    },
-    {
-      label: "Scan every QR code if it promises a free reward.",
-      correct: false,
-      explanation: "A free reward is a common lure. Scanning a code without verifying its origin can take you to a fake site or malware."
-    },
-    {
-      label: "Open a USB drive from the floor if the label looks important.",
-      correct: false,
-      explanation: "Found USB drives are physical bait. They should never be plugged into a personal or work device."
-    }
-  ]}
-/>

@@ -6,15 +6,28 @@ description: "How incremental permission requests, slow-moving surveillance, and
 tags: [normalisation, boundary-erosion, boiling-frog, habituation, surveillance, data-privacy, permissions, gradual-change, manipulation]
 ---
 
-import Quiz from '@site/src/components/Quiz';
 
 # Normalised Behaviour & Gradual Boundary Erosion
 
 The most effective manipulation does not feel like manipulation. It arrives in steps small enough that no single one triggers resistance.
 
----
+This topic affects how people use technology, make decisions, or protect themselves. Understanding the mechanisms makes it easier to recognise risks and choose a response.
 
-## The App That Grew
+## Myth Busters
+
+**Normalised Behaviour and Gradual Boundary Erosion only affects careless people.**  
+People with different backgrounds can be affected by this risk.
+
+**A familiar or professional appearance proves normalised behaviour and gradual boundary erosion is safe.**  
+Appearance alone cannot establish trustworthiness.
+
+**There is no practical way to reduce normalised behaviour and gradual boundary erosion.**  
+Small, independent checks and protective steps can reduce exposure.
+
+**If normalised behaviour and gradual boundary erosion causes harm, nothing can be done afterward.**  
+Documenting the situation and seeking appropriate support can help.
+
+## The Story
 
 Two years ago, Sanjana downloaded a free fitness tracker. She gave it her name and allowed it to access her step count.
 
@@ -33,9 +46,9 @@ Two years later, the app had continuous access to her location, microphone, came
 
 **Sanjana had not consented to a surveillance package. She had consented to twelve individual features over two years. The result was the same.**
 
----
+## Statistical Evidence
 
-## What Is Actually Happening: The Boiling Frog Effect
+**What Is Actually Happening: The Boiling Frog Effect**  
 
 <div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
   <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>68%</h2>
@@ -89,10 +102,7 @@ Two years later, the app had continuous access to her location, microphone, came
     </div>
   </div>
 </div>
-
----
-
-## Recognising Incremental Erosion
+**Recognising Incremental Erosion**  
 
 The difficulty with gradual change is that it is invisible at each step. The way to see it is to compare against the original baseline - not against the most recent step.
 
@@ -103,9 +113,7 @@ The difficulty with gradual change is that it is invisible at each step. The way
 
 The goal is not to refuse every request. It is to make each decision deliberately rather than by default.
 
----
-
-## Try It: The Boiling Frog Timeline
+## Experience It
 
 A new app requests permissions month by month over 12 months. Each request looks reasonable. Decide at each step: allow or deny.
 
@@ -129,9 +137,7 @@ A new app requests permissions month by month over 12 months. Each request looks
   }}
 />
 
----
-
-## What That Just Showed You
+## What the Experience Shows
 
 **1. The end state is not visible from any single step.**
 Each permission request was framed as a feature. No single request seemed unreasonable. Together, they produce a comprehensive data collection profile that most people would refuse if asked for it all at once.
@@ -142,9 +148,7 @@ The longer you have used an app, the more likely you are to grant new permission
 **3. The correct evaluation unit is the total, not the marginal step.**
 When deciding on a new permission, the right question is not "is this a reasonable addition to what I have already given?" - it is "is this permission something I want this company to have?"
 
----
-
-## Three Things Worth Doing
+## Take Control: What Can You Do?
 
 **1. Do a quarterly permission audit.**
 Open your phone settings and review what each app currently has access to. The question for each permission: "Is this active access necessary, or is it a past grant I never revisited?" Remove what is not actively needed.
@@ -154,33 +158,3 @@ Before granting a new permission to an established app, list what it already has
 
 **3. Apply the day-one test.**
 For any permission request, ask: "If this app had asked for this on the day I downloaded it, would I have granted it?" If the answer is no, the only thing that has changed is normalisation - not the actual risk of the permission.
-
----
-
-## One Question Before You Continue
-
-<Quiz
-  question="Sanjana ended up with an app that had comprehensive surveillance access, despite never intending to consent to surveillance. What made this possible?"
-  options={[
-    {
-      label: "She did not read the terms of service carefully enough.",
-      correct: false,
-      explanation: "Terms of service are typically thousands of words long and written in legal language. The mechanism was not careless reading - it was the incremental permission structure that bypasses the resistance a single comprehensive request would produce."
-    },
-    {
-      label: "Each permission was requested individually over time, making the cumulative result invisible at any single step.",
-      correct: true,
-      explanation: "Correct. No single step felt like a significant decision. The cumulative result - comprehensive access to location, microphone, camera, contacts, sleep, and health data - would have been refused if asked for upfront. The incremental approach is specifically designed to avoid that refusal."
-    },
-    {
-      label: "The app used hidden data collection techniques that bypassed her phone's settings.",
-      correct: false,
-      explanation: "The story describes legitimate permission requests through normal channels. The mechanism was psychological - gradual normalisation - not technical circumvention. The permissions were granted; they were not taken without consent."
-    },
-    {
-      label: "She was unaware that fitness apps collect health data.",
-      correct: false,
-      explanation: "The story does not describe ignorance about data collection generally. The specific mechanism was the gradual erosion of her starting position through individually reasonable requests over two years."
-    }
-  ]}
-/>

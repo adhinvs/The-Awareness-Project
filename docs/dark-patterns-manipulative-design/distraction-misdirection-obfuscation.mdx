@@ -6,15 +6,28 @@ description: "How cluttered interfaces, misleading labels, and buried settings a
 tags: [dark-patterns, obfuscation, misdirection, privacy-settings, interface-complexity, misleading-labels, ui-deception, data-control]
 ---
 
-import Quiz from '@site/src/components/Quiz';
 
 # Distraction, Misdirection & Obfuscation
 
 The setting existed. You just could not find it. That was the design.
 
----
+This topic affects how people use technology, make decisions, or protect themselves. Understanding the mechanisms makes it easier to recognise risks and choose a response.
 
-## The Toggle That Was Not Off
+## Myth Busters
+
+**Distraction, Misdirection and Obfuscation only affects careless people.**  
+People with different backgrounds can be affected by this risk.
+
+**A familiar or professional appearance proves distraction, misdirection and obfuscation is safe.**  
+Appearance alone cannot establish trustworthiness.
+
+**There is no practical way to reduce distraction, misdirection and obfuscation.**  
+Small, independent checks and protective steps can reduce exposure.
+
+**If distraction, misdirection and obfuscation causes harm, nothing can be done afterward.**  
+Documenting the situation and seeking appropriate support can help.
+
+## The Story
 
 Alex had read about apps tracking location in the background. He decided to turn it off on his shopping app.
 
@@ -37,9 +50,9 @@ He pressed "Keep enabled" by mistake and had to start again.
 
 **Five levels deep. Misleading category names. A toggle that described tracking as a feature benefit. A reversed confirmation dialog. The location data had been flowing the whole time.**
 
----
+## Statistical Evidence
 
-## What Is Actually Happening
+**What Is Actually Happening**  
 
 <div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
   <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>4.2</h2>
@@ -93,26 +106,21 @@ He pressed "Keep enabled" by mistake and had to start again.
     </div>
   </div>
 </div>
+**The Obfuscation Toolkit**  
 
----
-
-## The Obfuscation Toolkit
-
-### Cluttered interfaces
+**Cluttered interfaces**  
 More options, more categories, more sub-menus. Cognitive overload means you give up before finding what you need. The option exists - but it is surrounded by enough noise that most users abandon the search.
 
-### Misleading category names
+**Misleading category names**  
 "Privacy" settings are filed under "Experience," "Preferences," or "Personalisation." The name tells you what the company wants you to think the setting does - not what it actually controls.
 
-### Confusing toggle states
+**Confusing toggle states**  
 A toggle that looks "on" (filled, coloured) when it is actually set to "off for sharing" - and "off" (grey, empty) when sharing is enabled. The visual convention is reversed to produce misreadings that favour data collection.
 
-### Confirmation dialogs reversed
+**Confirmation dialogs reversed**  
 Standard UX places the confirming action as the primary button. Obfuscation swaps this - so the action you just requested (turning something off) is the smaller, less prominent button. Habitual tapping confirms the opposite of your intent.
 
----
-
-## Try It: Find the Privacy Setting
+## Experience It
 
 Turn off location sharing in a fictional shopping app. Count your clicks across 5 menu levels.
 
@@ -136,9 +144,7 @@ Turn off location sharing in a fictional shopping app. Count your clicks across 
   }}
 />
 
----
-
-## What That Just Showed You
+## What the Experience Shows
 
 **1. Privacy was never labelled as privacy.**
 You had to infer that "App Experience" contained location settings - because the company chose not to label this section as privacy or data.
@@ -152,9 +158,7 @@ You had to infer that "App Experience" contained location settings - because the
 **4. Each extra level cut the completion rate roughly in half.**
 Most users stop after 2 menu levels. Burying a setting at level 5 means the vast majority of people never reach it - not because they do not want to, but because they ran out of time and patience.
 
----
-
-## Three Things Worth Doing
+## Take Control: What Can You Do?
 
 **1. Search within settings rather than navigating menus.**
 Most mobile settings apps have a search function. Searching "location" or "tracking" finds the relevant setting directly - bypassing the deliberately complex menu structure.
@@ -164,33 +168,3 @@ Before tapping the prominent button in any confirmation dialog, read both button
 
 **3. Treat "Enhanced," "Improved," and "Tailored" as data-sharing signals.**
 When a toggle uses benefit language (enhanced, improved, tailored) rather than descriptive language (location sharing, data sharing), open the sub-label before deciding. The benefit is for the company. The cost is for you.
-
----
-
-## One Question Before You Continue
-
-<Quiz
-  question="The privacy setting Alex needed was labelled 'Enhanced Personalisation' and buried 5 menu levels deep. What is the most accurate description of this design?"
-  options={[
-    {
-      label: "This is poor UX design - the team simply did not prioritise organising the settings menu clearly.",
-      correct: false,
-      explanation: "Poor UX by accident and dark patterns by design produce identical-looking interfaces - but they have different causes. A setting that is 5 levels deep, named as a benefit rather than a data permission, with a reversed confirmation dialog, represents a pattern of choices that consistently benefit the company. This level of consistency is not accidental."
-    },
-    {
-      label: "This is deliberate obfuscation - each design choice (depth, naming, reversed dialog) reduces the chance of users successfully disabling data collection.",
-      correct: true,
-      explanation: "Correct. Five levels of menu depth, benefit-framing for a data permission, and a reversed confirmation dialog are not independent decisions - they compound into a pattern that predictably prevents users from making the choice that costs the company data. Each choice was testable and tested."
-    },
-    {
-      label: "The setting name 'Enhanced Personalisation' is accurate - it does improve personalisation when enabled.",
-      correct: false,
-      explanation: "The setting may technically improve recommendation personalisation - but it also enables continuous background location tracking for advertising purposes. Naming it 'Enhanced Personalisation' emphasises only the benefit and omits the cost. Under GDPR transparency requirements, this framing is a compliance concern."
-    },
-    {
-      label: "Users who care about privacy should read the full settings documentation before using any app.",
-      correct: false,
-      explanation: "This places the burden of navigating deliberate complexity entirely on the user. GDPR and other privacy regulations exist precisely because informed consent requires clear, accessible settings - not settings buried in menus that most users never visit. The design failure is the company's responsibility."
-    }
-  ]}
-/>

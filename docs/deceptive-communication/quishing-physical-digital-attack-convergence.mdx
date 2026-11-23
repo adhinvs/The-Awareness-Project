@@ -6,15 +6,28 @@ description: "How attackers embed malicious links in QR codes placed in physical
 tags: [quishing, qr-codes, deceptive-communication, physical-digital, verification, payment-fraud]
 ---
 
-import Quiz from '@site/src/components/Quiz';
 
 # Quishing & Physical-Digital Attack Convergence
 
 We have spent years learning not to click suspicious email links. Attackers responded by moving the links into the physical world.
 
----
+This topic affects how people use technology, make decisions, or protect themselves. Understanding the mechanisms makes it easier to recognise risks and choose a response.
 
-## The Parking Meter That Was Not Official
+## Myth Busters
+
+**Quishing and Physical-Digital Attack Convergence only affects careless people.**  
+People with different backgrounds can be affected by this risk.
+
+**A familiar or professional appearance proves quishing and physical-digital attack convergence is safe.**  
+Appearance alone cannot establish trustworthiness.
+
+**There is no practical way to reduce quishing and physical-digital attack convergence.**  
+Small, independent checks and protective steps can reduce exposure.
+
+**If quishing and physical-digital attack convergence causes harm, nothing can be done afterward.**  
+Documenting the situation and seeking appropriate support can help.
+
+## The Story
 
 Sarah was running late for a meeting. She found a spot, rushed to the parking meter, and saw a bright yellow sticker in the centre: **"Pay Faster. Scan to Park."**
 
@@ -32,9 +45,9 @@ By evening, **$2,400 in unauthorized charges had appeared on her card.**
 
 The sticker had been placed on the meter at 2am. The page was a clone. The QR code is invisible to the eye - there is no way to read its destination without scanning. And the physical context - a government meter, a familiar location - disabled every skeptical instinct she had.
 
----
+## Statistical Evidence
 
-## What Is Actually Happening
+**What Is Actually Happening**  
 
 A QR code is a visual URL. It goes wherever the creator pointed it. Physical placement gives it authority the URL does not earn.
 
@@ -90,10 +103,7 @@ A QR code is a visual URL. It goes wherever the creator pointed it. Physical pla
     </div>
   </div>
 </div>
-
----
-
-## Where Physical Trust Becomes a Vulnerability
+**Where Physical Trust Becomes a Vulnerability**  
 
 **Parking meters and EV chargers:** Attackers print stickers that overlay the legitimate QR code. The physical context - a government or corporate asset - makes the scan feel safe.
 
@@ -105,9 +115,7 @@ A QR code is a visual URL. It goes wherever the creator pointed it. Physical pla
 
 **The core mechanic is the same in every location:** the physical object lends authority to the QR code. The moment you scan, you have left the physical environment and entered a digital one with no visible signals of where you actually are.
 
----
-
-## Practice: Scan or Skip
+## Experience It
 
 Six QR codes in real-world contexts. For each one, decide: safe to scan, scan with caution, or skip. The risk level and documented attack cases are revealed after each choice.
 
@@ -131,9 +139,7 @@ Six QR codes in real-world contexts. For each one, decide: safe to scan, scan wi
   }}
 />
 
----
-
-## What That Just Showed You
+## What the Experience Shows
 
 **1. Physical context overrides digital skepticism.**
 A QR code on a parking meter feels different from a link in an email - even though both go to the same place. The physical object provides trust the URL has not earned.
@@ -144,9 +150,14 @@ Before the tap, your phone shows a URL preview. That is your one window to verif
 **3. Urgency is always a component.**
 Every high-yield quishing location - parking, transit, delivery - carries time pressure. That pressure is not incidental. It is what makes the attack work.
 
----
+## Take Control: What Can You Do?
 
-## Three Things Worth Doing
+:::caution[Preview a QR link before opening it]
+
+Check the destination shown by your camera or QR reader. Do not enter credentials or payment details if the domain is unfamiliar.
+
+:::
+
 
 **1. Run your fingernail over any QR code at a payment terminal.**
 If a sticker has been placed over an original code, the edge is detectable. This takes two seconds and catches most parking meter and EV charger attacks.
@@ -156,33 +167,3 @@ When you scan with your phone's camera, a preview URL appears. Stop and read it.
 
 **3. Use the official app instead of the code.**
 For parking, transit payments, and deliveries: open the known official app directly. Use nothing from the physical surface. This eliminates the attack entirely.
-
----
-
-## One Question Before You Continue
-
-<Quiz
-  question="Why are malicious QR codes in physical locations more effective than the same link sent by email?"
-  options={[
-    {
-      label: "QR codes carry a virus that activates when the camera reads them.",
-      correct: false,
-      explanation: "QR codes contain only a URL. No code executes on scan. The attack requires the user to visit the linked page and enter information."
-    },
-    {
-      label: "They bypass all email filters and exploit the trust people instinctively extend to physical objects like parking meters and menus.",
-      correct: true,
-      explanation: "Correct. An email link travels through monitored channels and may be blocked. A physical sticker reaches the victim's device directly, with no technical filter in the path. The physical environment provides unearned authority to whatever is attached to it."
-    },
-    {
-      label: "Telecom providers do not scan QR codes the way they scan emails.",
-      correct: false,
-      explanation: "Telecom providers play no role here. The issue is not technical filtering - it is the trust the physical context creates before any URL is visited."
-    },
-    {
-      label: "QR codes hide the URL completely, so there is no way to know the destination.",
-      correct: false,
-      explanation: "Phone cameras show a URL preview before the user taps. That preview is the key verification step. The URL is visible - the problem is that most people scan without reading it."
-    }
-  ]}
-/>

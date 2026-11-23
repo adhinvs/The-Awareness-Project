@@ -6,11 +6,28 @@ description: "What app permissions actually give access to, how to audit them on
 tags: [app-permissions, mobile-security, location-access, microphone-access, privacy, android, iphone]
 ---
 
-import Quiz from '@site/src/components/Quiz';
 
 # Your Apps & Permissions
 
 Every permission you grant is a door. Most people open dozens of doors they never intended to open, on apps they no longer use, for data they do not realise is being collected.
+
+This topic affects how people use technology, make decisions, or protect themselves. Understanding the mechanisms makes it easier to recognise risks and choose a response.
+
+## Myth Busters
+
+**Your Apps and Permissions only affects careless people.**  
+People with different backgrounds can be affected by this risk.
+
+**A familiar or professional appearance proves your apps and permissions is safe.**  
+Appearance alone cannot establish trustworthiness.
+
+**There is no practical way to reduce your apps and permissions.**  
+Small, independent checks and protective steps can reduce exposure.
+
+**If your apps and permissions causes harm, nothing can be done afterward.**  
+Documenting the situation and seeking appropriate support can help.
+
+## The Story
 
 <figure style={{ margin: '32px 0', textAlign: 'center' }}>
   <img
@@ -18,10 +35,6 @@ Every permission you grant is a door. Most people open dozens of doors they neve
     alt="What app permissions actually give access to, how to audit them on Android and iPhone, and what over-permission signals about intent."
   />
 </figure>
-
----
-
-## The Flashlight App
 
 A 2023 investigation found a popular flashlight app on the Google Play Store had been quietly accessing users' microphones in the background.
 
@@ -31,9 +44,9 @@ The collected audio data was sent to a server in a jurisdiction with no data pro
 
 **The permission was granted in 2021. It was collecting data until the app was delisted in 2024.** Most users never knew.
 
----
+## Statistical Evidence
 
-## What Is Actually Happening: The Permission Economy
+**What Is Actually Happening: The Permission Economy**  
 
 <div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
   <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>89%</h2>
@@ -87,10 +100,7 @@ The collected audio data was sent to a server in a jurisdiction with no data pro
     </div>
   </div>
 </div>
-
----
-
-## What Each Permission Actually Gives
+**What Each Permission Actually Gives**  
 
 Understanding each permission makes the decision simple.
 
@@ -105,20 +115,14 @@ Understanding each permission makes the decision simple.
 **Storage** allows reading and writing files on your device. File managers and document editors legitimately need this. Most other app categories should not have broad storage access.
 
 **Call logs** exposes who you call, how often, and for how long. Only your phone dialler has a legitimate reason to access this.
-
----
-
-## The Over-Permission Signal
+**The Over-Permission Signal**  
 
 When an app asks for more than it needs to function, that request is telling you something about its business model.
 
 A flashlight asking for microphone access. A weather app asking for contacts. A game asking for call logs. These permissions are not required for the app to work. They are required for the app to profile and monetise you.
 
 Over-permission is not always malicious intent. It is sometimes lazy development. But the practical consequence - your data being collected and sold - is the same either way.
-
----
-
-## How to Audit Right Now
+**How to Audit Right Now**  
 
 **On Android:**
 Settings > Privacy > Permission manager. This shows every permission category and which apps hold each one.
@@ -130,9 +134,7 @@ Settings > Privacy & Security. Each permission category is listed. Tap any to se
 
 Or: Settings > [App Name] to see all permissions for a specific app in one view.
 
----
-
-## Try It: Permission Audit Guide
+## Experience It
 
 Select your OS. Work through each permission category - who legitimately needs it, who never should, and the exact path to revoke it.
 
@@ -156,9 +158,7 @@ Select your OS. Work through each permission category - who legitimately needs i
   }}
 />
 
----
-
-## What That Just Showed You
+## What the Experience Shows
 
 **1. Location, microphone, camera, and contacts are high-sensitivity permissions.**
 These four grant access to your physical world. Apply extra scrutiny before granting any of them.
@@ -172,9 +172,14 @@ An app you have not opened in six months still holds everything you granted it. 
 **4. Data already collected does not disappear when you delete the app.**
 To request deletion, use the "delete my account and data" option in the app's settings, or contact the developer under your data rights.
 
----
+## Take Control: What Can You Do?
 
-## Three Things Worth Doing
+:::tip[Grant access only when needed]
+
+An app can often work without constant access to your location, contacts, microphone, or photos. Revisit permissions after installation.
+
+:::
+
 
 **1. Open your permission manager now and check microphone and camera.**
 Look for any app that has microphone or camera access but has no obvious reason to need it. Revoke immediately.
@@ -184,33 +189,3 @@ Go through Location Services and downgrade any "always on" settings. Few apps le
 
 **3. Delete apps you have not opened in 3 months.**
 They are still holding permissions and potentially still collecting data. Remove them.
-
----
-
-## One Question Before You Continue
-
-<Quiz
-  question="A popular flashlight app had microphone permission enabled. The user never noticed because the app worked perfectly as a flashlight. What does this tell you about how over-permission works?"
-  options={[
-    {
-      label: "The app was broken - microphone access must have been granted by mistake.",
-      correct: false,
-      explanation: "The permission was intentional. The app functioned as advertised while simultaneously using the microphone access it had been granted. The two functions operated independently."
-    },
-    {
-      label: "Apps can collect data through permissions you granted and never think about again, regardless of whether the app's visible function uses that data.",
-      correct: true,
-      explanation: "Correct. The permission was granted once at install and remained active for years. The app worked fine as a flashlight while using microphone access for an entirely separate commercial purpose. Periodic audits of what permissions apps hold are necessary because you will not be notified when they are being used."
-    },
-    {
-      label: "Google Play's security review should have caught and blocked this.",
-      correct: false,
-      explanation: "App store reviews provide some protection but are not comprehensive. Apps regularly pass review while including data collection behaviour that is disclosed in fine-print privacy policies most users never read."
-    },
-    {
-      label: "The user should not have installed a flashlight app - only use built-in phone features.",
-      correct: false,
-      explanation: "The issue is not which app category was used but that the permission was granted without consideration. Any app category can over-request permissions. The habit is to review before granting and audit afterwards."
-    }
-  ]}
-/>

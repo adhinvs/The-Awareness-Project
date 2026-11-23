@@ -6,15 +6,28 @@ description: "How to see your publicly available information the way a stranger 
 tags: [osint, digital-footprint, data-brokers, haveibeenpwned, privacy, breach-check, public-records, personal-data-removal]
 ---
 
-import Quiz from '@site/src/components/Quiz';
 
 # Defensive OSINT: Auditing Your Own Digital Footprint
 
 Before you can reduce your exposure, you need to know what is exposed.
 
----
+This topic affects how people use technology, make decisions, or protect themselves. Understanding the mechanisms makes it easier to recognise risks and choose a response.
 
-## What the Scammer Already Knew
+## Myth Busters
+
+**Defensive OSINT Auditing Your Own Digital Footprint only affects careless people.**  
+People with different backgrounds can be affected by this risk.
+
+**A familiar or professional appearance proves defensive osint auditing your own digital footprint is safe.**  
+Appearance alone cannot establish trustworthiness.
+
+**There is no practical way to reduce defensive osint auditing your own digital footprint.**  
+Small, independent checks and protective steps can reduce exposure.
+
+**If defensive osint auditing your own digital footprint causes harm, nothing can be done afterward.**  
+Documenting the situation and seeking appropriate support can help.
+
+## The Story
 
 The call came at 9am. The caller knew Kevin's full name, his home address, the last four digits of his credit card, and the name of his bank.
 
@@ -29,9 +42,9 @@ Kevin assumed a breach. But there was no breach. All of it was assembled from pu
 
 The scammer did not need to hack anything. **They just knew where to look.**
 
----
+## Statistical Evidence
 
-## What Is Actually Happening
+**What Is Actually Happening**  
 
 <div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
   <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>15 min</h2>
@@ -85,35 +98,30 @@ The scammer did not need to hack anything. **They just knew where to look.**
     </div>
   </div>
 </div>
+**What OSINT Actually Reveals About You**  
 
----
-
-## What OSINT Actually Reveals About You
-
-### Search engine results
+**Search engine results**  
 Your name + city in Google surfaces old profiles, forum comments, news mentions, and employer directories. Most people are surprised by how much is indexed from accounts they created years ago.
 
-### HaveIBeenPwned
+**HaveIBeenPwned**  
 A breach check shows which services have exposed your email in a known data leak. Each breach entry tells you what was exposed: passwords, physical address, phone number, or payment data.
 
-### Reverse image search
+**Reverse image search**  
 Uploading your profile photo to Google Images or TinEye reveals every site where your image appears - including ones you never posted to, where it was scraped without your knowledge.
 
-### Data broker listings
+**Data broker listings**  
 Spokeo, Whitepages, BeenVerified, FastPeopleSearch, and Intelius aggregate your address, phone, relatives, estimated income, and public records. These are accessible without a login.
 
-### Public records and property databases
+**Public records and property databases**  
 UK Land Registry (search by name for property ownership), electoral register, Companies House (director listings), and court records are all publicly searchable. In many countries, property ownership records are available to anyone who pays a small fee. These are common starting points in targeted fraud research.
 
-### OSINT tools used against you
+**OSINT tools used against you**  
 The same tools used by security researchers are used by fraudsters: Google dorking ("site:linkedin.com [your name]"), Shodan (connected devices), PimEyes (facial search), and Maltego (relationship mapping). You do not need to use these tools yourself - but knowing they exist explains how quickly a stranger can build a picture of you.
 
-### Social media public view
+**Social media public view**  
 Log out of your accounts and search your name. What a stranger sees on your public profile is what a scammer or social engineer sees first.
 
----
-
-## Try It: Personal Footprint Audit
+## Experience It
 
 Work through 5 checks and see where your information is exposed. Each finding comes with a specific action step.
 
@@ -137,9 +145,7 @@ Work through 5 checks and see where your information is exposed. Each finding co
   }}
 />
 
----
-
-## What That Just Showed You
+## What the Experience Shows
 
 **1. Exposure accumulates over years.**
 Old accounts, old emails, and old forum handles are still indexed. Most people's highest-exposure content was created when they were least aware of privacy.
@@ -150,9 +156,14 @@ Every removal step is real and effective. But data brokers re-collect data from 
 **3. The most urgent risk is usually breach exposure.**
 A breached password from 2016 is still being used in credential stuffing attacks today. If your email has been in a breach, that specific password - wherever else you used it - is compromised.
 
----
+## Take Control: What Can You Do?
 
-## Three Things Worth Doing
+:::tip[Check what a stranger can see]
+
+Review public profiles while logged out or in a private browser window. That view often reveals information hidden from your own account.
+
+:::
+
 
 **1. Check haveibeenpwned.com today.**
 Enter every email address you use. Change the password for every service that appears. Use a unique password for each one (password manager makes this practical).
@@ -162,33 +173,3 @@ Search your full name + city. Note everything on the first 3 pages. Request remo
 
 **3. Submit opt-out requests to the four largest data brokers.**
 Acxiom, LexisNexis, Spokeo, and Whitepages all have free opt-out processes. The full opt-out guide at privacyrights.org covers 200+ brokers with direct links.
-
----
-
-## One Question Before You Continue
-
-<Quiz
-  question="You deleted a forum account from 2014. Does this mean the posts are no longer publicly accessible?"
-  options={[
-    {
-      label: "Yes - deleting an account removes all associated content from public view.",
-      correct: false,
-      explanation: "This depends on the platform and whether the content was archived before deletion. Most platforms do not retroactively delete content from external caches, Google's index, or archive services like the Wayback Machine. Content can remain accessible for years after the account is deleted."
-    },
-    {
-      label: "Not necessarily - archived copies on services like the Wayback Machine, Google Cache, and external scrapes may persist indefinitely.",
-      correct: true,
-      explanation: "Correct. Deleting an account removes the content from the live site, but external services including the Internet Archive (archive.org), Google Cache, and data broker databases may hold copies. You can request removal separately from each service - Google has a removal request tool, and archive.org accepts removal requests for sensitive content."
-    },
-    {
-      label: "Yes - GDPR's right to erasure requires platforms to delete all data including archived copies.",
-      correct: false,
-      explanation: "GDPR's right to erasure applies to the data controller (the platform you deleted your account from). It does not automatically compel third parties who scraped the content - such as the Wayback Machine or data brokers - to remove their copies. You need to make separate requests to each third party."
-    },
-    {
-      label: "Only if the posts contained personal information - generic content is not subject to removal requests.",
-      correct: false,
-      explanation: "GDPR erasure rights apply to any personal data, not just obviously sensitive information. A username linked to your real identity in a post context qualifies as personal data. The right to erasure is broad - what limits it is the practical ability to enforce it against every entity that holds a copy."
-    }
-  ]}
-/>

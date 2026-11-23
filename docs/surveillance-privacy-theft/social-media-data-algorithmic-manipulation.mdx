@@ -6,15 +6,28 @@ description: "How social platforms harvest your behaviour, build inferred profil
 tags: [social-media, algorithmic-manipulation, data-collection, shadowbanning, filter-bubbles, engagement, surveillance, amplification]
 ---
 
-import Quiz from '@site/src/components/Quiz';
 
 # Social Media Data & Algorithmic Manipulation
 
 The feed does not show you what happened. It shows you what will make you stay.
 
----
+This topic affects how people use technology, make decisions, or protect themselves. Understanding the mechanisms makes it easier to recognise risks and choose a response.
 
-## The Feed That Shaped a View
+## Myth Busters
+
+**Social Media Data and Algorithmic Manipulation only affects careless people.**  
+People with different backgrounds can be affected by this risk.
+
+**A familiar or professional appearance proves social media data and algorithmic manipulation is safe.**  
+Appearance alone cannot establish trustworthiness.
+
+**There is no practical way to reduce social media data and algorithmic manipulation.**  
+Small, independent checks and protective steps can reduce exposure.
+
+**If social media data and algorithmic manipulation causes harm, nothing can be done afterward.**  
+Documenting the situation and seeking appropriate support can help.
+
+## The Story
 
 Elena had not changed her political views in years. She had not sought out extreme content.
 
@@ -29,9 +42,9 @@ Over 14 months, the algorithm had learned she paused on outrage posts. It served
 
 She had not been hacked. She had not been deceived in any single moment. **She had been optimised.**
 
----
+## Statistical Evidence
 
-## What Is Actually Happening
+**What Is Actually Happening**  
 
 <div className="glass-panel" style={{ padding: '30px', borderRadius: '16px', textAlign: 'center', marginBottom: '30px', borderTop: '4px solid var(--ifm-color-primary)' }}>
   <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '0', color: 'var(--ifm-color-primary)', lineHeight: '1.1' }}>3.2x</h2>
@@ -85,29 +98,24 @@ She had not been hacked. She had not been deceived in any single moment. **She h
     </div>
   </div>
 </div>
+**What Platforms Actually Collect**  
 
----
-
-## What Platforms Actually Collect
-
-### Engagement signals
+**Engagement signals**  
 Likes, shares, comments, saves, and click-throughs are the most visible. But dwell time, scroll speed, and return visits are equally important and entirely invisible to you.
 
-### Inferred attributes
+**Inferred attributes**  
 From your engagement pattern, platforms infer: political lean, relationship status, income bracket, pregnancy, health conditions, and emotional state. These inferences are used for ad targeting even if you never declared them.
 
-### Off-platform activity
+**Off-platform activity**  
 Meta's Off-Facebook Activity tool lets you see data sent to Meta from third-party sites and apps. Most users are surprised by how much activity is reported by sites they visited without logging into Facebook.
 
-### Private messages
+**Private messages**  
 Before end-to-end encryption became standard (Meta Messenger: late 2023, Instagram DMs: still rolling out), message content was accessible and used for ad inference.
 
-### Deleted content
+**Deleted content**  
 On most platforms, deleted posts are not immediately removed from training data, ad profile inference, or internal analytics. Deletion removes the public post. It does not erase the record of what was in it.
 
----
-
-## Try It: The Engagement Trap
+## Experience It
 
 Scroll through 8 posts. Click what interests you. Skip what doesn't. See what the algorithm inferred.
 
@@ -131,9 +139,7 @@ Scroll through 8 posts. Click what interests you. Skip what doesn't. See what th
   }}
 />
 
----
-
-## What That Just Showed You
+## What the Experience Shows
 
 **1. Pausing is engaging.**
 You did not like or share anything. You paused. That was enough to build an inferred profile. Dwell time is one of the most powerful signals platforms use.
@@ -144,9 +150,7 @@ None of the attributes in your profile were declared. They were inferred from wh
 **3. The feed is not neutral.**
 Content that generated strong reactions in the simulation was served to you not because it was accurate or important, but because engagement data predicted you would react to it.
 
----
-
-## Three Things Worth Doing
+## Take Control: What Can You Do?
 
 **1. Check your off-platform activity on Meta.**
 Facebook: Settings > Your Facebook Information > Off-Facebook Activity. This shows all the sites and apps that have sent data about you to Meta. You can clear it and disconnect future tracking.
@@ -156,33 +160,3 @@ Instagram, Facebook, TikTok, and Twitter/X all allow full data downloads. The fi
 
 **3. Use chronological feeds where available.**
 Instagram, X, and LinkedIn allow switching to chronological order. Chronological feeds are less engaging by design - and far less optimised to trigger reactions.
-
----
-
-## One Question Before You Continue
-
-<Quiz
-  question="You scroll past a post without liking or commenting. Does the platform record this as a signal?"
-  options={[
-    {
-      label: "No - only explicit actions (likes, shares, comments) generate signals the algorithm uses.",
-      correct: false,
-      explanation: "This is incorrect. Most major platforms measure dwell time - how long you pause on content before scrolling. A pause of more than 1-2 seconds is typically recorded as an engagement signal, even without any explicit action. This is documented in platform algorithm patents and confirmed by multiple whistleblowers."
-    },
-    {
-      label: "Yes - dwell time is tracked. How long you pause on a post before scrolling is a significant signal regardless of whether you interact explicitly.",
-      correct: true,
-      explanation: "Correct. Dwell time is one of the most heavily weighted signals in social media recommendation systems. Meta, TikTok, and YouTube have all confirmed this in algorithm documentation and patent filings. A 2-second pause on a post tells the algorithm you found it relevant even if you kept scrolling. This is how platforms build an accurate picture of your interests without requiring explicit engagement."
-    },
-    {
-      label: "Only if you are logged in - logged-out browsing is not recorded.",
-      correct: false,
-      explanation: "Logged-out browsing on social media platforms is still tracked via cookies, device fingerprinting, and IP address. Dwell time and scroll behaviour are recorded regardless of login status. The data is associated with a device profile rather than an account, but is still collected and used."
-    },
-    {
-      label: "Only for posts from paid advertisers - organic content does not generate dwell time data.",
-      correct: false,
-      explanation: "Dwell time is tracked for all content, not just ads. This data is used for the recommendation algorithm (to determine what to show you next) as well as for ad targeting (to build your interest profile). There is no distinction between organic and paid content for the purposes of engagement signal collection."
-    }
-  ]}
-/>
