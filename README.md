@@ -6,6 +6,8 @@
 
 > An initiative by [The Blue Signal](https://thebluesignal.com), helping people make better digital decisions.
 
+<!-- Local verification comment: this change confirms the repository is connected and editable. -->
+
 ---
 
 ## Why It Exists
