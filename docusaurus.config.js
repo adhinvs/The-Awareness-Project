@@ -13,6 +13,7 @@ const config = {
   projectName: 'the-awareness-project',
   onBrokenLinks: 'throw',
   i18n: {defaultLocale: 'en', locales: ['en']},
+  plugins: ['./plugins/awareness-search'],
   presets: [
     ['classic', {
       docs: {sidebarPath: './sidebars.js'},
