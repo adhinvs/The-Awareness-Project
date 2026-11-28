@@ -113,18 +113,27 @@
 @media (max-width: 996px) {
   .awareness-search-trigger--desktop { display: none; }
   .awareness-search-trigger--mobile { display: inline-flex; margin-left: auto; }
+  .navbar__inner > .navbar__items:first-child { flex-wrap: nowrap; }
   .navbar__inner > .navbar__items:first-child > .nav-whatsapp-link { display: none !important; }
-  .navbar__inner > .navbar__items:first-child .awareness-brand__lockup { display: inline-flex; }
-  .navbar__inner > .navbar__items:first-child .awareness-brand__name { font-size: clamp(0.83rem, 4.2vw, 1.05rem); white-space: nowrap; }
+  .navbar__inner > .navbar__items:first-child .awareness-brand {
+    flex: 0 1 auto;
+    max-width: calc(100% - 3.25rem);
+    min-width: 0;
+    margin-right: 0;
+    gap: clamp(0.3rem, 1.5vw, 0.55rem);
+  }
+  .navbar__inner > .navbar__items:first-child .awareness-brand__lockup { display: inline-flex; min-width: 0; }
+  .navbar__inner > .navbar__items:first-child .awareness-brand__name { font-size: clamp(0.95rem, 5vw, 1.25rem); white-space: nowrap; }
   .navbar__inner > .navbar__items:first-child .awareness-brand__tagline {
     display: block;
-    font-size: clamp(0.4rem, 1.9vw, 0.55rem);
-    letter-spacing: 0.055em;
+    font-size: clamp(0.46rem, 2.15vw, 0.62rem);
+    letter-spacing: clamp(0.01em, 0.1vw, 0.04em);
+    white-space: nowrap;
   }
   .navbar__inner > .navbar__items:first-child .awareness-brand__tagline i {
-    width: 0.16rem;
-    height: 0.16rem;
-    margin: 0 0.12rem 0.06rem;
+    width: 0.18rem;
+    height: 0.18rem;
+    margin: 0 0.13rem 0.06rem;
   }
   .navbar__inner > .navbar__items:first-child .awareness-brand { margin-right: 0.25rem; }
 }
@@ -132,7 +141,7 @@
 @media (max-width: 420px) {
   .navbar__inner > .navbar__items:first-child .navbar__toggle { margin-right: 0.2rem; }
   .navbar__inner > .navbar__items:first-child .awareness-brand { margin-right: 0.15rem; }
-  .navbar__inner > .navbar__items:first-child .navbar__logo { width: 2.35rem; height: 2.35rem; }
+  .navbar__inner > .navbar__items:first-child .navbar__logo { width: 2.15rem; height: 2.15rem; }
   .awareness-search-trigger--mobile {
     width: 2.25rem;
     height: 2.25rem;
@@ -143,90 +152,12 @@
 @media (max-width: 340px) {
   .navbar__inner > .navbar__items:first-child .navbar__toggle { margin-right: 0; }
   .navbar__inner > .navbar__items:first-child .awareness-brand { gap: 0.25rem; margin-right: 0; }
-  .navbar__inner > .navbar__items:first-child .navbar__logo { width: 1.85rem; height: 1.85rem; }
-  .navbar__inner > .navbar__items:first-child .awareness-brand__name { font-size: 0.83rem; }
-  .navbar__inner > .navbar__items:first-child .awareness-brand__tagline { font-size: 0.4rem; letter-spacing: 0.01em; }
+  .navbar__inner > .navbar__items:first-child .navbar__logo { width: 1.6rem; height: 1.6rem; }
+  .navbar__inner > .navbar__items:first-child .awareness-brand__name { font-size: 0.78rem; }
+  .navbar__inner > .navbar__items:first-child .awareness-brand__tagline { font-size: 0.37rem; letter-spacing: 0; }
 }
 
-.awareness-whatsapp-fab { display: none; }
-
 @media (max-width: 996px) {
-  .awareness-whatsapp-fab {
-    position: fixed;
-    right: 1rem;
-    bottom: max(1rem, env(safe-area-inset-bottom));
-    z-index: 50;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .awareness-whatsapp-fab__button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 3rem;
-    height: 3rem;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: #16a34a;
-    color: white;
-    box-shadow: 0 5px 18px rgba(10, 75, 37, 0.28);
-    cursor: pointer;
-    transition: transform 180ms ease, color 180ms ease;
-  }
-
-  .awareness-whatsapp-fab__button svg { width: 2.15rem; height: 2.15rem; }
-  .awareness-whatsapp-fab__button:hover { transform: scale(1.08); background: #15803d; }
-  .awareness-whatsapp-fab--expanded .awareness-whatsapp-fab__button { transform: rotate(90deg); }
-
-  .awareness-whatsapp-fab__button span { font-size: 1.7rem; line-height: 1; }
-
-  .awareness-whatsapp-fab__label {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    max-width: calc(100vw - 5.5rem);
-    padding: 0.65rem 0.95rem;
-    border: 1px solid #c7e8d1;
-    border-radius: 999px;
-    background: rgba(222, 248, 229, 0.72);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    color: #1b4630;
-    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.1);
-    font-size: 0.83rem;
-    font-weight: 600;
-    text-decoration: none;
-    white-space: nowrap;
-    transform-origin: right center;
-    animation: awareness-whatsapp-open 220ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  }
-
-  .awareness-whatsapp-fab__label::before {
-    content: '';
-    flex: 0 0 auto;
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
-    background: #25d366;
-    box-shadow: 0 0 0 4px rgba(37, 211, 102, 0.12);
-  }
-
-  .awareness-whatsapp-fab__label:hover { color: #14532d; text-decoration: none; }
-  [data-theme='dark'] .awareness-whatsapp-fab__label { background: rgba(26, 84, 48, 0.72); color: #d7fbe1; border-color: #2b6440; }
-
-  @keyframes awareness-whatsapp-open {
-    from { opacity: 0; clip-path: inset(0 0 0 100% round 999px); transform: translateX(8px); }
-    to { opacity: 1; clip-path: inset(0 0 0 0 round 999px); transform: translateX(0); }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .awareness-whatsapp-fab__label { animation: none; }
-    .awareness-whatsapp-fab__button { transition: none; }
-  }
-
   .awareness-drawer-whatsapp-mount { padding: 0.75rem 1rem 0.25rem; }
   .awareness-drawer-whatsapp {
     display: flex;
@@ -242,15 +173,7 @@
     text-align: center;
     text-decoration: none;
   }
+  .awareness-drawer-whatsapp:hover { background: #e2f6e8; color: #14532d; text-decoration: none; }
   .awareness-drawer-whatsapp svg { flex: 0 0 auto; }
   [data-theme='dark'] .awareness-drawer-whatsapp { background: #123322; color: #b7f7ca; }
-  .navbar-sidebar--show ~ .awareness-whatsapp-fab { display: none; }
-}
-
-@media (max-width: 360px) {
-  .awareness-whatsapp-fab__label {
-    gap: 0.35rem;
-    padding: 0.55rem 0.65rem;
-    font-size: 0.72rem;
-  }
 }

@@ -10,34 +10,27 @@ function WhatsAppIcon() {
   return <svg viewBox="0 0 32 32" width="24" height="24" fill="none" aria-hidden="true"><path d="M16 3.5a12.5 12.5 0 0 0-10.8 18.8L3.5 28.5l6.4-1.7A12.5 12.5 0 1 0 16 3.5Z" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round"/><path d="M11.3 9.7c-.5-.7-1.1-.6-1.7-.1-1 .9-1.3 2.1-1.1 3.3.6 3.7 4.9 8 8.5 9.2 2.1.7 4.8.6 6-1.2.5-.8.5-1.6-.2-2l-3.4-1.5c-.6-.2-1 .1-1.4.6l-.9 1.1c-2.3-.6-4.3-2.5-5.3-4.5l1.1-1.1c.4-.4.5-.9.3-1.4l-1.9-2.4Z" fill="currentColor"/></svg>;
 }
 
-function MobileWhatsApp() {
-  const [expanded, setExpanded] = useState(false);
-  const [drawerTarget, setDrawerTarget] = useState(null);
+function WhatsAppMenuLink() {
+  const [mount, setMount] = useState(null);
 
   useEffect(() => {
-    let mount;
-    const findPanel = () => {
+    let inserted;
+    const attach = () => {
       const list = document.querySelector('.navbar-sidebar__item .theme-doc-sidebar-menu');
-      if (!list || (mount?.isConnected && mount.parentElement === list.parentElement)) return;
-      mount?.remove();
-      mount = document.createElement('div');
-      mount.className = 'awareness-drawer-whatsapp-mount';
-      list.parentElement.insertBefore(mount, list);
-      setDrawerTarget(mount);
+      if (!list || (inserted?.isConnected && inserted.parentElement === list.parentElement)) return;
+      inserted?.remove();
+      inserted = document.createElement('div');
+      inserted.className = 'awareness-drawer-whatsapp-mount';
+      list.parentElement.insertBefore(inserted, list);
+      setMount(inserted);
     };
-    const observer = new MutationObserver(findPanel);
+    const observer = new MutationObserver(attach);
     observer.observe(document.body, {childList: true, subtree: true});
-    findPanel();
-    return () => { observer.disconnect(); mount?.remove(); };
+    attach();
+    return () => { observer.disconnect(); inserted?.remove(); };
   }, []);
 
-  return <>
-    <div className={`awareness-whatsapp-fab${expanded ? ' awareness-whatsapp-fab--expanded' : ''}`}>
-      {expanded && <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="awareness-whatsapp-fab__label">Get Daily Insights on WhatsApp</a>}
-      <button type="button" className="awareness-whatsapp-fab__button" aria-label={expanded ? 'Close WhatsApp invitation' : 'Get Daily Insights on WhatsApp'} aria-expanded={expanded} onClick={() => setExpanded(value => !value)}>{expanded ? <span aria-hidden="true">×</span> : <WhatsAppIcon />}</button>
-    </div>
-    {drawerTarget && createPortal(<a className="awareness-drawer-whatsapp" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"><WhatsAppIcon /><span>Get Daily Insights on WhatsApp</span></a>, drawerTarget)}
-  </>;
+  return mount && createPortal(<a className="awareness-drawer-whatsapp" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"><WhatsAppIcon /><span>Get Daily Insights on WhatsApp</span></a>, mount);
 }
 
 function SearchIcon() {
@@ -153,7 +146,7 @@ export default function Root({ children }) {
     <>
       {children}
       <Search />
-      <MobileWhatsApp />
+      <WhatsAppMenuLink />
       <Analytics />
     </>
   );
