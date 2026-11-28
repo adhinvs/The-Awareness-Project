@@ -42,10 +42,10 @@ const FeatureList = [
   {
     tag: 'EXPERIENCE',
     tagStyle: 'primary',
-    title: 'Learn by Doing.',
+    title: 'Learn from Real Situations.',
     description: (
       <>
-        Simulated scenarios, decision points, and real manipulation tactics, because reading about it isn't enough.
+        Explore real-world examples and manipulation tactics to connect what you learn with the situations you face online.
       </>
     ),
     icon: (
@@ -144,7 +144,7 @@ function CurriculumSection() {
     <section className={clsx(styles.sectionPadding, styles.bgGrey)}>
       <div className="container">
         <div className="text--center margin-bottom--xl animate-fade-up">
-          <Heading as="h2" className={styles.sectionTitle}>What you will master.</Heading>
+          <Heading as="h2" className={styles.sectionTitle}>What you will learn.</Heading>
           <p className={styles.sectionDescription} style={{ color: 'var(--ifm-color-emphasis-700)', maxWidth: '600px', margin: '0 auto' }}>
             An ever-growing library, with new modules added regularly.
           </p>
@@ -156,6 +156,7 @@ function CurriculumSection() {
               <button 
                 key={theme.id}
                 className={clsx(styles.curriculumTab, { [styles.curriculumTabActive]: activeTheme.id === theme.id })}
+                aria-pressed={activeTheme.id === theme.id}
                 onClick={() => setActiveTheme(theme)}
               >
                 <span className={styles.tabId}>{theme.id}</span>
@@ -228,8 +229,6 @@ export default function HomepageFeatures() {
         </div>
       </section>
 
-      <CurriculumSection />
-
       <section className={clsx(styles.sectionPadding, styles.bgDark)}>
         <div className="container">
           <div className="row align-items-center">
@@ -252,10 +251,10 @@ export default function HomepageFeatures() {
               <div className={styles.transparencyCard} style={{ textAlign: 'left' }}>
                 <span className={clsx(styles.tag, styles['tag-primary'], 'margin-bottom--md')} style={{ display: 'inline-block' }}>WHO WE ARE</span>
                 <p className={styles.transparencyTextLead}>
-                  The Blue Signal is a digital initiative researching how people think, decide, and get deceived online.
+                  The Blue Signal is a startup focused on human risk management and behavioural security.
                 </p>
                 <p className={styles.transparencyTextSub}>
-                  We built The Awareness Project as our open contribution to the public, because access to knowledge shouldn't be a privilege, and digital literacy shouldn't have a price tag.
+                  We help people and organisations understand how digital influence works, strengthen attention, and make safer decisions online. The Awareness Project is our open contribution to that mission: practical digital awareness, freely accessible to everyone.
                 </p>
                 <Link className="button button--primary" style={{ borderRadius: '2rem' }} to="https://thebluesignal.com">
                   Explore The Blue Signal →
@@ -266,51 +265,7 @@ export default function HomepageFeatures() {
         </div>
       </section>
 
-      <section className={styles.sectionPadding}>
-        <div className="container">
-          <div className="text--center margin-bottom--xl animate-fade-up">
-            <Heading as="h2" className={styles.sectionTitle} style={{ marginBottom: '1rem' }}>
-              How We Keep This Free.
-            </Heading>
-            <p className={styles.sectionDescription} style={{ color: 'var(--ifm-color-emphasis-700)', maxWidth: '700px', margin: '0 auto' }}>
-              The Awareness Project costs you nothing. It's funded by our professional work. Want us to share these insights with your team? Reach out anytime.
-            </p>
-          </div>
-          <div className="row">
-            <div className="col col--6 margin-bottom--lg animate-fade-up">
-              <div className={clsx(styles.featureCard, styles['card-bordered'])} style={{ height: '100%' }}>
-                <span className={clsx(styles.tag, styles['tag-primary'], 'margin-bottom--md')} style={{ display: 'inline-block' }}>LIVE WORKSHOP</span>
-                <Heading as="h3" className={styles.cardTitle}>Book a Live Workshop Session</Heading>
-                <p className={styles.cardDescription} style={{ marginBottom: '2.5rem', flexGrow: 1 }}>
-                  Hands-on sessions designed for corporates, public events, and community programs. Real scenarios and conversations, customised for your audience.
-                </p>
-                <div style={{ marginTop: 'auto' }}>
-                  <Link className="button button--primary button--outline button--lg" style={{ borderRadius: '2rem', borderWidth: '2px', fontWeight: 600 }} to="https://adhinvs.com/plan-and-book-training/">
-                    Book or Invite Us →
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="col col--6 margin-bottom--lg animate-fade-up delay-100">
-              <div className={clsx(styles.featureCard, styles['card-primary'])} style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                <div style={{display: 'flex', gap: '0.5rem', marginBottom: '1rem'}}>
-                  <span className={clsx(styles.tag, styles['tag-white'])} style={{ display: 'inline-block', marginBottom: 0 }}>FLAGSHIP PROGRAM</span>
-                  <span className={clsx(styles.tag, styles['tag-dark'])} style={{ display: 'inline-block', marginBottom: 0 }}>PREMIUM</span>
-                </div>
-                <Heading as="h3" className={styles.cardTitle}>Mind Under Influence</Heading>
-                <p className={styles.cardDescription} style={{ marginBottom: '2.5rem', flexGrow: 1 }}>
-                  A deep-dive into the behavioral psychology of the digital world. Master how technology and scams are engineered to influence human behavior.
-                </p>
-                <div style={{ marginTop: 'auto' }}>
-                  <Link className="button button--secondary button--lg" style={{ borderRadius: '2rem', color: 'var(--ifm-color-primary)', fontWeight: 700 }} to="https://thebluesignal.com/programs/#mind">
-                    Explore the Program →
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CurriculumSection />
 
       <section className={clsx(styles.sectionPadding, styles.finalCtaSection)}>
         <div className="container text--center">
@@ -320,11 +275,21 @@ export default function HomepageFeatures() {
             </Heading>
             <p className={styles.sectionDescription} style={{ color: '#9CA3AF', marginBottom: '2.5rem', maxWidth: '700px', margin: '0 auto 2.5rem' }}>
               No paywalls. No subscriptions. No login required. <br />
-              Just some modules built to make you harder to manipulate.
+              Practical guides to help you recognise threats and respond with confidence.
             </p>
             <Link className={clsx("button button--primary button--lg", styles.finalCtaButton)} to="/docs/intro">
               Start Learning Free →
             </Link>
+            <div className={styles.freeInitiative}>
+              <Heading as="h3">How We Keep This Free</Heading>
+              <p>
+                The Awareness Project is a non-commercial initiative by The Blue Signal, a startup focused on human risk management and behavioural security.
+              </p>
+              <p>
+                While we pursue our commercial objectives, this initiative reflects our commitment to making quality digital awareness freely accessible to everyone.
+              </p>
+              <Link to="https://thebluesignal.com">Learn about The Blue Signal →</Link>
+            </div>
           </div>
         </div>
       </section>

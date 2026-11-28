@@ -1,6 +1,6 @@
 /** index.module.css */
 .heroBanner {
-  padding: 4rem 0 6rem;
+  padding: clamp(3rem, 6vw, 5.5rem) 0;
   background: radial-gradient(circle at 15% 50%, rgba(37, 99, 235, 0.08), transparent 25%),
               radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.05), transparent 25%);
   position: relative;
@@ -10,18 +10,16 @@
 
 .heroTitle {
   font-family: var(--ifm-heading-font-family);
-  font-size: 4.5rem;
+  font-size: clamp(3.25rem, 5.4vw, 4.5rem);
   font-weight: 900;
-  line-height: 1.25;
-  margin-bottom: 1.5rem;
-  letter-spacing: -0.02em;
+  line-height: 1.08;
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
 }
 
 .highlightText {
-  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, #8b5cf6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--ifm-color-primary);
   display: inline-block;
 }
 
@@ -30,7 +28,7 @@
   color: var(--ifm-color-emphasis-700);
   margin-bottom: 1.5rem;
   line-height: 1.7;
-  max-width: 90%;
+  max-width: 42rem;
 }
 
 .heroAttribution {
@@ -64,17 +62,20 @@
   gap: 0.5rem;
   padding: 0.5rem 1.25rem;
   border-radius: 2rem;
-  background: var(--ifm-background-surface-color);
-  border: 1px solid var(--ifm-color-emphasis-200);
-  color: var(--ifm-color-emphasis-900);
+  background: rgba(37, 99, 235, 0.07);
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  color: var(--ifm-color-primary-dark);
   font-weight: 600;
-  margin-bottom: 2rem;
+  margin: 0 0 1.5rem;
   font-size: 0.875rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
 .shieldIcon {
-  font-size: 1.1rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  flex: 0 0 auto;
+  color: var(--ifm-color-primary);
 }
 
 .buttons {
@@ -103,7 +104,8 @@
 
 .heroImageContainer {
   position: relative;
-  width: 100%;
+  width: min(100%, 34rem);
+  margin-inline: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -123,7 +125,7 @@
 .heroSvg {
   position: relative;
   width: 100%;
-  max-width: 450px;
+  max-width: 34rem;
   color: var(--ifm-color-content);
   z-index: 1;
   animation: float 6s ease-in-out infinite;
@@ -134,10 +136,7 @@
 }
 
 @media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 4rem 0;
-    text-align: center;
-  }
+  .heroBanner { padding: 3rem 0; }
   .heroBanner .row {
     flex-direction: column;
   }
@@ -153,15 +152,40 @@
   .heroAttributionStrong {
     font-size: 1rem;
   }
-  .heroBadge {
-    margin: 0 auto 1.5rem;
-  }
+  .heroBadge { margin: 0 0 1.25rem; }
   .buttons {
     justify-content: center;
-    margin-bottom: 4rem;
+    margin-bottom: 1.5rem;
   }
-  .heroTitle {
-    font-size: 2.2rem;
-    hyphens: auto;
-  }
+  .heroTitle { font-size: clamp(2.5rem, 7vw, 3.5rem); }
+}
+
+/* Keep the primary action ahead of the attribution on every screen. */
+.heroTitle { font-size: clamp(2.2rem, 4.8vw, 4.5rem); line-height: 1.14; text-wrap: balance; }
+.buttons { margin-bottom: 1.5rem; flex-wrap: wrap; }
+.heroAttribution { margin-bottom: 0; }
+.heroBadge { max-width: 100%; }
+@media screen and (max-width: 996px) {
+  .heroBanner { padding: 2.75rem 0; text-align: left; }
+  .heroTitle { hyphens: none; font-size: clamp(2.35rem, 7vw, 3.5rem); }
+  .heroAttribution, .buttons { justify-content: flex-start; }
+  .buttons { margin-bottom: 1.5rem; }
+  .heroSubtitle { margin-bottom: 1.5rem; }
+  .heroImageContainer { margin-top: 2rem; }
+  .heroSvg { max-width: 260px; }
+}
+
+@media screen and (max-width: 576px) {
+  .heroBanner { padding: 2.25rem 0; }
+  .heroTitle { font-size: clamp(2.15rem, 10vw, 3rem); }
+  .heroSubtitle { font-size: 1rem; line-height: 1.6; }
+  .heroBadge { padding: 0.45rem 0.85rem; font-size: 0.8rem; }
+  .primaryButton { width: 100%; justify-content: center; }
+  .heroAttribution { gap: 0.55rem; font-size: 0.9rem; }
+  .heroImageContainer { margin-top: 1.25rem; }
+  .heroSvg { max-width: 210px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .heroGlow, .heroSvg { animation: none; }
+  .primaryButton { transition: none; }
 }
