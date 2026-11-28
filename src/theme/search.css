@@ -112,18 +112,26 @@
 
 @media (max-width: 996px) {
   .awareness-search-trigger--desktop { display: none; }
-  .awareness-search-trigger--mobile { display: inline-flex; margin-left: auto; }
-  .navbar__inner > .navbar__items:first-child { flex-wrap: nowrap; }
+  .navbar__inner { position: relative; }
+  .navbar__inner > .navbar__items:first-child { flex-wrap: nowrap; padding-right: 3rem; box-sizing: border-box; }
+  .awareness-search-trigger--mobile {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    display: inline-flex;
+    margin: 0;
+    transform: translateY(-50%);
+  }
   .navbar__inner > .navbar__items:first-child > .nav-whatsapp-link { display: none !important; }
   .navbar__inner > .navbar__items:first-child .awareness-brand {
-    flex: 0 1 auto;
-    max-width: calc(100% - 3.25rem);
+    flex: 1 1 0;
+    max-width: none;
     min-width: 0;
     margin-right: 0;
     gap: clamp(0.3rem, 1.5vw, 0.55rem);
   }
   .navbar__inner > .navbar__items:first-child .awareness-brand__lockup { display: inline-flex; min-width: 0; }
-  .navbar__inner > .navbar__items:first-child .awareness-brand__name { font-size: clamp(0.95rem, 5vw, 1.25rem); white-space: nowrap; }
+  .navbar__inner > .navbar__items:first-child .awareness-brand__name { font-size: clamp(0.85rem, 4.4vw, 1.2rem); white-space: nowrap; }
   .navbar__inner > .navbar__items:first-child .awareness-brand__tagline {
     display: block;
     font-size: clamp(0.46rem, 2.15vw, 0.62rem);
